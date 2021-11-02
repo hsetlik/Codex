@@ -8,9 +8,9 @@ namespace Domain.DataObjects
 {
     public class UserLanguageProfile
     {
-        public string Username { get; set; }
-        public CodexUser User { get; set; }
+        public string Username { get; set; } // Foreign key
+        public CodexUser User { get; set; } // Navigation property so that EF can map: one User -> many UserLanguageProfile
         public string Language { get; set; }
-        public ICollection<UserTerm> UserTerms { get; set; }
+        public ICollection<UserTerm> UserTerms { get; set; } // EF will automatically configure a one-to-many relationship
     }
 }
