@@ -30,7 +30,7 @@ namespace API.Services
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])); //note: key string must be at least 12 characters
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("codex dummy security key")); //note: key string must be at least 12 characters
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

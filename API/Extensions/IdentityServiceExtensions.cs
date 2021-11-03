@@ -27,7 +27,7 @@ namespace API.Extensions
             .AddEntityFrameworkStores<DataContext>()
             .AddSignInManager<SignInManager<CodexUser>>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("codex dummy security key"));
     
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt => 
@@ -39,9 +39,8 @@ namespace API.Extensions
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-
             });
-
+            /*
             services.AddAuthorization(opt => 
             {
                 opt.AddPolicy("IsActivityHost", policy => 
@@ -49,6 +48,7 @@ namespace API.Extensions
                     //add authorization policies to endpoints here
                 });
             });
+            */ 
             //wire up authorization handling like so VVVV
             //services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
             services.AddScoped<TokenService>();
