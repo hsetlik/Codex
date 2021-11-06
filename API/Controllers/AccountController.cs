@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.DTOs;
+using Application.DataObjectHandling.UserLanguageProfiles;
 
 namespace API.Controllers
 {
@@ -89,6 +90,8 @@ namespace API.Controllers
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             return CreateUserObject(user);
         }
+
+        //==================================================================
 
         //==================================================================
         private UserDto CreateUserObject(CodexUser user)

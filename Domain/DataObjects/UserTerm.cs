@@ -23,7 +23,7 @@ namespace Domain.DataObjects
         public Term Term { get; set; }
         public string Username { get; set; }
         public CodexUser CodexUser { get; set; }
-        public ICollection<Translation> Translations { get; set; }
+        public ICollection<Translation> Translations { get; set; } = new List<Translation>();
         public int TimesSeen { get; set; }
         public int KnowledgeLevel { get; set; }
         public float EaseFactor { get; set; }

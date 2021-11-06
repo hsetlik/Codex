@@ -8,7 +8,7 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
 {
     public class UserLanguageProfileDto
     {
-        public string UserId { get; set; } // Foreign key
+        //public string UserId { get; set; } // Foreign key
         public string Language { get; set; }
     }
 }

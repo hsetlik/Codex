@@ -10,12 +10,12 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserLanguageProfileController : CodexControllerBase
+    public class LanguageController : CodexControllerBase
     {
         [HttpPost("createProfile")]
-        public async Task<IActionResult> CreateProfile(string langId)
+        public async Task<IActionResult> CreateProfile(UserLanguageProfileDto profileDto)
         {
-            return HandleResult(await Mediator.Send(new UserLanguageProfileCreate.Command{LanguageId = langId}));
+            return HandleResult(await Mediator.Send(new UserLanguageProfileCreate.Command{LanguageId = profileDto.Language}));
         }
 
         [Authorize]

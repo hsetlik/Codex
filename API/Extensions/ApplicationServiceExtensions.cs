@@ -25,7 +25,7 @@ namespace API.Extensions
            services.AddControllers(opt => 
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                opt.Filters.Add(new AuthorizeFilter(policy));
+                opt.Filters.Add(item: new AuthorizeFilter(policy));
             })
                 .AddFluentValidation(_config => 
             {

@@ -33,9 +33,10 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                 _context = context;
 
             }
+
             public async Task<Result<List<UserLanguageProfileDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                var user = await _context.Users.Include(x => x.UserLanguageProfiles).FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
                 
                 var profiles = user.UserLanguageProfiles;
                 var profileDtos = new List<UserLanguageProfileDto>();
@@ -44,10 +45,10 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                     profileDtos.Add(
                         new UserLanguageProfileDto
                     {
-                        UserId = profile.UserId,
                         Language = profile.Language
                     });
                 }
+
                 return Result<List<UserLanguageProfileDto>>.Success(profileDtos);
 
             }

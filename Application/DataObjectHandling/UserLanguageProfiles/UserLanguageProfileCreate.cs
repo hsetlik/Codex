@@ -35,7 +35,7 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 //1. grab the current user from the IdentityDbContext subclass
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                var user = await _context.Users.Include(u => u.UserLanguageProfiles).FirstOrDefaultAsync(u => u.UserName == _userAccessor.GetUsername());
 
                 //2. create the lang profile
                 var langProfile = new UserLanguageProfile
@@ -50,6 +50,7 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                 if (profileExists) return Result<Unit>.Failure("User already has a profile for this language");
                 //5. otherwise, add it to the user object
                 user.UserLanguageProfiles.Add(langProfile);
+                //6. use AutoMapper to map the user back onto the DataContext
                 //6. update the database
                 var result = await _context.SaveChangesAsync() > 0;
                 if (!result) return Result<Unit>.Failure("Creating language profile failed");
