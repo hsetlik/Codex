@@ -29,6 +29,7 @@ namespace API.Extensions
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("codex dummy security key"));
     
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt => 
             {
@@ -40,6 +41,8 @@ namespace API.Extensions
                     ValidateAudience = false
                 };
             });
+            
+
             /*
             services.AddAuthorization(opt => 
             {
