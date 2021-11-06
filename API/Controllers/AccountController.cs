@@ -20,13 +20,51 @@ namespace API.Controllers
         private readonly UserManager<CodexUser> _userManager;
         private readonly SignInManager<CodexUser> _signInManager;
         private readonly TokenService _tokenService;
-        public AccountController(UserManager<CodexUser> userManager, SignInManager<CodexUser> signInManager, TokenService tokenService)
+        
+        //==================================================================
+        public AccountController(UserManager<CodexUser> userManager, 
+        SignInManager<CodexUser> signInManager, 
+        TokenService tokenService)
         {
             _tokenService = tokenService;
             _signInManager = signInManager;
             _userManager = userManager;
         }
+        //==================================================================
 
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        {
+            // 1. make sure that the email and username are not already in use
+            if(await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
+            {
+                ModelState.AddModelError("email", "Email is Already in use");
+                return ValidationProblem();
+            }
+            if(await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
+            {
+                ModelState.AddModelError("username", "Username is taken");
+                return ValidationProblem();
+            }
+
+            var user = new CodexUser
+            {
+                DisplayName = registerDto.DisplayName,
+                Email = registerDto.Email,
+                UserName = registerDto.Username,
+                NativeLanguage = registerDto.NativeLanguage
+            };
+
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            if (result.Succeeded)
+            {
+                return CreateUserObject(user);
+            }
+            return BadRequest("Could not register user");
+        }
+
+        //==================================================================
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto login)
@@ -43,6 +81,7 @@ namespace API.Controllers
             return Unauthorized();
         }
 
+        //==================================================================
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
@@ -51,6 +90,7 @@ namespace API.Controllers
             return CreateUserObject(user);
         }
 
+        //==================================================================
         private UserDto CreateUserObject(CodexUser user)
         {
             return new UserDto

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Services;
 using Domain.DataObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,7 @@ namespace API.Extensions
             .AddEntityFrameworkStores<DataContext>()
             .AddSignInManager<SignInManager<CodexUser>>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("codex dummy security key"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
     
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -41,8 +42,6 @@ namespace API.Extensions
                     ValidateAudience = false
                 };
             });
-            
-
             /*
             services.AddAuthorization(opt => 
             {
