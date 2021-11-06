@@ -23,36 +23,49 @@ namespace Persistence
                     UserName = "jeff",
                     DisplayName = "Jeff",
                     Email = "jeff@test.com",
-                    NativeLanguage = "en"
+                    NativeLanguage = "en",
+                    UserLanguageProfiles = new List<UserLanguageProfile>()
                 },
                 new CodexUser
                 {
                     UserName = "hans",
                     DisplayName = "Hans",
                     Email = "hans@test.com",
-                    NativeLanguage = "de"
+                    NativeLanguage = "de",
+                    UserLanguageProfiles = new List<UserLanguageProfile>()
                 },
                 new CodexUser
                 {
                     UserName = "sonya",
                     DisplayName = "Sonya",
                     Email = "sonya@test.com",
-                    NativeLanguage = "ru"
+                    NativeLanguage = "ru",
+                    UserLanguageProfiles = new List<UserLanguageProfile>()
+                 
                 },
                 new CodexUser
                 {
                     UserName = "maria",
                     DisplayName = "Maria",
                     Email = "maria@test.com",
-                    NativeLanguage = "es"
+                    NativeLanguage = "es",
+                    UserLanguageProfiles = new List<UserLanguageProfile>()
                 }
             };
             //create each user on the server
-            foreach (var user in users)
+            string[] langs = {"es", "en", "de", "ru"};
+            for(int i = 0; i < 4; i++)
             {
-                await userManager.CreateAsync(user, "Pa$$w0rd");
-            }
+                var profile = new UserLanguageProfile
+                {
+                    Language = langs[i],
+                    UserId = users[i].UserName,
+                    User = users[i]
+                };
+                users[i].UserLanguageProfiles.Add(profile);
 
+                await userManager.CreateAsync(users[i], "Pa$$w0rd");
+            }
             //some dummy words
             var terms = new List<Term>
             {

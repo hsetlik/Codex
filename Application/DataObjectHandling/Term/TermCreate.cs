@@ -26,10 +26,18 @@ namespace Application.DataObjectHandling
             {
                 _context = context;
             }
-
-            public Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                _context.Terms.Add(request.Term);
+                var result = await _context.SaveChangesAsync() > 0;
+                if (result)
+                {
+                    return Result<Unit>.Success(Unit.Value);
+                }
+                else
+                {
+                    return Result<Unit>.Failure("Creation failed");
+                }
             }
         }
 

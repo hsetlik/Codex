@@ -1,21 +1,17 @@
 using Application.DataObjectHandling;
 //using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistence;
-using Application.Core;
-using API.Middleware;
 //using FluentValidation.AspNetCore;
-using API.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Application.Interfaces;
+using Application.Core;
 //using Application.Interfaces;
 
 //This is just here to move some ugly service configuration code out of Startup.cs
@@ -45,9 +41,8 @@ namespace API.Extensions
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
             services.AddMediatR(typeof(TermCreate.Handler).Assembly);
-            //services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-            //services.AddScoped<IUserAccessor, UserAccessor>();
-
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }
