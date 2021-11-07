@@ -17,7 +17,8 @@ namespace Domain.DataObjects
     }
     public class UserTerm
     {
-        // Navigation properties to tie this to the language profile
+        public Guid UserTermId { get; set; }
+        //Navigation properties
         public Guid LanguageProfileId { get; set; }
         public UserLanguageProfile UserLanguageProfile { get; set; }
         // second pair of nav. properties to link the Term entity

@@ -54,7 +54,8 @@ namespace API.Controllers
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
                 UserName = registerDto.Username,
-                NativeLanguage = registerDto.NativeLanguage
+                NativeLanguage = registerDto.NativeLanguage,
+                UserLanguageProfiles = new List<UserLanguageProfile>()
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);

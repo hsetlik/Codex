@@ -12,6 +12,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Application.Interfaces;
 using Application.Core;
+using Application.DataObjectHandling.UserTerms;
 //using Application.Interfaces;
 
 //This is just here to move some ugly service configuration code out of Startup.cs
@@ -29,7 +30,7 @@ namespace API.Extensions
             })
                 .AddFluentValidation(_config => 
             {
-                _config.RegisterValidatorsFromAssemblyContaining<TermCreate>();
+                _config.RegisterValidatorsFromAssemblyContaining<UserTermCreate>();
             });
 
             services.AddSwaggerGen(c =>
@@ -40,7 +41,7 @@ namespace API.Extensions
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
-            services.AddMediatR(typeof(TermCreate.Handler).Assembly);
+            services.AddMediatR(typeof(UserTermCreate.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();
 
