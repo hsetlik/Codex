@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling.Terms;
 
 namespace Application.DataObjectHandling.UserTerms
 {
@@ -14,5 +15,16 @@ namespace Application.DataObjectHandling.UserTerms
         public string TermValue { get; set; }
         public string FirstTranslation { get; set; }
       
+    }
+    public static class TermConverter
+    {
+        public static TermCreateDto TermDtoFor(UserTermCreateDto userTermCreateDto)
+        {
+            return new TermCreateDto
+            {
+                Value = userTermCreateDto.TermValue,
+                Language = userTermCreateDto.Language
+            };
+        }
     }
 }

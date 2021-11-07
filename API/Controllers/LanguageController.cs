@@ -32,7 +32,9 @@ namespace API.Controllers
         [HttpPost("createUserTerm")]
         public async Task<IActionResult> CreateUserTerm(UserTermCreateDto dto)
         {
-
+            var tDto =  TermConverter.TermDtoFor(dto);
+            var result = HandleResult(await Mediator.Send(new TermCreate.Command
+            {TermCreateDto = tDto}));
             return HandleResult(await Mediator.Send(new UserTermCreate.Command
             {termCreateDto = dto}));
         }

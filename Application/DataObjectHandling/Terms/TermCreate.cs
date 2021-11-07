@@ -29,6 +29,13 @@ namespace Application.DataObjectHandling
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                
+                var exists = _context.Terms.Any(x => x.Value == request.TermCreateDto.Value && 
+                x.Language == request.TermCreateDto.Language);
+                if (exists)
+                {  //this just returns success if a term already exists so we don't have to do that logic in the controller
+                    return Result<Unit>.Success(Unit.Value);
+                }
                 var term = new Term
                 {
                     Value = request.TermCreateDto.Value,

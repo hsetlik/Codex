@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DataObjectHandling.Terms;
 using Application.Interfaces;
 using Domain.DataObjects;
 using MediatR;
@@ -42,7 +43,10 @@ namespace Application.DataObjectHandling.UserTerms
                 // 2. Get the term based on the value
                 var term = await _context.Terms.FirstOrDefaultAsync(x => x.Value == request.termCreateDto.TermValue);
                 // TODO: change this such that if no term exists, one is created
-                if (term == null) return Result<Unit>.Failure("No Corresponding term exists!");
+                if (term == null)
+                {
+                    return Result<Unit>.Failure("No Corresponding term exists!");
+                } 
                 var currentDateTime = DateTime.Now.ToString();
 
                 var userTerm = new UserTerm
