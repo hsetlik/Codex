@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling;
+using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserLanguageProfiles;
 using Application.DataObjectHandling.UserTerms;
 using Microsoft.AspNetCore.Authorization;
@@ -28,11 +30,19 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("createUserTerm")]
-        public async Task<IActionResult> CreateUserTerm(TermCreateDto dto)
+        public async Task<IActionResult> CreateUserTerm(UserTermCreateDto dto)
         {
 
             return HandleResult(await Mediator.Send(new UserTermCreate.Command
             {termCreateDto = dto}));
+        }
+
+        [Authorize]
+        [HttpPost("createTerm")]
+        public async Task<IActionResult> CreateTerm(TermCreateDto dto)
+        {
+            return HandleResult(await Mediator.Send(new TermCreate.Command
+            {TermCreateDto = dto}));
         }
     }
 }

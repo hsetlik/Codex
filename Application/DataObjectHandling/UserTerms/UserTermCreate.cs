@@ -16,7 +16,7 @@ namespace Application.DataObjectHandling.UserTerms
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public TermCreateDto termCreateDto { get; set; }
+            public UserTermCreateDto termCreateDto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -41,7 +41,7 @@ namespace Application.DataObjectHandling.UserTerms
                     x.Language == request.termCreateDto.Language);
                 // 2. Get the term based on the value
                 var term = await _context.Terms.FirstOrDefaultAsync(x => x.Value == request.termCreateDto.TermValue);
-                //TODO: change this such that if no term exists, one is created
+                // TODO: change this such that if no term exists, one is created
                 if (term == null) return Result<Unit>.Failure("No Corresponding term exists!");
                 var currentDateTime = DateTime.Now.ToString();
 

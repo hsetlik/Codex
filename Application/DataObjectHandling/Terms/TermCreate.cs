@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DataObjectHandling.Terms;
 using Domain.DataObjects;
 using FluentValidation;
 using MediatR;
@@ -16,7 +17,7 @@ namespace Application.DataObjectHandling
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Term Term { get; set; }
+            public TermCreateDto TermCreateDto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -28,7 +29,13 @@ namespace Application.DataObjectHandling
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                _context.Terms.Add(request.Term);
+                var term = new Term
+                {
+                    Value = request.TermCreateDto.Value,
+                    Language = request.TermCreateDto.Language,
+                    TermId = Guid.NewGuid()
+                };
+                _context.Terms.Add(term);
                 var result = await _context.SaveChangesAsync() > 0;
                 if (result)
                 {

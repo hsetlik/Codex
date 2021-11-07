@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.DataObjectHandling.UserTerms
 {
-    public class TermCreateDto
+    public class UserTermCreateDto
     {
         // User info not necessary since we have IUserAccessor
         //Use this as a key to find the appropriate UserLanguageProfile per ISO-169-1
