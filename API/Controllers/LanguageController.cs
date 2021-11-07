@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.UserLanguageProfiles;
+using Application.DataObjectHandling.UserTerms;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,22 @@ namespace API.Controllers
         public async Task<IActionResult> GetProfiles()
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileList.Query()));
+        }
+
+        [Authorize]
+        [HttpPost("createUserTerm")]
+        public async Task<IActionResult> CreateUserTerm(TermCreateDto termCreateDto)
+        {
+            Console.WriteLine(termCreateDto.TermId);
+            Console.WriteLine(termCreateDto.FirstTranslation);
+            Console.WriteLine(termCreateDto.UserTermId);
+
+            return HandleResult(await Mediator.Send(new UserTermCreate.Command
+            {
+                TermId = termCreateDto.TermId,
+                FirstTranslation = termCreateDto.FirstTranslation,
+                UserTermId = termCreateDto.UserTermId
+            }));
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Persistence
 
         public DbSet<UserLanguageProfile> UserLanguageProfiles { get; set; }
 
+        public DbSet<UserTerm> UserTerms { get; set; }
+
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -29,6 +31,12 @@ namespace Persistence
             .HasOne(u => u.User)
             .WithMany(p => p.UserLanguageProfiles)
             .HasForeignKey(k => k.UserId);
+
+            //same thing here
+            builder.Entity<UserTerm>()
+            .HasOne(t => t.UserLanguageProfile)
+            .WithMany(p => p.UserTerms);
+            
         }
     }
 }

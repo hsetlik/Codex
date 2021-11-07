@@ -17,12 +17,11 @@ namespace Domain.DataObjects
     }
     public class UserTerm
     {
-        [Key]
         public Guid UserTermId { get; set; }
         public Guid TermId { get; set; }
         public Term Term { get; set; }
         public string Username { get; set; }
-        public CodexUser CodexUser { get; set; }
+        public UserLanguageProfile UserLanguageProfile { get; set; }
         public ICollection<Translation> Translations { get; set; } = new List<Translation>();
         public int TimesSeen { get; set; }
         public int KnowledgeLevel { get; set; }
