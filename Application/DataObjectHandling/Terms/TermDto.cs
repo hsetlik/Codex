@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.DataObjectHandling.Terms
 {
-    public class TermCreateDto
+    public class TermDto
     {
         public string Value { get; set; }
         public string Language { get; set; }

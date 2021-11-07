@@ -41,10 +41,20 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("createTerm")]
-        public async Task<IActionResult> CreateTerm(TermCreateDto dto)
+        public async Task<IActionResult> CreateTerm(TermDto dto)
         {
             return HandleResult(await Mediator.Send(new TermCreate.Command
             {TermCreateDto = dto}));
+        }
+
+        [Authorize]
+        [HttpGet("getUserTerm")]
+        public async Task<IActionResult> GetUserTerm(TermDto dto)
+        {
+            return HandleResult(await Mediator.Send(new UserTermDetails.Query
+            {
+                TermDto = dto
+            }));
         }
     }
 }

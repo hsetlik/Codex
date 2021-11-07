@@ -18,9 +18,9 @@ namespace Application.DataObjectHandling.UserTerms
     }
     public static class TermConverter
     {
-        public static TermCreateDto TermDtoFor(UserTermCreateDto userTermCreateDto)
+        public static TermDto TermDtoFor(UserTermCreateDto userTermCreateDto)
         {
-            return new TermCreateDto
+            return new TermDto
             {
                 Value = userTermCreateDto.TermValue,
                 Language = userTermCreateDto.Language
