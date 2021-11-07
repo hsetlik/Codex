@@ -24,7 +24,6 @@ namespace Persistence
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<UserLanguageProfile>(x => x.HasKey(ulp => new {ulp.Language, ulp.UserId}));
 
             //Set up the foreign keys for the UserLanguageProfile table
             builder.Entity<UserLanguageProfile>()
@@ -32,10 +31,24 @@ namespace Persistence
             .WithMany(p => p.UserLanguageProfiles)
             .HasForeignKey(k => k.UserId);
 
-            //same thing here
+            //set up the compound key for UserTerms
+            builder.Entity<UserTerm>(x => x.HasKey(aa => new {aa.LanguageProfileId, aa.TermId}));
+
+            //configure both relationships for UserTerm
             builder.Entity<UserTerm>()
-            .HasOne(t => t.UserLanguageProfile)
-            .WithMany(p => p.UserTerms);
+            .HasOne(p => p.Term)
+            .WithMany(p => p.UserTerms)
+            .HasForeignKey(p => p.TermId);
+
+            builder.Entity<UserTerm>()
+            .HasOne(u => u.UserLanguageProfile)
+            .WithMany(u => u.UserTerms)
+            .HasForeignKey(p => p.LanguageProfileId);
+
+            //manually configure translations
+            builder.Entity<UserTerm>()
+            .HasMany(u => u.Translations)
+            .WithOne();
             
         }
     }

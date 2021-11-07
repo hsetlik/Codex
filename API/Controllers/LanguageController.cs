@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.UserLanguageProfiles;
-using Application.DataObjectHandling.UserTerms;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +25,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new UserLanguageProfileList.Query()));
         }
 
+        /*
         [Authorize]
         [HttpPost("createUserTerm")]
         public async Task<IActionResult> CreateUserTerm(TermCreateDto termCreateDto)
@@ -41,5 +41,6 @@ namespace API.Controllers
                 UserTermId = termCreateDto.UserTermId
             }));
         }
+        */
     }
 }

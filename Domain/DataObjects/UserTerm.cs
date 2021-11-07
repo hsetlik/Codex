@@ -10,22 +10,26 @@ namespace Domain.DataObjects
     //basic class to hold translations
     public class Translation
     {
-        public Guid TermId { get; set; }
-
-        [Key]
+        public Guid TranslationId { get; set; }
         public string Value { get; set; }
+        //Foreign key
+        public Guid UserTermId { get; set; }
     }
     public class UserTerm
     {
-        public Guid UserTermId { get; set; }
+        // Navigation properties to tie this to the language profile
+        public Guid LanguageProfileId { get; set; }
+        public UserLanguageProfile UserLanguageProfile { get; set; }
+        // second pair of nav. properties to link the Term entity
         public Guid TermId { get; set; }
         public Term Term { get; set; }
-        public string Username { get; set; }
-        public UserLanguageProfile UserLanguageProfile { get; set; }
+        //ICollection to create the translations
         public ICollection<Translation> Translations { get; set; } = new List<Translation>();
+        //Actual UserTerm specific data
         public int TimesSeen { get; set; }
-        public int KnowledgeLevel { get; set; }
         public float EaseFactor { get; set; }
-        public int SrsInterval { get; set; }
+        public int Rating { get; set; }
+        public string DateTimeDue { get; set; }
+        public float SrsIntervalDays { get; set; }
     }
 }
