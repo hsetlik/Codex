@@ -33,27 +33,15 @@ namespace Persistence
             .WithMany(p => p.UserLanguageProfiles)
             .HasForeignKey(k => k.UserId);
 
-            //set up the compound key for UserTerms
-            builder.Entity<UserTerm>(x => x.HasKey(aa => new {aa.LanguageProfileId, aa.TermId}));
-
             //configure both relationships for UserTerm
             builder.Entity<UserTerm>()
             .HasOne(p => p.Term)
-            .WithMany(p => p.UserTerms)
-            .HasForeignKey(p => p.TermId);
+            .WithOne();
 
             builder.Entity<UserTerm>()
             .HasOne(u => u.UserLanguageProfile)
             .WithMany(u => u.UserTerms)
             .HasForeignKey(p => p.LanguageProfileId);
-
-            //manually configure translations
-            builder.Entity<UserTerm>()
-            .HasMany(u => u.Translations)
-            .WithOne();
-
-            builder.Entity<Translation>()
-            .HasOne(u => u.Term);
             
         }
     }

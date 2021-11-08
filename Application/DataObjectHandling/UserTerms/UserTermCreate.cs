@@ -63,7 +63,6 @@ namespace Application.DataObjectHandling.UserTerms
                         {
                             TranslationId = Guid.NewGuid(),
                             Value = request.termCreateDto.FirstTranslation,
-                            TermId = term.TermId
                         }
                     },
                     TimesSeen = 0,

@@ -11,6 +11,5 @@ namespace Domain.DataObjects
         public string Language { get; set; } //languages are encoded as strings as per ISO 169-1
         //Primary key & navigation property for UserTerm
         public Guid TermId { get; set; }
-        public ICollection<UserTerm> UserTerms { get; set; } = new List<UserTerm>();
     }
 }

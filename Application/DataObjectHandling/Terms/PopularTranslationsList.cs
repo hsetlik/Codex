@@ -39,11 +39,14 @@ namespace Application.DataObjectHandling.Terms
                 this._context = context;
             }
 
-            public async Task<Result<List<PopTranslationDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public Task<Result<List<PopTranslationDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
+                throw new NotImplementedException();
+                /*
                 var term = await _context.Terms.FirstOrDefaultAsync(x => x.Value == request.TranslationDto.TermValue);
                 var translations = await _context.Translations
-                .Include(t => t.Term)
+                .Include(t => t.UserTerm)
+                .ThenInclude(t => t.Term)
                 .Where(x => x.TermId == term.TermId)
                 .ToListAsync();
                 Console.WriteLine(request.TranslationDto.TermValue);
@@ -71,6 +74,7 @@ namespace Application.DataObjectHandling.Terms
                     });
                 }
                 return Result<List<PopTranslationDto>>.Success(list);
+                */
             }
         }
 
