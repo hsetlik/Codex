@@ -29,7 +29,8 @@ namespace Application.DataObjectHandling.Transcripts
                 int index = 0;
                 foreach(var word in words)
                 {
-                    currentChunk += word + ' ';
+                    currentChunk += word;
+                    if (currentChunk.Last() != ' ') currentChunk += ' ';
                     ++index;
                     if(index > chunkLength)
                     {
