@@ -28,6 +28,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new UserLanguageProfileList.Query()));
         }
 
+        //should go to: UserTerm/createUserTerm
         [Authorize]
         [HttpPost("createUserTerm")]
         public async Task<IActionResult> CreateUserTerm(UserTermCreateDto dto)
@@ -49,6 +50,8 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet("getUserTerm")]
+
+        //should go to: /UserTerm/getUserTerm
         public async Task<IActionResult> GetUserTerm(TermDto dto)
         {
             return HandleResult(await Mediator.Send(new UserTermDetails.Query
@@ -57,6 +60,7 @@ namespace API.Controllers
             }));
         }
 
+        //should go to: /Term/popularTranslationsFor
         [Authorize]
         [HttpGet("popularTranslationsFor")]
         public async Task<IActionResult> PopularTranslationsFor(TranslationDto dto)
@@ -67,6 +71,7 @@ namespace API.Controllers
             }));
         }
 
+        //should go to: /UserTerm/addTranslation
         [Authorize]
         [HttpPost("addTranslation")]
         public async Task<IActionResult> AddTranslation(AddTranslationDto dto)
