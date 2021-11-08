@@ -23,6 +23,10 @@ namespace Persistence
 
         public DbSet<Translation> Translations { get; set; }
 
+        public DbSet<Transcript> Transcripts { get; set; }
+
+        public DbSet<TranscriptChunk> TranscriptChunks { get; set; }
+
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -42,7 +46,7 @@ namespace Persistence
             .HasOne(u => u.UserLanguageProfile)
             .WithMany(u => u.UserTerms)
             .HasForeignKey(p => p.LanguageProfileId);
-            
+
         }
     }
 }
