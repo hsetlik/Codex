@@ -13,5 +13,6 @@ namespace Application.DataObjectHandling.UserTerms
         public int Rating { get; set; }
         public string DateTimeDue { get; set; }
         public float SrsIntervalDays { get; set; } 
+        public Guid UserTermId { get; set; }
     }
 }

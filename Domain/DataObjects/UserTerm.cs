@@ -13,7 +13,8 @@ namespace Domain.DataObjects
         public Guid TranslationId { get; set; }
         public string Value { get; set; }
         //Foreign key
-        public Guid UserTermId { get; set; }
+        public Guid TermId { get; set; }
+        public Term Term { get; set; }
     }
     public class UserTerm
     {

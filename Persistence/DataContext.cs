@@ -21,6 +21,8 @@ namespace Persistence
 
         public DbSet<UserTerm> UserTerms { get; set; }
 
+        public DbSet<Translation> Translations { get; set; }
+
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -49,6 +51,9 @@ namespace Persistence
             builder.Entity<UserTerm>()
             .HasMany(u => u.Translations)
             .WithOne();
+
+            builder.Entity<Translation>()
+            .HasOne(u => u.Term);
             
         }
     }

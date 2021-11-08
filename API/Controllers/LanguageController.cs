@@ -56,5 +56,30 @@ namespace API.Controllers
                 TermDto = dto
             }));
         }
+
+        [Authorize]
+        [HttpGet("popularTranslationsFor")]
+        public async Task<IActionResult> PopularTranslationsFor(TranslationDto dto)
+        {
+            return HandleResult(await Mediator.Send(new PopularTranslationsList.Query
+            {
+                TranslationDto = dto
+            }));
+        }
+
+        [Authorize]
+        [HttpPost("addTranslation")]
+        public async Task<IActionResult> AddTranslation(AddTranslationDto dto)
+        {
+            return HandleResult(await Mediator.Send(new UserTermAddTranslation.Command{AddTranslationDto = dto}));
+        }
+
+        [Authorize]
+        [HttpGet("getTranslations")]
+
+        public async Task<IActionResult> GetTranslations(GetTranslationsDto dto)
+        {
+            return HandleResult(await Mediator.Send(new UserTermListTranslations.Query{GetTranslationsDto = dto}));
+        }
     }
 }

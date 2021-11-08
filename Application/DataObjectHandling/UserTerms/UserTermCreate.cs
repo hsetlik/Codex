@@ -33,7 +33,10 @@ namespace Application.DataObjectHandling.UserTerms
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 //Check if the UserTerm with this value already exists
-                var exists = await _context.UserTerms.AnyAsync(u => u.Term.Value == request.termCreateDto.TermValue);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                var exists = await _context.UserTerms.AnyAsync(
+                    u => u.Term.Value == request.termCreateDto.TermValue &&
+                    u.UserLanguageProfile.UserId == user.Id);
                 if (exists) return Result<Unit>.Failure("Term already exists!");
                 // 1. Get the ULP by selecting based on UserName and Language
                 var profile = await _context.UserLanguageProfiles
@@ -58,7 +61,9 @@ namespace Application.DataObjectHandling.UserTerms
                     Translations = 
                     { new Translation
                         {
-                            Value = request.termCreateDto.FirstTranslation
+                            TranslationId = Guid.NewGuid(),
+                            Value = request.termCreateDto.FirstTranslation,
+                            TermId = term.TermId
                         }
                     },
                     TimesSeen = 0,

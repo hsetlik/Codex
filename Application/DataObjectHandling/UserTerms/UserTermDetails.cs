@@ -51,7 +51,8 @@ namespace Application.DataObjectHandling.UserTerms
                     EaseFactor = userTerm.EaseFactor,
                     Rating = userTerm.Rating,
                     DateTimeDue = userTerm.DateTimeDue,
-                    SrsIntervalDays = userTerm.SrsIntervalDays
+                    SrsIntervalDays = userTerm.SrsIntervalDays,
+                    UserTermId = userTerm.UserTermId
                 };
                 return Result<UserTermDetailsDto>.Success(dto);
                 
