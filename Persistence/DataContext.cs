@@ -42,7 +42,7 @@ namespace Persistence
             //configure both relationships for UserTerm
             builder.Entity<UserTerm>()
             .HasOne(p => p.Term)
-            .WithOne();
+            .WithMany();
 
             builder.Entity<UserTerm>()
             .HasOne(u => u.UserLanguageProfile)

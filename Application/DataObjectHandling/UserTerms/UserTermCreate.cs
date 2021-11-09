@@ -61,16 +61,14 @@ namespace Application.DataObjectHandling.UserTerms
                     Translations = 
                     { new Translation
                         {
-                            TranslationId = Guid.NewGuid(),
-                            Value = request.termCreateDto.FirstTranslation,
+                            Value = request.termCreateDto.FirstTranslation
                         }
                     },
                     TimesSeen = 0,
                     EaseFactor = 2.5f,
                     Rating = 0,
                     DateTimeDue = currentDateTime,
-                    SrsIntervalDays = 0,
-                    UserTermId = Guid.NewGuid()
+                    SrsIntervalDays = 0
                 };
 
                 _context.UserTerms.Add(userTerm);
