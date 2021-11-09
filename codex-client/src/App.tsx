@@ -1,8 +1,23 @@
-import React from 'react';
+import {useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useStore } from './app/stores/store'
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 function App() {
+  const location = useLocation();
+  const {commonStore, userStore} = useStore();
+
+  useEffect(() => {
+    if (commonStore.token) {
+      userStore.getUser().finally(() => commonStore.setAppLoaded());
+    } else {
+      commonStore.setAppLoaded();
+    }
+  }, [commonStore, userStore]);
+
+  
+
   return (
     <div className="App">
       <header className="App-header">

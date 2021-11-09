@@ -3,12 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createBrowserHistory } from 'history';
+import { Router, BrowserRouter } from 'react-router-dom';
+import { store, storeContext as StoreContext } from './app/stores/store';
+
+export const appHistory = createBrowserHistory();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StoreContext.Provider value={store} >
+  <BrowserRouter >
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </BrowserRouter>
+</StoreContext.Provider>,
+document.getElementById('root') 
 );
 
 // If you want to start measuring performance in your app, pass a function

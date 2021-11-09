@@ -1,12 +1,15 @@
 import { createContext, useContext } from "react";
+import { User } from "../models/user";
 import CommonStore from "./commonStore";
-
+import UserStore from "./userStore";
 
 interface Store {
-  commonStore: CommonStore
+  commonStore: CommonStore,
+  userStore: UserStore
 }
 export const store: Store = {
-    commonStore: new CommonStore()
+    commonStore: new CommonStore(),
+    userStore: new UserStore()
 }
 
 export const storeContext = createContext(store);
