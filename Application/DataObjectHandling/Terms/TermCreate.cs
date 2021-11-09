@@ -9,6 +9,7 @@ using Domain.DataObjects;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Application.Extensions;
 using Persistence;
 
 namespace Application.DataObjectHandling
@@ -29,29 +30,7 @@ namespace Application.DataObjectHandling
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                
-                var exists = _context.Terms.Any(x => x.Value == request.TermCreateDto.Value && 
-                x.Language == request.TermCreateDto.Language);
-                if (exists)
-                {  //this just returns success if a term already exists so we don't have to do that logic in the controller
-                    return Result<Unit>.Success(Unit.Value);
-                }
-                var term = new Term
-                {
-                    Value = request.TermCreateDto.Value,
-                    Language = request.TermCreateDto.Language,
-                    TermId = Guid.NewGuid()
-                };
-                _context.Terms.Add(term);
-                var result = await _context.SaveChangesAsync() > 0;
-                if (result)
-                {
-                    return Result<Unit>.Success(Unit.Value);
-                }
-                else
-                {
-                    return Result<Unit>.Failure("Creation failed");
-                }
+                return await _context.CreateTerm(request.TermCreateDto.Language, request.TermCreateDto.Value);
             }
         }
 
