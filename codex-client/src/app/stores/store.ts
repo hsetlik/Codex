@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import { User } from "../models/user";
 import CommonStore from "./commonStore";
 import UserStore from "./userStore";
 
