@@ -67,7 +67,8 @@ const requests = {
 const Account = {
     current: () => requests.get<User>('/Account'),
     login: (user: UserFormValues) => requests.post<User>('/Account/login', user),
-    register: (user: UserFormValues) => requests.post<User>('/Account/register', user)
+    register: (user: UserFormValues) => requests.post<User>('/Account/register', user),
+    getUserProfiles: () => requests.get<string[]>('Profile/getUserProfiles')
 }
 
 interface UserTermCreateDto {

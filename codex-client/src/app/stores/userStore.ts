@@ -7,6 +7,8 @@ import { store } from './store';
 export default class UserStore{
     user: User | null = null;
 
+    languageProfiles: string[] = [];
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -20,8 +22,17 @@ export default class UserStore{
             console.log("User found: " + user.username);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
+            const profiles = await agent.Account.getUserProfiles();
+            console.log(profiles);
+            runInAction(() => {
+                this.languageProfiles = profiles
+                for(const p in this.languageProfiles)
+                {
+                    console.log(p);
+                }
+            });
             //redirect user to home page on successful login
-            //appHistory.push('/activities');
+            appHistory.push('/feed');
             console.log(user);
         } catch (error) {
             throw error;
