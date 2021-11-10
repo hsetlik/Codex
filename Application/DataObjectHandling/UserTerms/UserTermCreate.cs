@@ -54,9 +54,7 @@ namespace Application.DataObjectHandling.UserTerms
 
                 var userTerm = new UserTerm
                 {
-                    LanguageProfileId = profile.LanguageProfileId,
                     UserLanguageProfile = profile,
-                    TermId = term.TermId,
                     Term = term,
                     Translations = 
                     { new Translation

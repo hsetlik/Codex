@@ -31,5 +31,12 @@ namespace API.Controllers
                 TranslationDto = dto
             }));
         }
+
+        [Authorize]
+        [HttpGet("getAbstractTerm")]
+        public async Task<IActionResult> GetAbstractTerm(TermDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetAbstractTerm.Query{Dto = dto}));
+        }
     } 
 }
