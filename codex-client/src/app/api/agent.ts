@@ -87,8 +87,26 @@ const UserTermEndpoints = {
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto)
 }
 
+//==============================================================================================================
+interface ILanguageString {
+    language: string
+}
+interface ContentHeader {
+    hasVideo: boolean,
+    hasAudio: boolean,
+    contentName: string,
+    contentType: string,
+    language: string,
+    dateAdded: string
+}
+
+const Content = {
+    getLanguageContents: (language: ILanguageString) => requests.post<ContentHeader>('/Content/getLanguageContents', language)
+}
+
 const agent = {
     Account,
+    Content,
     UserTermEndpoints
 }
 export default agent;

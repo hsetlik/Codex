@@ -33,7 +33,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetContentHeader.Query{Dto = dto}));
         }
 
-        [HttpGet("getLanguageContents")]
+        [HttpPost("getLanguageContents")]
         public async Task<IActionResult> GetLanguageContents(GetLanguageContentsDto dto)
         {
             return HandleResult(await Mediator.Send(new GetLanguageContents.Query{Dto = dto}));
