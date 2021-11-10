@@ -15,7 +15,9 @@ export default class UserStore{
 
     login = async (creds: UserFormValues) => {
         try {
+            console.log("Starting login");
             const user = await agent.Account.login(creds);
+            console.log("User found: " + user.username);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
             //redirect user to home page on successful login

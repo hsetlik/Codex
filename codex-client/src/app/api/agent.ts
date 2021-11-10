@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
+import { appHistory } from "../..";
+import { toast } from "react-toastify";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -9,6 +11,42 @@ const sleep = (delay: number) => {
 }
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
+
+axios.interceptors.response.use(async response => {
+    await sleep(1000);
+    return response;
+}, (error: AxiosError) => {
+const {data, status, config} = error.response!;
+switch (status)
+{
+    case 400:
+        if (config.method === 'get' && data.errors.hasOwnProperty('id')){
+            appHistory.push('/not-found');
+        }
+        if (data.errors) {
+            const modalStateErrors = [];
+            for(const key in data.errors) {
+                if(data.errors[key]) {
+                    modalStateErrors.push(data.errors[key]);
+                }
+            }
+            throw modalStateErrors.flat();
+        } else {
+            toast.error(data);
+        }
+        break;
+    case 401:
+        toast.error('Unauthorized');
+        break;
+    case 404:
+        toast.error('NotFound');
+        break;
+    case 500:
+        store.commonStore.setServerError(data);
+        appHistory.push('/server-error');
+        break;
+}
+});
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
@@ -27,9 +65,9 @@ const requests = {
 
 //use create one of these for each endpoint group
 const Account = {
-    current: () => requests.get<User>('/account'),
-    login: (user: UserFormValues) => requests.post<User>('/account/login', user),
-    register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+    current: () => requests.get<User>('/Account'),
+    login: (user: UserFormValues) => requests.post<User>('/Account/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/Account/register', user)
 }
 
 interface UserTermCreateDto {

@@ -6,6 +6,7 @@ import { Container } from 'semantic-ui-react';
 import NavBar from './components/common/NavBar';
 import ContentRoute from './components/content/ContentRoute';
 import FeedRoute from './components/feed/FeedRoute';
+import LoginForm from './components/account/LoginForm';
 
 function App() {
 //const location = useLocation();
@@ -27,7 +28,8 @@ function App() {
       <Routes>
         <Route path='/feed' element={<FeedRoute />}/>
         <Route path='/content'element={<ContentRoute />}/>
-        <Route path='/user' /> 
+        <Route path='/user' />
+        <Route path='account/login' element={<LoginForm />} /> 
       </Routes>
    </Container>
   );

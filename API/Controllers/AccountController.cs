@@ -72,7 +72,10 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto login)
         {
             CodexUser user = await _userManager.FindByEmailAsync(login.Email);
-            if (user == null) return Unauthorized();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
 
