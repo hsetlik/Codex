@@ -40,7 +40,8 @@ namespace Application.DataObjectHandling.Terms
                 TermDto termDto;
                 var userTerm = await _context.UserTerms
                 .Include(u => u.Translations)
-                .FirstOrDefaultAsync(x => x.TermId == term.TermId);
+                .Include(u => u.UserLanguageProfile)
+                .FirstOrDefaultAsync(x => x.TermId == term.TermId && x.UserLanguageProfile.UserId == user.Id);
                 //whether the userterm exists determines which subclass is created
                 if (userTerm != null)
                 {
