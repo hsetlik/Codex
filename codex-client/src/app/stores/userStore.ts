@@ -26,10 +26,6 @@ export default class UserStore{
             console.log(profiles);
             runInAction(() => {
                 this.languageProfiles = profiles
-                for(const p in this.languageProfiles)
-                {
-                    console.log(p);
-                }
             });
             //redirect user to home page on successful login
             appHistory.push('/feed');

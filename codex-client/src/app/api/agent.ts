@@ -88,10 +88,10 @@ const UserTermEndpoints = {
 }
 
 //==============================================================================================================
-interface ILanguageString {
+export interface ILanguageString {
     language: string
 }
-interface ContentHeader {
+export interface ContentHeaderDto {
     hasVideo: boolean,
     hasAudio: boolean,
     contentName: string,
@@ -101,7 +101,7 @@ interface ContentHeader {
 }
 
 const Content = {
-    getLanguageContents: (language: ILanguageString) => requests.post<ContentHeader>('/Content/getLanguageContents', language)
+    getLanguageContents: (language: ILanguageString) => requests.post<ContentHeaderDto[]>('/Content/getLanguageContents', language)
 }
 
 const agent = {
