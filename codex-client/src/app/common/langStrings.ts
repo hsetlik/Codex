@@ -14,6 +14,7 @@ export const LangStrings = [
 
 export default function getLanguageName(iso: string)
 {
+    console.log("Checking ISO: " + iso);
     for(const pair in LangStrings)
     {
         if(pair[0] === iso){

@@ -13,6 +13,10 @@ export default class UserStore{
         makeAutoObservable(this);
     }
 
+    setLanguageProfiles = (arr: string[]) => {
+        this.languageProfiles = arr;
+    }
+
     get isLoggedIn() { return !!this.user; }
 
     login = async (creds: UserFormValues) => {
@@ -23,6 +27,7 @@ export default class UserStore{
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
             const profiles = await agent.Account.getUserProfiles();
+            console.log("PROFILES FOUND");
             console.log(profiles);
             runInAction(() => {
                 this.languageProfiles = profiles

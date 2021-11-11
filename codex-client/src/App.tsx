@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import './App.css';
 import { useStore } from './app/stores/store'
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import NavBar from './components/common/NavBar';
 import ContentRoute from './components/content/ContentRoute';

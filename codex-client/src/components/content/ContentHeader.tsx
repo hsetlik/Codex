@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Header, Label, Segment } from "semantic-ui-react";
+import { Header, Label, Segment } from "semantic-ui-react";
 import { ContentHeaderDto } from "../../app/api/agent";
 
 interface Props{

@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Grid, Item } from "semantic-ui-react";
+import { Grid, Item } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import ContentHeader from "../content/ContentHeader";
 import { observer } from "mobx-react-lite";
