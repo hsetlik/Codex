@@ -28,7 +28,7 @@ namespace Application.DataObjectHandling.Terms
     {
         public class Query : IRequest<Result<List<PopTranslationDto>>>
         {
-            public TranslationDto TranslationDto { get; set; }
+            public TermDto Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<PopTranslationDto>>>
@@ -39,42 +39,48 @@ namespace Application.DataObjectHandling.Terms
                 this._context = context;
             }
 
-            public Task<Result<List<PopTranslationDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<PopTranslationDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
-                /*
-                var term = await _context.Terms.FirstOrDefaultAsync(x => x.Value == request.TranslationDto.TermValue);
-                var translations = await _context.Translations
-                .Include(t => t.UserTerm)
-                .ThenInclude(t => t.Term)
-                .Where(x => x.TermId == term.TermId)
-                .ToListAsync();
-                Console.WriteLine(request.TranslationDto.TermValue);
-                Dictionary<string, int> popTranslations = new Dictionary<string, int>{{"str", 0}};
+                // 1. Find the term
+                var term = await _context.Terms.FirstOrDefaultAsync(u => u.Value == request.Dto.Value && u.Language == request.Dto.Language); 
+                if (term == null) return Result<List<PopTranslationDto>>.Failure("No valid term found");
                 
-                foreach(var value in translations)
+                // 2. grab all corresponding UserTerms and their translations
+                var userTerms = await _context.UserTerms
+                .Include(u => u.Translations)
+                .Where(u => u.TermId == term.TermId)
+                .ToListAsync();
+
+                // 3. Go through each translation and add them to a dictionary
+                var translationFrequencies = new Dictionary<string, int>();
+                foreach (var userTerm in userTerms)
                 {
-                    Debug.WriteLine(value);
-                    if (!popTranslations.ContainsKey(value.Value))
+                    foreach(var translation in userTerm.Translations)
                     {
-                        popTranslations[value.Value] = 1;
-                    }
-                    else
-                    {
-                        popTranslations[value.Value] += 1;
+                        var tValue = translation.Value;
+                        if (translationFrequencies.ContainsKey(tValue)) //increment frequency value if the translation already exists
+                        {
+                            translationFrequencies[tValue] = translationFrequencies[tValue] + 1;
+                        }
+                        else
+                        { //otherwise add a new translations with a count of one
+                            translationFrequencies.Add(tValue, 1);
+                        }
                     }
                 }
-                var list = new List<PopTranslationDto>();
-                foreach(var pair in popTranslations)
+                
+                // 4. Convert each KVP into a translation DTO and return the list
+                var output = new List<PopTranslationDto>();
+                foreach(var kvp in translationFrequencies)
                 {
-                    list.Add( new PopTranslationDto
+                    var popTranslation = new PopTranslationDto
                     {
-                        Value = pair.Key,
-                        NumInstances = pair.Value
-                    });
+                        Value = kvp.Key,
+                        NumInstances = kvp.Value
+                    };
+                    output.Add(popTranslation);
                 }
-                return Result<List<PopTranslationDto>>.Success(list);
-                */
+                return Result<List<PopTranslationDto>>.Success(output);
             }
         }
 
