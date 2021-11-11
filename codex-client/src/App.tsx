@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import './App.css';
 import { useStore } from './app/stores/store'
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Container, Feed } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import NavBar from './components/common/NavBar';
 import ContentRoute from './components/content/ContentRoute';
 import FeedRoute from './components/feed/FeedRoute';
@@ -22,18 +22,18 @@ function App() {
     }
   }, [commonStore, userStore]);
 
-  
-
   return (
     <Container>
       <NavBar />
-      <Routes >
-        <Route path='/feed' element={<FeedRoute />}/>
-        <Route path='/home' element={<HomeRoute />} />
-        <Route path='/content'element={<ContentRoute />}/>
-        <Route path='/account' element={<AccountRoute />}/>
-        <Route path='account/login' element={<LoginForm />} /> 
-      </Routes>
+      <Container style={{margin: '7em'}}>
+        <Routes >
+          <Route path='/feed' element={<FeedRoute />}/>
+          <Route path='/home' element={<HomeRoute />} />
+          <Route path='/content/:id'element={<ContentRoute />}/>
+          <Route path='/account' element={<AccountRoute />}/>
+          <Route path='account/login' element={<LoginForm />} /> 
+        </Routes>
+      </Container>
    </Container>
   );
 }

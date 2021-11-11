@@ -25,7 +25,7 @@ export default observer(function NavBar()
             <Container >
                 <Menu.Item as={Link} to='/feed' name="Content" header/>
                 {accountComponent}
-                <Menu.Item name="Logout" onClick={() => logout}/>
+                <Menu.Item name="Logout" onClick={logout} />
             </Container>
         </Menu>
     )

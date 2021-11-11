@@ -26,6 +26,7 @@ export default class UserStore{
             console.log(profiles);
             runInAction(() => {
                 this.languageProfiles = profiles
+                console.log(this.languageProfiles);
             });
             //redirect user to home page on successful login
             appHistory.push('/feed');
@@ -36,10 +37,15 @@ export default class UserStore{
     }
 
     logout = () => {
+        console.log("Logging out...");
         store.commonStore.setToken(null);
         window.localStorage.removeItem('jwt');
         this.user = null;
         this.languageProfiles = [];
+        if(window.localStorage.getItem('jwt') != null)
+        {
+            console.log("WARNING: TOKEN NOT DELETED!!");
+        }
         appHistory.push('/');
     }
 

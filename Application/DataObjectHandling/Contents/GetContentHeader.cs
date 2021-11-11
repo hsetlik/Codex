@@ -18,6 +18,7 @@ namespace Application.DataObjectHandling.Contents
         public string ContentName { get; set; }
         public string Language { get; set; }
         public string DateAdded { get; set; }
+        public Guid ContentId { get; set; }
     }
     public static class ContentHeaderDtoFactory
     {
@@ -31,7 +32,8 @@ namespace Application.DataObjectHandling.Contents
                  ContentType = content.ContentType,
                  ContentName = content.ContentName,
                  Language = content.Language,
-                 DateAdded = content.DateAdded
+                 DateAdded = content.DateAdded,
+                 ContentId = content.ContentId
              };
         }
     }

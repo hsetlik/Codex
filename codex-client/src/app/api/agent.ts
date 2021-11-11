@@ -97,7 +97,8 @@ export interface ContentHeaderDto {
     contentName: string,
     contentType: string,
     language: string,
-    dateAdded: string
+    dateAdded: string,
+    id: string
 }
 
 const Content = {

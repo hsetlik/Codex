@@ -1,6 +1,6 @@
-import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import agent, { ContentHeaderDto, ILanguageString } from "../api/agent";
-import { ServerError } from "../models/serverError";
+
 
 export default class ContentStore
 {
@@ -9,16 +9,12 @@ export default class ContentStore
         makeAutoObservable(this);
     }
 
-    loadHeaders = async (lang: ILanguageString) => {
+    loadHeaders = async (props: ILanguageString) => {
         try {
-            var headers = await agent.Content.getLanguageContents(lang);
+            var headers = await agent.Content.getLanguageContents(props);
             runInAction(() => this.loadedHeaders = headers); 
         } catch (error) {
           console.log(error);  
         }
     }
-
-
-
-
 }

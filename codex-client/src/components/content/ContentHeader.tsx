@@ -1,16 +1,18 @@
 import React from "react";
-import { Container, Label, Segment } from "semantic-ui-react";
+import { Container, Header, Label, Segment } from "semantic-ui-react";
 import { ContentHeaderDto } from "../../app/api/agent";
 
-export default function ContentHeader(props: ContentHeaderDto)
+interface Props{
+    dto: ContentHeaderDto
+}
+
+export default function ContentHeader({dto}: Props)
 {
     return (
-        <Container>
             <Segment>
-                <Label as="h1">{props.contentName}</Label>
-                <Label as="h2">{props.contentType}</Label>
+                <Header as="h1">{dto.contentName}</Header>
+                <Label as="h2">{dto.contentType}</Label>
             </Segment>
-        </Container>
     )
 
 }
