@@ -4,22 +4,26 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DataObjectHandling.Terms;
 using Application.Extensions;
 using Application.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.DataObjectHandling.Terms
+namespace Application.DataObjectHandling.Transcripts
 {
-    public class GetAbstractTerm
+    public class GetAbstractTermsForChunk
     {
-        public class Query : IRequest<Result<AbstractTermDto>>
+        public class TranscriptChunkDto
         {
-            public TermDto Dto { get; set; }
+            public Guid TranscriptChunkId { get; set; }
+        }
+        public class Query : IRequest<Result<List<AbstractTermDto>>>
+        {
+            public TranscriptChunkDto Dto { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<AbstractTermDto>>
+        public class Handler : IRequestHandler<Query, Result<List<AbstractTermDto>>>
         {
         private readonly IUserAccessor _userAccessor;
         private readonly DataContext _context;
@@ -29,10 +33,10 @@ namespace Application.DataObjectHandling.Terms
             this._userAccessor = userAccessor;
             }
 
-            public async Task<Result<AbstractTermDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<AbstractTermDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var username = _userAccessor.GetUsername();
-                return await _context.AbstractTermFor(request.Dto, username);
+                return await _context.AbstractTermsFor(request.Dto.TranscriptChunkId, username);
             }
         }
     }

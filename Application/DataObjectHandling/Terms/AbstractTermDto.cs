@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.DataObjects;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.DataObjectHandling.Terms
 {
@@ -46,5 +48,9 @@ namespace Application.DataObjectHandling.Terms
             }
             return output;
         }
+
+    
+
+        
     }
 }
