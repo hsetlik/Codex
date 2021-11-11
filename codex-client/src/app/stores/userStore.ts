@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { appHistory } from '../..';
 import agent from '../api/agent';
+import { getLanguageName } from '../common/langStrings';
 import { User, UserFormValues } from '../models/user';
 import { store } from './store';
 
@@ -9,12 +10,10 @@ export default class UserStore{
 
     languageProfiles: string[] = [];
 
+    selectedLanguage: string = "none"
+
     constructor() {
         makeAutoObservable(this);
-    }
-
-    setLanguageProfiles = (arr: string[]) => {
-        this.languageProfiles = arr;
     }
 
     get isLoggedIn() { return !!this.user; }
@@ -30,8 +29,14 @@ export default class UserStore{
             console.log("PROFILES FOUND");
             console.log(profiles);
             runInAction(() => {
-                this.languageProfiles = profiles
+                this.languageProfiles = [];
+                for(var i = 0; i < profiles.length; ++i)
+                {
+                    this.languageProfiles.push(profiles[i].language);
+                }
+                this.selectedLanguage = this.languageProfiles[0];
                 console.log(this.languageProfiles);
+                console.log("Selected: " + this.selectedLanguage);
             });
             //redirect user to home page on successful login
             appHistory.push('/feed');
@@ -54,10 +59,26 @@ export default class UserStore{
         appHistory.push('/');
     }
 
-    getUser = async () => {
+    setSelectedLanguage = (iso: string) => {
+        this.selectedLanguage = iso;
+        var langName = getLanguageName(iso);
+        store.contentStore.loadHeaders({language: iso});
+    }
+
+    initStoreValues = async () => {
         try {
             const user = await agent.Account.current();
             runInAction(() => this.user = user);
+            const profiles = await agent.Account.getUserProfiles();
+            runInAction(()=> {
+                this.languageProfiles = [];
+                for(var i = 0; i < profiles.length; ++i)
+                {
+                    this.languageProfiles.push(profiles[i].language);
+                }
+                this.selectedLanguage = this.languageProfiles[0];
+                console.log(this.languageProfiles);
+            });
         } catch(error) {
             console.log(error);
         }

@@ -7,15 +7,7 @@ import FeedHeader from "./FeedHeader";
 export default observer(function FeedRoute(){
     var {contentStore} = useStore();
     //TODO: fix this to actually use the selected language from userStore
-    if (contentStore.loadedHeaders.length < 1) {
-        contentStore.loadHeaders({language: "ru"});
-    }
-    var contents = contentStore.loadedHeaders;
     console.log("Contents retreived");
-    for(const c in contents)
-    {
-        console.log(c);
-    }
     return (
         <Grid>
             <Grid.Column width='3'>
@@ -25,7 +17,7 @@ export default observer(function FeedRoute(){
                 <FeedHeader />
                 <Item>
                     <Item.Group divided>
-                    {contents.map(content => {
+                    {contentStore.loadedHeaders.map(content => {
                         return <ContentHeader dto={content} key={content.contentName}/>
                         })
                     }

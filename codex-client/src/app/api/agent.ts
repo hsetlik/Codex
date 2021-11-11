@@ -63,12 +63,16 @@ const requests = {
     del:<T> (url: string) => axios.delete<T>(url).then(responseBody)
 }
 
+interface LangProfileItem {
+    language: string
+}
+
 //use create one of these for each endpoint group
 const Account = {
     current: () => requests.get<User>('/Account'),
     login: (user: UserFormValues) => requests.post<User>('/Account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/Account/register', user),
-    getUserProfiles: () => requests.get<string[]>('Profile/getUserProfiles')
+    getUserProfiles: () => requests.get<LangProfileItem[]>('Profile/getUserProfiles')
 }
 
 interface UserTermCreateDto {

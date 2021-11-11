@@ -4,7 +4,7 @@ import { useStore } from "../../app/stores/store";
 import { Container, Segment } from "semantic-ui-react";
 
 export default observer(function AccountRoute() {
-    const { userStore } = useStore();
+    const { userStore} = useStore();
     return (
         <>
             <Container>
@@ -12,7 +12,6 @@ export default observer(function AccountRoute() {
                     {userStore.user?.displayName}
                 </Segment>
 
-                
             </Container>
         </>
     );
