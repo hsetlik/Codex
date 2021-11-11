@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { appHistory } from '../..';
 import agent from '../api/agent';
-import { getLanguageName } from '../common/langStrings';
 import { User, UserFormValues } from '../models/user';
 import { store } from './store';
 
@@ -11,6 +10,8 @@ export default class UserStore{
     languageProfiles: string[] = [];
 
     selectedLanguage: string = "none"
+
+    selectedContent: string = "none" // the ContentId GUID
 
     constructor() {
         makeAutoObservable(this);
@@ -52,6 +53,8 @@ export default class UserStore{
         window.localStorage.removeItem('jwt');
         this.user = null;
         this.languageProfiles = [];
+        this.selectedLanguage = "none";
+        this.selectedContent = "none";
         if(window.localStorage.getItem('jwt') != null)
         {
             console.log("WARNING: TOKEN NOT DELETED!!");
@@ -61,8 +64,12 @@ export default class UserStore{
 
     setSelectedLanguage = (iso: string) => {
         this.selectedLanguage = iso;
-        var langName = getLanguageName(iso);
         store.contentStore.loadHeaders({language: iso});
+    }
+
+    setSelectedContent = (guid: string) => {
+        this.selectedContent = guid;
+        store.contentStore.setSelectedContentId(guid);
     }
 
     initStoreValues = async () => {

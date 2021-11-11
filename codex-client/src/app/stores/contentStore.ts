@@ -5,8 +5,14 @@ import agent, { ContentHeaderDto, ILanguageString } from "../api/agent";
 export default class ContentStore
 {
     loadedHeaders: ContentHeaderDto[] = [];
+
+    selectedContentId: string = "none";
     constructor() {
         makeAutoObservable(this);
+    }
+
+    setSelectedContentId = (id: string) => {
+        this.selectedContentId = id;
     }
 
     loadHeaders = async (props: ILanguageString) => {

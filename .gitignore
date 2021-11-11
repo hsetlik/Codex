@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 Persistence/Migrations
+API/codex.db-shm
+API/codex.db-wal
 
 
 # User-specific files

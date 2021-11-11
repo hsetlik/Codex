@@ -13,6 +13,7 @@ namespace Domain.DataObjects
         public string NativeLanguage { get; set; }
 
         public ICollection<UserLanguageProfile> UserLanguageProfiles { get; set; } //EF will automatically create a one-to-many relationship
+        public string LastStudiedLanguage { get; set; } // just to automatically set up default
         
     }
 }
