@@ -18,11 +18,11 @@ namespace Application.DataObjectHandling.Terms
 
     public class UserTermDto : TermDto
     {
-        public bool HasUserTerm { get; set; } // Whether a matching userTerm exists
         public float EaseFactor { get; set; }
         public float SrsIntervalDays { get; set; }
         public int Rating  { get; set; }
         public List<string> Translations { get; set; }
+        public Guid UserTermId { get; set; }
     }
 
     

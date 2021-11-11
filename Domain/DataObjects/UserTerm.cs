@@ -18,6 +18,8 @@ namespace Domain.DataObjects
         public Guid UserTermId { get; set; }
         public UserTerm UserTerm { get; set; }
     }
+    
+    
 
     
     public class UserTerm
