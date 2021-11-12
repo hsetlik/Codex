@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,7 +25,14 @@ namespace Application.DataObjectHandling.Transcripts
             public static List<string> ToChunks(string input, int chunkLength=50)
             {
                 var list = new List<string>();
-                var words = input.Split(' ');
+                var words = new List<string>();
+                string splitExp = @"/([^\p{P}^\s]+)/gu"; 
+                var match = Regex.Match(input, splitExp);
+                while (match.Success)
+                {
+                    words.Add(match.Value);
+                    match = match.NextMatch();
+                }
                 string currentChunk = "";
                 int index = 0;
                 foreach(var word in words)

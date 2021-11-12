@@ -28,10 +28,6 @@ namespace Application.DataObjectHandling.Contents
                 ChunkText = chunk.ChunkText
             };
         }
-        public class ContentIdDto
-        {
-            public Guid ContentId { get; set; }
-        }
         public class Command : IRequest<Result<List<TranscriptChunkDto>>>
         {
             public ContentIdDto Dto { get; set; }

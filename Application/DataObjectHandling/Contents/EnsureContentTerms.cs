@@ -13,15 +13,9 @@ namespace Application.DataObjectHandling.Contents
 {
     public class EnsureContentTerms
     {
-        public class EnsureTermsDto
-        {
-            public Guid ContentId { get; set; }
-
-        }
-
         public class Command : IRequest<Result<Unit>>
         {
-            public EnsureTermsDto Dto { get; set; }
+            public ContentIdDto Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

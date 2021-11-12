@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 
         [HttpPost("ensureContentTerms")]
-        public async Task<IActionResult> EnsureContentTerms(EnsureTermsDto Dto)
+        public async Task<IActionResult> EnsureContentTerms(ContentIdDto Dto)
         {
             return HandleResult(await Mediator.Send(new EnsureContentTerms.Command{Dto = Dto}));
         }
@@ -44,6 +44,12 @@ namespace API.Controllers
         public async Task<IActionResult> GetChunksForContent(ContentIdDto dto)
         {
             return HandleResult(await Mediator.Send(new GetChunksForContent.Command{Dto = dto}));
-        } 
+        }
+        
+        [HttpPost("getChunkIdsForContent")]
+        public async Task<IActionResult> GetChunksIdsForContent(ContentIdDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetChunkIdsForContent.Query{Dto = dto}));
+        }  
     }
 }

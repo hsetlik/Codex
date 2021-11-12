@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DataObjectHandling.Terms;
@@ -128,8 +129,14 @@ namespace Application.Extensions
             var chunk = await context.TranscriptChunks
             .Include(u => u.Transcript)
             .FirstOrDefaultAsync(x => x.TranscriptChunkId == transcriptChunkId);
-
-            var chunkWords = chunk.ChunkText.Split(' ');
+            var chunkWords = new List<string>();
+            string splitExp = @"/([^\p{P}^\s]+)/gu"; 
+            var match = Regex.Match(chunk.ChunkText, splitExp);
+            while (match.Success)
+            {
+                chunkWords.Add(match.Value);
+                match = match.NextMatch();
+            }
             foreach (var word in chunkWords)
             {
                 var tDto = new TermDto {
