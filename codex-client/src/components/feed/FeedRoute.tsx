@@ -1,4 +1,4 @@
-import { Grid, Item } from "semantic-ui-react";
+import { Grid, Item, Loader } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import ContentHeader from "../content/ContentHeader";
 import { observer } from "mobx-react-lite";
@@ -6,11 +6,14 @@ import FeedHeader from "./FeedHeader";
 import { useEffect } from "react";
 
 export default observer(function FeedRoute(){
-    var {contentStore, userStore} = useStore();
-    console.log("Contents retreived");
-    useEffect(() => {
-        contentStore.loadHeaders(userStore.selectedLanguage);
-    }, [contentStore, userStore])
+    var {contentStore, commonStore} = useStore();
+    const {loadedHeaders} = contentStore;
+    const {appLoaded} = commonStore;
+    if (!appLoaded) {
+        return (
+            <Loader />
+        )
+    }
     return (
         <Grid>
             <Grid.Column width='3'>
@@ -20,7 +23,7 @@ export default observer(function FeedRoute(){
                 <FeedHeader />
                 <Item>
                     <Item.Group divided>
-                    {contentStore.loadedHeaders.map(content => {
+                    {loadedHeaders.map(content => {
                         return <ContentHeader dto={content} key={content.contentId}/>
                         })
                     }

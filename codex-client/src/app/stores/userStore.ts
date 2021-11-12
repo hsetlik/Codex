@@ -23,7 +23,6 @@ export default class UserStore{
             console.log("Starting login");
             const user = await agent.Account.login(creds);
             console.log("User found: " + user.username);
-            store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
             const profiles = await agent.Account.getUserProfiles();
             console.log("PROFILES FOUND");
@@ -34,12 +33,13 @@ export default class UserStore{
                 {
                     this.languageProfiles.push(profiles[i].language);
                 }
-                this.selectedLanguage = this.languageProfiles[0];
+                
                 console.log(this.languageProfiles);
                 console.log("Selected: " + this.selectedLanguage);
             });
+            this.setSelectedLanguage(user.lastStudiedLanguage);
             //redirect user to home page on successful login
-            
+            store.commonStore.setToken(user.token);
             console.log(user);
         } catch (error) {
             throw error;
@@ -62,6 +62,7 @@ export default class UserStore{
     }
 
     setSelectedLanguage = (iso: string) => {
+        console.log("Setting selected language: " + iso);
         this.selectedLanguage = iso;
         store.contentStore.loadHeaders(iso);
     }
@@ -76,9 +77,10 @@ export default class UserStore{
             console.log("No profiles loaded!");
             return;
         }
-        this.setSelectedContent(this.languageProfiles[0]);
+        this.setSelectedLanguage(this.user?.lastStudiedLanguage!)
     }
 
+    /*
     initStoreValues = async () => {
         try {
             const user = await agent.Account.current();
@@ -97,14 +99,32 @@ export default class UserStore{
             console.log(error);
         }
     }
+    */
+    getUser = async () => {
+        try {
+            const user = await agent.Account.current();
+            const profiles = await agent.Account.getUserProfiles();
+            runInAction(()=> {
+                this.languageProfiles = [];
+                for(var i = 0; i < profiles.length; ++i)
+                {
+                    this.languageProfiles.push(profiles[i].language);
+                }
+                this.selectedLanguage = this.languageProfiles[0];
+                console.log(this.languageProfiles);
+            }); 
+            runInAction(() => this.user = user);
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     register = async (creds: UserFormValues) => {
         try {
             const user = await agent.Account.register(creds);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
-            //redirect user to home page on successful login
-            //store.modalStore.closeModal();
+            
             console.log(user);
         } catch (error) {
             throw error;

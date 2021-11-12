@@ -55,7 +55,8 @@ namespace API.Controllers
                 Email = registerDto.Email,
                 UserName = registerDto.Username,
                 NativeLanguage = registerDto.NativeLanguage,
-                UserLanguageProfiles = new List<UserLanguageProfile>()
+                UserLanguageProfiles = new List<UserLanguageProfile>(),
+                LastStudiedLanguage = "none"
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -96,7 +97,25 @@ namespace API.Controllers
         }
 
         //==================================================================
-        
+        public class SetLanguageRequestBody
+        {
+            public string Iso { get; set; }
+        }
+        [Authorize]
+        [HttpPost("setLastStudiedLanguage")]
+        public async Task<ActionResult<UserDto>> SetLastStudiedLanguage(SetLanguageRequestBody dto)
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            user.LastStudiedLanguage = dto.Iso;
+            var success = await _userManager.UpdateAsync(user) == IdentityResult.Success;
+            if (!success)
+                return BadRequest("User manager could not update");
+            return CreateUserObject(user);
+        } 
         //==================================================================
         private UserDto CreateUserObject(CodexUser user)
         {
@@ -104,7 +123,8 @@ namespace API.Controllers
             {
                 DisplayName = user.DisplayName,
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                LastStudiedLanguage = user.LastStudiedLanguage
             };
         }
     }

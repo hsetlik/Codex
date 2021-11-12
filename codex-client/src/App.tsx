@@ -17,7 +17,11 @@ function App() {
 
   useEffect(() => {
     if (commonStore.token) {
-      userStore.initStoreValues().finally((() => commonStore.setAppLoaded()));
+      userStore.getUser().finally((() => {
+        userStore.selectDefaultLanguage();
+        commonStore.setAppLoaded();
+      }));
+      commonStore.setAppLoaded();
     } else {
       commonStore.setAppLoaded();
     }

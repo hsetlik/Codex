@@ -24,5 +24,14 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileList.Query()));
         }
+
+        /*
+        [Authorize]
+        [HttpPost("setLastStudiedLanguage")]
+        public async Task<IActionResult> SetLastStudiedLanguage()
+        {
+            return HandleResult(await Mediator.Send(new UserLanguageProfileList.Query()));
+        }
+        */
     }
 }

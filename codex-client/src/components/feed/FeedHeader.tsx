@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 
 export default observer(function FeedHeader(){
     const {userStore} = useStore();
-    const langProfiles = userStore.languageProfiles;
+    const {languageProfiles} = userStore;
     var idx = 0;
     return(
             <Segment>
@@ -14,7 +14,7 @@ export default observer(function FeedHeader(){
                 <Dropdown text={getLanguageName(userStore.selectedLanguage)}>
                     <Dropdown.Menu >
                     {
-                        langProfiles.map(lang => {
+                        languageProfiles.map(lang => {
                             ++idx;
                             return (<Dropdown.Item  
                                 text={getLanguageName(lang)} 
