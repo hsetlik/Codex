@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent, { ContentHeaderDto, ILanguageString } from "../api/agent";
+import { store } from "./store";
 
 
 export default class ContentStore
@@ -17,6 +18,7 @@ export default class ContentStore
 
     setSelectedContentId = (id: string) => {
         this.selectedContentId = id;
+        store.transcriptStore.loadContent(id);
     }
 
     loadHeaders = async (lang: string) => {

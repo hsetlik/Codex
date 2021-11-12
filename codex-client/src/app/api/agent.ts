@@ -117,7 +117,8 @@ export interface TranscriptChunkDto {
 
 const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentHeaderDto[]>('/Content/getLanguageContents', language),
-    getChunksForContent: (contentId: IContentId) => requests.post<TranscriptChunkDto[]>('/Content/getChunksForContent', contentId)
+    getChunksForContent: (contentId: IContentId) => requests.post<TranscriptChunkDto[]>('/Content/getChunksForContent', contentId),
+    getChunkIdsForContent: (contentId: IContentId) => requests.post<string[]>('/Content/getChunkIdsForContent', contentId)
 }
 //====================================================================================================================
 export interface ITranscriptChunkId {

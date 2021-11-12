@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Application.Extensions;
 using Persistence;
+using System.Text.RegularExpressions;
 
 namespace Application.DataObjectHandling.Contents
 {
@@ -38,7 +39,15 @@ namespace Application.DataObjectHandling.Contents
                 int wordIndex = 0;
                 foreach(var chunk in tChunks)
                 {
-                    var words = chunk.ChunkText.Split(' ');
+                    string splitExp = @"([^\p{P}^\s]+)"; 
+                    var match = Regex.Match(chunk.ChunkText, splitExp);
+                    var words = new List<string>();
+                    while (match.Success)
+                    {
+                        Console.WriteLine(match.Value);
+                        words.Add(match.Value);
+                        match = match.NextMatch();
+                    }
                     foreach(var word in words)
                     {
                         var result = await _context.CreateTerm(content.Language, word);

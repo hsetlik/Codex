@@ -83,7 +83,7 @@ namespace Application.Extensions
                 .FirstOrDefaultAsync(
                     x => x.Language == dto.Language && 
                     x.Value == dto.Value);
-                if (term == null) return Result<AbstractTermDto>.Failure("No valid term found!");
+                if (term == null) return Result<AbstractTermDto>.Failure("No valid term found for " + dto.Value);
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
                 if (user == null) return Result<AbstractTermDto>.Failure("User not found!");
                 TermDto termDto;
@@ -129,11 +129,14 @@ namespace Application.Extensions
             var chunk = await context.TranscriptChunks
             .Include(u => u.Transcript)
             .FirstOrDefaultAsync(x => x.TranscriptChunkId == transcriptChunkId);
+            if (chunk == null)
+                return Result<List<AbstractTermDto>>.Failure("No matching chunk found");
             var chunkWords = new List<string>();
-            string splitExp = @"/([^\p{P}^\s]+)/gu"; 
+            string splitExp = @"([^\p{P}^\s]+)"; 
             var match = Regex.Match(chunk.ChunkText, splitExp);
             while (match.Success)
             {
+                Console.WriteLine(match.Value);
                 chunkWords.Add(match.Value);
                 match = match.NextMatch();
             }
@@ -144,6 +147,8 @@ namespace Application.Extensions
                     Value = word
                 };
                 var result = await context.AbstractTermFor(tDto, username);
+                if (!result.IsSuccess)
+                    return Result<List<AbstractTermDto>>.Failure(result.Error);
                 output.Add(result.Value);
             }
             return Result<List<AbstractTermDto>>.Success(output);
