@@ -3,6 +3,7 @@ import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
+import { AbstractTerm } from "../models/userTerm";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -104,13 +105,35 @@ export interface ContentHeaderDto {
     contentId: string
 }
 
-const Content = {
-    getLanguageContents: (language: ILanguageString) => requests.post<ContentHeaderDto[]>('/Content/getLanguageContents', language)
+export interface IContentId {
+    contentId: string
 }
+
+export interface TranscriptChunkDto {
+    transcriptChunkId: string;
+    language: string;
+    chunkText: string;
+}
+
+const Content = {
+    getLanguageContents: (language: ILanguageString) => requests.post<ContentHeaderDto[]>('/Content/getLanguageContents', language),
+    getChunksForContent: (contentId: IContentId) => requests.post<TranscriptChunkDto[]>('/Content/getChunksForContent', contentId)
+}
+//====================================================================================================================
+export interface ITranscriptChunkId {
+    transcriptChunkId: string
+}
+
+const Transcript = {
+    getAbstractTermsForChunk: (dto: ITranscriptChunkId) => requests.post<AbstractTerm[]>('/Transcript/getAbstractTermsForChunk', dto)
+}
+
+
 
 const agent = {
     Account,
     Content,
+    Transcript,
     UserTermEndpoints
 }
 export default agent;
