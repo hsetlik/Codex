@@ -6,6 +6,7 @@ using Application.DataObjectHandling.Contents;
 using Application.DataObjectHandling.Transcripts;
 using Microsoft.AspNetCore.Mvc;
 using static Application.DataObjectHandling.Contents.EnsureContentTerms;
+using static Application.DataObjectHandling.Contents.GetChunksForContent;
 using static Application.DataObjectHandling.Contents.GetContentHeader;
 using static Application.DataObjectHandling.Transcripts.ContentCreate;
 
@@ -38,5 +39,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetLanguageContents.Query{Dto = dto}));
         }
+
+        [HttpPost("getChunksForContent")]
+        public async Task<IActionResult> GetChunksForContent(ContentIdDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetChunksForContent.Command{Dto = dto}));
+        } 
     }
 }

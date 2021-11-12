@@ -1,5 +1,4 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { appHistory } from '../..';
 import agent from '../api/agent';
 import { User, UserFormValues } from '../models/user';
 import { store } from './store';
@@ -40,7 +39,7 @@ export default class UserStore{
                 console.log("Selected: " + this.selectedLanguage);
             });
             //redirect user to home page on successful login
-            appHistory.push('/feed');
+            
             console.log(user);
         } catch (error) {
             throw error;
@@ -59,7 +58,7 @@ export default class UserStore{
         {
             console.log("WARNING: TOKEN NOT DELETED!!");
         }
-        appHistory.push('/');
+        
     }
 
     setSelectedLanguage = (iso: string) => {
@@ -97,7 +96,6 @@ export default class UserStore{
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
             //redirect user to home page on successful login
-            //appHistory.push('/activities');
             //store.modalStore.closeModal();
             console.log(user);
         } catch (error) {

@@ -7,7 +7,6 @@ import { createBrowserHistory } from 'history';
 import { BrowserRouter } from 'react-router-dom';
 import { store, storeContext as StoreContext } from './app/stores/store';
 
-export const appHistory = createBrowserHistory();
 
 ReactDOM.render(
   <StoreContext.Provider value={store} >

@@ -4,6 +4,7 @@ import { Button, Header, Label } from "semantic-ui-react";
 import MyTextInput from "../formComponents/MyTextInput"; 
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router";
 
 
 export default observer(function LoginForm() {
@@ -11,8 +12,9 @@ export default observer(function LoginForm() {
     return (
         <Formik
             initialValues={{email: '', password: '', error: null}}
-            onSubmit={(values, {setErrors}) => userStore.login(values)
-            .catch(error => setErrors({error: 'Invalid email or password'}))}
+            onSubmit={(
+                (values, {setErrors}) => userStore.login(values)
+            .catch(error => setErrors({error: 'Invalid email or password'})))}
         >
             {({handleSubmit, isSubmitting, errors}) => (
                 <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>

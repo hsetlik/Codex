@@ -9,6 +9,7 @@ import FeedRoute from './components/feed/FeedRoute';
 import LoginForm from './components/account/LoginForm';
 import AccountRoute from './components/account/AccountRoute';
 import HomeRoute from './components/common/HomeRoute';
+import RegisterForm from './components/account/RegisterForm';
 
 function App() {
 //const location = useLocation();
@@ -32,6 +33,7 @@ function App() {
           <Route path='/content/:id'element={<ContentRoute />}/>
           <Route path='/account' element={<AccountRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 
+          <Route path='account/register' element={<RegisterForm />} /> 
         </Routes>
       </Container>
    </Container>

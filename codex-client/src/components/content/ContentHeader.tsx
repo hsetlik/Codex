@@ -15,7 +15,9 @@ export default function ContentHeader({dto}: Props)
             <Segment>
                 <Header >{dto.contentName}</Header>
                 <Label as="h2">{dto.contentType}</Label>
-                <Button as={Link} className='label' to={`../content/${dto.contentId}`} 
+                <Button as={Link} className='label'
+                color='twitter' 
+                to={`../content/${dto.contentId}`} 
                 onClick={() => userStore.setSelectedContent(dto.contentId)}>
                     View
                 </Button>

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
-import { appHistory } from "../..";
+
 import { toast } from "react-toastify";
 
 const sleep = (delay: number) => {
@@ -21,7 +21,7 @@ switch (status)
 {
     case 400:
         if (config.method === 'get' && data.errors.hasOwnProperty('id')){
-            appHistory.push('/not-found');
+          console.log("Not Found"); 
         }
         if (data.errors) {
             const modalStateErrors = [];
@@ -43,7 +43,6 @@ switch (status)
         break;
     case 500:
         store.commonStore.setServerError(data);
-        appHistory.push('/server-error');
         break;
 }
 });
