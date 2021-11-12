@@ -63,12 +63,20 @@ export default class UserStore{
 
     setSelectedLanguage = (iso: string) => {
         this.selectedLanguage = iso;
-        store.contentStore.loadHeaders({language: iso});
+        store.contentStore.loadHeaders(iso);
     }
 
     setSelectedContent = (guid: string) => {
         this.selectedContent = guid;
         store.contentStore.setSelectedContentId(guid);
+    }
+
+    selectDefaultLanguage = () => {
+        if (this.languageProfiles.length < 1) {
+            console.log("No profiles loaded!");
+            return;
+        }
+        this.setSelectedContent(this.languageProfiles[0]);
     }
 
     initStoreValues = async () => {

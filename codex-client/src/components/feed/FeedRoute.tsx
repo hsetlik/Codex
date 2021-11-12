@@ -3,16 +3,14 @@ import { useStore } from "../../app/stores/store";
 import ContentHeader from "../content/ContentHeader";
 import { observer } from "mobx-react-lite";
 import FeedHeader from "./FeedHeader";
+import { useEffect } from "react";
 
 export default observer(function FeedRoute(){
-    var {contentStore} = useStore();
-    //TODO: fix this to actually use the selected language from userStore
+    var {contentStore, userStore} = useStore();
     console.log("Contents retreived");
-    for(let header of contentStore.loadedHeaders)
-    {
-        console.log("HEADER: ");
-        console.log(header.contentId);
-    }
+    useEffect(() => {
+        contentStore.loadHeaders(userStore.selectedLanguage);
+    }, [contentStore, userStore])
     return (
         <Grid>
             <Grid.Column width='3'>

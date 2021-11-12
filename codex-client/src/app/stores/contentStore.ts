@@ -15,11 +15,12 @@ export default class ContentStore
         this.selectedContentId = id;
     }
 
-    loadHeaders = async (props: ILanguageString) => {
+    loadHeaders = async (lang: string) => {
         try {
-            var headers = await agent.Content.getLanguageContents(props);
+            var headers = await agent.Content.getLanguageContents({language: lang} );
             runInAction(() => this.loadedHeaders = headers); 
         } catch (error) {
+          console.log("Content headers not loaded for: " + lang);
           console.log(error);  
         }
     }
