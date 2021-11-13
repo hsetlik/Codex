@@ -23,27 +23,25 @@ export default class TranscriptStore {
             this.contentId = id;
             this.transcriptChunkIds = tIds;
             this.currentChunkIndex = 0;
-        });
-        let firstChunkId = this.transcriptChunkIds[0];
-        let terms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: firstChunkId})
-        runInAction(() => {
-            this.currentAbstractTerms = [];
-            for(var t of terms) {
-                this.currentAbstractTerms.push(t);
-            }
+            });
+            let firstChunkId = this.transcriptChunkIds[0];
+            let terms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: firstChunkId})
+            runInAction(() => {
+            this.currentAbstractTerms = terms;
             this.termsAreLoaded = true;
-            console.log("Found " + terms.length + " terms");
-            console.log(this.currentAbstractTerms);
-        });
-            
+            });
         } catch (error) {
             console.log(error);
         }
     }
     loadTermsForChunk = async (id: string) => {
         try {
-            this.currentAbstractTerms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: id})
-            runInAction(() => this.termsAreLoaded = true);
+            console.log("Loading terms. . . ");
+            const terms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: id});
+            runInAction(() => {
+                this.termsAreLoaded = true;
+                this.currentAbstractTerms = terms;
+            });
         } catch (error) {
             console.log(error);
         } 
