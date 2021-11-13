@@ -19,9 +19,6 @@ namespace Domain.DataObjects
         public UserTerm UserTerm { get; set; }
     }
     
-    
-
-    
     public class UserTerm
     {
         [Key]
