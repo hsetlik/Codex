@@ -8,28 +8,11 @@ using MediatR;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Domain.DataObjects;
+using Application.DomainDTOs;
 
 namespace Application.DataObjectHandling.UserTerms
 {
-    public class GetTranslationsDto
-    {
-        public Guid UserTermId { get; set; }
-    }
-    public class TranslationDto
-    {
-        //the Translation class w/o UserTerm properties
-        public Guid TranslationId { get; set; }
-        public string Value { get; set; }
-
-        public static TranslationDto AsDto(Translation t)
-        {
-            return new TranslationDto
-            {
-                TranslationId = t.TranslationId,
-                Value = t.Value
-            };
-        }
-    }
+    
     public class UserTermListTranslations
     {
         public class Query : IRequest<Result<List<TranslationDto>>>

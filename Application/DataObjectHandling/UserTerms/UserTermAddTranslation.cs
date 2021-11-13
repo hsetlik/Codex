@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.DataObjects;
@@ -13,11 +14,6 @@ using Persistence;
 
 namespace Application.DataObjectHandling.UserTerms
 {
-    public class AddTranslationDto
-    {
-        public Guid UserTermId { get; set; }
-        public string NewTranslation { get; set; }
-    }
     public class UserTermAddTranslation
     {
         public class Command : IRequest<Result<Unit>>

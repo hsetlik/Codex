@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DataObjectHandling.Terms;
+using Application.DataObjectHandling.Transcripts;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -207,6 +208,89 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Changes not saved");
             return Result<Unit>.Success(Unit.Value);
         }
-        
+
+        public static async Task<Result<Unit>> EnsureTermsForContent(this DataContext context, Guid contentId)
+        {
+            var content = await context.Contents
+                .Include(u => u.Transcript)
+                .ThenInclude(t => t.TranscriptChunks)
+                .FirstOrDefaultAsync( u => u.ContentId == contentId);
+                if (content == null) return Result<Unit>.Failure("Content not found");
+                var tChunks = content.Transcript.TranscriptChunks;
+                int wordIndex = 0;
+                foreach(var chunk in tChunks)
+                {
+                    string splitExp = @"([^\p{P}^\s]+)"; 
+                    var match = Regex.Match(chunk.ChunkText, splitExp);
+                    var words = new List<string>();
+                    while (match.Success)
+                    {
+                        Console.WriteLine(match.Value);
+                        words.Add(match.Value);
+                        match = match.NextMatch();
+                    }
+                    foreach(var word in words)
+                    {
+                        var result = await context.CreateTerm(content.Language, word);
+                        if (!result.IsSuccess) return Result<Unit>.Failure("Term for " + word + " could not be created at index " + wordIndex.ToString());
+                        ++wordIndex;
+                    }
+                }
+                return Result<Unit>.Success(Unit.Value);
+        }
+
+        public static async Task<Result<Unit>> CreateContent(this DataContext context, ContentCreateDto dto)
+        {
+            var content = new Content
+            {
+                ContentName = dto.ContentName,
+                ContentType = dto.ContentType,
+                Language = dto.Language,
+                DateAdded = DateTime.Now.ToString(),
+                VideoUrl = dto.VideoUrl,
+                AudioUrl = dto.AudioUrl,
+                Transcript = new Transcript
+                {
+                    Language = dto.Language,
+                    TranscriptChunks = new List<TranscriptChunk>()
+                }
+            };
+            //add chunks to the existing Transcript
+            var words = dto.FullText.Split(' ');
+            const int chunkLength = 30;
+            int index = 0;
+            string currentChunk = "";
+            var chunks = new List<string>();
+            foreach(var word in words)
+            {
+                currentChunk += word + ' ';
+                ++index;
+                if (index > chunkLength)
+                {
+                    chunks.Add(currentChunk);
+                    index = 0;
+                    currentChunk = "";
+                }
+            }
+            foreach(var c in chunks)
+            {
+                var chunk = new TranscriptChunk
+                {
+                    ChunkText = c,
+                    Transcript = content.Transcript,
+                    Language = dto.Language
+                };
+                content.Transcript.TranscriptChunks.Add(chunk);
+            }
+            context.Contents.Add(content);
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("Failed to update database context");
+            //just ensure the new terms automatically
+            var ensureFinished = await context.EnsureTermsForContent(content.ContentId);
+            if (!ensureFinished.IsSuccess)
+                return Result<Unit>.Failure("Could not ensure terms!");
+            return Result<Unit>.Success(Unit.Value);
+        }
     }
 }

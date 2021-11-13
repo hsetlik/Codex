@@ -8,14 +8,10 @@ using Application.Core;
 using Domain.DataObjects;
 using MediatR;
 using Persistence;
+using Application.DomainDTOs;
 
 namespace Application.DataObjectHandling.Transcripts
 {
-    public class CreateTranscriptDto
-    {
-        public string Language { get; set; }
-        public string FullText { get; set; }
-    }
     public class CreateTranscript
     {
         public class Command : IRequest<Result<Unit>>
@@ -26,12 +22,14 @@ namespace Application.DataObjectHandling.Transcripts
             {
                 var list = new List<string>();
                 var words = new List<string>();
-                string splitExp = @"/([^\p{P}^\s]+)/gu"; 
-                var match = Regex.Match(input, splitExp);
-                while (match.Success)
+                string splitForTerms = @"/([^\p{P}^\s]+)/gu"; 
+                string splitByWhitepace = @"/([^\s]+)/g";
+                var termMatch = Regex.Match(input, splitForTerms);
+                var withPunctMatch = Regex.Match(input, splitByWhitepace);
+                while (termMatch.Success)
                 {
-                    words.Add(match.Value);
-                    match = match.NextMatch();
+                    words.Add(termMatch.Value);
+                    termMatch = termMatch.NextMatch();
                 }
                 string currentChunk = "";
                 int index = 0;

@@ -4,21 +4,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.DataObjectHandling.Contents
 {
-    public class GetLanguageContentsDto
-    {
-        public string Language { get; set; }
-    }
     public class GetLanguageContents
     {
         public class Query : IRequest<Result<List<ContentHeaderDto>>>
         {
-            public GetLanguageContentsDto Dto { get; set; }
+            public LanguageNameDto Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<ContentHeaderDto>>>

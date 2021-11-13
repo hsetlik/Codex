@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.DataObjectHandling;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
+using Application.DomainDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

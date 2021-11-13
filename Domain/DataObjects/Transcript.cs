@@ -21,6 +21,17 @@ namespace Domain.DataObjects
         public Guid TranscriptId { get; set; }
         public string Language { get; set; }
         public List<TranscriptChunk> TranscriptChunks { get; set; }
+
+        public static Transcript CreateTranscript(string language, string fullText)
+        {
+            var transcript = new Transcript
+            {
+                Language = language,
+                TranscriptChunks = new List<TranscriptChunk>()
+            };
+            // create and add the chunks
+            return transcript;
+        }
     }
 
 }

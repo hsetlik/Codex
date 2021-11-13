@@ -48,9 +48,5 @@ namespace Application.DataObjectHandling.Terms
             }
             return output;
         }
-
-    
-
-        
     }
 }

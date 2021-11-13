@@ -5,23 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-//TODO: Fix this lol
-public class TranslationDto
-{
-    public string TermValue { get; set; }
-  
-}
-
-public class PopTranslationDto
-{
-    public string Value { get; set; }
-    public int NumInstances { get; set; }
-}
 namespace Application.DataObjectHandling.Terms
 {
     public class PopularTranslationsList

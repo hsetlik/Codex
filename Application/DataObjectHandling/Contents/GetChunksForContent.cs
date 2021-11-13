@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,6 @@ using Persistence;
 
 namespace Application.DataObjectHandling.Contents
 {
-    public class TranscriptChunkDto
-    {
-        public Guid TranscriptChunkId { get; set; }
-        public string Language { get; set; }
-        public string ChunkText { get; set; }
-    }
     public class GetChunksForContent
     {
         public static TranscriptChunkDto GetChunkDto(TranscriptChunk chunk)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.Contents;
 using Application.DataObjectHandling.Transcripts;
+using Application.DomainDTOs;
 using Microsoft.AspNetCore.Mvc;
 using static Application.DataObjectHandling.Contents.EnsureContentTerms;
 using static Application.DataObjectHandling.Contents.GetChunksForContent;
@@ -35,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpPost("getLanguageContents")]
-        public async Task<IActionResult> GetLanguageContents(GetLanguageContentsDto dto)
+        public async Task<IActionResult> GetLanguageContents(LanguageNameDto dto)
         {
             return HandleResult(await Mediator.Send(new GetLanguageContents.Query{Dto = dto}));
         }

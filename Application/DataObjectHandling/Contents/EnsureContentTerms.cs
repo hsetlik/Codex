@@ -29,33 +29,7 @@ namespace Application.DataObjectHandling.Contents
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var content = await _context.Contents
-                .Include(u => u.Transcript)
-                .ThenInclude(t => t.TranscriptChunks)
-                .FirstOrDefaultAsync( u => u.ContentId == request.Dto.ContentId);
-                if (content == null) return Result<Unit>.Failure("Content not found");
-
-                var tChunks = content.Transcript.TranscriptChunks;
-                int wordIndex = 0;
-                foreach(var chunk in tChunks)
-                {
-                    string splitExp = @"([^\p{P}^\s]+)"; 
-                    var match = Regex.Match(chunk.ChunkText, splitExp);
-                    var words = new List<string>();
-                    while (match.Success)
-                    {
-                        Console.WriteLine(match.Value);
-                        words.Add(match.Value);
-                        match = match.NextMatch();
-                    }
-                    foreach(var word in words)
-                    {
-                        var result = await _context.CreateTerm(content.Language, word);
-                        if (!result.IsSuccess) return Result<Unit>.Failure("Term for " + word + " could not be created at index " + wordIndex.ToString());
-                        ++wordIndex;
-                    }
-                }
-                return Result<Unit>.Success(Unit.Value);
+               return await _context.EnsureTermsForContent(request.Dto.ContentId);
             }
         }
 

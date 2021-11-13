@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.DataObjectHandling.Transcripts;
 using Application.DataObjectHandling.Terms;
 using static Application.DataObjectHandling.Transcripts.GetAbstractTermsForChunk;
+using Application.DomainDTOs;
 
 namespace API.Controllers
 {
@@ -23,7 +24,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("getAbstractTermsForChunk")]
-        public async Task<IActionResult> GetAbstractTermsForChunk(TranscriptChunkDto dto)
+        public async Task<IActionResult> GetAbstractTermsForChunk(GetTranscriptChunkDto dto)
         {
             return HandleResult(await Mediator.Send(new GetAbstractTermsForChunk.Query{Dto = dto}));
         }

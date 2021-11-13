@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DataObjectHandling.Terms;
+using Application.DomainDTOs;
 using Application.Extensions;
 using Application.Interfaces;
 using MediatR;
@@ -14,13 +15,9 @@ namespace Application.DataObjectHandling.Transcripts
 {
     public class GetAbstractTermsForChunk
     {
-        public class TranscriptChunkDto
-        {
-            public Guid TranscriptChunkId { get; set; }
-        }
         public class Query : IRequest<Result<List<AbstractTermDto>>>
         {
-            public TranscriptChunkDto Dto { get; set; }
+            public GetTranscriptChunkDto Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<AbstractTermDto>>>

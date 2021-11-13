@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.UserLanguageProfiles;
+using Application.DomainDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace API.Controllers
     public class ProfileController : CodexControllerBase
     {
         [HttpPost("createProfile")]
-        public async Task<IActionResult> CreateProfile(UserLanguageProfileDto profileDto)
+        public async Task<IActionResult> CreateProfile(LanguageNameDto profileDto)
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileCreate.Command{LanguageId = profileDto.Language}));
         }
