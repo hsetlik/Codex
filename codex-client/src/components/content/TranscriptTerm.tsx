@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Item, Label } from "semantic-ui-react";
+import { Grid, Item, Label } from "semantic-ui-react";
 import { AbstractTerm } from "../../app/models/userTerm";
 
 interface Props {
@@ -9,15 +9,15 @@ interface Props {
 export default function TranscriptTerm({term}: Props) {
     if (term.hasUserTerm) {
         return (
-            <Item  >
+            <Grid.Column  >
                 <Label color='teal'>{term.termValue}</Label>
-            </Item>
+            </Grid.Column>
         )
     } else {
         return (
-            <Item >
+            <Grid.Column >
                 <Label color='green'>{term.termValue}</Label>
-            </Item>
+            </Grid.Column>
         )
     }
 }

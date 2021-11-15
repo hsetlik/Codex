@@ -18,6 +18,7 @@ namespace Application.DataObjectHandling.Terms
         public float SrsIntervalDays { get; set; }
         public int Rating  { get; set; }
         public List<string> Translations { get; set; }
+        public int IndexInChunk { get; set; }
     }
 
     public static class AbstractTermFactory

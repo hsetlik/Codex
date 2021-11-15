@@ -129,8 +129,6 @@ const Transcript = {
     getAbstractTermsForChunk: (dto: ITranscriptChunkId) => requests.post<AbstractTerm[]>('/Transcript/getAbstractTermsForChunk', dto)
 }
 
-
-
 const agent = {
     Account,
     Content,

@@ -97,53 +97,54 @@ namespace Application.Extensions
                 .FirstOrDefaultAsync(
                     x => x.Language == dto.Language && 
                     x.NormalizedValue == termIdentifier);
-                if (term == null) return Result<AbstractTermDto>.Failure("No valid term found for " + dto.Value);
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
-                if (user == null) return Result<AbstractTermDto>.Failure("User not found!");
-                TermDto termDto;
-                var userTerm = await _context.UserTerms
-                .Include(u => u.Translations)
-                .Include(u => u.UserLanguageProfile)
-                .FirstOrDefaultAsync(x => x.TermId == term.TermId && x.UserLanguageProfile.UserId == user.Id);
-                //whether the userterm exists determines which subclass is created
-                if (userTerm != null)
-                {
-                    //we have a userterm, so we create the UserTermDto subclass
-                    var translations = new List<string>();
-                    foreach(var t in userTerm.Translations) //NOTE: there's definitely a better C#-ish way to do this
-                    {
-                        translations.Add(t.Value);
-                    }
-                    //NOTE: Value should always be the case-sensitive version of the term w/o punctuation or whitespace, NOT normalized string
-                    termDto = new UserTermDto
-                    {
-                        Value = wordWithCase,
-                        Language = term.Language,
-                        EaseFactor = userTerm.EaseFactor,
-                        SrsIntervalDays = userTerm.SrsIntervalDays,
-                        Rating = userTerm.Rating,
-                        Translations = translations
-                    };
-                }
-                else
-                {
-                    termDto = new RawTermDto
-                    {
-                        Value = wordWithCase,
-                        Language = term.Language
-                    };
-                }
-                var aTermDto = AbstractTermFactory.Generate(termDto);
-                //don't forget to add trailing characters as necessary before returning
-                if (fullString.Length > wordWithCase.Length)
-                {
-                    Console.WriteLine("Trailing characters found");
-                    aTermDto.TrailingCharacters = fullString.Substring(wordWithCase.Length);
-                }
-                else
-                    aTermDto.TrailingCharacters = "";
-                return Result<AbstractTermDto>.Success(aTermDto);
+            if (term == null) return Result<AbstractTermDto>.Failure("No valid term found for " + dto.Value);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
+            if (user == null) return Result<AbstractTermDto>.Failure("User not found!");
+            var termGuid = term.TermId;
+            TermDto termDto;
+            var userTerm = await _context.UserTerms
+            .Include(u => u.Translations)
+            .Include(u => u.UserLanguageProfile)
+            .FirstOrDefaultAsync(x => x.TermId == term.TermId && x.UserLanguageProfile.UserId == user.Id);
+            //whether the userterm exists determines which subclass is created
+            if (userTerm != null)
+            {
+            //we have a userterm, so we create the UserTermDto subclass
+            var translations = new List<string>();
+            foreach(var t in userTerm.Translations) //NOTE: there's definitely a better C#-ish way to do this
+            {
+                translations.Add(t.Value);
+            }
+            //NOTE: Value should always be the case-sensitive version of the term w/o punctuation or whitespace, NOT normalized string
+            termDto = new UserTermDto
+            {
+                Value = wordWithCase,
+                Language = term.Language,
+                EaseFactor = userTerm.EaseFactor,
+                SrsIntervalDays = userTerm.SrsIntervalDays,
+                Rating = userTerm.Rating,
+                Translations = translations
+            };
         }
+        else
+        {
+            termDto = new RawTermDto
+            {
+                Value = wordWithCase,
+                Language = term.Language
+            };
+        }
+        var aTermDto = AbstractTermFactory.Generate(termDto);
+        //don't forget to add trailing characters as necessary before returning
+        if (fullString.Length > wordWithCase.Length)
+        {
+            Console.WriteLine("Trailing characters found");
+            aTermDto.TrailingCharacters = fullString.Substring(wordWithCase.Length);
+        }
+        else
+            aTermDto.TrailingCharacters = "";
+        return Result<AbstractTermDto>.Success(aTermDto);
+    }
 
         public static async Task<Result<List<AbstractTermDto>>> AbstractTermsFor(this DataContext context, Guid transcriptChunkId, string username)
         {
@@ -154,16 +155,21 @@ namespace Application.Extensions
             if (chunk == null)
                 return Result<List<AbstractTermDto>>.Failure("No matching chunk found");
             var chunkWords = chunk.ChunkText.Split(' ');
-            foreach(var word in chunkWords)
+            for(int i = 0; i < chunkWords.Length; ++i)
             {
                 var dto = new TermDto
                 {
-                    Value = word,
+                    Value = chunkWords[i],
                     Language = chunk.Language
                 };
                 var aTerm = await context.AbstractTermFor(dto, username);
+                //add the index so react can have unique identifiers
                 if (aTerm.IsSuccess)
+                {
+                    aTerm.Value.IndexInChunk = i;
                     output.Add(aTerm.Value);
+                }
+                    
             }
             return Result<List<AbstractTermDto>>.Success(output);
         }

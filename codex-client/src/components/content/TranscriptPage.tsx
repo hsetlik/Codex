@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Header, Item, Label, Segment } from "semantic-ui-react";
+import { Container, Grid, Header, Item, Label, Segment } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import TranscriptTerm from "./TranscriptTerm";
 
@@ -14,17 +14,12 @@ export default function TranscriptPage() {
         );  
     }
     return(
-        <Segment>
-           <Item>
-               <Item.Group divided>
+            <Grid as='p'> 
                    {
                        currentAbstractTerms.map(trm => {
-                           return <TranscriptTerm term={trm} key={trm.termValue} />
+                           return <TranscriptTerm term={trm} key={trm.indexInChunk} />
                        })
                    }
-               </Item.Group>
-           </Item>
-
-        </Segment>
+            </Grid>
     )
 }

@@ -37,12 +37,13 @@ export default class TranscriptStore {
     loadTermsForChunk = async (id: string) => {
         try {
             console.log("Loading terms. . . ");
-            const terms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: id});
-            runInAction(() => {
+            const terms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: id}).finally(() => {
+                console.log("Terms are loaded");
                 this.termsAreLoaded = true;
                 this.currentAbstractTerms = terms;
             });
         } catch (error) {
+            console.log("Terms not loaded");
             console.log(error);
         } 
     }

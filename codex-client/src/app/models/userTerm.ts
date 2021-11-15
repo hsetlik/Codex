@@ -16,12 +16,14 @@ export interface AbstractTerm {
     //common term props
     termValue: string,
     language: string,
+    trailingCharacters: string,
     //determine which type of term
     hasUserTerm: boolean,
     //and the userTerm-specific props
     timesSeen: number,
     rating: number,
     easeFactor: number,
-    translations: string[]
+    translations: string[],
+    indexInChunk: number
 }
 
