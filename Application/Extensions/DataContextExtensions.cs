@@ -90,6 +90,8 @@ namespace Application.Extensions
             if(!match.Success)
                 return Result<AbstractTermDto>.Failure("No valid word characers!");
             var wordWithCase = match.Value;
+            if (wordWithCase != fullString)
+                Console.WriteLine("Trailing characters found for word: " + wordWithCase);
             var termIdentifier = wordWithCase.ToUpper();
             var term = await _context.Terms
                 .FirstOrDefaultAsync(
@@ -133,11 +135,10 @@ namespace Application.Extensions
                 }
                 var aTermDto = AbstractTermFactory.Generate(termDto);
                 //don't forget to add trailing characters as necessary before returning
-                if (fullString != wordWithCase)
+                if (fullString.Length > wordWithCase.Length)
                 {
-                    var trailing = fullString.Except(wordWithCase).ToString();
-                    Console.WriteLine("Trailing Characters found: " + trailing);
-                    aTermDto.TrailingCharacters = trailing;
+                    Console.WriteLine("Trailing characters found");
+                    aTermDto.TrailingCharacters = fullString.Substring(wordWithCase.Length);
                 }
                 else
                     aTermDto.TrailingCharacters = "";
@@ -152,25 +153,17 @@ namespace Application.Extensions
             .FirstOrDefaultAsync(x => x.TranscriptChunkId == transcriptChunkId);
             if (chunk == null)
                 return Result<List<AbstractTermDto>>.Failure("No matching chunk found");
-            var chunkWords = new List<string>();
-            string splitExp = @"([^\p{P}^\s]+)"; 
-            var match = Regex.Match(chunk.ChunkText, splitExp);
-            while (match.Success)
+            var chunkWords = chunk.ChunkText.Split(' ');
+            foreach(var word in chunkWords)
             {
-                Console.WriteLine(match.Value);
-                chunkWords.Add(match.Value);
-                match = match.NextMatch();
-            }
-            foreach (var word in chunkWords)
-            {
-                var tDto = new TermDto {
-                    Language = chunk.Language,
-                    Value = word
+                var dto = new TermDto
+                {
+                    Value = word,
+                    Language = chunk.Language
                 };
-                var result = await context.AbstractTermFor(tDto, username);
-                if (!result.IsSuccess)
-                    return Result<List<AbstractTermDto>>.Failure(result.Error);
-                output.Add(result.Value);
+                var aTerm = await context.AbstractTermFor(dto, username);
+                if (aTerm.IsSuccess)
+                    output.Add(aTerm.Value);
             }
             return Result<List<AbstractTermDto>>.Success(output);
         }
