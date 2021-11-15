@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs;
 using Application.Extensions;
 using Domain.DataObjects;
 using MediatR;
@@ -11,15 +12,6 @@ using Persistence;
 
 namespace Application.DataObjectHandling.Transcripts
 {
-    public class ContentCreateDto
-        {
-            public string ContentName { get; set; }
-            public string ContentType { get; set; }
-            public string Language { get; set; }
-            public string VideoUrl { get; set; }
-            public string AudioUrl { get; set; }
-            public string FullText { get; set; }
-        }
     public class ContentCreate
     {
         public class Command : IRequest<Result<Unit>>

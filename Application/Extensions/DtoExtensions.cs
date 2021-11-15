@@ -41,7 +41,7 @@ namespace Application.Extensions
             for (int i = 0; i < rawStrings.Count(); ++i)
             {
                 // 1. add the unaltered string to the current chunk
-                currentChunkString += rawStrings[i];
+                currentChunkString += rawStrings[i] + ' ';
                 currentChunkSize += 1;
                 // 2. get the normalized, word-only version of the raw string
                 var normalizedTerm = StringUtilityMethods.AsTermValue(rawStrings[i]);

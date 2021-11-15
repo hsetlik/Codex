@@ -46,10 +46,15 @@ TODO:
 3. UserTerm extension methods to do SRS algorithms (but do this first pussy ^^^)
 4. Migrate database and test the new term normalization/chunk creation stuff
 
-~~PLANS/THOUGHTS ON TRANSCRIPT CHUNK HANDLING:
-1. Split up chunk by splitting at whitespace
-2. From each string, use regex to get the valid word characters, normalize and get AbstractTermDto from API
-3. Remove the new string from the (normalized) original segment
-4. If any characters are left over, add them as trailing characters~~
+~~PLANS/THOUGHTS ON TRANSCRIPT CHUNK HANDLING:~~
+~~1. Split up chunk by splitting at whitespace~~
+~~2. From each string, use regex to get the valid word characters, normalize and get AbstractTermDto from API~~
+~~3. Remove the new string from the (normalized) original segment~~
+~~4. If any characters are left over, add them as trailing characters~~
+
+FOR LATER:
+1. Figure out how trailing characters can be displayed as components in React (i.e. part of the term component or its own component?)
+2. Figure out how to lay out react components like text in a paragraph
+3. Maybe devise a better planning/note-taking scheme than just typing shit on this markdown file
 
 ================================================================================================
