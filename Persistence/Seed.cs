@@ -71,23 +71,23 @@ namespace Persistence
             {
                 new Term
                 {
-                    Value = "casa",
+                    NormalizedValue = "casa",
                     Language = "es"
                 },
                 new Term
                 {
-                    Value = "house",
+                    NormalizedValue = "house",
                     Language = "en"
 
                 },
                 new Term
                 {
-                    Value = "дом",
+                    NormalizedValue = "дом",
                     Language = "ru"
                 },
                 new Term
                 {
-                    Value = "Haus",
+                    NormalizedValue = "Haus",
                     Language = "de"
                 }
             };

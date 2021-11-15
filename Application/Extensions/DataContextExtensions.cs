@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.Transcripts;
+using Application.DomainDTOs;
+using Application.Utilities;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,19 +17,19 @@ namespace Application.Extensions
 {
     public static class DataContextExtensions
     {
-        public static async Task<Result<Unit>> CreateTerm(this DataContext context, string Language, string TermValue)
+        public static async Task<Result<Unit>> CreateTerm(this DataContext context, string language, string termValue)
         {
-            var term = await context.Terms.FirstOrDefaultAsync(x => x.Language == Language && x.Value == TermValue);
+            var normValue = StringUtilityMethods.AsTermValue(termValue); 
+            var term = await context.Terms.FirstOrDefaultAsync(x => x.Language == language && x.NormalizedValue == normValue);
             if (term != null)
             {
-                Console.WriteLine("TERM VALUE: " + term.Value + " ALREADY EXISTS" );
+                Console.WriteLine("TERM VALUE: " + term.NormalizedValue + " ALREADY EXISTS" );
                 return Result<Unit>.Success(Unit.Value);
             } 
-
             var newTerm = new Term
             {
-                Language = Language,
-                Value = TermValue
+                Language = language,
+                NormalizedValue = normValue
             };
             context.Terms.Add(newTerm);
             var result = await context.SaveChangesAsync() > 0;
@@ -53,7 +55,7 @@ namespace Application.Extensions
 
         public static async Task<Result<Unit>> CreateUserTerm(this DataContext context, UserTermDto dto, string username)
         {
-            var term = await context.Terms.FirstOrDefaultAsync(u => u.Language == dto.Language && u.Value == dto.Value);
+            var term = await context.Terms.FirstOrDefaultAsync(u => u.Language == dto.Language && u.NormalizedValue == dto.Value);
             var userProfile = await context.UserLanguageProfiles
             .Include(u => u.User)
             .FirstOrDefaultAsync(u => u.Language == dto.Language && u.User.UserName == username);
@@ -78,12 +80,21 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Changes not saved!");
             return Result<Unit>.Success(Unit.Value);
         }
+
+        //NOTE: the TermDto here should include the full src string w/ trailing whitespace and punctuation
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext _context, TermDto dto, string username)
         {
+            var fullString = dto.Value;
+            string splitExp = @"([^\p{P}^\s]+)"; 
+            var match = Regex.Match(fullString, splitExp);
+            if(!match.Success)
+                return Result<AbstractTermDto>.Failure("No valid word characers!");
+            var wordWithCase = match.Value;
+            var termIdentifier = wordWithCase.ToUpper();
             var term = await _context.Terms
                 .FirstOrDefaultAsync(
                     x => x.Language == dto.Language && 
-                    x.Value == dto.Value);
+                    x.NormalizedValue == termIdentifier);
                 if (term == null) return Result<AbstractTermDto>.Failure("No valid term found for " + dto.Value);
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
                 if (user == null) return Result<AbstractTermDto>.Failure("User not found!");
@@ -101,9 +112,10 @@ namespace Application.Extensions
                     {
                         translations.Add(t.Value);
                     }
+                    //NOTE: Value should always be the case-sensitive version of the term w/o punctuation or whitespace, NOT normalized string
                     termDto = new UserTermDto
                     {
-                        Value = term.Value,
+                        Value = wordWithCase,
                         Language = term.Language,
                         EaseFactor = userTerm.EaseFactor,
                         SrsIntervalDays = userTerm.SrsIntervalDays,
@@ -115,14 +127,22 @@ namespace Application.Extensions
                 {
                     termDto = new RawTermDto
                     {
-                        Value = term.Value,
+                        Value = wordWithCase,
                         Language = term.Language
                     };
                 }
                 var aTermDto = AbstractTermFactory.Generate(termDto);
+                //don't forget to add trailing characters as necessary before returning
+                if (fullString != wordWithCase)
+                {
+                    var trailing = fullString.Except(wordWithCase).ToString();
+                    Console.WriteLine("Trailing Characters found: " + trailing);
+                    aTermDto.TrailingCharacters = trailing;
+                }
+                else
+                    aTermDto.TrailingCharacters = "";
                 return Result<AbstractTermDto>.Success(aTermDto);
         }
-
 
         public static async Task<Result<List<AbstractTermDto>>> AbstractTermsFor(this DataContext context, Guid transcriptChunkId, string username)
         {
@@ -159,7 +179,7 @@ namespace Application.Extensions
         {
             var exisitngTerm = await context.Terms
             .FirstOrDefaultAsync(t => t.Language == dto.Language && 
-            t.Value == dto.TermValue);
+            t.NormalizedValue == dto.TermValue);
             if (exisitngTerm == null)
             {
                 var result = await context.CreateTerm(dto.Language, dto.TermValue);
@@ -171,7 +191,7 @@ namespace Application.Extensions
             //reload the exisiting term
             exisitngTerm = await context.Terms
             .FirstOrDefaultAsync(t => t.Language == dto.Language && 
-            t.Value == dto.TermValue); 
+            t.NormalizedValue == dto.TermValue); 
 
             if (dto.HasUserTerm)
             {
@@ -241,7 +261,15 @@ namespace Application.Extensions
 
         public static async Task<Result<Unit>> CreateContent(this DataContext context, ContentCreateDto dto)
         {
-            var content = new Content
+            var transcriptDto = new CreateTranscriptDto
+            {
+                Language = dto.Language,
+                FullText = dto.FullText
+            };
+            var transcript =  await transcriptDto.CreateTranscriptFrom(context);
+            if (!transcript.IsSuccess)
+                return Result<Unit>.Failure("Could not create content transcript");
+              var content = new Content
             {
                 ContentName = dto.ContentName,
                 ContentType = dto.ContentType,
@@ -249,47 +277,12 @@ namespace Application.Extensions
                 DateAdded = DateTime.Now.ToString(),
                 VideoUrl = dto.VideoUrl,
                 AudioUrl = dto.AudioUrl,
-                Transcript = new Transcript
-                {
-                    Language = dto.Language,
-                    TranscriptChunks = new List<TranscriptChunk>()
-                }
+                Transcript = transcript.Value
             };
-            //add chunks to the existing Transcript
-            var words = dto.FullText.Split(' ');
-            const int chunkLength = 30;
-            int index = 0;
-            string currentChunk = "";
-            var chunks = new List<string>();
-            foreach(var word in words)
-            {
-                currentChunk += word + ' ';
-                ++index;
-                if (index > chunkLength)
-                {
-                    chunks.Add(currentChunk);
-                    index = 0;
-                    currentChunk = "";
-                }
-            }
-            foreach(var c in chunks)
-            {
-                var chunk = new TranscriptChunk
-                {
-                    ChunkText = c,
-                    Transcript = content.Transcript,
-                    Language = dto.Language
-                };
-                content.Transcript.TranscriptChunks.Add(chunk);
-            }
             context.Contents.Add(content);
             var success = await context.SaveChangesAsync() > 0;
             if (!success)
-                return Result<Unit>.Failure("Failed to update database context");
-            //just ensure the new terms automatically
-            var ensureFinished = await context.EnsureTermsForContent(content.ContentId);
-            if (!ensureFinished.IsSuccess)
-                return Result<Unit>.Failure("Could not ensure terms!");
+                return Result<Unit>.Failure("Could not save content object");
             return Result<Unit>.Success(Unit.Value);
         }
     }

@@ -35,7 +35,7 @@ namespace Application.DataObjectHandling.UserTerms
                 //Check if the UserTerm with this value already exists
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
                 var exists = await _context.UserTerms.AnyAsync(
-                    u => u.Term.Value == request.termCreateDto.TermValue &&
+                    u => u.Term.NormalizedValue == request.termCreateDto.TermValue &&
                     u.UserLanguageProfile.UserId == user.Id);
                 if (exists) return Result<Unit>.Failure("Term already exists!");
                 // 1. Get the ULP by selecting based on UserName and Language
@@ -44,7 +44,7 @@ namespace Application.DataObjectHandling.UserTerms
                     x => x.User.UserName == _userAccessor.GetUsername() &&
                     x.Language == request.termCreateDto.Language);
                 // 2. Get the term based on the value
-                var term = await _context.Terms.FirstOrDefaultAsync(x => x.Value == request.termCreateDto.TermValue);
+                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == request.termCreateDto.TermValue);
                 // TODO: change this such that if no term exists, one is created
                 if (term == null)
                 {

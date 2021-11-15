@@ -42,7 +42,7 @@ namespace Application.DataObjectHandling.UserTerms
                 var profileId = profile.LanguageProfileId;
                 var userTerm = await _context.UserTerms.FirstOrDefaultAsync(
                     x => x.LanguageProfileId == profileId &&
-                    x.Term.Value == request.TermDto.Value);
+                    x.Term.NormalizedValue == request.TermDto.Value);
                 if (userTerm == null) return Result<UserTermDetailsDto>.Failure("No associated user term found");
                 var dto = new UserTermDetailsDto
                 {

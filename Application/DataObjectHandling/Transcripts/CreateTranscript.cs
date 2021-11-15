@@ -9,6 +9,7 @@ using Domain.DataObjects;
 using MediatR;
 using Persistence;
 using Application.DomainDTOs;
+using Application.Extensions;
 
 namespace Application.DataObjectHandling.Transcripts
 {
@@ -17,37 +18,6 @@ namespace Application.DataObjectHandling.Transcripts
         public class Command : IRequest<Result<Unit>>
         {
             public CreateTranscriptDto CreateTranscriptDto { get; set; }
-
-            public static List<string> ToChunks(string input, int chunkLength=50)
-            {
-                var list = new List<string>();
-                var words = new List<string>();
-                string splitForTerms = @"/([^\p{P}^\s]+)/gu"; 
-                string splitByWhitepace = @"/([^\s]+)/g";
-                var termMatch = Regex.Match(input, splitForTerms);
-                var withPunctMatch = Regex.Match(input, splitByWhitepace);
-                while (termMatch.Success)
-                {
-                    words.Add(termMatch.Value);
-                    termMatch = termMatch.NextMatch();
-                }
-                string currentChunk = "";
-                int index = 0;
-                foreach(var word in words)
-                {
-                    currentChunk += word;
-                    if (currentChunk.Last() != ' ') currentChunk += ' ';
-                    ++index;
-                    if(index > chunkLength)
-                    {
-                        list.Add(currentChunk);
-                        currentChunk = "";
-                        index = 0;
-                    }
-                }
-                list.Add(currentChunk);
-                return list;
-            }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -59,37 +29,15 @@ namespace Application.DataObjectHandling.Transcripts
             }
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                // 1. Create an empty Transcript and upload it to Db
-                var tGuid = Guid.NewGuid();
-                var transcriptA = new Transcript
-                {
-                    TranscriptId = tGuid,
-                    Language = request.CreateTranscriptDto.Language,
-                    TranscriptChunks = new List<TranscriptChunk>()
-                };
-                
-                _context.Transcripts.Add(transcriptA);
-                var transcriptResult = await _context.SaveChangesAsync() > 0;
-                if (! transcriptResult) return Result<Unit>.Failure("could not create transcript");
-
-                var transcript = await _context.Transcripts.FindAsync(tGuid);
-                if(transcript == null) return Result<Unit>.Failure("No matching Transcript!");
-                // 2. Add chunks to Transcript and save again
-                var chunks = Command.ToChunks(request.CreateTranscriptDto.FullText);
-                foreach(var c in chunks)
-                {
-                    Console.WriteLine("CHUNK: " + c);
-                    var chunk = new TranscriptChunk
-                    {
-                        ChunkText = c,
-                        Transcript = transcript,
-                        Language = transcript.Language
-                    };
-                    transcript.TranscriptChunks.Add(chunk);
-                }
-                var chunksResult = await _context.SaveChangesAsync() > 0;
-                if (! chunksResult) return Result<Unit>.Failure("could not create transcript");
-                return Result<Unit>.Success(Unit.Value); 
+                // 1. create the transcript w/ extension method
+                var transcriptResult = await request.CreateTranscriptDto.CreateTranscriptFrom(_context);
+                if (!transcriptResult.IsSuccess)
+                    return Result<Unit>.Failure("Could not get transcript result");
+                _context.Transcripts.Add(transcriptResult.Value);
+                var success = await _context.SaveChangesAsync() > 0;
+                if (!success)
+                    return Result<Unit>.Failure("Transcript could not be created");
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

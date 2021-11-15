@@ -10,7 +10,8 @@ namespace Application.DataObjectHandling.Terms
 {
     public class AbstractTermDto
     {
-        public string TermValue { get; set; } 
+        public string TermValue { get; set; }
+        public string TrailingCharacters { get; set; } 
         public string Language { get; set; } 
         public bool HasUserTerm { get; set; } // Whether a matching userTerm exists
         public float EaseFactor { get; set; }
@@ -21,7 +22,7 @@ namespace Application.DataObjectHandling.Terms
 
     public static class AbstractTermFactory
     {
-        public static AbstractTermDto Generate(TermDto source)
+        public static AbstractTermDto Generate(TermDto source) 
         {
             var output = new AbstractTermDto
             {
