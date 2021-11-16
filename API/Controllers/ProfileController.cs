@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.UserLanguageProfiles;
+using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,14 @@ namespace API.Controllers
         public async Task<IActionResult> CreateProfile(LanguageNameDto profileDto)
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileCreate.Command{LanguageId = profileDto.Language}));
+        }
+
+
+        [Authorize]
+        [HttpPost("getDueNow")]
+        public async Task<IActionResult> GetDueNow(LanguageNameDto profileDto)
+        {
+            return HandleResult(await Mediator.Send(new GetDueNow.Command{Dto = profileDto}));
         }
 
         [Authorize]

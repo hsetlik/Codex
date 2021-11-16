@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Domain.DataObjects;
 
@@ -56,7 +57,7 @@ namespace Application.Extensions
             if (answer > 2)
             {
                 if (input.TimesSeen == 0)
-                    input.SrsIntervalDays = 1.0f;
+                    input.SrsIntervalDays = 0.125f; // 1/8 days (3 hrs)
                 else if(input.TimesSeen == 1)
                     input.SrsIntervalDays = 3.0f; //this was six in the original SM-2 algorithm
                 else
@@ -66,14 +67,32 @@ namespace Application.Extensions
             else
             {
                 input.TimesSeen = 0;
-                input.SrsIntervalDays = 0.125f; //this is like two hours? maybe should be shorter
+                input.SrsIntervalDays = 0.0125f; // 0.0125 days = 18 minutes
             }
-            //update ease- coefficients can be tweaked
+            //update ease factor - coefficients can be tweaked
             input.EaseFactor = input.EaseFactor + (0.1f - (5 - answer) * (0.08f + (5 - answer) * 0.02f));
+            const float minimumEase = 1.3f;
+            if (input.EaseFactor < minimumEase)
+                input.EaseFactor = minimumEase;
             //new due date
             var nextDueDate = DateTime.Now.AddDays((double)input.SrsIntervalDays);
             input.DateTimeDue = nextDueDate.ToString();
             return input;
+        }
+
+        // just save some typing
+        public static UserTermDetailsDto GetUserTermDetailsDto(this UserTerm userTerm)
+        {
+             return new UserTermDetailsDto
+            {
+                TermValue = userTerm.Term.NormalizedValue,
+                TimesSeen = userTerm.TimesSeen,
+                EaseFactor = userTerm.EaseFactor,
+                Rating = userTerm.Rating,
+                DateTimeDue = userTerm.DateTimeDue,
+                SrsIntervalDays = userTerm.SrsIntervalDays,
+                UserTermId = userTerm.UserTermId
+            };
         }
     }
 }
