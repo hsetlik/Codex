@@ -14,6 +14,7 @@ export default function TranscriptPage() {
         );  
     }
     return(
+        <Container>
             <Grid as='p'> 
                    {
                        currentAbstractTerms.map(trm => {
@@ -21,5 +22,6 @@ export default function TranscriptPage() {
                        })
                    }
             </Grid>
+        </Container>
     )
 }

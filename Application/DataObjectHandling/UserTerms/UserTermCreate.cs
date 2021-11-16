@@ -43,12 +43,14 @@ namespace Application.DataObjectHandling.UserTerms
                 .FirstOrDefaultAsync(
                     x => x.User.UserName == _userAccessor.GetUsername() &&
                     x.Language == request.termCreateDto.Language);
+                if (profile == null)
+                    return Result<Unit>.Failure("No corresponding language profile exists!");
                 // 2. Get the term based on the value
-                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == request.termCreateDto.TermValue);
+                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == request.termCreateDto.TermValue.ToUpper());
                 // TODO: change this such that if no term exists, one is created
                 if (term == null)
                 {
-                    return Result<Unit>.Failure("No Corresponding term exists!");
+                    return Result<Unit>.Failure($"No corresponding term exists for {request.termCreateDto.TermValue}");
                 } 
                 var currentDateTime = DateTime.Now.ToString();
 

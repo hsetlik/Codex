@@ -49,5 +49,12 @@ namespace API.Controllers
                 TermDto = dto
             }));
         }
+
+        [Authorize]
+        [HttpPost("answerUserTerm")]
+        public async Task<IActionResult> AnswerUserTerm(UserTermAnswerDto dto)
+        {
+            return HandleResult(await Mediator.Send(new AnswerUserTerm.Command{Dto = dto}));
+        }
     }
 }
