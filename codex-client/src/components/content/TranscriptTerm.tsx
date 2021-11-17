@@ -1,4 +1,4 @@
-import { Grid, Label } from "semantic-ui-react";
+import { Button, Grid, Label } from "semantic-ui-react";
 import { AbstractTerm } from "../../app/models/userTerm";
 
 interface Props {
@@ -13,15 +13,13 @@ function LabelLengthFor(word: string)
 export default function TranscriptTerm({term}: Props) {
     if (term.hasUserTerm) {
         return (
-            <Grid.Column color='teal' style={{outerWidth: LabelLengthFor(term.termValue)}} >
+            <Label >
                 {term.termValue}
-            </Grid.Column>
+            </Label>
         )
     } else {
         return (
-            <Grid.Column >
                 <Label color='green'>{term.termValue}</Label>
-            </Grid.Column>
         )
     }
 }

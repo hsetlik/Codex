@@ -77,29 +77,14 @@ export default class UserStore{
             console.log("No profiles loaded!");
             return;
         }
-        this.setSelectedLanguage(this.user?.lastStudiedLanguage!)
+        let lang = this.user?.lastStudiedLanguage!;
+        if (lang == null || lang == undefined)
+        {
+            lang = this.languageProfiles[0];
+        }
+        this.setSelectedLanguage(lang);
     }
 
-    /*
-    initStoreValues = async () => {
-        try {
-            const user = await agent.Account.current();
-            runInAction(() => this.user = user);
-            const profiles = await agent.Account.getUserProfiles();
-            runInAction(()=> {
-                this.languageProfiles = [];
-                for(var i = 0; i < profiles.length; ++i)
-                {
-                    this.languageProfiles.push(profiles[i].language);
-                }
-                this.selectedLanguage = this.languageProfiles[0];
-                console.log(this.languageProfiles);
-            });
-        } catch(error) {
-            console.log(error);
-        }
-    }
-    */
     getUser = async () => {
         try {
             const user = await agent.Account.current();

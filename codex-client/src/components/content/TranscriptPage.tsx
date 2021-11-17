@@ -1,8 +1,9 @@
 import { Container, Grid, Header } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import TranscriptTerm from "./TranscriptTerm";
+import { observer } from "mobx-react-lite";
 
-export default function TranscriptPage() {
+export default  observer(function TranscriptPage() {
     const {transcriptStore} = useStore();
     const {currentAbstractTerms, termsAreLoaded} = transcriptStore;
     if (!termsAreLoaded){
@@ -14,13 +15,18 @@ export default function TranscriptPage() {
     }
     return(
         <Container>
-            <Grid > 
-                   {
-                       currentAbstractTerms.map(trm => {
-                           return <TranscriptTerm term={trm} key={trm.indexInChunk} />
-                       })
-                   }
-            </Grid>
+            {
+                currentAbstractTerms.map(trm => {
+                    if (trm.trailingCharacters.length < 1) {
+                        return <TranscriptTerm term={trm} key={trm.indexInChunk} />
+                    }
+                    else {
+                        return (
+                            <TranscriptTerm term={trm} key={trm.indexInChunk} />
+                        )
+                    }
+                })
+            }
         </Container>
     )
-}
+});
