@@ -1,7 +1,7 @@
-import { Container, Grid, Header } from "semantic-ui-react";
+import { Container, Header } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
-import TranscriptTerm from "./TranscriptTerm";
 import { observer } from "mobx-react-lite";
+import TranscriptTerm from "./TranscriptTerm";
 
 export default  observer(function TranscriptPage() {
     const {transcriptStore} = useStore();

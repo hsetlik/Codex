@@ -78,7 +78,7 @@ export default class UserStore{
             return;
         }
         let lang = this.user?.lastStudiedLanguage!;
-        if (lang == null || lang == undefined)
+        if (lang === null || lang === undefined)
         {
             lang = this.languageProfiles[0];
         }

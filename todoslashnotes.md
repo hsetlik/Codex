@@ -42,9 +42,9 @@ TODO:
 1. ~~Make sure that Terms/UserTerms are stored as normalized strings and retrieved based on the normalized value of the request string~~
 
     ~~-NOTE: the returned AbstractTermDto still needs to use the case-sensitive version and actual transcript text is still case-sensitive ~~
-2. Create Contents in Seed.cs
-3. UserTerm extension methods to do SRS algorithms (but do this first pussy ^^^)
-4. Migrate database and test the new term normalization/chunk creation stuff
+2. ~~Create Contents in Seed.cs~~
+3. ~~UserTerm extension methods to do SRS algorithms (but do this first pussy ^^^)~~
+4. ~~Migrate database and test the new term normalization/chunk creation stuff~~
 
 ~~PLANS/THOUGHTS ON TRANSCRIPT CHUNK HANDLING:~~
 ~~1. Split up chunk by splitting at whitespace~~
@@ -53,9 +53,9 @@ TODO:
 ~~4. If any characters are left over, add them as trailing characters~~
 
 FOR LATER:
-1. Figure out how trailing characters can be displayed as components in React (i.e. part of the term component or its own component?)
-2. Figure out how to lay out react components like text in a paragraph
-3. Maybe devise a better planning/note-taking scheme than just typing shit on this markdown file
+1. ~~Figure out how trailing characters can be displayed as components in React (i.e. part of the term component or its own component?)~~
+2. ~~Figure out how to lay out react components like text in a paragraph~~
+3. ~~Maybe devise a better planning/note-taking scheme than just typing shit on this markdown file~~
 
 ================================================================================================
 
@@ -64,14 +64,29 @@ FOR LATER:
 FROM YESTERDAY:
 
 1. Figure out how trailing characters can be displayed as components in React- should be its own component
-2. Figure out how to lay out react components like text in a paragraph (i.e. learn abt CSS FlexBox/Semantic UI theming)
+2. ~~Figure out how to lay out react components like text in a paragraph (i.e. learn abt CSS FlexBox/Semantic UI theming)~~
 2. ~~Create Contents in Seed.cs~~
 3. ~~UserTerm extension methods to do SRS algorithms (but do this first pussy ^^^)~~
 4. ~~Migrate database and test the new term normalization/chunk creation stuff~~
 
 TODO:
 
-1. Look into doing stuff with Bootstrap?
+1. ~~Look into doing stuff with Bootstrap?~~
 
+
+================================================================================================
+
+============================================= 11/17/21 =========================================
+
+FROM YESTERDAY:
+1. ~~Figure out how trailing characters can be displayed as components in React- should be its own component~~
+2. ~~Figure out how to lay out react components like text in a paragraph (i.e. learn abt CSS FlexBox/Semantic UI theming)~~
+3. ~~Look into doing stuff with Bootstrap?~~
+
+TODO:
+1. ~~Figure out margins and other styling for TranscriptTerm component (also: figure out which semantic class/html tag to use)~~
+2. Dictionary API? (probably Yandex?)- low priority
+3. SelectedTerm component (to display translations, rating, and whatever else)
+4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed
 
 ================================================================================================
