@@ -35,7 +35,7 @@ TODO:
 ============================================= 11/15/21 =========================================
 
 FROM SATURDAY:
-5. Figure out how the client will request & update UserTerm details
+5. ~~Figure out how the client will request & update UserTerm details~~
 
 TODO:
     
@@ -56,5 +56,22 @@ FOR LATER:
 1. Figure out how trailing characters can be displayed as components in React (i.e. part of the term component or its own component?)
 2. Figure out how to lay out react components like text in a paragraph
 3. Maybe devise a better planning/note-taking scheme than just typing shit on this markdown file
+
+================================================================================================
+
+============================================= 11/16/21 =========================================
+
+FROM YESTERDAY:
+
+1. Figure out how trailing characters can be displayed as components in React- should be its own component
+2. Figure out how to lay out react components like text in a paragraph (i.e. learn abt CSS FlexBox/Semantic UI theming)
+2. ~~Create Contents in Seed.cs~~
+3. ~~UserTerm extension methods to do SRS algorithms (but do this first pussy ^^^)~~
+4. ~~Migrate database and test the new term normalization/chunk creation stuff~~
+
+TODO:
+
+1. Look into doing stuff with Bootstrap?
+
 
 ================================================================================================

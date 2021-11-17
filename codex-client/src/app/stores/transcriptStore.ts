@@ -1,6 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { AbstractTerm } from "../models/userTerm";
-import { store } from "./store";
 import agent from "../api/agent";
 
 export default class TranscriptStore {
@@ -29,7 +28,9 @@ export default class TranscriptStore {
             runInAction(() => {
             this.currentAbstractTerms = terms;
             this.termsAreLoaded = true;
+            console.log(`Content for ${id} found`);
             });
+            
         } catch (error) {
             console.log(error);
         }

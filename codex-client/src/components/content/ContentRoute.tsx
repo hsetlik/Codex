@@ -1,10 +1,8 @@
-import React from "react";
-import { useParams } from "react-router";
-import { Container } from "semantic-ui-react";
+//import { useParams } from "react-router";
 import TranscriptReader from "./TranscriptReader";
 
 export default function ContentRoute(){
-    const {id} = useParams();
+    //const {id} = useParams();
     return(
         <TranscriptReader />
     )

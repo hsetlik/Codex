@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Grid, Header, Item, Label, Segment } from "semantic-ui-react";
+import { Container, Grid, Header } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import TranscriptTerm from "./TranscriptTerm";
 
@@ -15,7 +14,7 @@ export default function TranscriptPage() {
     }
     return(
         <Container>
-            <Grid as='p'> 
+            <Grid > 
                    {
                        currentAbstractTerms.map(trm => {
                            return <TranscriptTerm term={trm} key={trm.indexInChunk} />

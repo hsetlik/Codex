@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Header, Segment } from "semantic-ui-react";
+import { Container, Header } from "semantic-ui-react";
 
 export default function HomeRoute(){
     //just a placeholder to pass something in in App.tsx

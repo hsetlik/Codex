@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { ContentHeaderDto, ILanguageString } from "../api/agent";
+import agent, { ContentHeaderDto } from "../api/agent";
 import { store } from "./store";
 
 
