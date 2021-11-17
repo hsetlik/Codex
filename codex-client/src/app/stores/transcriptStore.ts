@@ -10,6 +10,7 @@ export default class TranscriptStore {
     currentChunkIndex: number = 0;
     //actually need to observe
     currentAbstractTerms: AbstractTerm[] = [];
+    selectedTerm: AbstractTerm | null = null;
     termsAreLoaded: boolean = false;
     constructor(){
         makeAutoObservable(this);
@@ -62,5 +63,10 @@ export default class TranscriptStore {
             console.log(error);
         }
         
+    }
+
+    setSelectedTerm = (newTerm: AbstractTerm) => {
+        console.log("Selected term: " + newTerm.termValue);
+        this.selectedTerm = newTerm;
     }
 }

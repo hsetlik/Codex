@@ -82,7 +82,6 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
         }
 
-        //NOTE: the TermDto here should include the full src string w/ trailing whitespace and punctuation
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext _context, TermDto dto, string username)
         {
             var fullString = dto.Value;
@@ -111,40 +110,41 @@ namespace Application.Extensions
             if (userTerm != null)
             {
             //we have a userterm, so we create the UserTermDto subclass
-            var translations = new List<string>();
-            foreach(var t in userTerm.Translations) //NOTE: there's definitely a better C#-ish way to do this
-            {
-                translations.Add(t.Value);
+                var translations = new List<string>();
+                foreach(var t in userTerm.Translations) //NOTE: there's definitely a better C#-ish way to do this
+                {
+                    translations.Add(t.Value);
+                }
+                //NOTE: Value should always be the case-sensitive version of the term w/o punctuation or whitespace, NOT normalized string
+                termDto = new UserTermDto
+                {
+                    Value = wordWithCase,
+                    Language = term.Language,
+                    EaseFactor = userTerm.EaseFactor,
+                    SrsIntervalDays = userTerm.SrsIntervalDays,
+                    Rating = userTerm.Rating,
+                    Translations = translations,
+                    UserTermId = userTerm.UserTermId
+                };
             }
-            //NOTE: Value should always be the case-sensitive version of the term w/o punctuation or whitespace, NOT normalized string
-            termDto = new UserTermDto
+            else
             {
-                Value = wordWithCase,
-                Language = term.Language,
-                EaseFactor = userTerm.EaseFactor,
-                SrsIntervalDays = userTerm.SrsIntervalDays,
-                Rating = userTerm.Rating,
-                Translations = translations
-            };
-        }
-        else
-        {
-            termDto = new RawTermDto
+                termDto = new RawTermDto
+                {
+                    Value = wordWithCase,
+                    Language = term.Language
+                };
+            }
+            var aTermDto = AbstractTermFactory.Generate(termDto);
+            //don't forget to add trailing characters as necessary before returning
+            if (fullString.Length > wordWithCase.Length)
             {
-                Value = wordWithCase,
-                Language = term.Language
-            };
-        }
-        var aTermDto = AbstractTermFactory.Generate(termDto);
-        //don't forget to add trailing characters as necessary before returning
-        if (fullString.Length > wordWithCase.Length)
-        {
-            Console.WriteLine("Trailing characters found");
-            aTermDto.TrailingCharacters = fullString.Substring(wordWithCase.Length);
-        }
-        else
-            aTermDto.TrailingCharacters = "";
-        return Result<AbstractTermDto>.Success(aTermDto);
+                Console.WriteLine("Trailing characters found");
+                aTermDto.TrailingCharacters = fullString.Substring(wordWithCase.Length);
+            }
+            else
+                aTermDto.TrailingCharacters = "";
+            return Result<AbstractTermDto>.Success(aTermDto);
     }
 
         public static async Task<Result<List<AbstractTermDto>>> AbstractTermsFor(this DataContext context, Guid transcriptChunkId, string username)
@@ -211,9 +211,8 @@ namespace Application.Extensions
                     userTermDto.UserTermId = exisitngUserTerm.UserTermId;
                     var result = await context.UpdateUserTerm(dto.AsUserTerm());
                     if (!result.IsSuccess)
-                        return Result<Unit>.Failure("UserTerm was not created"); 
-                }
-                
+                        return Result<Unit>.Failure("UserTerm was not updated"); 
+                } 
             }
             return Result<Unit>.Success(Unit.Value);
         }

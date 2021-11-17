@@ -14,9 +14,11 @@
       monospace;
   }
 
+
+  /*NOTE: sometimes npm has to be restarted for style changes to take effect*/
   .basic-codex-term {
     padding: 5px !important;
-    background: yellow;
+    background: rgba(255, 120, 10, 0.726) !important;
     margin-top: 8px !important;
   }
 

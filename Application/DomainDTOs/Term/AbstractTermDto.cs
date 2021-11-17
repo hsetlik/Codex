@@ -19,6 +19,7 @@ namespace Application.DataObjectHandling.Terms
         public int Rating  { get; set; }
         public List<string> Translations { get; set; }
         public int IndexInChunk { get; set; }
+        public Guid UserTermId { get; set; }
     }
 
     public static class AbstractTermFactory
@@ -47,6 +48,7 @@ namespace Application.DataObjectHandling.Terms
                 output.Rating = userTerm.Rating;
                 output.Translations = userTerm.Translations;
                 output.EaseFactor = userTerm.EaseFactor;
+                output.UserTermId = userTerm.UserTermId;
             }
             return output;
         }

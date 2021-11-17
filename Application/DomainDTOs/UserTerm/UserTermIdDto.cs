@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs
 {
-    public class GetTranslationsDto
+    public class UserTermIdDto
     {
         public Guid UserTermId { get; set; }
     }

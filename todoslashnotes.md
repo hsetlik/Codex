@@ -86,7 +86,7 @@ FROM YESTERDAY:
 TODO:
 1. ~~Figure out margins and other styling for TranscriptTerm component (also: figure out which semantic class/html tag to use)~~
 2. Dictionary API? (probably Yandex?)- low priority
-3. SelectedTerm component (to display translations, rating, and whatever else)
+3. ~~SelectedTerm component (to display translations, rating, and whatever else)~~
 4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed
 
 ================================================================================================

@@ -25,5 +25,6 @@ export interface AbstractTerm {
     easeFactor: number,
     translations: string[],
     indexInChunk: number
+    userTermId: string
 }
 
