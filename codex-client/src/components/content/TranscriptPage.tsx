@@ -14,7 +14,7 @@ export default  observer(function TranscriptPage() {
         );  
     }
     return(
-        <Container>
+        <Container className="segment">
             {
                 currentAbstractTerms.map(trm => {
                     if (trm.trailingCharacters.length < 1) {

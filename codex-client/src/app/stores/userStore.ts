@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import agent from '../api/agent';
+import agent, { UserTermCreateDto } from '../api/agent';
 import { User, UserFormValues } from '../models/user';
 import { store } from './store';
 
@@ -115,6 +115,14 @@ export default class UserStore{
             throw error;
         }
 
+    }
+
+    createTerm = async (term: UserTermCreateDto) => {
+        try {
+            await agent.UserTermEndpoints.create(term);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 }

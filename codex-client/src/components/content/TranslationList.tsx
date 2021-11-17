@@ -10,7 +10,7 @@ export default function TranslationsList({term}: Props) {
     return(
         <Item.Group>
             {term.translations.map(tran => {
-                return <ItemContent content={tran} />
+                return <ItemContent content={tran} key={tran} />
             })}
         </Item.Group>
     )

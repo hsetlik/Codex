@@ -10,7 +10,7 @@ export default observer(function TranscriptReader(){
                 <Grid.Column width='10'>
                     <TranscriptPage />
                 </Grid.Column>
-                <Grid.Column>
+                <Grid.Column width='6'>
                     <TermDetails />
                 </Grid.Column>
             </Grid>

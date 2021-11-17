@@ -75,7 +75,7 @@ const Account = {
     getUserProfiles: () => requests.get<LangProfileItem[]>('Profile/getUserProfiles')
 }
 
-interface UserTermCreateDto {
+export interface UserTermCreateDto {
     language: string,
     termValue: string,
     firstTranslation: string
