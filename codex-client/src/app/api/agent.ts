@@ -67,6 +67,11 @@ interface LangProfileItem {
     language: string
 }
 
+export interface TermDto {
+    value: string,
+    language: string
+}
+
 //use create one of these for each endpoint group
 const Account = {
     current: () => requests.get<User>('/Account'),
@@ -88,8 +93,12 @@ interface AddTranslationDto {
 
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
-    addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto)
+    addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
+    get : (dto: TermDto) => requests.post<AbstractTerm>('/userTerm/getUserTerm', dto)
 }
+ const TermEndpoints = {
+     get: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto)
+ }
 
 //==============================================================================================================
 export interface ILanguageString {
@@ -133,6 +142,7 @@ const agent = {
     Account,
     Content,
     Transcript,
-    UserTermEndpoints
+    UserTermEndpoints,
+    TermEndpoints
 }
 export default agent;

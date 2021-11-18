@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { AbstractTerm } from "../models/userTerm";
-import agent from "../api/agent";
+import agent, { TermDto, UserTermCreateDto } from "../api/agent";
 
 export default class TranscriptStore {
     //observable vars
@@ -36,6 +36,7 @@ export default class TranscriptStore {
             console.log(error);
         }
     }
+
     loadTermsForChunk = async (id: string) => {
         try {
             console.log("Loading terms. . . ");
@@ -49,6 +50,7 @@ export default class TranscriptStore {
             console.log(error);
         } 
     }
+
     advanceChunk = async () => {
         try {
             var nextIndex = this.currentChunkIndex + 1;
@@ -68,5 +70,32 @@ export default class TranscriptStore {
     setSelectedTerm = (newTerm: AbstractTerm) => {
         console.log("Selected term: " + newTerm.termValue);
         this.selectedTerm = newTerm;
+    }
+
+    updateUserTerm = async (dto: UserTermCreateDto) => {
+        try {
+            const termDto: TermDto = {
+                value: dto.termValue,
+                language: dto.language
+            }
+            const newTerm = await agent.TermEndpoints.get(termDto);
+            runInAction(() => {
+                console.log("found existing UserTerm...");
+                var index = 0;
+                for (var i = 0; i < this.currentAbstractTerms.length; ++i) {
+                    if (this.currentAbstractTerms[i].termValue === dto.termValue &&
+                        this.currentAbstractTerms[i].language === dto.language) {
+                        //set a couple properties left empty by the API
+                        newTerm.indexInChunk = i;
+                        // newTerm.trailingCharacters = "";
+                        // newTerm.hasUserTerm = true;
+                        this.currentAbstractTerms[i] = newTerm;
+                        return;
+                }
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

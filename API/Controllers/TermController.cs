@@ -33,7 +33,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpGet("getAbstractTerm")]
+        [HttpPost("getAbstractTerm")]
         public async Task<IActionResult> GetAbstractTerm(TermDto dto)
         {
             return HandleResult(await Mediator.Send(new GetAbstractTerm.Query{Dto = dto}));

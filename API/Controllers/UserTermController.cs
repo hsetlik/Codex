@@ -41,7 +41,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpGet("getUserTerm")]
+        [HttpPost("getUserTerm")]
         public async Task<IActionResult> GetUserTerm(TermDto dto)
         {
             return HandleResult(await Mediator.Send(new UserTermDetails.Query

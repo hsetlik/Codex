@@ -12,7 +12,7 @@ export default function UserTermDetails({term}: Props) {
         <Container className="segment">
             <Header as='h2' content={term.termValue} />
             { term.translations.map(tran => {
-                return <Header as='h4' content={tran} />
+                return <Header as='h4' content={tran} key={tran} />
             })
             }
         </Container>
