@@ -22,6 +22,14 @@ namespace Application.DataObjectHandling.Terms
         public Guid UserTermId { get; set; }
     }
 
+    public class AbstractTermHeader
+    {
+        public string TermValue { get; set; }
+        public string TrailingCharacters { get; set; }
+        public string Language { get; set; }
+        public bool HasUserTerm { get; set; }
+    }
+
     public static class AbstractTermFactory
     {
         public static AbstractTermDto Generate(TermDto source) 

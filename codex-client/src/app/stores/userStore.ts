@@ -119,10 +119,9 @@ export default class UserStore{
 
     createTerm = async (term: UserTermCreateDto) => {
         try {
-            await agent.UserTermEndpoints.create(term).finally(() => {
-                console.log("updating user term...");
-                store.transcriptStore.updateUserTerm(term);
-            })
+            await agent.UserTermEndpoints.create(term)
+            console.log("updating user term...");
+            await store.transcriptStore.updateSelectedTerm();
         } catch (error) {
             console.log(error);
         }

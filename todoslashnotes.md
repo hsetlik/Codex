@@ -90,3 +90,12 @@ TODO:
 4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed
 
 ================================================================================================
+
+============================================= 11/18/21 =========================================
+
+FROM YESTERDAY:
+4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed
+
+TODO:
+1. refactor to have distinction between AbstractTerm and AbstractTermHeader
+================================================================================================
