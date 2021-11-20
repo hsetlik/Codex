@@ -52,7 +52,7 @@ namespace API.Extensions
             });
             */ 
             //wire up authorization handling like so VVVV
-            //services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            //services.AddTransient<IAuthorizationHandler>();
             services.AddScoped<TokenService>();
             return services;
         }

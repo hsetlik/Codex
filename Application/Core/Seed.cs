@@ -70,30 +70,7 @@ namespace Domain
                 await userManager.CreateAsync(users[i], "Pa$$w0rd");
             }
             //some dummy words
-            var terms = new List<Term>
-            {
-                new Term
-                {
-                    NormalizedValue = "casa",
-                    Language = "es"
-                },
-                new Term
-                {
-                    NormalizedValue = "house",
-                    Language = "en"
-
-                },
-                new Term
-                {
-                    NormalizedValue = "дом",
-                    Language = "ru"
-                },
-                new Term
-                {
-                    NormalizedValue = "Haus",
-                    Language = "de"
-                }
-            };
+            
             var contents = new List<ContentCreateDto>
             {
                new ContentCreateDto 
@@ -140,17 +117,25 @@ namespace Domain
                     VideoUrl = "none",
                     AudioUrl = "none",
                     FullText = "The term 'British subject' has several different meanings depending on the time period. Before 1949, it referred to almost all subjects of the British Empire (including the United Kingdom, Dominions, and colonies, but excluding protectorates and protected states). Between 1949 and 1983, the term was synonymous with Commonwealth citizen. Currently, it refers to people possessing a class of British nationality largely granted under limited circumstances to those connected with Ireland or British India born before 1949. Individuals with this nationality are British nationals and Commonwealth citizens, but not British citizens. \n The status under the current definition does not automatically grant the holder right of abode in the United Kingdom but most British subjects do have this entitlement. About 32,400 British subjects hold active British passports with this status and enjoy consular protection when travelling abroad; fewer than 800 do not have right of abode in the UK."
+                },
+                new ContentCreateDto
+                {
+                    ContentName= "España- Wikipedia",
+                    ContentType= "Article",
+                    Language= "es",
+                    VideoUrl= "none",
+                    AudioUrl= "none",
+                    FullText = $"España se sitúa tanto al sur de Europa Occidental como en el norte de África. En Europa, ocupa la mayor parte de la península ibérica, conocida como España peninsular, y las islas Baleares (en el mar Mediterráneo occidental); en África se hallan las ciudades de Ceuta (en la península tingitana) y Melilla (en el cabo de Tres Forcas), las islas Canarias (en el océano Atlántico nororiental) y otras posesiones mediterráneas denominadas «plazas de soberanía». El municipio de Llivia, en los Pirineos, constituye un exclave rodeado totalmente por territorio francés. Completa el conjunto de territorios una serie de islas e islotes frente a las propias costas peninsulares. Tiene una extensión de 505 370 km²,11​ por lo que es el cuarto país más extenso del continente, tras Rusia, Ucrania y Francia y con una altitud media de 650 metros sobre el nivel del mar, uno de los países más montañosos de Europa. Su población supera los 47 millones de habitantes, aunque la densidad de población es reducida. El territorio peninsular comparte fronteras terrestres con Francia y con Andorra al norte, con Portugal al oeste y con el territorio británico de Gibraltar al sur. En sus territorios africanos, comparte fronteras terrestres y marítimas con Marruecos. Comparte con Francia la soberanía sobre la isla de los Faisanes en la desembocadura del río Bidasoa y cinco facerías pirenaicas De acuerdo con la Constitución, y según su artículo 3.1, «el castellano es la lengua española oficial del Estado. Todos los españoles tienen el deber de conocerla y el derecho a usarla».3​ En 2012, era la lengua materna del 82 % de los españoles.33​ Según el artículo 3.2, «las demás lenguas españolas serán también oficiales en las respectivas Comunidades Autónomas de acuerdo con sus Estatutos».3​ El idioma español o castellano, segunda lengua materna más hablada del mundo y con casi 600 millones de hispanohablantes,​ es uno de los más importantes legados del acervo cultural e histórico de España en el mundo. Perteneciente culturalmente a la Europa Latina y heredero de una vasta influencia grecorromana, España alberga también la cuarta colección más numerosa del mundo de sitios declarados Patrimonio de la Humanidad por la Unesco."
                 }
 
             };
-            //add words to Db
-            await context.Terms.AddRangeAsync(terms);
-            await context.SaveChangesAsync();
-            //add contents to Db
             foreach(var c in contents)
             {
                 await context.CreateContent(c);
             }
+            //add words to Db
+            await context.SaveChangesAsync();
+            //add contents to Db
             }
         }
     }

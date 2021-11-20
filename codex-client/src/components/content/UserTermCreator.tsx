@@ -12,8 +12,9 @@ export default observer(function UserTermCreator() {
             <Formik
             initialValues={{language: selectedTerm?.language!, termValue: selectedTerm?.termValue!, firstTranslation: '', error: null}}
             onSubmit={(
-                (values, {setErrors}) => userStore.createTerm(values)
-            .catch(error => setErrors({error: 'not a valid term'})))}
+                (values, {setErrors}) =>  userStore.createTerm(values).finally(async () => {
+                       await transcriptStore.refreshTerm(selectedTerm?.indexInChunk!);
+                }).catch(error => setErrors({error: 'not a valid term'})))}
             >
                 {({handleSubmit, isSubmitting, errors}) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>

@@ -16,16 +16,7 @@ export default  observer(function TranscriptPage() {
     return(
         <Container className="segment">
             {
-                currentAbstractTerms.map(trm => {
-                    if (trm.trailingCharacters.length < 1) {
-                        return <TranscriptTerm term={trm} key={trm.indexInChunk} />
-                    }
-                    else {
-                        return (
-                            <TranscriptTerm term={trm} key={trm.indexInChunk} />
-                        )
-                    }
-                })
+                currentAbstractTerms.entries
             }
         </Container>
     )

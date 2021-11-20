@@ -14,7 +14,7 @@ const sleep = (delay: number) => {
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
 axios.interceptors.response.use(async response => {
-    await sleep(1000);
+    await sleep(10);
     return response;
 }, (error: AxiosError) => {
 const {data, status, config} = error.response!;
@@ -49,10 +49,14 @@ switch (status)
 });
 
 axios.interceptors.request.use(config => {
-    const token = store.commonStore.token;
-    if(token) config.headers!.Authorization = `Bearer ${token}`;
+    let token = window.localStorage.getItem('jwt');
+    config.headers = Object.assign({
+      Authorization: `Bearer ${token}`
+    }, config.headers);
+    console.log(config.headers);
     return config;
-})
+  }
+)
 //
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 //object to hold generic HTTP requests

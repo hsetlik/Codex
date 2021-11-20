@@ -72,27 +72,16 @@ export default class TranscriptStore {
         this.selectedTerm = newTerm;
     }
 
-    updateUserTerm = async (dto: UserTermCreateDto) => {
+    refreshTerm = async (index: number) => {
         try {
-            const termDto: TermDto = {
-                value: dto.termValue,
-                language: dto.language
-            }
-            const newTerm = await agent.TermEndpoints.get(termDto);
-            runInAction(() => {
-                console.log("found existing UserTerm...");
-                var index = 0;
-                for (var i = 0; i < this.currentAbstractTerms.length; ++i) {
-                    if (this.currentAbstractTerms[i].termValue === dto.termValue &&
-                        this.currentAbstractTerms[i].language === dto.language) {
-                        //set a couple properties left empty by the API
-                        newTerm.indexInChunk = i;
-                        // newTerm.trailingCharacters = "";
-                        // newTerm.hasUserTerm = true;
-                        this.currentAbstractTerms[i] = newTerm;
-                        return;
-                }
-                }
+            const term = this.currentAbstractTerms[index];
+            const dto: TermDto = 
+            {
+                value: term.termValue,
+                language: term.language
+            };
+            const newTerm = await agent.UserTermEndpoints.get(dto).finally(() => {
+                this.currentAbstractTerms[index] = newTerm;
             })
         } catch (error) {
             console.log(error);

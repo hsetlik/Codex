@@ -90,3 +90,17 @@ TODO:
 4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed
 
 ================================================================================================
+
+============================================= 11/18/21 =========================================
+
+FROM YESTERDAY:
+2. Dictionary API? (probably Yandex?)- low priority
+4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed
+
+TODO:
+1. Fix selected word misalignment on client side
+    - Replace currentUserTerms array w/ a map indexed by indexInChunk
+3. New seed with more contents
+
+================================================================================================
+

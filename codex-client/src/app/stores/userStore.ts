@@ -23,7 +23,12 @@ export default class UserStore{
             console.log("Starting login");
             const user = await agent.Account.login(creds);
             console.log("User found: " + user.username);
-            runInAction(() => this.user = user);
+            runInAction(() => {
+                this.user = user;
+                console.log("User set");
+                console.log(`User has token ${user.token}`);
+                store.commonStore.setToken(user.token);
+            } );
             const profiles = await agent.Account.getUserProfiles();
             console.log("PROFILES FOUND");
             console.log(profiles);
@@ -39,7 +44,7 @@ export default class UserStore{
             });
             this.setSelectedLanguage(user.lastStudiedLanguage);
             //redirect user to home page on successful login
-            store.commonStore.setToken(user.token);
+            
             console.log(user);
         } catch (error) {
             throw error;
@@ -118,11 +123,9 @@ export default class UserStore{
     }
 
     createTerm = async (term: UserTermCreateDto) => {
+        console.log("Creating term for: " + term.termValue);
         try {
-            await agent.UserTermEndpoints.create(term).finally(() => {
-                console.log("updating user term...");
-                store.transcriptStore.updateUserTerm(term);
-            })
+            await agent.UserTermEndpoints.create(term);
         } catch (error) {
             console.log(error);
         }

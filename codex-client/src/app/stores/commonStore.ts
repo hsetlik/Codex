@@ -3,7 +3,7 @@ import { ServerError } from "../models/serverError";
 
 export default class CommonStore {
     error: ServerError | null = null;
-    token: string | null = window.localStorage.getItem('jwt');
+    token: string | null = localStorage.getItem('jwt');
     appLoaded: boolean = false;
 
     constructor(){
@@ -11,9 +11,12 @@ export default class CommonStore {
         reaction(
             () => this.token,
             token => {
+                console.log("Checking token in common store...");
                 if(token) {
-                    window.localStorage.setItem('jwt', token)
+                    window.localStorage.setItem('jwt', token);
+                    console.log("token saved to local storage");
                 } else {
+                    console.log("token is null!");
                     window.localStorage.removeItem('jwt');
                 }
             }
@@ -25,7 +28,15 @@ export default class CommonStore {
     }
 
     setToken = (token: string | null) => {
+        console.log("setting token...");
         this.token = token;
+        if(token) {
+            console.log(`Setting token to: ${token}`);
+            window.localStorage.setItem('jwt', token);
+            console.log(`Local token is ${window.localStorage.getItem('jwt')}`)
+        }    
+        else
+            console.log("Token is null!");
     }
 
     setAppLoaded = () => {
