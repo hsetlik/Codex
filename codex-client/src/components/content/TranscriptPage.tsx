@@ -16,7 +16,9 @@ export default  observer(function TranscriptPage() {
     return(
         <Container className="segment">
             {
-                currentAbstractTerms.entries
+                currentAbstractTerms.map(trm => (
+                    <TranscriptTerm term={trm} key={trm.indexInChunk} />
+                ))
             }
         </Container>
     )

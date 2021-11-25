@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.DTOs;
 using Application.DataObjectHandling.UserLanguageProfiles;
+using Application.DomainDTOs;
 
 namespace API.Controllers
 {
@@ -98,20 +99,16 @@ namespace API.Controllers
         }
 
         //==================================================================
-        public class SetLanguageRequestBody
-        {
-            public string Iso { get; set; }
-        }
         [Authorize]
         [HttpPost("setLastStudiedLanguage")]
-        public async Task<ActionResult<UserDto>> SetLastStudiedLanguage(SetLanguageRequestBody dto)
+        public async Task<ActionResult<UserDto>> SetLastStudiedLanguage(LanguageNameDto dto)
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             if (user == null)
             {
                 return Unauthorized();
             }
-            user.LastStudiedLanguage = dto.Iso;
+            user.LastStudiedLanguage = dto.Language;
             var success = await _userManager.UpdateAsync(user) == IdentityResult.Success;
             if (!success)
                 return BadRequest("User manager could not update");

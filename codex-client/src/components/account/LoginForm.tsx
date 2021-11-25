@@ -3,15 +3,17 @@ import { Button, Header, Label } from "semantic-ui-react";
 import MyTextInput from "../formComponents/MyTextInput"; 
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router";
 
 
 export default observer(function LoginForm() {
     const {userStore} = useStore();
+    const navigate = useNavigate();
     return (
         <Formik
             initialValues={{email: '', password: '', error: null}}
             onSubmit={(
-                (values, {setErrors}) => userStore.login(values)
+                (values, {setErrors}) =>  userStore.login(values).then(() => navigate('/feed'))
             .catch(error => setErrors({error: 'Invalid email or password'})))}
         >
             {({handleSubmit, isSubmitting, errors}) => (

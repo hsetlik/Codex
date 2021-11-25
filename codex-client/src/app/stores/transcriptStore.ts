@@ -80,7 +80,8 @@ export default class TranscriptStore {
                 value: term.termValue,
                 language: term.language
             };
-            const newTerm = await agent.UserTermEndpoints.get(dto).finally(() => {
+            const newTerm = await agent.UserTermEndpoints.get(dto);
+            runInAction(() => {
                 this.currentAbstractTerms[index] = newTerm;
             })
         } catch (error) {
