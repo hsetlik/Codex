@@ -127,7 +127,7 @@ export default class UserStore{
         try {
             await agent.UserTermEndpoints.create(term);
             if (store.transcriptStore.selectedTerm?.indexInChunk)
-                    await store.transcriptStore.refreshTerm(store.transcriptStore.selectedTerm?.indexInChunk);
+                    await store.transcriptStore.refershTermByValue(term.termValue);
         } catch (error) {
             console.log(error);
         }

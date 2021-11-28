@@ -90,7 +90,23 @@ namespace Application.Extensions
             if(!match.Success)
                 return Result<AbstractTermDto>.Failure("No valid word characers!");
             var wordWithCase = match.Value;
-            if (wordWithCase != fullString)
+            var user = await _context.Users.Include(u => u.UserLanguageProfiles).FirstOrDefaultAsync(x => x.UserName == username);
+                var profile = await _context.UserLanguageProfiles.FirstOrDefaultAsync(
+                    x => x.UserId == user.Id &&
+                    x.Language == dto.Language);
+                if (profile == null) return Result<AbstractTermDto>.Failure("No associated profile found");
+                Console.WriteLine("Language profile found");
+        var profileId = profile.LanguageProfileId;
+        var parsedTerm = StringUtilityMethods.AsTermValue(dto.Value);
+        Console.WriteLine($"Parsed term is: {parsedTerm}");
+        Console.WriteLine($"Language profile ID is: {profileId}");
+        var userTerm = await _context.UserTerms
+        .Include(u => u.Term)
+        .Include(u => u.Translations)
+        .FirstOrDefaultAsync(
+                    x => x.LanguageProfileId == profileId &&
+                    x.Term.NormalizedValue == parsedTerm);
+        if (wordWithCase != fullString)
                 Console.WriteLine("Trailing characters found for word: " + wordWithCase);
             var termIdentifier = wordWithCase.ToUpper();
             var term = await _context.Terms
@@ -98,15 +114,8 @@ namespace Application.Extensions
                     x => x.Language == dto.Language && 
                     x.NormalizedValue == termIdentifier);
             if (term == null) return Result<AbstractTermDto>.Failure("No valid term found for " + dto.Value);
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
-            if (user == null) return Result<AbstractTermDto>.Failure("User not found!");
-            var termGuid = term.TermId;
-            TermDto termDto;
-            var userTerm = await _context.UserTerms
-            .Include(u => u.Translations)
-            .Include(u => u.UserLanguageProfile)
-            .FirstOrDefaultAsync(x => x.TermId == term.TermId && x.UserLanguageProfile.UserId == user.Id);
             //whether the userterm exists determines which subclass is created
+            TermDto termDto;
             if (userTerm != null)
             {
             //we have a userterm, so we create the UserTermDto subclass

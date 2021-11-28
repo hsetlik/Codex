@@ -120,9 +120,35 @@ export default class TranscriptStore {
             runInAction(() => {
                 newTerm.indexInChunk = index;
                 this.currentAbstractTerms[index] = newTerm;
+                if (this.selectedTerm?.indexInChunk === index) {
+                    this.selectedTerm = newTerm;
+                }
             })
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    indecesWithValue = (value: string) => {
+        var output: number[] = [];
+        for (var term of this.currentAbstractTerms)
+        {
+            if (term.termValue.toUpperCase() === value.toUpperCase()) {
+                output.push(term.indexInChunk);
+            }
+        }
+        return output;
+    }
+
+    refershTermByValue = async (value: string) => {
+        try {
+            const toUpdate = this.indecesWithValue(value);
+            for(const index of toUpdate) {
+                await this.refreshTerm(index);
+            }
+           
+        } catch (error) {
+           console.log(error); 
         }
     }
 }
