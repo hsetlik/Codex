@@ -10,9 +10,6 @@ export default observer(function AbstractTermDetails() {
     const {selectedTerm} = transcriptStore;
     if (selectedTerm == null) {
         return <Header content="No Term Selected" />
-    }
-    else if (selectedTerm.hasUserTerm) {
-        return <UserTermDetails term={selectedTerm} />
     } else {
         return <TermDetails term={selectedTerm} />
     }

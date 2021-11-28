@@ -14,10 +14,18 @@ interface Props {
 export default observer(function UserTermCreator({term}: Props) {
     const {userStore, transcriptStore} = useStore();
     const {selectedTerm} = transcriptStore;
+    const {createTerm} = userStore;
+    const handleFormSubmit = async (dto: UserTermCreateDto) => {
+        if (dto.termValue !== selectedTerm?.termValue) {
+            console.log(`Warning! submitted term ${dto.termValue} does not match selected term ${selectedTerm?.termValue}`);
+        }
+        dto.termValue = selectedTerm?.termValue!;
+        await createTerm(dto);
+    }
     return(
             <Formik
             initialValues={{language: selectedTerm?.language!, termValue: selectedTerm?.termValue!, firstTranslation: '', error: null}}
-            onSubmit={((values, {setErrors}) => userStore.createTerm(values).catch(error => setErrors(error)))}
+            onSubmit={((values, {setErrors}) => handleFormSubmit(values).catch(error => setErrors(error)))}
             >
                 {({handleSubmit, isSubmitting, errors}) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
