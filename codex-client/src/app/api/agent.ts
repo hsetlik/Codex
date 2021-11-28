@@ -90,7 +90,7 @@ export interface UserTermCreateDto {
     firstTranslation: string
 }
 
-interface AddTranslationDto {
+export interface AddTranslationDto {
     userTermId: string,
     newTranslation: string
 }

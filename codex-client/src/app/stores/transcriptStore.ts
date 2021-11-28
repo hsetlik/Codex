@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { AbstractTerm } from "../models/userTerm";
-import agent, { TermDto, UserTermCreateDto } from "../api/agent";
+import agent, { TermDto, UserTermCreateDto, AddTranslationDto } from "../api/agent";
 
 interface TranscriptChunkId{
     chunkId: string;
@@ -149,6 +149,23 @@ export default class TranscriptStore {
            
         } catch (error) {
            console.log(error); 
+        }
+    }
+
+    addTranslationToSelected = async (value: string) => {
+        try {
+            const userTermId = this.selectedTerm?.userTermId;
+            const dto: AddTranslationDto = {
+                userTermId: userTermId!,
+                newTranslation: value
+            };
+            await agent.UserTermEndpoints.addTranslation(dto);
+            runInAction(() => {
+                this.refershTermByValue(this.selectedTerm?.termValue!);
+            })
+            
+        } catch (error) {
+            console.log(error);
         }
     }
 }
