@@ -28,10 +28,5 @@ export interface AbstractTerm {
     userTermId: string
 }
 
-export function AssignWithoutIndex(input: AbstractTerm, output: AbstractTerm) {
-    const oldIndex = output.indexInChunk;
-    output = input;
-    output.indexInChunk = oldIndex;
-    return output;
-}
+
 

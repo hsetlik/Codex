@@ -2,14 +2,15 @@ import { AbstractTerm } from "../../app/models/userTerm";
 import TrailingCharacterGroup from "./TrailingCharacterGroup";
 import "../styles/styles.css";
 import BaseTranscriptTerm from "./BaseTranscriptTerm";
+import { observer } from "mobx-react-lite";
 
 interface Props {
     term: AbstractTerm
 }
 
 
-export default function TranscriptTerm({term}: Props) {
-    if (term.trailingCharacters.length > 0) {
+export default observer(function  TranscriptTerm({term}: Props) {
+    if (term.trailingCharacters.length) {
         return (
             <>
                <BaseTranscriptTerm term={term} />
@@ -20,4 +21,4 @@ export default function TranscriptTerm({term}: Props) {
     else {
         return <BaseTranscriptTerm term={term} />
     }
-}
+})

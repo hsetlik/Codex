@@ -11,7 +11,7 @@ interface Props {
 
 export default observer(function BaseTranscriptTerm({term}: Props) {
     const {transcriptStore} = useStore();
-    const {setSelectedTerm} = transcriptStore;
+    const {setSelectedTerm, selectedTerm} = transcriptStore;
     if (term.hasUserTerm) {
         return (
             <Button as="p" className="basic-codex-term" onClick={() => setSelectedTerm(term)}>

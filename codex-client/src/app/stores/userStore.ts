@@ -126,6 +126,8 @@ export default class UserStore{
         console.log("Creating term for: " + term.termValue);
         try {
             await agent.UserTermEndpoints.create(term);
+            if (store.transcriptStore.selectedTerm?.indexInChunk)
+                    await store.transcriptStore.refreshTerm(store.transcriptStore.selectedTerm?.indexInChunk);
         } catch (error) {
             console.log(error);
         }

@@ -68,8 +68,8 @@ export default class TranscriptStore {
     }
 
     setSelectedTerm = (newTerm: AbstractTerm) => {
-        console.log("Selected term: " + newTerm.termValue);
         this.selectedTerm = newTerm;
+        console.log("Selected term: " + this.selectedTerm.termValue);
     }
 
     refreshTerm = async (index: number) => {
@@ -80,8 +80,9 @@ export default class TranscriptStore {
                 value: term.termValue,
                 language: term.language
             };
-            const newTerm = await agent.UserTermEndpoints.get(dto);
+            const newTerm = await agent.TermEndpoints.getAbstractTerm(dto);
             runInAction(() => {
+                newTerm.indexInChunk = index;
                 this.currentAbstractTerms[index] = newTerm;
             })
         } catch (error) {

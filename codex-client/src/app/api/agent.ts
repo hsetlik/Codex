@@ -3,7 +3,7 @@ import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
-import { AbstractTerm } from "../models/userTerm";
+import { AbstractTerm, UserTerm } from "../models/userTerm";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -53,7 +53,7 @@ axios.interceptors.request.use(config => {
     config.headers = Object.assign({
       Authorization: `Bearer ${token}`
     }, config.headers);
-    console.log(config.headers);
+    //console.log(config.headers);
     return config;
   }
 )
@@ -98,10 +98,10 @@ interface AddTranslationDto {
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
-    get : (dto: TermDto) => requests.post<AbstractTerm>('/userTerm/getUserTerm', dto)
+    getUserTerm : (dto: TermDto) => requests.post<UserTerm>('/userTerm/getUserTerm', dto)
 }
  const TermEndpoints = {
-     get: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto)
+     getAbstractTerm: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto)
  }
 
 //==============================================================================================================

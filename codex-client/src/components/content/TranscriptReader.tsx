@@ -3,12 +3,16 @@ import { Container, Segment, Grid } from "semantic-ui-react";
 import TermDetails from "./AbstractTermDetails";
 import TranscriptPage from "./TranscriptPage";
 
-export default observer(function TranscriptReader(){
+interface Props {
+    contentId: string;
+}
+
+export default observer(function TranscriptReader({contentId}: Props){
     return(
         <Container >
             <Grid>
                 <Grid.Column width='10'>
-                    <TranscriptPage />
+                    <TranscriptPage  contentId={contentId} />
                 </Grid.Column>
                 <Grid.Column width='6'>
                     <TermDetails />
