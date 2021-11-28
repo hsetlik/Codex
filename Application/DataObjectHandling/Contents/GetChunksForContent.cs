@@ -20,7 +20,8 @@ namespace Application.DataObjectHandling.Contents
             {
                 TranscriptChunkId = chunk.TranscriptChunkId,
                 Language = chunk.Language,
-                ChunkText = chunk.ChunkText
+                ChunkText = chunk.ChunkText,
+                TranscriptChunkIndex = chunk.TranscriptChunkIndex
             };
         }
         public class Command : IRequest<Result<List<TranscriptChunkDto>>>

@@ -28,7 +28,7 @@ namespace Application.Extensions
             return uTerm;
         }
 
-        public static async Task<Result<Transcript>> CreateTranscriptFrom(this CreateTranscriptDto dto, DataContext context,int wordsPerChunk = 30)
+        public static async Task<Result<Transcript>> CreateTranscriptFrom(this CreateTranscriptDto dto, DataContext context,int wordsPerChunk = 80)
         {
             var output = new Transcript
             {
@@ -62,7 +62,8 @@ namespace Application.Extensions
                     {
                         Language = dto.Language,
                         ChunkText = currentChunkString,
-                        Transcript = output
+                        Transcript = output,
+                        TranscriptChunkIndex = chunks.Count
                     };
                     chunks.Add(chunk);
                     currentChunkSize = 0;
@@ -76,7 +77,8 @@ namespace Application.Extensions
                     {
                         Language = dto.Language,
                         ChunkText = currentChunkString,
-                        Transcript = output
+                        Transcript = output,
+                        TranscriptChunkIndex = chunks.Count
                     };
                     chunks.Add(chunk);
             }

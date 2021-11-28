@@ -95,12 +95,27 @@ TODO:
 
 FROM YESTERDAY:
 2. Dictionary API? (probably Yandex?)- low priority
-4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed
+~~4. Fix refreshing of content page to make sure the content in the URL is loaded and displayed~~
 
 TODO:
-1. Fix selected word misalignment on client side
+~~1. Fix selected word misalignment on client side~~
     - Replace currentUserTerms array w/ a map indexed by indexInChunk
-3. New seed with more contents
+~~3. New seed with more contents~~
+
+================================================================================================
+
+============================================= 11/28/21 =========================================
+
+FROM 11/18:
+    2. Dictionary API? (back burner);
+
+TODO:
+    1. Fix refershing on term creation such that: 
+        1. The user doesn't need to click on the word again to have the refreshed value displayed
+        2. Every instance of the word in the chunk gets updated as well
+    3. Add indeces to TranscriptChunkDto
+   ~~ 2. Make sure paging through content works~~
+     ~~   - Maybe add the chunk index or chunk GUID to the route/URL? easier to refresh things programatically maybe ~~
 
 ================================================================================================
 

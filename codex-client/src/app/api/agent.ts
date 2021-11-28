@@ -126,6 +126,7 @@ export interface TranscriptChunkDto {
     transcriptChunkId: string;
     language: string;
     chunkText: string;
+    transcriptChunkIndex: number
 }
 
 const Content = {

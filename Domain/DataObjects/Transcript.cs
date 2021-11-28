@@ -14,6 +14,7 @@ namespace Domain.DataObjects
         public Guid TranscriptId { get; set; }
         public string Language { get; set; }
         public string ChunkText { get; set; }
+        public int TranscriptChunkIndex { get; set; }
     }
     public class Transcript
     {
