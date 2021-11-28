@@ -110,12 +110,14 @@ FROM 11/18:
     2. Dictionary API? (back burner);
 
 TODO:
-    1. Fix refershing on term creation such that: 
-        1. The user doesn't need to click on the word again to have the refreshed value displayed
-        2. Every instance of the word in the chunk gets updated as well
-    3. Add indeces to TranscriptChunkDto
+   ~~ 1. Fix refershing on term creation such that: ~~
+       ~~ 1. The user doesn't need to click on the word again to have the refreshed value displayed~~
+       ~~ 2. Every instance of the word in the chunk gets updated as well~~
+   ~~ 3. Add indeces to TranscriptChunkDto ~~
    ~~ 2. Make sure paging through content works~~
-     ~~   - Maybe add the chunk index or chunk GUID to the route/URL? easier to refresh things programatically maybe ~~
+     4. Add rating changer/srs updater for UserTerm on client side
+        - Probably just use local state on GUI w/ a UserTerm object, just send the state object as post data
+        - Add client stuff for determining vocab size (this means new migration w/ a 'known word count' column on UserLanguageProfile)
 
 ================================================================================================
 

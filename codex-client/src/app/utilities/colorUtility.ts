@@ -13,14 +13,15 @@ function lerp(a: number, b: number, t: number)
 export function getColorForTerm(term: AbstractTerm) {
     if (term.hasUserTerm) {
         const knownColor = [255, 255, 255];
-        const unknownColor = [10, 171, 211];
+        const unknownColor = [10, 170, 211];
         const t = term.rating / 6;
         const newR = lerp(unknownColor[0], knownColor[0], t);
         const newG = lerp(unknownColor[1], knownColor[1], t);
         const newB = lerp(unknownColor[2], knownColor[2], t);
+        console.log(`New UserTerm color is: ${newR}, ${newG}, ${newB}`);
         return Color.rgb(newR, newG, newB);    
     }
-    else {
+    else if(!term.hasUserTerm) {
         return Color.rgb(200, 200, 200);
     }
 }

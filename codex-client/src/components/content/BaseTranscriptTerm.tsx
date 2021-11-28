@@ -12,16 +12,17 @@ interface Props {
 
 export default observer(function BaseTranscriptTerm({term}: Props) {
     const {transcriptStore} = useStore();
-    const {setSelectedTerm, selectedTerm} = transcriptStore;
+    const {setSelectedTerm} = transcriptStore;
+    const termColor = getColorForTerm(term);
     if (term.hasUserTerm) {
         return (
-            <Button as="p" className="basic-codex-term" onClick={() => setSelectedTerm(term)}>
+            <Button as="p" className="basic-codex-term" onClick={() => setSelectedTerm(term)} style={{background: termColor}}>
                 {term.termValue}
             </Button>
         )
     } else {
         return (
-            <Button as="p" className="basic-codex-term" onClick={() => setSelectedTerm(term)} style={{background: getColorForTerm(term)}} >
+            <Button as="p" className="basic-codex-term" onClick={() => setSelectedTerm(term)} style={{background: termColor}} >
                     {term.termValue}
             </Button>
         )
