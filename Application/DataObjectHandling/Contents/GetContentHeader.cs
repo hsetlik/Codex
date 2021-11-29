@@ -4,22 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs.Content;
 using Domain.DataObjects;
 using MediatR;
 using Persistence;
 
 namespace Application.DataObjectHandling.Contents
 {
-    public class ContentHeaderDto
-    {
-        public bool HasVideo { get; set; }
-        public bool HasAudio { get; set; }
-        public string ContentType { get; set; }
-        public string ContentName { get; set; }
-        public string Language { get; set; }
-        public string DateAdded { get; set; }
-        public Guid ContentId { get; set; }
-    }
     public static class ContentHeaderDtoFactory
     {
         public static ContentHeaderDto ToHeader(this Content content)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.DataObjectHandling.Contents;
 using Application.DataObjectHandling.Transcripts;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
 using Microsoft.AspNetCore.Mvc;
 using static Application.DataObjectHandling.Contents.EnsureContentTerms;
@@ -65,5 +66,22 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetContentViewRecords.Query{ContentId = Dto.ContentId}));
         }  
+        [HttpPost("addContentTag")]
+        public async Task<IActionResult> AddContentTag(ContentTagDto dto)
+        {
+            return HandleResult(await Mediator.Send(new AddContentTag.Command{Dto = dto}));
+        }
+
+        [HttpPost("getContentTags")]
+        public async Task<IActionResult> GetContentTags(ContentIdDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetContentTags.Query{Dto = dto}));
+        }
+
+        [HttpPost("getContentsWithTag")]
+        public async Task<IActionResult> GetContentsWithTag(TagValueDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetContentsWithTag.Command{Dto = dto}));
+        }
     }
 }

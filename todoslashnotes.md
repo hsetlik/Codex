@@ -129,7 +129,7 @@ TODO:
 ~~1. Add ChunkIndex to content route- Client~~
 2. Vocab size/data handling- Server
 3. Expand 'Content' functionality:
-    a. Add tags to content entity -Server
+    a. Add ContentTag to content entity -Server
     b. Show content header data as it relates to user- e.g percentage/number of words known, length -Server/Client
     c. Give UserLanguageProfile a ContentHistory related entity -Server
 

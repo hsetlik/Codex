@@ -30,7 +30,10 @@ namespace Persistence
         public DbSet<TranscriptChunk> TranscriptChunks { get; set; }
 
         public DbSet<ContentViewRecord> ContentViewRecords { get; set; }
+        
         public DbSet<ContentHistory> ContentHistories { get; set; }
+
+        public DbSet<ContentTag> ContentTags { get; set; }
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -55,8 +58,11 @@ namespace Persistence
             .HasOne(u => u.UserLanguageProfile)
             .WithOne(u => u.ContentHistory)
             .HasForeignKey<ContentHistory>(u => u.LanguageProfileId);
-          
-            
+
+            builder.Entity<ContentTag>()
+            .HasOne(u => u.Content)
+            .WithMany(c => c.ContentTags)
+            .HasForeignKey(u => u.ContentId);
 
         }
     }
