@@ -7,6 +7,7 @@ export default observer(function RatingButtonGroup() {
     return(
         <div>
             
+            
         </div>
     )
 })

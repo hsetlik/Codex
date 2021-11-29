@@ -94,5 +94,16 @@ namespace Application.Extensions
                 UserTermId = userTerm.UserTermId
             };
         }
+
+        public static UserTerm UpdatedWith(this UserTerm userTerm, UserTermDetailsDto details)
+        {
+            userTerm.TimesSeen = details.TimesSeen;
+            userTerm.EaseFactor = details.EaseFactor;
+            userTerm.Rating = details.Rating;
+            userTerm.DateTimeDue = details.DateTimeDue;
+            userTerm.SrsIntervalDays = details.SrsIntervalDays;
+            userTerm.UserTermId = details.UserTermId;
+            return userTerm;
+        }
     }
 }

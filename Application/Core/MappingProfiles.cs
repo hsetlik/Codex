@@ -7,10 +7,12 @@ using Domain;
 
 namespace Application.Core
 {
-    public class MappingProfiles
+    public class MappingProfiles : Profile
     {
         public MappingProfiles()
         {
+           
+
             
 
         }

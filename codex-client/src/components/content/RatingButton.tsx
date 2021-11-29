@@ -9,9 +9,12 @@ interface Props {
 }
 
 export default observer (function RatingButton({ratingValue, term}: Props) {
+    const rateTerm = () => {
+        
+    }
 
     return (
-        <Button >
+        <Button basic >
 
         </Button>
     )
