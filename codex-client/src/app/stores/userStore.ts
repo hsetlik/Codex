@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent, { UserTermCreateDto } from '../api/agent';
 import { User, UserFormValues } from '../models/user';
+import { UserTerm, UserTermDetails } from '../models/userTerm';
 import { store } from './store';
 
 export default class UserStore{
@@ -130,6 +131,15 @@ export default class UserStore{
                     await store.transcriptStore.refershTermByValue(term.termValue);
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    updateUserTerm = async (userTerm: UserTermDetails) => {
+        try {
+           await agent.UserTermEndpoints.updateUserTerm(userTerm);
+           runInAction(() => store.transcriptStore.refershTermByValue(userTerm.termValue)); 
+        } catch (error) {
+           console.log(error); 
         }
     }
 

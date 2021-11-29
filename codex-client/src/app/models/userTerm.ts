@@ -12,6 +12,14 @@ export interface UserTerm {
     translations: string[]
 }
 
+export interface UserTermDetails {
+    termValue: string,
+    language: string,
+    timesSeen: number,
+    rating: number,
+    easeFactor: number,
+    userTermId: string
+}
 export interface AbstractTerm {
     //common term props
     termValue: string,
@@ -26,6 +34,18 @@ export interface AbstractTerm {
     translations: string[],
     indexInChunk: number
     userTermId: string
+}
+
+export function AbstractToUserTermDetails(abstract: AbstractTerm) {
+    const userTerm: UserTermDetails = {
+        termValue: abstract.termValue,
+        language: abstract.language,
+        timesSeen: abstract.timesSeen,
+        rating: abstract.rating,
+        easeFactor: abstract.easeFactor,
+        userTermId: abstract.userTermId
+    }
+    return userTerm;
 }
 
 

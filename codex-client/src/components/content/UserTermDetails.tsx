@@ -3,6 +3,7 @@ import React from "react";
 import { Container, Header, List } from "semantic-ui-react";
 import { AbstractTerm } from "../../app/models/userTerm";
 import AddTranslationForm from "./AddTranslationForm";
+import RatingButtonGroup from "./RatingButtonGroup";
 
 interface Props {
     term: AbstractTerm
@@ -19,6 +20,7 @@ export default observer(function UserTermDetails({term}: Props) {
                        <List.Item key={t}>{t}</List.Item>
                     ))}
                 </List>
+                <RatingButtonGroup />
                 <Header as='h3' content='Add Translation' />
                 <AddTranslationForm term={term} />
             </Container>
