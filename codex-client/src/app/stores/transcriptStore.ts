@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { AbstractTerm } from "../models/userTerm";
-import agent, { TermDto, UserTermCreateDto, AddTranslationDto } from "../api/agent";
+import agent, { TermDto, UserTermCreateDto, AddTranslationDto, PopularTranslationDto } from "../api/agent";
 
 interface TranscriptChunkId{
     chunkId: string;
@@ -14,6 +14,8 @@ export default class TranscriptStore {
     transcriptChunkIds: TranscriptChunkId[] = [];
     currentChunkIndex: number = 0;
     //actually need to observe
+    popTranslationsLoaded = false;
+    currentPopularTranslations: PopularTranslationDto[] = [];
     currentAbstractTerms: AbstractTerm[] = [];
     selectedTerm: AbstractTerm | null = null;
     termsAreLoaded: boolean = false;
@@ -67,6 +69,26 @@ export default class TranscriptStore {
         } 
     }
 
+    loadPopularTranslations = async () => {
+        this.popTranslationsLoaded = false;
+        this.currentPopularTranslations = [];
+        try {
+            const termDto: TermDto = {
+                value: this.selectedTerm?.termValue!,
+                language: this.selectedTerm?.language!
+            }
+            const translations = await agent.TermEndpoints.getPopularTranslations(termDto);
+            runInAction(() => {
+                this.currentPopularTranslations = translations;
+                this.popTranslationsLoaded = true;
+            })
+        } catch (error) {
+           console.log(error);
+           runInAction(() => this.popTranslationsLoaded = true);
+        }
+    }
+
+
     advanceChunk = async () => {
         try {
             var nextIndex = this.currentChunkIndex + 1;
@@ -105,6 +127,9 @@ export default class TranscriptStore {
     }
     setSelectedTerm = (newTerm: AbstractTerm) => {
         this.selectedTerm = newTerm;
+        if (!this.selectedTerm.hasUserTerm) {
+            this.loadPopularTranslations();
+        }
         console.log("Selected term: " + this.selectedTerm.termValue);
     }
 

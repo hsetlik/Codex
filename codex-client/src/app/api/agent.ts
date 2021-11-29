@@ -95,6 +95,11 @@ export interface AddTranslationDto {
     newTranslation: string
 }
 
+export interface PopularTranslationDto {
+    value: string,
+    numInstances: number
+}
+
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
@@ -102,7 +107,8 @@ const UserTermEndpoints = {
     updateUserTerm: (dto: UserTermDetails) => requests.post('/userTerm/updateUserTerm', dto)
 }
  const TermEndpoints = {
-     getAbstractTerm: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto)
+     getAbstractTerm: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto),
+     getPopularTranslations: (dto: TermDto) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', dto)
  }
 
 //==============================================================================================================

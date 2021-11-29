@@ -23,6 +23,7 @@ namespace Application.DataObjectHandling.Terms
         public int Rating  { get; set; }
         public List<string> Translations { get; set; }
         public Guid UserTermId { get; set; }
+        public int TimesSeen { get; set; }
     }
 
     

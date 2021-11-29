@@ -17,7 +17,7 @@ export default observer (function RatingButton({ratingValue, term}: Props) {
         updateUserTerm(userTerm);
     }
     return (
-        <Button basic onClick={rateTerm} >
+        <Button basic onClick={rateTerm} active={ratingValue === term.rating} style={{}}>
             {ratingValue}
         </Button>
     )

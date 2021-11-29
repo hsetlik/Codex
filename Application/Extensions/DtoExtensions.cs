@@ -24,6 +24,7 @@ namespace Application.Extensions
                 SrsIntervalDays = dto.SrsIntervalDays,
                 Rating = dto.Rating,
                 Translations = dto.Translations,
+                TimesSeen = dto.TimesSeen
             };
             return uTerm;
         }

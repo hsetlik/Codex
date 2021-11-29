@@ -70,7 +70,8 @@ namespace Application.Extensions
                 Rating = dto.Rating,
                 SrsIntervalDays = dto.SrsIntervalDays,
                 EaseFactor = dto.EaseFactor,
-                DateTimeDue = DateTime.Today.ToString()
+                DateTimeDue = DateTime.Today.ToString(),
+                TimesSeen = dto.TimesSeen
             };
 
             uTerm.Translations = uTerm.GetAsTranslations(dto.Translations);
@@ -133,7 +134,8 @@ namespace Application.Extensions
                     SrsIntervalDays = userTerm.SrsIntervalDays,
                     Rating = userTerm.Rating,
                     Translations = translations,
-                    UserTermId = userTerm.UserTermId
+                    UserTermId = userTerm.UserTermId,
+                    TimesSeen = userTerm.TimesSeen
                 };
             }
             else

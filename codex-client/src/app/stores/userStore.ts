@@ -136,6 +136,7 @@ export default class UserStore{
 
     updateUserTerm = async (userTerm: UserTermDetails) => {
         try {
+            console.log(`Term seen ${userTerm.timesSeen} times`);
            await agent.UserTermEndpoints.updateUserTerm(userTerm);
            runInAction(() => store.transcriptStore.refershTermByValue(userTerm.termValue)); 
         } catch (error) {

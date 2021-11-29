@@ -23,7 +23,7 @@ namespace API.Controllers
 
           //should go to: /Term/popularTranslationsFor
         [Authorize]
-        [HttpGet("popularTranslationsFor")]
+        [HttpPost("popularTranslationsFor")]
         public async Task<IActionResult> PopularTranslationsFor(TermDto dto)
         {
             return HandleResult(await Mediator.Send(new PopularTranslationsList.Query
