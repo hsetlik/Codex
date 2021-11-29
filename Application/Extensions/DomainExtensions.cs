@@ -50,6 +50,16 @@ namespace Application.Extensions
             return output;
         }
 
+        public static List<string> GetTranslationStrings(this UserTerm userTerm)
+        {
+            var output = new List<string>();
+            foreach(var t in userTerm.Translations)
+            {
+                output.Add(t.Value);
+            }
+            return output;
+        }
+
         // works something like this: https://en.wikipedia.org/wiki/SuperMemo
         public static UserTerm AnsweredWith(this UserTerm input, int answer)
         {

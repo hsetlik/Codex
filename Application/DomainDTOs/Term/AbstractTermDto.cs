@@ -13,12 +13,12 @@ namespace Application.DataObjectHandling.Terms
         public string TermValue { get; set; }
         public string TrailingCharacters { get; set; } 
         public string Language { get; set; } 
+        public int IndexInChunk { get; set; }
         public bool HasUserTerm { get; set; } // Whether a matching userTerm exists
         public float EaseFactor { get; set; }
         public float SrsIntervalDays { get; set; }
         public int Rating  { get; set; }
         public List<string> Translations { get; set; }
-        public int IndexInChunk { get; set; }
         public Guid UserTermId { get; set; }
         public int TimesSeen { get; set; }
     }

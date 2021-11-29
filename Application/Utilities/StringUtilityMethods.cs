@@ -16,5 +16,17 @@ namespace Application.Utilities
                 return "No valid characters in string";
             return match.Value.ToUpper();
         }   
+
+        public static string GetTrailing(string input)
+        {
+           var match = Regex.Match(input, @"([^\p{P}^\s]+)");
+            if (!match.Success)
+                return "No valid characters in string";
+            if (match.Value.Length < input.Length)
+            {
+                return input.Substring(match.Value.Length);
+            }
+            return "";
+        }
     }
 }

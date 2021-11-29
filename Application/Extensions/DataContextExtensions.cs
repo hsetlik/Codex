@@ -86,85 +86,68 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext _context, TermDto dto, string username)
+        public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
         {
-            var fullString = dto.Value;
-            string splitExp = @"([^\p{P}^\s]+)"; 
-            var match = Regex.Match(fullString, splitExp);
-            if(!match.Success)
-                return Result<AbstractTermDto>.Failure("No valid word characers!");
-            var wordWithCase = match.Value;
-            var user = await _context.Users.Include(u => u.UserLanguageProfiles).FirstOrDefaultAsync(x => x.UserName == username);
-                var profile = await _context.UserLanguageProfiles.FirstOrDefaultAsync(
-                    x => x.UserId == user.Id &&
-                    x.Language == dto.Language);
-                if (profile == null) return Result<AbstractTermDto>.Failure("No associated profile found");
-                Console.WriteLine("Language profile found");
-        var profileId = profile.LanguageProfileId;
-        var parsedTerm = StringUtilityMethods.AsTermValue(dto.Value);
-        Console.WriteLine($"Parsed term is: {parsedTerm}");
-        Console.WriteLine($"Language profile ID is: {profileId}");
-        var userTerm = await _context.UserTerms
-        .Include(u => u.Term)
-        .Include(u => u.Translations)
-        .FirstOrDefaultAsync(
-                    x => x.LanguageProfileId == profileId &&
-                    x.Term.NormalizedValue == parsedTerm);
-        if (wordWithCase != fullString)
-                Console.WriteLine("Trailing characters found for word: " + wordWithCase);
-            var termIdentifier = wordWithCase.ToUpper();
-            var term = await _context.Terms
-                .FirstOrDefaultAsync(
-                    x => x.Language == dto.Language && 
-                    x.NormalizedValue == termIdentifier);
-            if (term == null) return Result<AbstractTermDto>.Failure("No valid term found for " + dto.Value);
-            //whether the userterm exists determines which subclass is created
-            TermDto termDto;
-            if (userTerm != null)
-            {
-            //we have a userterm, so we create the UserTermDto subclass
-                var translations = new List<string>();
-                foreach(var t in userTerm.Translations) //NOTE: there's definitely a better C#-ish way to do this
-                {
-                    translations.Add(t.Value);
-                }
-                //NOTE: Value should always be the case-sensitive version of the term w/o punctuation or whitespace, NOT normalized string
-                termDto = new UserTermDto
-                {
-                    Value = wordWithCase,
-                    Language = term.Language,
+            // 1. Get the term
+            var normValue = StringUtilityMethods.AsTermValue(dto.Value);
+            var term = await context.Terms.FirstOrDefaultAsync(
+                t => t.Language == dto.Language &&
+                t.NormalizedValue == normValue);
+            if (term == null)
+                return Result<AbstractTermDto>.Failure("No matching term");
+            // 2. Get the UserLanguageProfile
+            var profile = await context.UserLanguageProfiles
+            .Include(p => p.User)
+            .FirstOrDefaultAsync(t => t.Language == dto.Language);
+           if (term == null)
+                return Result<AbstractTermDto>.Failure("No matching profile");
+            
+            // 3. Check for a UserTerm
+            var userTerm = await context.UserTerms
+            .Include(t => t.Translations)
+            .FirstOrDefaultAsync(u => u.TermId == term.TermId &&
+             u.LanguageProfileId == profile.LanguageProfileId);
+             AbstractTermDto output;
+             var trailing = StringUtilityMethods.GetTrailing(dto.Value);
+             if (userTerm != null) 
+             {
+                 //HasUserTerm = true
+                 output = new AbstractTermDto
+                 {
+                    TrailingCharacters = trailing,
+                    Language = dto.Language,
+                    HasUserTerm = true,
                     EaseFactor = userTerm.EaseFactor,
                     SrsIntervalDays = userTerm.SrsIntervalDays,
                     Rating = userTerm.Rating,
-                    Translations = translations,
+                    Translations = userTerm.GetTranslationStrings(),
                     UserTermId = userTerm.UserTermId,
                     TimesSeen = userTerm.TimesSeen
-                };
-            }
-            else
-            {
-                termDto = new RawTermDto
-                {
-                    Value = wordWithCase,
-                    Language = term.Language
-                };
-            }
-            var aTermDto = AbstractTermFactory.Generate(termDto);
-            //don't forget to add trailing characters as necessary before returning
-            if (fullString.Length > wordWithCase.Length)
-            {
-                aTermDto.TrailingCharacters = fullString.Substring(wordWithCase.Length);
-            }
-            else
-                aTermDto.TrailingCharacters = "";
-            return Result<AbstractTermDto>.Success(aTermDto);
-    }
+                 };
+             }
+             else
+             {
+                 output = new AbstractTermDto
+                 {
+                    TrailingCharacters = trailing,
+                    Language = dto.Language,
+                    HasUserTerm = false,
+                    EaseFactor = 0.0f,
+                    SrsIntervalDays = 0,
+                    Rating = 0,
+                    Translations = new List<string>(),
+                    TimesSeen = 0
+                 };
+             }
+             //! Don't forget to set the TermValue back to the case-sensitive original
+             output.TermValue = dto.Value;
+            return Result<AbstractTermDto>.Success(output);
+        }
 
         public static async Task<Result<List<AbstractTermDto>>> AbstractTermsFor(this DataContext context, Guid transcriptChunkId, string username)
         {
             var output = new List<AbstractTermDto>();
             var chunk = await context.TranscriptChunks
-            .Include(u => u.Transcript)
             .FirstOrDefaultAsync(x => x.TranscriptChunkId == transcriptChunkId);
             if (chunk == null)
                 return Result<List<AbstractTermDto>>.Failure("No matching chunk found");
@@ -176,14 +159,13 @@ namespace Application.Extensions
                     Value = chunkWords[i],
                     Language = chunk.Language
                 };
+                //NOTE: can this be paralellized?
                 var aTerm = await context.AbstractTermFor(dto, username);
-                //add the index so react can have unique identifiers
                 if (aTerm.IsSuccess)
                 {
                     aTerm.Value.IndexInChunk = i;
                     output.Add(aTerm.Value);
                 }
-                    
             }
             return Result<List<AbstractTermDto>>.Success(output);
         }
@@ -433,7 +415,6 @@ namespace Application.Extensions
             return Result<List<ContentHeaderDto>>.Success(list);
         }
 
-
         public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username)
         {
             int total = 0;
@@ -444,19 +425,20 @@ namespace Application.Extensions
             .FirstOrDefaultAsync(u => u.ContentId == contentId);
             if (content == null)
                 return Result<KnownWordsDto>.Failure("Content not loaded");
+            List<Task<Result<List<AbstractTermDto>>>> chunks = new List<Task<Result<List<AbstractTermDto>>>>();
             for(int i = 0; i < content.Transcript.TranscriptChunks.Count; ++i)
             {
                 var chunk = content.Transcript.TranscriptChunks.Find(chunk => chunk.TranscriptChunkIndex == i);
-                var abstractTerms = await context.AbstractTermsFor(chunk.TranscriptChunkId, username);
-                if (abstractTerms == null || !abstractTerms.IsSuccess)
-                    return Result<KnownWordsDto>.Failure("could not get abstract terms");
-                foreach(var term in abstractTerms.Value)
+                chunks.Add(context.AbstractTermsFor(chunk.TranscriptChunkId, username));
+            }
+            var result = await Task.WhenAll(chunks);
+            foreach(var chunk in result)
+            {
+                foreach(var term in chunk.Value)
                 {
                     total += 1;
                     if (term.HasUserTerm && term.Rating >= 3)
-                    {
                         known += 1;
-                    }   
                 }
             }
             var output = new KnownWordsDto
@@ -466,6 +448,8 @@ namespace Application.Extensions
             };
             return Result<KnownWordsDto>.Success(output);
         }
+
+
         
 
     }
