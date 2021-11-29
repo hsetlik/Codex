@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Container, Header, List } from "semantic-ui-react";
-import { AbstractTerm } from "../../app/models/userTerm";
-import AddTranslationForm from "./AddTranslationForm";
-import RatingButtonGroup from "./RatingButtonGroup";
+import { AbstractTerm } from "../../../app/models/userTerm";
+import AddTranslationForm from "../transcript/AddTranslationForm";
+import RatingButtonGroup from "../termDetails/RatingButtonGroup"
 
 interface Props {
     term: AbstractTerm

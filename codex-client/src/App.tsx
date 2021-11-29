@@ -4,7 +4,7 @@ import { useStore } from './app/stores/store'
 import { Route, Routes } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import NavBar from './components/common/NavBar';
-import ContentRoute from './components/content/ContentRoute';
+import ContentRoute from './components/content/termDetails/ContentRoute';
 import FeedRoute from './components/feed/FeedRoute';
 import LoginForm from './components/account/LoginForm';
 import AccountRoute from './components/account/AccountRoute';

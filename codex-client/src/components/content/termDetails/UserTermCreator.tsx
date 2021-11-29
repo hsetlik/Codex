@@ -2,10 +2,10 @@ import { Formik, Form, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Header, Segment, Button, Label } from "semantic-ui-react";
-import { UserTermCreateDto } from "../../app/api/agent";
-import { AbstractTerm } from "../../app/models/userTerm";
-import { useStore } from "../../app/stores/store";
-import MyTextInput from "../formComponents/MyTextInput";
+import { UserTermCreateDto } from "../../../app/api/agent";
+import { AbstractTerm } from "../../../app/models/userTerm";
+import { useStore } from "../../../app/stores/store";
+import MyTextInput from "../../formComponents/MyTextInput";
 interface Props {
     term: AbstractTerm
 }

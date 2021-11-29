@@ -1,7 +1,7 @@
 //import { useParams } from "react-router";
 import { useParams } from "react-router-dom";
 import { Header } from "semantic-ui-react";
-import TranscriptReader from "./TranscriptReader";
+import TranscriptReader from "../transcript/TranscriptReader";
 
 export default function ContentRoute(){
     const {id} = useParams();

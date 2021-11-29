@@ -1,8 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Header } from "semantic-ui-react";
-import { useStore } from "../../app/stores/store";
+import { useStore } from "../../../app/stores/store";
 import TermDetails from "./TermDetails";
-import UserTermDetails from "./UserTermDetails";
 
 
 export default observer(function AbstractTermDetails() {

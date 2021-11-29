@@ -1,5 +1,5 @@
 import { Container, Header } from "semantic-ui-react";
-import { useStore } from "../../app/stores/store";
+import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import TranscriptTerm from "./TranscriptTerm";
 import { useEffect } from "react";

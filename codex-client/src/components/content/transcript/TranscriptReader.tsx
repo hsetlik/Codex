@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Container, Segment, Grid } from "semantic-ui-react";
-import TermDetails from "./AbstractTermDetails";
+import TermDetails from "../termDetails/AbstractTermDetails";
 import TranscriptPage from "./TranscriptPage";
 import TranscriptPageHeader from "./TranscriptPageHeader";
 

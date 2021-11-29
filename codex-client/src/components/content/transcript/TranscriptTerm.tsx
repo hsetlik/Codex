@@ -1,7 +1,7 @@
-import { AbstractTerm } from "../../app/models/userTerm";
+import { AbstractTerm } from "../../../app/models/userTerm";
 import TrailingCharacterGroup from "./TrailingCharacterGroup";
-import "../styles/styles.css";
-import BaseTranscriptTerm from "./BaseTranscriptTerm";
+import "../../styles/styles.css";
+import BaseTranscriptTerm from "../termDetails/BaseTranscriptTerm";
 import { observer } from "mobx-react-lite";
 
 interface Props {

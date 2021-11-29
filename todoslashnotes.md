@@ -120,4 +120,19 @@ TODO:
         - Add client stuff for determining vocab size (this means new migration w/ a 'known word count' column on UserLanguageProfile)
 
 ================================================================================================
+============================================= 11/29/21 =========================================
 
+FROM 11/18:
+
+2. ~~Dictionary API? (back burner);~~
+
+TODO:
+
+1. Add ChunkIndex to content route- Client
+2. Vocab size/data handling- Server
+3. Expand 'Content' functionality:
+    a. Add tags to content entity -Server
+    b. Show content header data as it relates to user- e.g percentage/number of words known, length -Server/Client
+    c. Give UserLanguageProfile a LessonHistory related entity -Server
+
+=================================================================================================
