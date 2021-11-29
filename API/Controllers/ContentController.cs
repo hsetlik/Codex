@@ -7,6 +7,7 @@ using Application.DataObjectHandling.Transcripts;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
+using Application.DomainDTOs.UserLanguageProfile;
 using Microsoft.AspNetCore.Mvc;
 using static Application.DataObjectHandling.Contents.EnsureContentTerms;
 using static Application.DataObjectHandling.Contents.GetChunksForContent;
@@ -82,6 +83,12 @@ namespace API.Controllers
         public async Task<IActionResult> GetContentsWithTag(TagValueDto dto)
         {
             return HandleResult(await Mediator.Send(new GetContentsWithTag.Command{Dto = dto}));
+        }
+
+        [HttpPost("getKnownWordsForContent")]
+        public async Task<IActionResult> GetKnownWordsForContent(ContentIdDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetKnownWordsForContent.Query{ContentId = dto.ContentId}));
         }
     }
 }

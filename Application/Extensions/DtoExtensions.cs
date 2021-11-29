@@ -86,5 +86,6 @@ namespace Application.Extensions
             output.TranscriptChunks = chunks;
             return Result<Transcript>.Success(output);
         }
+
     }
 }

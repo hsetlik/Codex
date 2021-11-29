@@ -128,9 +128,13 @@ TODO:
 
 ~~1. Add ChunkIndex to content route- Client~~
 2. Vocab size/data handling- Server
-3. Expand 'Content' functionality:
-    a. Add ContentTag to content entity -Server
-    b. Show content header data as it relates to user- e.g percentage/number of words known, length -Server/Client
-    c. Give UserLanguageProfile a ContentHistory related entity -Server
+3. ~~Expand 'Content' functionality:~~
+    a. ~~Add ContentTag to content entity -Server~~
+    b. ~~Show content header data as it relates to user- e.g percentage/number of words known~~
+
+        This needs to:
+        1. ~~given a contentId and a username, return the percentage of words which have UserTerms~~
+    c. ~~Give UserLanguageProfile a ContentHistory related entity -Server~~
+4. Figure out why GetKnownWordsForContent is so slow - research .NET performance bottlenecks/threading (or else is this just a fact of SQLite?)
 
 =================================================================================================

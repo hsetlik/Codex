@@ -10,6 +10,7 @@ using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
+using Application.DomainDTOs.UserLanguageProfile;
 using Application.Utilities;
 using Domain.DataObjects;
 using MediatR;
@@ -152,7 +153,6 @@ namespace Application.Extensions
             //don't forget to add trailing characters as necessary before returning
             if (fullString.Length > wordWithCase.Length)
             {
-                Console.WriteLine("Trailing characters found");
                 aTermDto.TrailingCharacters = fullString.Substring(wordWithCase.Length);
             }
             else
@@ -432,6 +432,41 @@ namespace Application.Extensions
             var list = dict.Values.ToList();
             return Result<List<ContentHeaderDto>>.Success(list);
         }
+
+
+        public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username)
+        {
+            int total = 0;
+            int known = 0;
+            var content = await context.Contents
+            .Include(c => c.Transcript)
+            .ThenInclude(t => t.TranscriptChunks)
+            .FirstOrDefaultAsync(u => u.ContentId == contentId);
+            if (content == null)
+                return Result<KnownWordsDto>.Failure("Content not loaded");
+            for(int i = 0; i < content.Transcript.TranscriptChunks.Count; ++i)
+            {
+                var chunk = content.Transcript.TranscriptChunks.Find(chunk => chunk.TranscriptChunkIndex == i);
+                var abstractTerms = await context.AbstractTermsFor(chunk.TranscriptChunkId, username);
+                if (abstractTerms == null || !abstractTerms.IsSuccess)
+                    return Result<KnownWordsDto>.Failure("could not get abstract terms");
+                foreach(var term in abstractTerms.Value)
+                {
+                    total += 1;
+                    if (term.HasUserTerm && term.Rating >= 3)
+                    {
+                        known += 1;
+                    }   
+                }
+            }
+            var output = new KnownWordsDto
+            {
+                TotalWords = total,
+                KnownWords = known
+            };
+            return Result<KnownWordsDto>.Success(output);
+        }
+        
 
     }
 
