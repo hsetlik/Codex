@@ -17,5 +17,6 @@ namespace Domain.DataObjects
 
         //Naviagtion Property
         public ICollection<UserTerm> UserTerms { get; set; } = new List<UserTerm>(); // EF will automatically configure a one-to-many relationship
+        public ICollection<ContentViewRecord> ContentViewRecords { get; set; }
     }
 }

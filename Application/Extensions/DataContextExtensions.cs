@@ -319,5 +319,31 @@ namespace Application.Extensions
             };
             return Result<List<UserTermDetailsDto>>.Success(output);
         }
+
+        public static async Task<Result<Unit>> RecordContentView(this DataContext context, Guid contentId, string username)
+        {
+            var content = await context.Contents.FindAsync(contentId);
+            if (content == null)
+                return Result<Unit>.Failure("No matching content found");
+            var profile = await context.UserLanguageProfiles.Include(p => p.User)
+            .FirstOrDefaultAsync(t => t.Language == content.Language && t.User.UserName == username);
+            if (profile == null)
+                return Result<Unit>.Failure("No Profile found");
+
+            var record = new ContentViewRecord
+            {
+                ContentId = content.ContentId,
+                UserLanguageProfile = profile,
+                AccessedOn = DateTime.Now
+            };
+
+            context.ContentViewRecords.Add(record);
+            var success = await context.SaveChangesAsync() > 0;
+            if(!success)
+                return Result<Unit>.Failure("Could not save changes");
+            return Result<Unit>.Success(Unit.Value);
+        }
     }
+
+    
 }

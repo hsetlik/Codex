@@ -51,6 +51,12 @@ namespace API.Controllers
         public async Task<IActionResult> GetChunksIdsForContent(ContentIdDto dto)
         {
             return HandleResult(await Mediator.Send(new GetChunkIdsForContent.Query{Dto = dto}));
+        }
+        
+        [HttpPost("recordContentView")]
+        public async Task<IActionResult> RecordContentView(ContentIdDto Dto)
+        {
+            return HandleResult(await Mediator.Send(new RecordContentView.Command{ContentId = Dto.ContentId}));
         }  
     }
 }
