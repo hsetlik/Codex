@@ -126,15 +126,16 @@ FROM 11/18:
 
 TODO:
 
-~~1. Add ChunkIndex to content route- Client~~
-2. Vocab size/data handling- Server
+1. ~~Add ChunkIndex to content route- Client~~
+2. Vocab size/data handling- Server - Add "KnownWords" column to UserLanguageProfile entity
+    NOTE: Figure out when & how this number should be updated - (have it check to increment/decrement every time the Rating is changed?)
 3. ~~Expand 'Content' functionality:~~
     a. ~~Add ContentTag to content entity -Server~~
     b. ~~Show content header data as it relates to user- e.g percentage/number of words known~~
-
-        This needs to:
+        ~~This needs to:~~
         1. ~~given a contentId and a username, return the percentage of words which have UserTerms~~
     c. ~~Give UserLanguageProfile a ContentHistory related entity -Server~~
-4. Figure out why GetKnownWordsForContent is so slow - research .NET performance bottlenecks/threading (or else is this just a fact of SQLite?)
-
+4. ~~Figure out why GetKnownWordsForContent is so slow - research .NET performance bottlenecks/threading (or else is this just a fact of SQLite?)~~
+5. Make client-side display of known words on content headers (add knownWords to content header, just return an empty div)
+6. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
 =================================================================================================

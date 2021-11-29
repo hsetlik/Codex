@@ -447,10 +447,7 @@ namespace Application.Extensions
                 KnownWords = known
             };
             return Result<KnownWordsDto>.Success(output);
-        }
-
-
-        
+        }        
 
     }
 
