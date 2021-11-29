@@ -8,6 +8,7 @@ using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.Transcripts;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.ContentViewRecord;
 using Application.Utilities;
 using Domain.DataObjects;
 using MediatR;
@@ -343,6 +344,31 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Could not save changes");
             return Result<Unit>.Success(Unit.Value);
         }
+
+        public static async Task<Result<List<ContentViewRecordDto>>> AllViewRecords(this DataContext context, Guid contentId)
+        {
+            var matchingRecords = await context.ContentViewRecords
+            .Include(c => c.UserLanguageProfile)
+            .ThenInclude(p => p.User)
+            .Where(u => u.ContentId == contentId)
+            .ToListAsync();
+            if (matchingRecords == null)
+                return Result<List<ContentViewRecordDto>>.Failure("No matching records found");
+            var output = new List<ContentViewRecordDto>();
+            foreach(var rec in matchingRecords)
+            {
+                var dto = new ContentViewRecordDto
+                {
+                    ContentId = contentId,
+                    AccessedOn = rec.AccessedOn,
+                    Username = rec.UserLanguageProfile.User.UserName
+                };
+                output.Add(dto);
+            }
+            return Result<List<ContentViewRecordDto>>.Success(output);
+        }
+
+
     }
 
     

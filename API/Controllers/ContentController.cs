@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.DataObjectHandling.Contents;
 using Application.DataObjectHandling.Transcripts;
 using Application.DomainDTOs;
+using Application.DomainDTOs.ContentViewRecord;
 using Microsoft.AspNetCore.Mvc;
 using static Application.DataObjectHandling.Contents.EnsureContentTerms;
 using static Application.DataObjectHandling.Contents.GetChunksForContent;
@@ -52,11 +53,17 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetChunkIdsForContent.Query{Dto = dto}));
         }
-        
+
         [HttpPost("recordContentView")]
         public async Task<IActionResult> RecordContentView(ContentIdDto Dto)
         {
             return HandleResult(await Mediator.Send(new RecordContentView.Command{ContentId = Dto.ContentId}));
+        }  
+
+        [HttpPost("getContentViewRecords")]
+        public async Task<IActionResult> GetContentViewRecords(ContentIdDto Dto)
+        {
+            return HandleResult(await Mediator.Send(new GetContentViewRecords.Query{ContentId = Dto.ContentId}));
         }  
     }
 }
