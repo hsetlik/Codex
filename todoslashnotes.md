@@ -115,9 +115,7 @@ TODO:
        ~~2. Every instance of the word in the chunk gets updated as well~~
    ~~3. Add indeces to TranscriptChunkDto~~
    ~~2. Make sure paging through content works~~
-     4. Add rating changer/srs updater for UserTerm on client side
-        - Probably just use local state on GUI w/ a UserTerm object, just send the state object as post data
-        - Add client stuff for determining vocab size (this means new migration w/ a 'known word count' column on UserLanguageProfile)
+   ~~4. Add rating changer/srs updater for UserTerm on client side~~
 
 ================================================================================================
 ============================================= 11/29/21 =========================================
@@ -133,6 +131,6 @@ TODO:
 3. Expand 'Content' functionality:
     a. Add tags to content entity -Server
     b. Show content header data as it relates to user- e.g percentage/number of words known, length -Server/Client
-    c. Give UserLanguageProfile a LessonHistory related entity -Server
+    c. Give UserLanguageProfile a ContentHistory related entity -Server
 
 =================================================================================================

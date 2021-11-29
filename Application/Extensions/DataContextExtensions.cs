@@ -326,7 +326,9 @@ namespace Application.Extensions
             var content = await context.Contents.FindAsync(contentId);
             if (content == null)
                 return Result<Unit>.Failure("No matching content found");
-            var profile = await context.UserLanguageProfiles.Include(p => p.User)
+            var profile = await context.UserLanguageProfiles
+            .Include(p => p.User)
+            .Include(u => u.ContentHistory)
             .FirstOrDefaultAsync(t => t.Language == content.Language && t.User.UserName == username);
             if (profile == null)
                 return Result<Unit>.Failure("No Profile found");
@@ -337,8 +339,7 @@ namespace Application.Extensions
                 UserLanguageProfile = profile,
                 AccessedOn = DateTime.Now
             };
-
-            context.ContentViewRecords.Add(record);
+            profile.ContentHistory = profile.ContentHistory.AppendRecord(record);
             var success = await context.SaveChangesAsync() > 0;
             if(!success)
                 return Result<Unit>.Failure("Could not save changes");
@@ -366,6 +367,7 @@ namespace Application.Extensions
                 output.Add(dto);
             }
             return Result<List<ContentViewRecordDto>>.Success(output);
+
         }
 
 

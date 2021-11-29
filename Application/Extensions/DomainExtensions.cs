@@ -105,5 +105,11 @@ namespace Application.Extensions
             userTerm.UserTermId = details.UserTermId;
             return userTerm;
         }
+
+        public static ContentHistory AppendRecord(this ContentHistory history, ContentViewRecord record)
+        {
+            history.ContentViewRecords.Add(record);
+            return history;
+        }
     }
 }
