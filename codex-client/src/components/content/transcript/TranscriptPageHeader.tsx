@@ -24,10 +24,10 @@ export default observer (function TranscriptPageHeader({chunkIndex}: Props) {
     return(
         <Segment>
             <Header>
-               
+              {`Page ${chunkIndex + 1} of ${transcriptChunkIds.length}`} 
             </Header>
             <Button basic content='Previous' disabled={chunkIndex === 0} as={Link} to={prevChunkPath()} />
-            <Button basic content='Next' disabled={chunkIndex >= transcriptChunkIds.length} as={Link} to={nextChunkPath()}/>
+            <Button basic content='Next' disabled={chunkIndex >= transcriptChunkIds.length - 1} as={Link} to={nextChunkPath()}/>
         </Segment>
    )
 });

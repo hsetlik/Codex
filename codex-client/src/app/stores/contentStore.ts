@@ -1,19 +1,18 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { ContentHeaderDto } from "../api/agent";
+import agent, { ContentHeaderDto, KnownWordsDto } from "../api/agent";
 import { store } from "./store";
 
 
 export default class ContentStore
 {
-    _loadedHeaders: ContentHeaderDto[] = [];
+
+    loadedHeaders: ContentHeaderDto[] = [];
+    knownWordsLoaded = false;
+    headerKnownWords: Map<string, KnownWordsDto> = new Map();
 
     selectedContentId: string = "none";
     constructor() {
         makeAutoObservable(this);
-    }
-
-    get loadedHeaders() {
-        return this._loadedHeaders;
     }
 
     setSelectedContentId = (id: string) => {
@@ -25,10 +24,28 @@ export default class ContentStore
         console.log("Loading headers...");
         try {
             var headers = await agent.Content.getLanguageContents({language: lang} );
-            runInAction(() => this._loadedHeaders = headers); 
+            runInAction(() => this.loadedHeaders = headers); 
         } catch (error) {
           console.log("Content headers not loaded for: " + lang);
           console.log(error);  
+        }
+    }
+
+    loadKnownWords = async () => {
+        this.knownWordsLoaded = false;
+        try {
+            var map = new Map<string, KnownWordsDto>();
+            for (const header of this.loadedHeaders) {
+                var knownWords = await agent.Content.getKnownWordsForContent({contentId: header.contentId});
+                map.set(header.contentId, knownWords);
+            }
+            runInAction(() => {
+                this.headerKnownWords = map;
+                this.knownWordsLoaded = true;
+            })
+        } catch (error) {
+           console.log(error); 
+           runInAction(() => this.knownWordsLoaded = true);
         }
     }
 }

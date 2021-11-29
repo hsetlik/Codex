@@ -136,10 +136,16 @@ export interface TranscriptChunkDto {
     transcriptChunkIndex: number
 }
 
+export interface KnownWordsDto {
+    totalWords: number;
+    knownWords: number;
+}
+
 const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentHeaderDto[]>('/Content/getLanguageContents', language),
     getChunksForContent: (contentId: IContentId) => requests.post<TranscriptChunkDto[]>('/Content/getChunksForContent', contentId),
-    getChunkIdsForContent: (contentId: IContentId) => requests.post<string[]>('/Content/getChunkIdsForContent', contentId)
+    getChunkIdsForContent: (contentId: IContentId) => requests.post<string[]>('/Content/getChunkIdsForContent', contentId),
+    getKnownWordsForContent: (contentId: IContentId) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentId)
 }
 //====================================================================================================================
 export interface ITranscriptChunkId {
