@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { AbstractTerm } from "../models/userTerm";
-import agent, { TermDto, UserTermCreateDto, AddTranslationDto, PopularTranslationDto } from "../api/agent";
+import agent, { TermDto, AddTranslationDto, PopularTranslationDto } from "../api/agent";
 
 interface TranscriptChunkId{
     chunkId: string;
@@ -12,7 +12,6 @@ export default class TranscriptStore {
     //just for endpoint access
     contentId: string = "null";
     transcriptChunkIds: TranscriptChunkId[] = [];
-    currentChunkIndex: number = 0;
     //actually need to observe
     popTranslationsLoaded = false;
     currentPopularTranslations: PopularTranslationDto[] = [];
@@ -38,8 +37,6 @@ export default class TranscriptStore {
                this.transcriptChunkIds.push(dto);
                console.log(`Added chunk number ${dto.index} with ID ${dto.chunkId}`);
             }
-            
-            this.currentChunkIndex = 0;
             });
             let firstChunkId = this.transcriptChunkIds.find(id => id.index === 0)!;
             let terms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: firstChunkId.chunkId})
@@ -55,18 +52,49 @@ export default class TranscriptStore {
     }
 
     loadTermsForChunk = async (id: string) => {
+        this.termsAreLoaded = false;
         try {
-            console.log(`Loading terms for chunk ${this.currentChunkIndex}`);
             const terms = await agent.Transcript.getAbstractTermsForChunk({transcriptChunkId: id});
             runInAction(() =>{
                 console.log("Terms are loaded");
                 this.termsAreLoaded = true;
                 this.currentAbstractTerms = terms;
+                //now we need to figure out currentChunkIndex
+
             });
         } catch (error) {
             console.log("Terms not loaded");
             console.log(error);
+            runInAction(() => this.termsAreLoaded = false);
         } 
+    }
+
+    chunkForIndex = (index: number) => {
+        if (index < 0 || index >= this.transcriptChunkIds.length) {
+            return null;
+        }
+        return this.transcriptChunkIds.find(t => t.index === index);
+    }
+
+  
+
+    loadChunkAtIndex = async (index: number) => {
+        this.termsAreLoaded = false;
+        try {
+           const newIndex = (index >= 0 && index < this.transcriptChunkIds.length) ? index : 0;
+           const chunkId = this.transcriptChunkIds.find(t => t.index === index);
+           if (chunkId) {
+             await this.loadTermsForChunk(chunkId.chunkId);
+           }
+           runInAction(() => {
+             this.termsAreLoaded = true;
+           })
+        } catch (error) {
+           console.log(error)
+           runInAction(() => {
+            this.termsAreLoaded = true;
+          }) 
+        }
     }
 
     loadPopularTranslations = async () => {
@@ -88,7 +116,7 @@ export default class TranscriptStore {
         }
     }
 
-
+/*
     advanceChunk = async () => {
         try {
             var nextIndex = this.currentChunkIndex + 1;
@@ -125,6 +153,7 @@ export default class TranscriptStore {
         }
         
     }
+*/
     setSelectedTerm = (newTerm: AbstractTerm) => {
         this.selectedTerm = newTerm;
         if (!this.selectedTerm.hasUserTerm) {

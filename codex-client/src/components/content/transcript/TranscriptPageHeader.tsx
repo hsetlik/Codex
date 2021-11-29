@@ -1,17 +1,33 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { Header, Segment, Button } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 
-export default observer (function TranscriptPageHeader() {
-    const {transcriptStore: {currentChunkIndex, transcriptChunkIds, advanceChunk, previousChunk}} = useStore();
+interface Props {
+    chunkIndex: number
+}
+
+export default observer (function TranscriptPageHeader({chunkIndex}: Props) {
+    const {transcriptStore} = useStore();
+    const {transcriptChunkIds, contentId} = transcriptStore;
+    const nextChunkPath = () => {
+        return `../content/${contentId}/${chunkIndex + 1}`;
+    }
+
+    const prevChunkPath = () => {
+        return `../content/${contentId}/${chunkIndex - 1}`;
+    }
+    
+    
     return(
         <Segment>
             <Header>
-                Chunk {currentChunkIndex + 1} of {transcriptChunkIds.length}
+               
             </Header>
-            <Button basic content='Previous' onClick={previousChunk} disabled={currentChunkIndex === 0} />
-            <Button basic content='Next' onClick={advanceChunk} disabled={currentChunkIndex === transcriptChunkIds.length - 1} />
+            <Button basic content='Previous' disabled={chunkIndex === 0} as={Link} to={prevChunkPath()} />
+            <Button basic content='Next' disabled={chunkIndex >= transcriptChunkIds.length} as={Link} to={nextChunkPath()}/>
         </Segment>
    )
 });

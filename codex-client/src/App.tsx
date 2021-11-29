@@ -34,7 +34,7 @@ function App() {
         <Routes >
           <Route path='/feed' element={<FeedRoute />}/>
           <Route path='/home' element={<HomeRoute />} />
-          <Route path='/content/:id'element={<ContentRoute />}/>
+          <Route path='/content/:id/:index'element={<ContentRoute />}/>
           <Route path='/account' element={<AccountRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 
           <Route path='account/register' element={<RegisterForm />} /> 

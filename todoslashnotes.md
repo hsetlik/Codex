@@ -128,7 +128,7 @@ FROM 11/18:
 
 TODO:
 
-1. Add ChunkIndex to content route- Client
+~~1. Add ChunkIndex to content route- Client~~
 2. Vocab size/data handling- Server
 3. Expand 'Content' functionality:
     a. Add tags to content entity -Server
