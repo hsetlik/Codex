@@ -10,13 +10,13 @@ namespace Domain.DataObjects
     {
         [Key]
         public Guid ContentId { get; set; }
+        public string ContentUrl { get; set; }
         public string VideoUrl { get; set; }
         public string AudioUrl { get; set; }
         public string ContentType { get; set; }
         public string ContentName { get; set; }
         public string Language { get; set; }
         public string DateAdded { get; set; }
-        public Transcript Transcript { get; set; }
         public List<ContentTag> ContentTags { get; set; }
     }
 }

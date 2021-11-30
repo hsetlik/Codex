@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DataObjectHandling.Terms;
-using Application.DataObjectHandling.Transcripts;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
@@ -144,33 +143,6 @@ namespace Application.Extensions
             return Result<AbstractTermDto>.Success(output);
         }
 
-        public static async Task<Result<List<AbstractTermDto>>> AbstractTermsFor(this DataContext context, Guid transcriptChunkId, string username)
-        {
-            var output = new List<AbstractTermDto>();
-            var chunk = await context.TranscriptChunks
-            .FirstOrDefaultAsync(x => x.TranscriptChunkId == transcriptChunkId);
-            if (chunk == null)
-                return Result<List<AbstractTermDto>>.Failure("No matching chunk found");
-            var chunkWords = chunk.ChunkText.Split(' ');
-            for(int i = 0; i < chunkWords.Length; ++i)
-            {
-                var dto = new TermDto
-                {
-                    Value = chunkWords[i],
-                    Language = chunk.Language
-                };
-                //NOTE: can this be paralellized?
-                var aTerm = await context.AbstractTermFor(dto, username);
-                if (aTerm.IsSuccess)
-                {
-                    aTerm.Value.IndexInChunk = i;
-                    
-                    output.Add(aTerm.Value);
-                }
-            }
-            return Result<List<AbstractTermDto>>.Success(output);
-        }
-
         public static async Task<Result<Unit>> UpdateTermAbstract(this DataContext context, AbstractTermDto dto, string username)
         {
             var exisitngTerm = await context.Terms
@@ -225,59 +197,9 @@ namespace Application.Extensions
         }
 
         public static async Task<Result<Unit>> EnsureTermsForContent(this DataContext context, Guid contentId)
-        {
-            var content = await context.Contents
-                .Include(u => u.Transcript)
-                .ThenInclude(t => t.TranscriptChunks)
-                .FirstOrDefaultAsync( u => u.ContentId == contentId);
-                if (content == null) return Result<Unit>.Failure("Content not found");
-                var tChunks = content.Transcript.TranscriptChunks;
-                int wordIndex = 0;
-                foreach(var chunk in tChunks)
-                {
-                    string splitExp = @"([^\p{P}^\s]+)"; 
-                    var match = Regex.Match(chunk.ChunkText, splitExp);
-                    var words = new List<string>();
-                    while (match.Success)
-                    {
-                        Console.WriteLine(match.Value);
-                        words.Add(match.Value);
-                        match = match.NextMatch();
-                    }
-                    foreach(var word in words)
-                    {
-                        var result = await context.CreateTerm(content.Language, word);
-                        if (!result.IsSuccess) return Result<Unit>.Failure("Term for " + word + " could not be created at index " + wordIndex.ToString());
-                        ++wordIndex;
-                    }
-                }
-                return Result<Unit>.Success(Unit.Value);
-        }
-
-        public static async Task<Result<Unit>> CreateContent(this DataContext context, ContentCreateDto dto)
-        {
-            var transcriptDto = new CreateTranscriptDto
-            {
-                Language = dto.Language,
-                FullText = dto.FullText
-            };
-            var transcript =  await transcriptDto.CreateTranscriptFrom(context);
-            if (!transcript.IsSuccess)
-                return Result<Unit>.Failure("Could not create content transcript");
-              var content = new Content
-            {
-                ContentName = dto.ContentName,
-                ContentType = dto.ContentType,
-                Language = dto.Language,
-                DateAdded = DateTime.Now.ToString(),
-                VideoUrl = dto.VideoUrl,
-                AudioUrl = dto.AudioUrl,
-                Transcript = transcript.Value
-            };
-            context.Contents.Add(content);
-            var success = await context.SaveChangesAsync() > 0;
-            if (!success)
-                return Result<Unit>.Failure("Could not save content object");
+        {  
+            var content = await context.Contents.FindAsync(contentId);
+            // TODO    
             return Result<Unit>.Success(Unit.Value);
         }
 
@@ -418,30 +340,14 @@ namespace Application.Extensions
 
         public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username)
         {
+            //TODO 
+            var allTerms = await context.UserTerms
+            .Include(u => u.UserLanguageProfile)
+            .ThenInclude(t => t.User)
+            .Where(u => u.UserLanguageProfile.User.UserName == username)
+            .ToListAsync();
             int total = 0;
             int known = 0;
-            var content = await context.Contents
-            .Include(c => c.Transcript)
-            .ThenInclude(t => t.TranscriptChunks)
-            .FirstOrDefaultAsync(u => u.ContentId == contentId);
-            if (content == null)
-                return Result<KnownWordsDto>.Failure("Content not loaded");
-            List<Task<Result<List<AbstractTermDto>>>> chunks = new List<Task<Result<List<AbstractTermDto>>>>();
-            for(int i = 0; i < content.Transcript.TranscriptChunks.Count; ++i)
-            {
-                var chunk = content.Transcript.TranscriptChunks.Find(chunk => chunk.TranscriptChunkIndex == i);
-                chunks.Add(context.AbstractTermsFor(chunk.TranscriptChunkId, username));
-            }
-            var result = await Task.WhenAll(chunks);
-            foreach(var chunk in result)
-            {
-                foreach(var term in chunk.Value)
-                {
-                    total += 1;
-                    if (term.HasUserTerm && term.Rating >= 3)
-                        known += 1;
-                }
-            }
             var output = new KnownWordsDto
             {
                 TotalWords = total,

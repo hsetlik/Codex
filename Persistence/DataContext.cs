@@ -23,11 +23,8 @@ namespace Persistence
 
         public DbSet<Translation> Translations { get; set; }
 
-        public DbSet<Transcript> Transcripts { get; set; }
-        
         public DbSet<Content> Contents { get; set; }
 
-        public DbSet<TranscriptChunk> TranscriptChunks { get; set; }
 
         public DbSet<ContentViewRecord> ContentViewRecords { get; set; }
         

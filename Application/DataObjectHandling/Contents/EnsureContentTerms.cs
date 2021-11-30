@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Application.Extensions;
 using Persistence;
 using System.Text.RegularExpressions;
+using Application.DomainDTOs.Content;
 
 namespace Application.DataObjectHandling.Contents
 {
