@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs
 {
-    public class ContentCreateDto
+    public class ContentMetadataDto
         {
             public string ContentName { get; set; }
             public string ContentType { get; set; }
             public string Language { get; set; }
             public string VideoUrl { get; set; }
             public string AudioUrl { get; set; }
-            public string FullText { get; set; }
+            public string ContentUrl { get; set; }
         }
 }

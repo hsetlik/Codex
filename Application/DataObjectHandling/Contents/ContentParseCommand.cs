@@ -20,20 +20,23 @@ namespace Application.DataObjectHandling.Contents
         {
             
         }
-        public class Query : IRequest<Result<ContentCreateDto>>
+        public class Query : IRequest<Result<ContentMetadataDto>>
         {
             public string Url { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<ContentCreateDto>>
+        public class Handler : IRequestHandler<Query, Result<ContentMetadataDto>>
         {
             public Handler()
             {
             }
 
-            public async Task<Result<ContentCreateDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<ContentMetadataDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-               return await HtmlContentParser.ParseToContent(request.Url);
+                var content = await HtmlContentParser.ParseToContent(request.Url);
+                if (content == null)
+                    return Result<ContentMetadataDto>.Failure("Could not get parsed content");
+                return Result<ContentMetadataDto>.Success(content);
             }
         }
     }

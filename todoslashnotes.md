@@ -162,4 +162,7 @@ TODO:
 
     -Content extension methods to 1. Query the number of paragraphs 2. Return a Paragraph string when queried with an index
 
+NOTES:
+
+1. The HtmlContentParser should parse into ContentCreateDto as well as Access paragraphs and other HTML data
 =================================================================================================

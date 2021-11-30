@@ -13,6 +13,7 @@ using MediatR;
 using Application.Interfaces;
 using Application.Core;
 using Application.DataObjectHandling.UserTerms;
+using Application.Parsing;
 //using Application.Interfaces;
 
 //This is just here to move some ugly service configuration code out of Startup.cs
@@ -50,6 +51,7 @@ namespace API.Extensions
             services.AddMediatR(typeof(UserTermCreate.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IParserService, ParserService>();
 
             return services;
         }
