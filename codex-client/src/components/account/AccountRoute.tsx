@@ -1,19 +1,12 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
-import { useStore } from "../../app/stores/store";
-import { Container, Segment } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
-export default observer(function AccountRoute() {
-    const { userStore} = useStore();
+export default function AccountRoute() {
+    
     return (
-        <>
-            <Container>
-                <Segment>
-                    {userStore.user?.displayName}
-                </Segment>
+        <Container>
 
-            </Container>
-        </>
-    );
+        </Container>
+    )
 
-})
+}

@@ -136,6 +136,8 @@ TODO:
         1. ~~given a contentId and a username, return the percentage of words which have UserTerms~~
     c. ~~Give UserLanguageProfile a ContentHistory related entity -Server~~
 4. ~~Figure out why GetKnownWordsForContent is so slow - research .NET performance bottlenecks/threading (or else is this just a fact of SQLite?)~~
-5. Make client-side display of known words on content headers (add knownWords to content header, just return an empty div)
+5. ~~Make client-side display of known words on content headers (add knownWords to content header, just return an empty div)~~
 6. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
+7. ContentParser- class to parse URLs into 'ContentCreateDto'
+8. User Profile Page on client side
 =================================================================================================

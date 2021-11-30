@@ -19,7 +19,9 @@ export default function UserLanguagePicker(){
         fluid
         selection
         options={dropdownItems}
-        >
+        onChange={ ({}) => {
+            
+        }}>
         </Dropdown>
     )
 }

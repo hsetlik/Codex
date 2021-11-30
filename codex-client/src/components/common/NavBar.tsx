@@ -5,11 +5,11 @@ import { observer } from 'mobx-react-lite';
 
 export default observer(function NavBar()
 {
-    const {userStore: {user, logout, isLoggedIn}} = useStore();
+    const {userStore: {user, logout, isLoggedIn, selectedLanguage}} = useStore();
     let accountComponent;
     if (isLoggedIn) {
         accountComponent = (
-            <Menu.Item as={Link} to='/account' name={user?.displayName} />
+            <Menu.Item as={Link} to={`/profiles/${user?.username}/${selectedLanguage}`} name={user?.displayName} />
         )
     } else {
         accountComponent = (
@@ -22,6 +22,7 @@ export default observer(function NavBar()
                 <Menu.Item as={Link} to='/feed' name="Content" header/>
                 {accountComponent}
                 <Menu.Item name="Logout" onClick={logout} />
+                
             </Container>
         </Menu>
     )

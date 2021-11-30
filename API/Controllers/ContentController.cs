@@ -90,5 +90,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetKnownWordsForContent.Query{ContentId = dto.ContentId}));
         }
+
+        [HttpPost("parseUrlIntoContent")]
+        public async Task<IActionResult> ParseUrlIntoContent(ContentUrlDto dto)
+        {
+            return HandleResult(await Mediator.Send(new ContentParser.Query{Url = dto.Url}));
+        }
     }
 }

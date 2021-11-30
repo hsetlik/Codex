@@ -7,7 +7,7 @@ import NavBar from './components/common/NavBar';
 import ContentRoute from './components/content/termDetails/ContentRoute';
 import FeedRoute from './components/feed/FeedRoute';
 import LoginForm from './components/account/LoginForm';
-import AccountRoute from './components/account/AccountRoute';
+import ProfilesRoute from './components/account/ProfilesRoute';
 import HomeRoute from './components/common/HomeRoute';
 import RegisterForm from './components/account/RegisterForm';
 
@@ -35,7 +35,7 @@ function App() {
           <Route path='/feed' element={<FeedRoute />}/>
           <Route path='/home' element={<HomeRoute />} />
           <Route path='/content/:id/:index'element={<ContentRoute />}/>
-          <Route path='/account' element={<AccountRoute />}/>
+          <Route path='/profiles/:username/:lang' element={<ProfilesRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 
           <Route path='account/register' element={<RegisterForm />} /> 
         </Routes>

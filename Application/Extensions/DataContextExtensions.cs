@@ -98,7 +98,7 @@ namespace Application.Extensions
             // 2. Get the UserLanguageProfile
             var profile = await context.UserLanguageProfiles
             .Include(p => p.User)
-            .FirstOrDefaultAsync(t => t.Language == dto.Language);
+            .FirstOrDefaultAsync(t => t.Language == dto.Language && t.User.UserName == username);
            if (term == null)
                 return Result<AbstractTermDto>.Failure("No matching profile");
             
@@ -164,6 +164,7 @@ namespace Application.Extensions
                 if (aTerm.IsSuccess)
                 {
                     aTerm.Value.IndexInChunk = i;
+                    
                     output.Add(aTerm.Value);
                 }
             }
