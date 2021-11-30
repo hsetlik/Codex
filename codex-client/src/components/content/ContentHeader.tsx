@@ -11,7 +11,7 @@ interface Props{
 
 export default observer(function ContentHeader({dto}: Props)
 {
-    const {userStore, contentStore} = useStore();
+    const {userStore} = useStore();
    
     console.log("Content ID is: " + dto.contentId);
     return (

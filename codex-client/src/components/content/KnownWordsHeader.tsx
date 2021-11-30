@@ -9,15 +9,10 @@ interface Props {
 
 export default observer(function KnownWordsHeader({contentId}: Props) {
     const {contentStore} = useStore();
-    const {knownWordsLoaded, headerKnownWords, loadKnownWords} = contentStore;
-    useEffect(() => {
-        if (!knownWordsLoaded) {
-            loadKnownWords();
-        }
-    }, [knownWordsLoaded, loadKnownWords])
+    const {headerKnownWords} = contentStore;
     return (
         <div>
-            { knownWordsLoaded ? (
+            { headerKnownWords.get(contentId) !== undefined ? (
                 <Header as='h4' >
                     {`${headerKnownWords.get(contentId)?.knownWords} known of ${headerKnownWords.get(contentId)?.totalWords} total words`}
                 </Header>

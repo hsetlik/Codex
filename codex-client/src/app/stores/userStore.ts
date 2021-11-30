@@ -70,7 +70,8 @@ export default class UserStore{
     setSelectedLanguage = (iso: string) => {
         console.log("Setting selected language: " + iso);
         this.selectedLanguage = iso;
-        store.contentStore.loadHeaders(iso);
+        store.contentStore.loadHeaders(iso).finally(() => store.contentStore.loadKnownWords());
+        ;
     }
 
     setSelectedContent = (guid: string) => {

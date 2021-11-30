@@ -39,17 +39,18 @@ namespace Application.DataObjectHandling.Contents
             foreach(var paragraph in paragraphs)
             {
                 Console.Write($"Paragraph {paragraphs.IndexOf(paragraph)}: \n {paragraph.InnerText}");
-                fullText += paragraph.InnerText;
+                fullText += paragraph.InnerText + '\n';
             }
             var headNode = htmlDoc.DocumentNode.Descendants("head").FirstOrDefault();
 
             return Result<ContentCreateDto>.Success(new ContentCreateDto
             {
                 ContentName = $"{headNode.Descendants("title").FirstOrDefault().InnerText}",
-                ContentType = $"{paragraphs.Count} paragraphs found",
+                ContentType = "Article",
                 Language = lang,
-                FullText = fullText
-
+                FullText = fullText,
+                AudioUrl = "none",
+                VideoUrl = "none"
             });
         }
 

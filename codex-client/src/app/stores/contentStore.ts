@@ -6,6 +6,7 @@ import { store } from "./store";
 export default class ContentStore
 {
 
+    headersLoaded = false;
     loadedHeaders: ContentHeaderDto[] = [];
     knownWordsLoaded = false;
     headerKnownWords: Map<string, KnownWordsDto> = new Map();
@@ -21,31 +22,41 @@ export default class ContentStore
     }
 
     loadHeaders = async (lang: string) => {
-        console.log("Loading headers...");
+        this.headersLoaded = false;
+        this.loadedHeaders = [];
+        console.log(`Loading Headers for: ${lang}`);
         try {
             var headers = await agent.Content.getLanguageContents({language: lang} );
-            runInAction(() => this.loadedHeaders = headers); 
+            runInAction(() => {
+                this.loadedHeaders = headers;
+                this.headersLoaded = true;
+            }); 
         } catch (error) {
-          console.log("Content headers not loaded for: " + lang);
           console.log(error);  
+          runInAction(() => this.headersLoaded = true);
         }
+        console.log(`Headers loaded for: ${lang}`);
     }
 
     loadKnownWords = async () => {
         this.knownWordsLoaded = false;
+        this.headerKnownWords.clear();
         try {
-            var map = new Map<string, KnownWordsDto>();
             for (const header of this.loadedHeaders) {
+                console.log(`loading words for header ${header.contentName}`);
                 var knownWords = await agent.Content.getKnownWordsForContent({contentId: header.contentId});
-                map.set(header.contentId, knownWords);
+                runInAction(() => {
+                    this.headerKnownWords.set(header.contentId, knownWords);
+                })
+                console.log(`known words loaded for header ${header.contentName}`);
             }
             runInAction(() => {
-                this.headerKnownWords = map;
                 this.knownWordsLoaded = true;
             })
         } catch (error) {
            console.log(error); 
            runInAction(() => this.knownWordsLoaded = true);
         }
+        
     }
 }
