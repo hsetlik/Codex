@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.DataObjectHandling.UserLanguageProfiles;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.UserLanguageProfile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,13 +36,11 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new UserLanguageProfileList.Query()));
         }
 
-        /*
         [Authorize]
-        [HttpPost("setLastStudiedLanguage")]
-        public async Task<IActionResult> SetLastStudiedLanguage()
+        [HttpPost("getProfileDetails")]
+        public async Task<IActionResult> GetProfileDetails(ProfileIdDto dto)
         {
-            return HandleResult(await Mediator.Send(new UserLanguageProfileList.Query()));
+            return HandleResult(await Mediator.Send(new UserLanguageProfileDetails.Query{Dto = dto}));
         }
-        */
     }
 }

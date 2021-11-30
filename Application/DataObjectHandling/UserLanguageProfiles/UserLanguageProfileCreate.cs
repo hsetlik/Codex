@@ -42,7 +42,8 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                 {
                     UserId = user.Id,
                     User = user,
-                    Language = request.LanguageId   
+                    Language = request.LanguageId,
+                    KnownWords = 0
                 };
                 //3. check if the user already has a profile for this language
                 var profileExists = user.UserLanguageProfiles.Contains(langProfile);

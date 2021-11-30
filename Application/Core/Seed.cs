@@ -63,7 +63,8 @@ namespace Domain
                 {
                     Language = langs[i],
                     UserId = users[i].UserName,
-                    User = users[i]
+                    User = users[i],
+                    KnownWords = 0
                 };
                 users[i].UserLanguageProfiles.Add(profile);
 

@@ -450,6 +450,27 @@ namespace Application.Extensions
             return Result<KnownWordsDto>.Success(output);
         }        
 
+        public static async Task<Result<Unit>> UpdateKnownWords(this DataContext context, UserTerm term, UserTermDetailsDto details)
+        {
+            var originalRating = term.Rating;
+            var profile = await context.UserLanguageProfiles.FindAsync(term.LanguageProfileId);
+            if (profile == null)
+                return Result<Unit>.Failure("Could not load profile");
+            var newTerm = term.UpdatedWith(details);
+            if (originalRating < 3 && newTerm.Rating >= 3)
+            {
+                profile.KnownWords = profile.KnownWords + 1;
+
+            }
+            if (originalRating >= 3 && newTerm.Rating < 3)
+            {
+                profile.KnownWords = profile.KnownWords - 1;
+            }
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("Could not save changes");
+            return Result<Unit>.Success(Unit.Value);
+        }
     }
 
     

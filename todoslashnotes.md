@@ -139,5 +139,6 @@ TODO:
 5. ~~Make client-side display of known words on content headers (add knownWords to content header, just return an empty div)~~
 6. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
 7. ContentParser- class to parse URLs into 'ContentCreateDto'
-8. User Profile Page on client side
+8. ~~User Profile Page on client side~~
+9. Client side display for profile details
 =================================================================================================
