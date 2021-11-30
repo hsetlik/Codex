@@ -120,7 +120,7 @@ TODO:
 ================================================================================================
 ============================================= 11/29/21 =========================================
 
-FROM 11/18:
+FROM YESTERDAY:
 
 2. ~~Dictionary API? (back burner);~~
 
@@ -138,7 +138,28 @@ TODO:
 4. ~~Figure out why GetKnownWordsForContent is so slow - research .NET performance bottlenecks/threading (or else is this just a fact of SQLite?)~~
 5. ~~Make client-side display of known words on content headers (add knownWords to content header, just return an empty div)~~
 6. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
-7. ContentParser- class to parse URLs into 'ContentCreateDto'
+7. ~~ContentParser- class to parse URLs into 'ContentCreateDto'~~
 8. ~~User Profile Page on client side~~
 9. Client side display for profile details
+10. Sort out regex stuff for cleaning gunk out of parsed HTML
+=================================================================================================
+
+============================================= 11/30/21 =========================================
+
+FROM YESTERDAY:
+
+1. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
+2. Client side display for profile details- low priority
+3. Sort out regex stuff for cleaning gunk out of parsed HTML
+
+TODO:
+4. Figure out how to display/store header elements in parsed HTML pages
+5. In a new branch- refactor everything such that:
+
+    -No more Transcript entity
+    
+    -Content only stores URL and groups of AbstractTerm are returned per paragraph of the parsed HTML
+
+    -Content extension methods to 1. Query the number of paragraphs 2. Return a Paragraph string when queried with an index
+
 =================================================================================================

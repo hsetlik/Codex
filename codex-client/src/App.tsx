@@ -32,7 +32,7 @@ function App() {
       <NavBar />
       <Container style={{margin: '7em'}}>
         <Routes >
-          <Route path='/feed' element={<FeedRoute />}/>
+          <Route path='/feed/:lang' element={<FeedRoute />}/>
           <Route path='/home' element={<HomeRoute />} />
           <Route path='/content/:id/:index'element={<ContentRoute />}/>
           <Route path='/profiles/:username/:lang' element={<ProfilesRoute />}/>

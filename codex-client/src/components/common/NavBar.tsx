@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import { Container, Menu} from 'semantic-ui-react';
 import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
+import UserStore from '../../app/stores/userStore';
 
 export default observer(function NavBar()
 {
-    const {userStore: {user, logout, isLoggedIn, selectedLanguage}} = useStore();
+    const {userStore: {user, logout, isLoggedIn, selectedLanguage, languageProfiles}} = useStore();
     let accountComponent;
     if (isLoggedIn) {
         accountComponent = (
@@ -16,10 +17,17 @@ export default observer(function NavBar()
             <Menu.Item as={Link} to='/account/login' content='Login' />
         )
     }
+    const getLang = () => {
+        var profile = languageProfiles.find(p => p === selectedLanguage);
+        if (profile === undefined) {
+            profile = languageProfiles[0];
+        }
+        return profile;
+    }
     return (
         <Menu inverted fixed='top'>
             <Container >
-                <Menu.Item as={Link} to='/feed' name="Content" header/>
+                <Menu.Item as={Link} to={`feed/${getLang()}`} name="Content" header/>
                 {accountComponent}
                 <Menu.Item name="Logout" onClick={logout} />
                 

@@ -15,8 +15,9 @@ export default observer(function ProfileButtonBar() {
                 key={prof}
                 >
                     <Button
-                    as={Link} to={`/profiles/${user?.username}/${selectedLanguage}`}
-                    onClick={() => setSelectedLanguage(prof)}
+                    as={Link}
+                    to={`/profiles/${prof}`}
+    
                     active={selectedLanguage === prof}
                     >
                         {getLanguageName(prof)}

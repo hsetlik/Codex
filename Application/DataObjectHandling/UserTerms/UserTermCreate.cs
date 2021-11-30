@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DataObjectHandling.Terms;
 using Application.Interfaces;
+using Application.Utilities;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,7 @@ namespace Application.DataObjectHandling.UserTerms
                 if (profile == null)
                     return Result<Unit>.Failure("No corresponding language profile exists!");
                 // 2. Get the term based on the value
-                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == request.termCreateDto.TermValue.ToUpper());
+                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == StringUtilityMethods.AsTermValue(request.termCreateDto.TermValue));
                 // TODO: change this such that if no term exists, one is created
                 if (term == null)
                 {

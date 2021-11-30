@@ -19,7 +19,7 @@ namespace Application.Utilities
 
         public static string GetTrailing(string input)
         {
-           var match = Regex.Match(input, @"([^\p{P}^\s]+)");
+           var match = Regex.Match(input, @"([^\{P}^\s]+)");
             if (!match.Success)
                 return "No valid characters in string";
             if (match.Value.Length < input.Length)
