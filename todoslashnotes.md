@@ -165,4 +165,9 @@ TODO:
 NOTES:
 
 1. The HtmlContentParser should parse into ContentCreateDto as well as Access paragraphs and other HTML data
+
+Parse Endpoints Needed:
+1. Get ContentCreateDto from URL
+2. Get number of paragraphs from URL
+3. Get Paragraph (list of AbstractTermDto w/ metadata) from URL/index
 =================================================================================================

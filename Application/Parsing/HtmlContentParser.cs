@@ -24,8 +24,10 @@ namespace Application.Parsing
         public static HtmlContentParser ParserFor(string url)
         {
             var profile = ProfileFor(url);
-            if (profile == ParserProfile.Wikipedia)
+            Console.WriteLine($"Creating Parser for: {url} with profile {profile.Value}");
+            if (profile.Value == ParserProfile.Wikipedia.Value)
             {
+                Console.WriteLine("Creating Wikipedia parser....");
                 return new WikipediaContentParser(url);
             }
             else
@@ -58,6 +60,7 @@ namespace Application.Parsing
         {
             if (url.Contains("wikipedia"))
             {
+                Console.WriteLine("detected wikipedia page");
                 return ParserProfile.Wikipedia;
             }
             else
@@ -91,10 +94,13 @@ namespace Application.Parsing
                 await LoadHtml();
             return new ContentMetadataDto
             {
-
-
+                ContentName = "dummy content name",
+                ContentType = null,
+                Language = null,
+                VideoUrl = "none",
+                AudioUrl = "none",
+                ContentUrl = Url
             };
-
         }
     }
     // NewsArticle

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.Terms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Content;
 using Application.Interfaces;
 
 namespace Application.Parsing
@@ -18,7 +19,7 @@ namespace Application.Parsing
         {
             IsParserReady = false;
         }
-        public async void PrepareForContent(string url)
+        public async Task PrepareForContent(string url)
         {
             CurrentUrl = url;
             IsParserReady = false;
@@ -28,13 +29,21 @@ namespace Application.Parsing
             loadedContent = await parser.Parse();
             IsParserReady = true;
         }
-
-        public async Task<int> GetNumParagraphs()
+        public Task<List<AbstractTermDto>> AbstractTermsForParagraph(string contentUrl, int paragraphIndex)
         {
-            return await parser.GetNumParagraphs();
+            throw new NotImplementedException();
         }
 
-        public Task<List<AbstractTermDto>> AbstractTermsForParagraph(string contentUrl, int paragraphIndex)
+        public async Task<ContentMetadataDto> GetContentMetadata(string url)
+        {
+            if (loadedContent != null && IsParserReady)
+                return loadedContent;
+            IsParserReady = false;
+            await PrepareForContent(url);
+            return loadedContent;
+        }
+
+        public Task<int> GetNumParagraphs(string url)
         {
             throw new NotImplementedException();
         }
