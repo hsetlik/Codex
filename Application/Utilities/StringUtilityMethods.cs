@@ -28,5 +28,17 @@ namespace Application.Utilities
             }
             return "";
         }
+
+        public static string StripWikiAnnotations(string input)
+        {
+            const string expression = @"(&#)([\w;]+)";
+            return StrippedOfMatches(input, expression);
+        }
+
+        private static string StrippedOfMatches(string input, string pattern)
+        {
+            return Regex.Replace(input, pattern, "");
+        }
+
     }
 }

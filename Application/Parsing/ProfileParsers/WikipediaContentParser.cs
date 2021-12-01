@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DomainDTOs;
+using Application.Utilities;
 
 namespace Application.Parsing.ProfileParsers
 {
@@ -13,9 +14,11 @@ namespace Application.Parsing.ProfileParsers
         {
         }
 
-        public override Task<int> GetNumParagraphs()
+        public override async Task<int> GetNumParagraphs()
         {
-            throw new NotImplementedException();
+           if (!HasLoadedHtml)
+                await LoadHtml();
+            return loadedHtml.DocumentNode.Descendants("p").ToList().Count;
         }
 
         public override async Task<ContentParagraph> GetParagraph(int index)
@@ -31,7 +34,7 @@ namespace Application.Parsing.ProfileParsers
             {
                 ContentUrl = Url,
                 Index = index,
-                Value = paragraph.GetDirectInnerText()
+                Value = StringUtilityMethods.StripWikiAnnotations(paragraph.InnerText)
             };
         }
 

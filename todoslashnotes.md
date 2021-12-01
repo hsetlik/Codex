@@ -165,8 +165,7 @@ NOTES:
 
 Parse Endpoints Needed:
 1. Get ContentCreateDto from URL
-2. Get number of paragraphs from URL
-3. Get Paragraph (list of AbstractTermDto w/ metadata) from URL/index
+2. ~~Get number of paragraphs from URL~~
 =================================================================================================
 ============================================== 12/1/21 =========================================
 
@@ -175,7 +174,15 @@ FROM YESTERDAY:
 1. Some sort of interface to get a graph of daily progress/statistics - Once backend is ready
 2. Sort out regex stuff for cleaning gunk out of parsed HTML
 3. Figure out how to display/store header elements in parsed HTML pages - Once backend is ready
+
 TODO:
+
 4. "Import" enpoint for ContentController, should automatically parse and create content with params: URL 
 5. "AbstractTermsForParagraph" endpoint for ContentController (replaces AbstractTermsForChunk) with params: ContentUrl, Index
+6. Figure out a way of combining really short "p" elements into a longer "ContentParagraph", update GetParagraphCount and GetParagraph to match
+    -note: the logic for counting paragraphs and creating ContentParagraph objects should happen in the relevant HtmlContentParser subclass
+
+
+NOTES:
+
 =================================================================================================
