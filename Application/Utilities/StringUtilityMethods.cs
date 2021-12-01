@@ -40,15 +40,18 @@ namespace Application.Utilities
             return Regex.Replace(input, pattern, "");
         }
 
-        public static List<string> GetTermValuesForParagraph(this string input)
+        //return a Dictionary where keys are normalized TermIDs and values are original case-sensitive strings
+        public static Dictionary<string, string> GetTermValuesForParagraph(this string input)
         {
-            var output = new List<string>();
-            var words = input.Split(' ');
-            foreach(var word in words)
+            var dict = new Dictionary<string, string>();
+            var originalStrings = input.Split(' ');
+            foreach(var orig in originalStrings)
             {
-                output.Add(word.AsTermValue());
+                var id = orig.AsTermValue();
+                dict[id] = orig;
             }
-            return output;
+            return dict;
+            
         }
 
     }

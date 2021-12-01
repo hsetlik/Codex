@@ -178,14 +178,15 @@ FROM YESTERDAY:
 TODO:
 
 4. "Import" enpoint for ContentController, should automatically parse and create content with params: URL 
-5. "AbstractTermsForParagraph" endpoint for ContentController (replaces AbstractTermsForChunk) with params: ContentUrl, Index
+5. ~~"AbstractTermsForParagraph" endpoint for ContentController (replaces AbstractTermsForChunk) with params: ContentUrl, Index~~
 6. Figure out a way of combining really short "p" elements into a longer "ContentParagraph", update GetParagraphCount and GetParagraph to match
     -note: the logic for counting paragraphs and creating ContentParagraph objects should happen in the relevant HtmlContentParser subclass
+7. Issue with separating trailing characters in GetAbstractTerm
 
 
 NOTES:
-    - AbstractTermsForParagraph: takes URL and Index: (note: this one needs all 3 services)
-1. Load the paragraph from the IParserService
-2. Split the paragraph into a list of TermIds
-3. Use IUserAccessor + DbContext extensions to create each AbstractTerm
+   ~~ - AbstractTermsForParagraph: takes URL and Index: (note: this one needs all 3 services)~~
+1. ~~Load the paragraph from the IParserService~~
+2. ~~Split the paragraph into a list of TermIds~~
+3. ~~Use IUserAccessor + DbContext extensions to create each AbstractTerm~~
 =================================================================================================

@@ -6,6 +6,7 @@ using Application.DataObjectHandling.Contents;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Application.DataObjectHandling.Contents.GetContentHeader;
 
@@ -72,6 +73,13 @@ namespace API.Controllers
         public async Task<IActionResult> ParseUrlIntoContent(ContentUrlDto dto)
         {
             return HandleResult(await Mediator.Send(new ContentParseRequest.Query{Url = dto.Url}));
+        }
+
+        [Authorize]
+        [HttpPost("abstractTermsForParagraph")]
+        public async Task<IActionResult> AbstractTermsForParagraph(ParagraphQueryDto dto)
+        {
+            return HandleResult(await Mediator.Send(new AbstractTermsForParagraph.Query{Dto = dto}));
         }
     }
 }

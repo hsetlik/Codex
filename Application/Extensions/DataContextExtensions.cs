@@ -11,6 +11,7 @@ using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
 using Application.DomainDTOs.UserLanguageProfile;
 using Application.Utilities;
+using AutoMapper;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -83,6 +84,50 @@ namespace Application.Extensions
             if (!success)
                 return Result<Unit>.Failure("Changes not saved!");
             return Result<Unit>.Success(Unit.Value);
+        }
+
+        public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, string term, UserLanguageProfile userLangProfile)
+        {
+            string termValue = term.AsTermValue();
+            var userTerm = await context.UserTerms
+            .Include(u => u.Term)
+            .FirstOrDefaultAsync(u => u.LanguageProfileId == userLangProfile.LanguageProfileId &&
+            u.Term.NormalizedValue == termValue);
+            AbstractTermDto output;
+             var trailing = StringUtilityMethods.GetTrailing(term);
+             if (userTerm != null) 
+             {
+                 //HasUserTerm = true
+                 output = new AbstractTermDto
+                 {
+                    TrailingCharacters = trailing,
+                    Language = userLangProfile.Language,
+                    HasUserTerm = true,
+                    EaseFactor = userTerm.EaseFactor,
+                    SrsIntervalDays = userTerm.SrsIntervalDays,
+                    Rating = userTerm.Rating,
+                    Translations = userTerm.GetTranslationStrings(),
+                    UserTermId = userTerm.UserTermId,
+                    TimesSeen = userTerm.TimesSeen
+                 };
+             }
+             else
+             {
+                 output = new AbstractTermDto
+                 {
+                    TrailingCharacters = trailing,
+                    Language = userLangProfile.Language,
+                    HasUserTerm = false,
+                    EaseFactor = 0.0f,
+                    SrsIntervalDays = 0,
+                    Rating = 0,
+                    Translations = new List<string>(),
+                    TimesSeen = 0
+                 };
+             }
+             //set this back to the original case-sensitive
+             output.TermValue = term;
+             return Result<AbstractTermDto>.Success(output);
         }
 
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
@@ -336,6 +381,16 @@ namespace Application.Extensions
             }
             var list = dict.Values.ToList();
             return Result<List<ContentHeaderDto>>.Success(list);
+        }
+
+        public static async Task<Result<ContentMetadataDto>> GetContentAtUrl(this DataContext context, string url, IMapper mapper)
+        {
+            var content = await context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == url);
+            
+            if (content == null)
+                return Result<ContentMetadataDto>.Failure("Could not load content");
+            var value = mapper.Map<ContentMetadataDto>(content);
+            return Result<ContentMetadataDto>.Success(value);
         }
 
         public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username)

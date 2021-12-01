@@ -32,6 +32,8 @@ namespace Application.DataObjectHandling.Terms
             public async Task<Result<AbstractTermDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var username = _userAccessor.GetUsername();
+                var profile = await _context.UserLanguageProfiles
+                .FirstOrDefaultAsync(p => p.Language == request.Dto.Language && p.User.UserName == _userAccessor.GetUsername());
                 return await _context.AbstractTermFor(request.Dto, username);
             }
         }
