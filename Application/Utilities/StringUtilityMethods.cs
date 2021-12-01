@@ -9,7 +9,7 @@ namespace Application.Utilities
     public static class StringUtilityMethods
     {
         // returns a version of the string with punctuation removed in all caps
-        public static string AsTermValue(string input)
+        public static string AsTermValue(this string input)
         {
             var match = Regex.Match(input, @"([^\p{P}^\s]+)");
             if (!match.Success)
@@ -38,6 +38,17 @@ namespace Application.Utilities
         private static string StrippedOfMatches(string input, string pattern)
         {
             return Regex.Replace(input, pattern, "");
+        }
+
+        public static List<string> GetTermValuesForParagraph(this string input)
+        {
+            var output = new List<string>();
+            var words = input.Split(' ');
+            foreach(var word in words)
+            {
+                output.Add(word.AsTermValue());
+            }
+            return output;
         }
 
     }

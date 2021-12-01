@@ -172,7 +172,7 @@ Parse Endpoints Needed:
 FROM YESTERDAY:
 
 1. Some sort of interface to get a graph of daily progress/statistics - Once backend is ready
-2. Sort out regex stuff for cleaning gunk out of parsed HTML
+2. ~~Sort out regex stuff for cleaning gunk out of parsed HTML~~
 3. Figure out how to display/store header elements in parsed HTML pages - Once backend is ready
 
 TODO:
@@ -184,5 +184,8 @@ TODO:
 
 
 NOTES:
-
+    - AbstractTermsForParagraph: takes URL and Index: (note: this one needs all 3 services)
+1. Load the paragraph from the IParserService
+2. Split the paragraph into a list of TermIds
+3. Use IUserAccessor + DbContext extensions to create each AbstractTerm
 =================================================================================================

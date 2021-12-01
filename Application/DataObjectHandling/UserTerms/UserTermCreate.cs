@@ -47,7 +47,7 @@ namespace Application.DataObjectHandling.UserTerms
                 if (profile == null)
                     return Result<Unit>.Failure("No corresponding language profile exists!");
                 // 2. Get the term based on the value
-                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == StringUtilityMethods.AsTermValue(request.termCreateDto.TermValue));
+                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == request.termCreateDto.TermValue.AsTermValue());
                 // TODO: change this such that if no term exists, one is created
                 if (term == null)
                 {

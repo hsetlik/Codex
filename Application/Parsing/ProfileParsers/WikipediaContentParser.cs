@@ -25,10 +25,6 @@ namespace Application.Parsing.ProfileParsers
         {
              if (!HasLoadedHtml)
                 await LoadHtml();
-            if (loadedHtml == null)
-            {
-
-            }
             var paragraph = loadedHtml.DocumentNode.Descendants("p").ElementAt(index);
             return new ContentParagraph
             {
@@ -40,13 +36,16 @@ namespace Application.Parsing.ProfileParsers
 
         public override async Task<ContentMetadataDto> GetMetadata()
         {
+            Console.WriteLine("GETTING WIKIPEDIA METADATA...");
             if (!HasLoadedHtml)
                 await LoadHtml();
+            var name = loadedHtml.DocumentNode.DescendantsAndSelf().SingleOrDefault(u => u.Name == "title").InnerText;
+            var lang = loadedHtml.DocumentNode.Descendants("html").FirstOrDefault().GetAttributeValue("lang", "not found");
             return new ContentMetadataDto
             {
-                ContentName = "dummy content name",
+                ContentName = name,
                 ContentType = null,
-                Language = null,
+                Language = lang,
                 VideoUrl = "none",
                 AudioUrl = "none",
                 ContentUrl = Url

@@ -46,7 +46,6 @@ namespace Application.Parsing
         {
             if (url.Contains("wikipedia"))
             {
-                Console.WriteLine("detected wikipedia page");
                 return ParserProfile.Wikipedia;
             }
             else
@@ -55,6 +54,5 @@ namespace Application.Parsing
             }
         }   
     }
-    //Subclasses for parsing each profile
     
 }

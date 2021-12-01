@@ -22,7 +22,7 @@ namespace Application.Extensions
     {
         public static async Task<Result<Unit>> CreateTerm(this DataContext context, string language, string termValue)
         {
-            var normValue = StringUtilityMethods.AsTermValue(termValue); 
+            var normValue = termValue.AsTermValue();
             var term = await context.Terms.FirstOrDefaultAsync(x => x.Language == language && x.NormalizedValue == normValue);
             if (term != null)
             {
@@ -88,7 +88,7 @@ namespace Application.Extensions
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
         {
             // 1. Get the term
-            var normValue = StringUtilityMethods.AsTermValue(dto.Value);
+            var normValue = dto.Value.AsTermValue();
             var term = await context.Terms.FirstOrDefaultAsync(
                 t => t.Language == dto.Language &&
                 t.NormalizedValue == normValue);

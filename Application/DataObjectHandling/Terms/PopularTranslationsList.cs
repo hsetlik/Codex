@@ -32,7 +32,7 @@ namespace Application.DataObjectHandling.Terms
             public async Task<Result<List<PopTranslationDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 // 1. Find the term
-                var term = await _context.Terms.FirstOrDefaultAsync(u => u.NormalizedValue == StringUtilityMethods.AsTermValue(request.Dto.Value)
+                var term = await _context.Terms.FirstOrDefaultAsync(u => u.NormalizedValue == request.Dto.Value.AsTermValue()
                  && u.Language == request.Dto.Language); 
                 if (term == null) return Result<List<PopTranslationDto>>.Failure("No valid term found");
                 
