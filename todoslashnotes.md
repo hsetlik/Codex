@@ -172,9 +172,9 @@ Parse Endpoints Needed:
 
 FROM YESTERDAY:
 
-1. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
+1. Some sort of interface to get a graph of daily progress/statistics - Once backend is ready
 2. Sort out regex stuff for cleaning gunk out of parsed HTML
-3. Figure out how to display/store header elements in parsed HTML pages
+3. Figure out how to display/store header elements in parsed HTML pages - Once backend is ready
 TODO:
 4. "Import" enpoint for ContentController, should automatically parse and create content with params: URL 
 5. "AbstractTermsForParagraph" endpoint for ContentController (replaces AbstractTermsForChunk) with params: ContentUrl, Index

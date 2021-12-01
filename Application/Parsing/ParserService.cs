@@ -11,41 +11,54 @@ namespace Application.Parsing
 {
     public class ParserService : IParserService
     {
-        public bool IsParserReady { get; private set; }
-        private HtmlContentParser parser = null;
-        private ContentMetadataDto loadedContent = null;
+        
+        private HtmlContentParser parser;
+        private ContentMetadataDto loadedContent;
+
+
         public string CurrentUrl { get; private set; }
+        public bool ParserReadyFor(string contentUrl)
+        {
+            return (loadedContent != null && loadedContent.ContentUrl == contentUrl);
+        }
         public ParserService()
         {
-            IsParserReady = false;
+            
+            
         }
+
+
         public async Task PrepareForContent(string url)
         {
-            CurrentUrl = url;
-            IsParserReady = false;
-            parser = null;
-            loadedContent = null;
-            parser = HtmlContentParser.ParserFor(url);
-            loadedContent = await parser.Parse();
-            IsParserReady = true;
+            if (!ParserReadyFor(url))
+            {
+                CurrentUrl = url;
+                loadedContent = null;
+                parser = ContentParserFactory.ParserFor(url);
+                loadedContent = await parser.Parse();
+                Console.WriteLine($"Prepared parser for content {url}");
+            }
+            else
+                Console.WriteLine($"Parser already prepared for content: {url}");
         }
         public async Task<ContentMetadataDto> GetContentMetadata(string url)
         {
-            if (loadedContent != null && IsParserReady)
+            if (loadedContent != null)
                 return loadedContent;
-            IsParserReady = false;
             await PrepareForContent(url);
             return loadedContent;
         }
 
-        public Task<int> GetNumParagraphs(string url)
+        public async Task<int> GetNumParagraphs(string contentUrl)
         {
-            throw new NotImplementedException();
+            await PrepareForContent(contentUrl);
+            return await parser.GetNumParagraphs();
         }
 
-        public Task<ContentParagraph> GetParagraph(string contentUrl, int index)
-        {
-            throw new NotImplementedException();
+        public async Task<ContentParagraph> GetParagraph(string contentUrl, int index)
+        {   
+            await PrepareForContent(contentUrl);
+            return await parser.GetParagraph(index);
         }
     }
 }

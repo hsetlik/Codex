@@ -17,24 +17,10 @@ namespace Application.Parsing
         public bool HasLoadedHtml {get {return !(loadedHtml == null);}}
         public static async Task<ContentMetadataDto> ParseToContent(string url)
         {
-            var parser = ParserFor(url);
+            var parser = ContentParserFactory.ParserFor(url);
             return await parser.Parse();
         }
 
-        public static HtmlContentParser ParserFor(string url)
-        {
-            var profile = ProfileFor(url);
-            Console.WriteLine($"Creating Parser for: {url} with profile {profile.Value}");
-            if (profile.Value == ParserProfile.Wikipedia.Value)
-            {
-                Console.WriteLine("Creating Wikipedia parser....");
-                return new WikipediaContentParser(url);
-            }
-            else
-            {
-                return new NewsArticleContentParser(url);
-            }
-        }
         public HtmlContentParser(string url)
         {
             this.Url = url;
@@ -43,7 +29,7 @@ namespace Application.Parsing
         protected async Task LoadHtml()
         {
             var web = new HtmlWeb();
-            var doc =  await web.LoadFromWebAsync(Url);
+            loadedHtml =  await web.LoadFromWebAsync(Url);
         }
         
         public async Task<ContentMetadataDto> Parse()
@@ -70,78 +56,5 @@ namespace Application.Parsing
         }   
     }
     //Subclasses for parsing each profile
-
-    //Wikipedia
-    public class WikipediaContentParser : HtmlContentParser
-    {
-        public WikipediaContentParser(string url) : base(url)
-        {
-        }
-
-        public override Task<int> GetNumParagraphs()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<ContentParagraph> GetParagraph(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override async Task<ContentMetadataDto> GetMetadata()
-        {
-            if (loadedHtml == null)
-                await LoadHtml();
-            return new ContentMetadataDto
-            {
-                ContentName = "dummy content name",
-                ContentType = null,
-                Language = null,
-                VideoUrl = "none",
-                AudioUrl = "none",
-                ContentUrl = Url
-            };
-        }
-    }
-    // NewsArticle
-    public class NewsArticleContentParser : HtmlContentParser
-    {
-        public NewsArticleContentParser(string url) : base(url)
-        {
-
-        }
-
-        public override async Task<int> GetNumParagraphs()
-        {
-            if (loadedHtml == null)
-                await LoadHtml();
-            return loadedHtml.DocumentNode.SelectNodes("//body/p").Count;
-        }
-
-        public override async Task<ContentParagraph> GetParagraph(int index)
-        {
-            if (loadedHtml == null)
-                await LoadHtml();
-            var paragraph = loadedHtml.DocumentNode.Descendants("p").ElementAt(index);
-            return new ContentParagraph
-            {
-                ContentUrl = Url,
-                Index = index,
-                Value = paragraph.GetDirectInnerText()
-            };
-        }
-
-        public override async Task<ContentMetadataDto> GetMetadata()
-        {
-            if (loadedHtml == null)
-                await LoadHtml();
-            return new ContentMetadataDto
-            {
-
-            };
-
-        }
-
-    }
     
 }
