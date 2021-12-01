@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.Parse;
+using Application.DomainDTOs.Content;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -22,6 +23,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetParagraphCount.Query{ContentUrl = contentUrl}));
         }
-        
+
+        [HttpPost("getParagraph")]
+        public async Task<IActionResult> GetParagraph(ParagraphQueryDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetParagraph.Query{Dto = dto}));
+        }        
     }
 }

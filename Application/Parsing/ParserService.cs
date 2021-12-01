@@ -29,11 +29,6 @@ namespace Application.Parsing
             loadedContent = await parser.Parse();
             IsParserReady = true;
         }
-        public Task<List<AbstractTermDto>> AbstractTermsForParagraph(string contentUrl, int paragraphIndex)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ContentMetadataDto> GetContentMetadata(string url)
         {
             if (loadedContent != null && IsParserReady)
@@ -44,6 +39,11 @@ namespace Application.Parsing
         }
 
         public Task<int> GetNumParagraphs(string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ContentParagraph> GetParagraph(string contentUrl, int index)
         {
             throw new NotImplementedException();
         }
