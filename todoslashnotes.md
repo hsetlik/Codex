@@ -148,19 +148,16 @@ TODO:
 
 FROM YESTERDAY:
 
-1. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
-2. Client side display for profile details- low priority
-3. Sort out regex stuff for cleaning gunk out of parsed HTML
+2. ~~Client side display for profile details- low priority~~
 
 TODO:
-4. Figure out how to display/store header elements in parsed HTML pages
-5. In a new branch- refactor everything such that:
+5. ~~In a new branch- refactor everything such that:~~
 
-    -No more Transcript entity
+    ~~-No more Transcript entity~~
     
-    -Content only stores URL and groups of AbstractTerm are returned per paragraph of the parsed HTML
+    ~~-Content only stores URL and groups of AbstractTerm are returned per paragraph of the parsed HTML~~
 
-    -Content extension methods to 1. Query the number of paragraphs 2. Return a Paragraph string when queried with an index
+    ~~-Content extension methods to 1. Query the number of paragraphs 2. Return a Paragraph string when queried with an index~~
 
 NOTES:
 
@@ -170,4 +167,15 @@ Parse Endpoints Needed:
 1. Get ContentCreateDto from URL
 2. Get number of paragraphs from URL
 3. Get Paragraph (list of AbstractTermDto w/ metadata) from URL/index
+=================================================================================================
+============================================== 12/1/21 =========================================
+
+FROM YESTERDAY:
+
+1. Some sort of interface to get a graph of daily progress/statistics - Initialize with a list of ContentViewRecord queried by Date and LanguageProfileId
+2. Sort out regex stuff for cleaning gunk out of parsed HTML
+3. Figure out how to display/store header elements in parsed HTML pages
+TODO:
+4. "Import" enpoint for ContentController, should automatically parse and create content with params: URL 
+5. "AbstractTermsForParagraph" endpoint for ContentController (replaces AbstractTermsForChunk) with params: ContentUrl, Index
 =================================================================================================
