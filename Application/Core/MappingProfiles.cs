@@ -11,6 +11,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
+            
            
 
             

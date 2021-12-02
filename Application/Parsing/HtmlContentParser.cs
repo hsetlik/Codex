@@ -15,11 +15,6 @@ namespace Application.Parsing
         public string Url { get; private set; }
         protected HtmlDocument loadedHtml = null;
         public bool HasLoadedHtml {get {return !(loadedHtml == null);}}
-        public static async Task<ContentMetadataDto> ParseToContent(string url)
-        {
-            var parser = ContentParserFactory.ParserFor(url);
-            return await parser.Parse();
-        }
 
         public HtmlContentParser(string url)
         {
@@ -44,8 +39,10 @@ namespace Application.Parsing
 
         public static ParserProfile ProfileFor(string url)
         {
+            Console.WriteLine($"Getting parser for content: {url}");
             if (url.Contains("wikipedia"))
             {
+                Console.WriteLine($"Found wikipedia page at: {url}");
                 return ParserProfile.Wikipedia;
             }
             else

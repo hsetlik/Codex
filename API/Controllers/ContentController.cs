@@ -69,17 +69,19 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetKnownWordsForContent.Query{ContentId = dto.ContentId}));
         }
 
-        [HttpPost("parseUrlIntoContent")]
-        public async Task<IActionResult> ParseUrlIntoContent(ContentUrlDto dto)
-        {
-            return HandleResult(await Mediator.Send(new ContentParseRequest.Query{Url = dto.Url}));
-        }
-
         [Authorize]
         [HttpPost("abstractTermsForParagraph")]
         public async Task<IActionResult> AbstractTermsForParagraph(ParagraphQueryDto dto)
         {
             return HandleResult(await Mediator.Send(new AbstractTermsForParagraph.Query{Dto = dto}));
+        }
+
+        [Authorize]
+        [HttpPost("importContent")]
+        public async Task<IActionResult> ImportContent(ContentUrlDto dto)
+        {
+            Console.WriteLine($"Recieved import request for: {dto.Url}");
+            return HandleResult(await Mediator.Send(new ImportContent.Query{Dto = dto}));
         }
     }
 }

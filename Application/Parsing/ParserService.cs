@@ -30,21 +30,19 @@ namespace Application.Parsing
 
         public async Task PrepareForContent(string url)
         {
+            Console.WriteLine($"Preparing parser for content {url}");
             if (!ParserReadyFor(url))
             {
                 CurrentUrl = url;
-                loadedContent = null;
                 parser = ContentParserFactory.ParserFor(url);
                 loadedContent = await parser.Parse();
-                Console.WriteLine($"Prepared parser for content {url}");
             }
             else
                 Console.WriteLine($"Parser already prepared for content: {url}");
         }
         public async Task<ContentMetadataDto> GetContentMetadata(string url)
         {
-            if (loadedContent != null)
-                return loadedContent;
+            Console.WriteLine($"Requesting metadata for {url}");
             await PrepareForContent(url);
             return loadedContent;
         }
