@@ -44,7 +44,7 @@ namespace Application.Parsing.ProfileParsers
             return new ContentMetadataDto
             {
                 ContentName = name,
-                ContentType = null,
+                ContentType = "Wikipedia",
                 Language = lang,
                 VideoUrl = "none",
                 AudioUrl = "none",

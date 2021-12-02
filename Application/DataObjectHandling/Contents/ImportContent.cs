@@ -18,7 +18,6 @@ namespace Application.DataObjectHandling.Contents
         public class Query : IRequest<Result<Unit>>
         {
             public ContentUrlDto Dto { get; set; }
-
         }
 
         public class Handler : IRequestHandler<Query, Result<Unit>>
@@ -33,11 +32,11 @@ namespace Application.DataObjectHandling.Contents
 
             public async Task<Result<Unit>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var existingContent = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.Url);
+                var existingContent = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
                 if (existingContent != null)
-                    return Result<Unit>.Success(Unit.Value);
-                Console.WriteLine($"Content not found for URL {request.Dto.Url}. Attempting to create...");
-                var metadata = await _parser.GetContentMetadata(request.Dto.Url);
+                    return Result<Unit>.Failure("Content at this URL is already in database");
+                Console.WriteLine($"Content not found for URL {request.Dto.ContentUrl}. Attempting to create...");
+                var metadata = await _parser.GetContentMetadata(request.Dto.ContentUrl);
                 if (metadata == null)
                     return Result<Unit>.Failure("Could not create metadata");
                 var date = DateTime.Now.ToString();

@@ -198,7 +198,7 @@ FROM YESTERDAY:
 
 1. ~~Some sort of interface to get a graph of daily progress/statistics - Once backend is ready~~ (table this for now)
 3. Figure out how to display/store header elements in parsed HTML pages - Once backend is ready
-4. "Import" enpoint for ContentController, should automatically parse and create content with params: URL 
+4. ~~"Import" enpoint for ContentController, should automatically parse and create content with params: URL ~~
 6. ~~Figure out a way of combining really short "p" elements into a longer "ContentParagraph", update GetParagraphCount and GetParagraph to match~~ (table)
 7. Issue with separating trailing characters in GetAbstractTerm
 

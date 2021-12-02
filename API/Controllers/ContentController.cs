@@ -63,11 +63,6 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetContentsWithTag.Command{Dto = dto}));
         }
 
-        [HttpPost("getKnownWordsForContent")]
-        public async Task<IActionResult> GetKnownWordsForContent(ContentIdDto dto)
-        {
-            return HandleResult(await Mediator.Send(new GetKnownWordsForContent.Query{ContentId = dto.ContentId}));
-        }
 
         [Authorize]
         [HttpPost("abstractTermsForParagraph")]
@@ -76,11 +71,10 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new AbstractTermsForParagraph.Query{Dto = dto}));
         }
 
-        [Authorize]
         [HttpPost("importContent")]
         public async Task<IActionResult> ImportContent(ContentUrlDto dto)
         {
-            Console.WriteLine($"Recieved import request for: {dto.Url}");
+            Console.WriteLine($"Recieved import request for: {dto.ContentUrl}");
             return HandleResult(await Mediator.Send(new ImportContent.Query{Dto = dto}));
         }
     }

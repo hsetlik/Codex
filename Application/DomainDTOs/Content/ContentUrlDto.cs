@@ -7,6 +7,6 @@ namespace Application.DomainDTOs.Content
 {
     public class ContentUrlDto
     {
-        public string Url { get; set; }
+        public string ContentUrl { get; set; }
     }
 }
