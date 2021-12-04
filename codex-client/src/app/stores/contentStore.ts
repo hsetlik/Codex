@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { ContentMetadataDto, KnownWordsDto, TermsFromParagraph } from "../api/agent";
+import agent, { AddTranslationDto, ContentMetadataDto, KnownWordsDto, TermsFromParagraph } from "../api/agent";
 import { AbstractTerm } from "../models/userTerm";
+import { asTermValue } from "../utilities/stringUtility";
 
 
 export default class ContentStore
@@ -10,6 +11,7 @@ export default class ContentStore
     loadedContents: ContentMetadataDto[] = [];
     knownWordsLoaded = false;
     contentKnownWords: Map<string, KnownWordsDto> = new Map();
+    selectedTerm: AbstractTerm | null = null;
 
     selectedContentMetadata: ContentMetadataDto | null = null;
     selectedContentUrl: string = "none";
@@ -107,10 +109,32 @@ export default class ContentStore
            console.log(error); 
            runInAction(() => this.knownWordsLoaded = true);
         }
-        
     }
 
-    loadParagraph = async (url: string, index: number) => {
+    addTranslationToTerm = async (term: AbstractTerm, translation: string) => {
+        try {
+           let dto: AddTranslationDto = {
+               userTermId: term.userTermId,
+               newTranslation: translation
+           };
+           await agent.UserTermEndpoints.addTranslation(dto);
 
+        } catch (error) {
+           console.log(error); 
+        }
+    }
+
+    loadParagraph = async (url: string, pIndex: number) => {
+        try {
+            let newParagraph = await agent.Content.abstractTermsForParagraph({contentUrl: url, index: pIndex});
+            runInAction(() => this.currentParagraphTerms = newParagraph);
+        } catch (error) {
+           console.log(error); 
+        }
+
+    }
+
+    setSelectedTerm(term: AbstractTerm) {
+        this.selectedTerm = term;
     }
 }

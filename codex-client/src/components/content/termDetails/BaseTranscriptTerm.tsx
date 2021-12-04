@@ -11,8 +11,8 @@ interface Props {
 }
 
 export default observer(function BaseTranscriptTerm({term}: Props) {
-    const {transcriptStore} = useStore();
-    const {setSelectedTerm} = transcriptStore;
+    const {contentStore} = useStore();
+    const {setSelectedTerm} = contentStore;
     const termColor = getColorForTerm(term);
     if (term.hasUserTerm) {
         return (

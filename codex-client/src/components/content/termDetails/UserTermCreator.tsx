@@ -12,8 +12,8 @@ interface Props {
 
 
 export default observer(function UserTermCreator({term}: Props) {
-    const {userStore, transcriptStore} = useStore();
-    const {selectedTerm} = transcriptStore;
+    const {userStore, contentStore} = useStore();
+    const {selectedTerm} = contentStore;
     const {createTerm} = userStore;
     const handleFormSubmit = async (dto: UserTermCreateDto) => {
         if (dto.termValue !== selectedTerm?.termValue) {

@@ -5,8 +5,8 @@ import TermDetails from "./TermDetails";
 
 
 export default observer(function AbstractTermDetails() {
-    const {transcriptStore} = useStore();
-    const {selectedTerm} = transcriptStore;
+    const {contentStore} = useStore();
+    const {selectedTerm} = contentStore;
     if (selectedTerm == null) {
         return <Header content="No Term Selected" />
     } else {

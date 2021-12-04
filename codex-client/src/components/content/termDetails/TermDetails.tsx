@@ -3,7 +3,6 @@ import React from "react";
 import { Container, Header } from "semantic-ui-react";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
-import PopularTranslationList from "../transcript/PopularTranslationList";
 import UserTermCreator from "./UserTermCreator";
 import UserTermDetails from "../termDetails/UserTermDetails";
 
@@ -22,7 +21,6 @@ export default observer(function TermDetails({term}: Props) {
                 <UserTermDetails term={term} />
             ) : (
                 <div>
-                    <PopularTranslationList term={term} />
                     <UserTermCreator term={term} />
                 </div>
             )}

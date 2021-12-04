@@ -3,6 +3,7 @@ import TrailingCharacterGroup from "./TrailingCharacterGroup";
 import "../../styles/styles.css";
 import BaseTranscriptTerm from "../termDetails/BaseTranscriptTerm";
 import { observer } from "mobx-react-lite";
+import { useStore } from "../../../app/stores/store";
 
 interface Props {
     term: AbstractTerm

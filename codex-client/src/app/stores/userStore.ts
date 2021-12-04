@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent, { UserTermCreateDto } from '../api/agent';
 import { User, UserFormValues } from '../models/user';
-import { UserTerm, UserTermDetails } from '../models/userTerm';
+import { AbstractTerm, UserTermDetails } from '../models/userTerm';
 import { asTermValue } from '../utilities/stringUtility';
 import { store } from './store';
 
@@ -145,9 +145,12 @@ export default class UserStore{
     refreshByValue = async (termValue: string) => {
         try {
             let value = asTermValue(termValue);
+            let matchingTerms: AbstractTerm[] = [];
             for(const aTerm of store.contentStore.currentParagraphTerms.abstractTerms)
             {
-                
+                if (asTermValue(aTerm.termValue) === value) {
+                    matchingTerms.push(aTerm);
+                }
             }
             
         } catch (error) {

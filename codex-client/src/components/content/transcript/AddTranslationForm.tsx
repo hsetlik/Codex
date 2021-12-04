@@ -12,13 +12,14 @@ interface Props {
 
 
 export default observer(function AddTranslationForm({term}: Props) {
-    const {userStore, transcriptStore} = useStore();
-    const {selectedTerm, addTranslationToSelected} = transcriptStore;
+    const {userStore, contentStore} = useStore();
+    const {selectedTerm} = contentStore;
+    //TODO: replace addTranslationToSelected- probably just move old functionality into contentStore.ts
     const handleFormSubmit = async (dto: AddTranslationDto) => {
        if (dto.userTermId === undefined) {
            console.log("Term is undefned!");
        } else {
-           await addTranslationToSelected(dto.newTranslation);
+          
        }
     }
     return(

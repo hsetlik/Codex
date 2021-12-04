@@ -4,13 +4,13 @@ import { Header } from "semantic-ui-react";
 import TranscriptReader from "../transcript/TranscriptReader";
 
 export default function ContentRoute(){
-    const {id, index} = useParams();
-    if (!id) {
+    const {contentName, index} = useParams();
+    if (!contentName) {
         return (
             <Header content='Loading...' />
         )
     }
    return(
-        <TranscriptReader contentUrl={id} index={parseInt(index!)}  />
+        <TranscriptReader contentName={contentName} index={parseInt(index!)}  />
     )
 }

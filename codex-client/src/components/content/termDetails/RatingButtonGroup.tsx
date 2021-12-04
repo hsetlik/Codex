@@ -6,8 +6,8 @@ import RatingButton from "./RatingButton";
 
 
 export default observer(function RatingButtonGroup() {
-    const {transcriptStore} = useStore();
-    const {selectedTerm} = transcriptStore;
+    const {contentStore} = useStore();
+    const {selectedTerm} = contentStore;
     return(
         <Button.Group>
            <RatingButton term={selectedTerm!} ratingValue={1} key={1} />
