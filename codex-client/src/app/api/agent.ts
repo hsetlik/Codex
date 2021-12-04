@@ -100,6 +100,10 @@ export interface PopularTranslationDto {
     numInstances: number
 }
 
+export interface IContentId {
+    contentId: string
+}
+
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
@@ -155,7 +159,8 @@ const Content = {
     getKnownWordsForContent: (contentUrl: IContentUrl) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentUrl),
     abstractTermsForParagraph: (dto: ParagraphQueryDto) => requests.post<TermsFromParagraph>('/content/abstractTermsForParagraph', dto),
     getParagraphCount: (contentUrl: IContentUrl) => requests.post<number>('/parse/getParagraphCount', contentUrl),
-    getContentWithName: (contentName: IContentName) => requests.post<ContentMetadataDto>('/content/getContentWithName', contentName)
+    getContentWithName: (contentName: IContentName) => requests.post<ContentMetadataDto>('/content/getContentWithName', contentName),
+    getContentWithId: (contentId: IContentId) => requests.post<ContentMetadataDto>('/content/getContentWithId', contentId)
 }
 //====================================================================================================================
 const agent = {

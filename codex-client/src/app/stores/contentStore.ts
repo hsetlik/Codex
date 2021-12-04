@@ -41,16 +41,27 @@ export default class ContentStore
                if (newMetadata !== undefined)
                 this.selectedContentMetadata = newMetadata;
                this.currentParagraphTerms = newParagraph;
+               console.log("First paragraph loaded");
            }) 
         } catch (error) {
            console.log(error); 
+           console.log(`loading content at: ${url} failed`);
            runInAction(() => {
                this.selectedContentUrl = url;
                this.selectedParagraphIndex = 0;
                this.selectedContentParagraphCount = 0;
            }) 
         }
+    }
 
+    setSelectedContentById = async (_contentId: string) => {
+        try {
+            const matchingContent = await agent.Content.getContentWithId({contentId: _contentId});
+            console.log(`selecting content with ID : ${_contentId}`);
+            await this.setSelectedContent(matchingContent.contentUrl);
+        } catch (error) {
+           console.log(error); 
+        }
     }
 
     prevParagraph = async () => {
