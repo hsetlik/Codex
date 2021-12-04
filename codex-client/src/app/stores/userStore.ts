@@ -69,7 +69,6 @@ export default class UserStore{
         console.log("Setting selected language: " + iso);
         this.selectedLanguage = iso;
         store.contentStore.loadMetadata(iso).finally(() => store.contentStore.loadKnownWords());
-        ;
     }
 
     setSelectedContent = (url: string) => {

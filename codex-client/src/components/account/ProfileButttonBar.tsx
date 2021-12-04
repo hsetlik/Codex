@@ -7,7 +7,7 @@ import { useStore } from "../../app/stores/store";
 
 
 export default observer(function ProfileButtonBar() {
-    const {userStore: {selectedLanguage, languageProfiles, user, setSelectedLanguage}} = useStore();
+    const {userStore: {selectedLanguage, languageProfiles}} = useStore();
     return (
         <Menu>
             {languageProfiles.map(prof => (

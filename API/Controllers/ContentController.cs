@@ -85,5 +85,13 @@ namespace API.Controllers
         }
 
 
+        [Authorize]
+        [HttpPost("getContentWithId")]
+        public async Task<IActionResult> GetContentWithId(ContentIdDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetContentWithId.Query{Dto = dto}));
+        }
+
+
     }
 }

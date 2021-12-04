@@ -1,3 +1,4 @@
+import { Agent } from "http";
 import { makeAutoObservable, runInAction } from "mobx";
 import agent, { AddTranslationDto, ContentMetadataDto, KnownWordsDto, TermsFromParagraph } from "../api/agent";
 import { AbstractTerm } from "../models/userTerm";
@@ -31,6 +32,7 @@ export default class ContentStore
     setSelectedContent = async (url: string) => {
         try {
            let newParagraphCount = await agent.Content.getParagraphCount({contentUrl: url});
+           let newParagraph = await agent.Content.abstractTermsForParagraph({contentUrl: url, index: 0});
            runInAction(() => {
                this.selectedContentUrl = url;
                this.selectedParagraphIndex = 0;
@@ -38,6 +40,7 @@ export default class ContentStore
                let newMetadata = this.loadedContents.find(v => v.contentUrl === url);
                if (newMetadata !== undefined)
                 this.selectedContentMetadata = newMetadata;
+               this.currentParagraphTerms = newParagraph;
            }) 
         } catch (error) {
            console.log(error); 
