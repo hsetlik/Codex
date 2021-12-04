@@ -3,31 +3,28 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { Header, Segment, Button } from "semantic-ui-react";
+import { ParagraphQueryDto } from "../../../app/api/agent";
+import ContentStore from "../../../app/stores/contentStore";
 import { useStore } from "../../../app/stores/store";
 
-interface Props {
-    chunkIndex: number
-}
 
-export default observer (function TranscriptPageHeader({chunkIndex}: Props) {
-    const {transcriptStore} = useStore();
-    const {transcriptChunkIds, contentId} = transcriptStore;
-    const nextChunkPath = () => {
-        return `../content/${contentId}/${chunkIndex + 1}`;
-    }
 
-    const prevChunkPath = () => {
-        return `../content/${contentId}/${chunkIndex - 1}`;
+export default observer (function TranscriptPageHeader({contentUrl, index}: ParagraphQueryDto) {
+    const nextParagraphPath = () => {
+        return `../content/${contentUrl}/${index + 1}`;
     }
-    
-    
+    const prevParagraphPath = () => {
+        return `../content/${contentUrl}/${index - 1}`;
+    }
+    const {contentStore} = useStore();
+    const {selectedContentParagraphCount} = contentStore;
     return(
         <Segment>
             <Header>
-              {`Page ${chunkIndex + 1} of ${transcriptChunkIds.length}`} 
+            Paragraph {index} of {selectedContentParagraphCount}
             </Header>
-            <Button basic content='Previous' disabled={chunkIndex === 0} as={Link} to={prevChunkPath()} />
-            <Button basic content='Next' disabled={chunkIndex >= transcriptChunkIds.length - 1} as={Link} to={nextChunkPath()}/>
+            <Button basic content='Previous' disabled={index === 0} as={Link} to={prevParagraphPath()} />
+            <Button basic content='Next' disabled={index >= selectedContentParagraphCount - 1} as={Link} to={nextParagraphPath()}/>
         </Segment>
    )
 });

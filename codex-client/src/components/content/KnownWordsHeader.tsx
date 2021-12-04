@@ -9,7 +9,7 @@ interface Props {
 
 export default observer(function KnownWordsHeader({contentId}: Props) {
     const {contentStore} = useStore();
-    const {headerKnownWords} = contentStore;
+    const {contentKnownWords: headerKnownWords} = contentStore;
     return (
         <div>
             { headerKnownWords.get(contentId) !== undefined ? (

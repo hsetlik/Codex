@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import agent, { UserTermCreateDto } from '../api/agent';
 import { User, UserFormValues } from '../models/user';
 import { UserTerm, UserTermDetails } from '../models/userTerm';
+import { asTermValue } from '../utilities/stringUtility';
 import { store } from './store';
 
 export default class UserStore{
@@ -10,8 +11,6 @@ export default class UserStore{
     languageProfiles: string[] = [];
 
     selectedLanguage: string = "none"
-
-    selectedContent: string = "none" // the ContentId GUID
 
     constructor() {
         makeAutoObservable(this);
@@ -59,7 +58,6 @@ export default class UserStore{
         this.user = null;
         this.languageProfiles = [];
         this.selectedLanguage = "none";
-        this.selectedContent = "none";
         if(window.localStorage.getItem('jwt') != null)
         {
             console.log("WARNING: TOKEN NOT DELETED!!");
@@ -70,15 +68,14 @@ export default class UserStore{
     setSelectedLanguage = (iso: string) => {
         console.log("Setting selected language: " + iso);
         this.selectedLanguage = iso;
-        store.contentStore.loadHeaders(iso).finally(() => store.contentStore.loadKnownWords());
+        store.contentStore.loadMetadata(iso).finally(() => store.contentStore.loadKnownWords());
         ;
     }
 
-    setSelectedContent = (guid: string) => {
-        this.selectedContent = guid;
-        store.contentStore.setSelectedContentId(guid);
+    setSelectedContent = (url: string) => {
+        store.contentStore.setSelectedContent(url);
     }
-
+    
     selectDefaultLanguage = () => {
         if (this.languageProfiles.length < 1) {
             console.log("No profiles loaded!");
@@ -128,8 +125,8 @@ export default class UserStore{
         console.log("Creating term for: " + term.termValue);
         try {
             await agent.UserTermEndpoints.create(term);
-            if (store.transcriptStore.selectedTerm?.indexInChunk)
-                    await store.transcriptStore.refershTermByValue(term.termValue);
+            //if (store.transcriptStore.selectedTerm?.indexInChunk)
+             //       await store.transcriptStore.refershTermByValue(term.termValue);
         } catch (error) {
             console.log(error);
         }
@@ -139,7 +136,20 @@ export default class UserStore{
         try {
             console.log(`Term seen ${userTerm.timesSeen} times`);
            await agent.UserTermEndpoints.updateUserTerm(userTerm);
-           runInAction(() => store.transcriptStore.refershTermByValue(userTerm.termValue)); 
+           //runInAction(() => )); TODO: 
+        } catch (error) {
+           console.log(error); 
+        }
+    }
+
+    refreshByValue = async (termValue: string) => {
+        try {
+            let value = asTermValue(termValue);
+            for(const aTerm of store.contentStore.currentParagraphTerms.abstractTerms)
+            {
+                
+            }
+            
         } catch (error) {
            console.log(error); 
         }

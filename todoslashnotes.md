@@ -204,6 +204,18 @@ FROM YESTERDAY:
 
 TODO:
 
+1. ~~Clean up unused endpoints~~
+2. Refactor client side for new endpoints
+=================================================================================================
+============================================== 12/3/21 ==========================================
+
+FROM YESTERDAY:
+
+3. Figure out how to display/store header elements in parsed HTML pages - Once backend is ready
 1. Clean up unused endpoints
 2. Refactor client side for new endpoints
+
+TODO (client refactoring):
+1. Refactor functionality from transctiptStore.ts into existing stores
+2. Fix components to match
 =================================================================================================

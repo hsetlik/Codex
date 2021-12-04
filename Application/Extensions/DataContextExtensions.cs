@@ -356,41 +356,40 @@ namespace Application.Extensions
             return Result<List<ContentTagDto>>.Success(output);
         }
 
-        public static async Task<Result<List<ContentHeaderDto>>> GetContentsWithTag(this DataContext context, string tagValue)
+        public static async Task<Result<List<ContentMetadataDto>>> GetContentsWithTag(this DataContext context, string tagValue)
         {
             var contents = await context.ContentTags
             .Include(u => u.Content)
             .Where(u => u.TagValue == tagValue)
             .ToListAsync();
             if (contents == null)
-                return Result<List<ContentHeaderDto>>.Failure("Could not find matching tags");
-            var dict = new Dictionary<string, ContentHeaderDto>();
+                return Result<List<ContentMetadataDto>>.Failure("Could not find matching tags");
+            var dict = new Dictionary<string, ContentMetadataDto>();
             foreach(var tag in contents)
             {
-                var dto = new ContentHeaderDto 
+                var dto = new ContentMetadataDto 
                 {
-                    HasVideo = !(tag.Content.VideoUrl == "none"),
-                    HasAudio = !(tag.Content.AudioUrl == "none"),
+                    VideoUrl = tag.Content.VideoUrl ,
+                    AudioUrl = tag.Content.AudioUrl,
                     ContentType = tag.Content.ContentType,
                     ContentName = tag.Content.ContentName,
                     Language = tag.Content.Language,
-                    DateAdded = tag.Content.DateAdded,
-                    ContentId = tag.ContentId
+                    ContentUrl = tag.Content.ContentUrl
                 };
                 dict[tag.TagValue] = dto;
             }
             var list = dict.Values.ToList();
-            return Result<List<ContentHeaderDto>>.Success(list);
+            return Result<List<ContentMetadataDto>>.Success(list);
         }
 
-        public static async Task<Result<ContentMetadataDto>> GetContentAtUrl(this DataContext context, string url, IMapper mapper)
+        public static async Task<Result<DomainDTOs.ContentMetadataDto>> GetContentAtUrl(this DataContext context, string url, IMapper mapper)
         {
             var content = await context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == url);
             
             if (content == null)
-                return Result<ContentMetadataDto>.Failure("Could not load content");
-            var value = mapper.Map<ContentMetadataDto>(content);
-            return Result<ContentMetadataDto>.Success(value);
+                return Result<DomainDTOs.ContentMetadataDto>.Failure("Could not load content");
+            var value = mapper.Map<DomainDTOs.ContentMetadataDto>(content);
+            return Result<DomainDTOs.ContentMetadataDto>.Success(value);
         }
 
         public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username)

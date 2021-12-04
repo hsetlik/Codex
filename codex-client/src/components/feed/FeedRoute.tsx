@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 export default observer(function FeedRoute(){
     var {contentStore, commonStore} = useStore();
-    const {loadedHeaders, loadHeaders, headersLoaded} = contentStore;
+    const {loadedContents: loadedHeaders, loadMetadata: loadHeaders, headersLoaded} = contentStore;
     const {appLoaded} = commonStore;
     const {lang} = useParams();
     if (!appLoaded) {
@@ -26,7 +26,7 @@ export default observer(function FeedRoute(){
                 <Item>
                     <Item.Group divided>
                     {loadedHeaders.map(content => {
-                        return <ContentHeader dto={content} key={content.contentId}/>
+                        return <ContentHeader dto={content} key={content.contentUrl}/>
                         })
                     }
                     </Item.Group>

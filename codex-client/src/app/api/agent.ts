@@ -115,25 +115,18 @@ const UserTermEndpoints = {
 export interface ILanguageString {
     language: string
 }
-export interface ContentHeaderDto {
-    hasVideo: boolean,
-    hasAudio: boolean,
+export interface ContentMetadataDto {
+    videoUrl: string,
+    audioUrl: string,
     contentName: string,
     contentType: string,
     language: string,
     dateAdded: string,
-    contentId: string
+    contentUrl: string
 }
 
-export interface IContentId {
-    contentId: string
-}
-
-export interface TranscriptChunkDto {
-    transcriptChunkId: string;
-    language: string;
-    chunkText: string;
-    transcriptChunkIndex: number
+export interface IContentUrl {
+    contentUrl: string
 }
 
 export interface KnownWordsDto {
@@ -141,25 +134,27 @@ export interface KnownWordsDto {
     knownWords: number;
 }
 
+export interface ParagraphQueryDto {
+    contentUrl: string,
+    index: number
+}
+
+export interface TermsFromParagraph {
+    contentUrl: string,
+    index: number,
+    abstractTerms: AbstractTerm[]
+}
+
 const Content = {
-    getLanguageContents: (language: ILanguageString) => requests.post<ContentHeaderDto[]>('/Content/getLanguageContents', language),
-    getChunksForContent: (contentId: IContentId) => requests.post<TranscriptChunkDto[]>('/Content/getChunksForContent', contentId),
-    getChunkIdsForContent: (contentId: IContentId) => requests.post<string[]>('/Content/getChunkIdsForContent', contentId),
-    getKnownWordsForContent: (contentId: IContentId) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentId)
+    getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadataDto[]>('/content/getLanguageContents', language),
+    getKnownWordsForContent: (contentUrl: IContentUrl) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentUrl),
+    abstractTermsForParagraph: (dto: ParagraphQueryDto) => requests.post<TermsFromParagraph>('/content/abstractTermsForContent', dto),
+    getParagraphCount: (contentUrl: IContentUrl) => requests.post<number>('/content/getParagraphCount', contentUrl)
 }
 //====================================================================================================================
-export interface ITranscriptChunkId {
-    transcriptChunkId: string
-}
-
-const Transcript = {
-    getAbstractTermsForChunk: (dto: ITranscriptChunkId) => requests.post<AbstractTerm[]>('/Transcript/getAbstractTermsForChunk', dto)
-}
-
 const agent = {
     Account,
     Content,
-    Transcript,
     UserTermEndpoints,
     TermEndpoints
 }

@@ -11,6 +11,6 @@ export default function ContentRoute(){
         )
     }
    return(
-        <TranscriptReader contentId={id} chunkIndex={parseInt(index!)}  />
+        <TranscriptReader contentUrl={id} index={parseInt(index!)}  />
     )
 }

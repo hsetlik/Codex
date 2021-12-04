@@ -7,25 +7,18 @@ import TranscriptPage from "./TranscriptPage";
 import TranscriptPageHeader from "./TranscriptPageHeader";
 
 interface Props {
-    contentId: string;
-    chunkIndex: number;
+    contentUrl: string;
+    index: number;
 }
 
-export default observer(function TranscriptReader({contentId, chunkIndex}: Props){
-    const {transcriptStore} = useStore();
-    const {loadContent} = transcriptStore;
-    useEffect(() => {
-
-        loadContent(contentId);
-
-    }, [loadContent, contentId])
-    return(
-        
+export default observer(function TranscriptReader({contentUrl, index}: Props){
+    //TODO: useEffect to make sure content is loaded
+return(        
         <Container >
             <Grid>
                 <Grid.Column width='10'>
-                    <TranscriptPageHeader chunkIndex={chunkIndex} />
-                    <TranscriptPage chunkIndex={chunkIndex}  />
+                    <TranscriptPageHeader contentUrl={contentUrl} index={index} />
+                    <TranscriptPage paragraphIndex={index}  />
                 </Grid.Column>
                 <Grid.Column width='6'>
                     <TermDetails />

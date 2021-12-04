@@ -121,5 +121,18 @@ namespace Application.Extensions
             history.ContentViewRecords.Add(record);
             return history;
         }
+
+        public static ContentMetadataDto GetMetadata(this Content content)
+        {
+            return new ContentMetadataDto
+            {
+                ContentUrl = content.ContentUrl,
+                ContentType = content.ContentType,
+                ContentName = content.ContentName,
+                Language = content.Language,
+                AudioUrl = content.AudioUrl,
+                VideoUrl = content.VideoUrl
+            };
+        }
     }
 }

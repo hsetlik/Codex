@@ -8,7 +8,6 @@ using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Application.DataObjectHandling.Contents.GetContentHeader;
 
 namespace API.Controllers
 {
@@ -20,12 +19,6 @@ namespace API.Controllers
         public async Task<IActionResult> EnsureContentTerms(ContentIdDto Dto)
         {
             return HandleResult(await Mediator.Send(new EnsureContentTerms.Command{Dto = Dto}));
-        }
-
-        [HttpGet("getContentHeader")]
-        public async Task<IActionResult> GetContentHeader(GetContentHeaderDto dto)
-        {
-            return HandleResult(await Mediator.Send(new GetContentHeader.Query{Dto = dto}));
         }
 
         [HttpPost("getLanguageContents")]

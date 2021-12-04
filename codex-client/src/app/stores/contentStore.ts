@@ -1,34 +1,86 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { ContentHeaderDto, KnownWordsDto } from "../api/agent";
-import { store } from "./store";
+import agent, { ContentMetadataDto, KnownWordsDto, TermsFromParagraph } from "../api/agent";
+import { AbstractTerm } from "../models/userTerm";
 
 
 export default class ContentStore
 {
 
     headersLoaded = false;
-    loadedHeaders: ContentHeaderDto[] = [];
+    loadedContents: ContentMetadataDto[] = [];
     knownWordsLoaded = false;
-    headerKnownWords: Map<string, KnownWordsDto> = new Map();
+    contentKnownWords: Map<string, KnownWordsDto> = new Map();
 
-    selectedContentId: string = "none";
+    selectedContentMetadata: ContentMetadataDto | null = null;
+    selectedContentUrl: string = "none";
+    selectedParagraphIndex = 0;
+    selectedContentParagraphCount = 0;
+    paragraphLoaded = false;
+    currentParagraphTerms: TermsFromParagraph = {
+        contentUrl: this.selectedContentUrl,
+        index: this.selectedParagraphIndex,
+        abstractTerms: []
+    }
+
     constructor() {
         makeAutoObservable(this);
     }
 
-    setSelectedContentId = (id: string) => {
-        this.selectedContentId = id;
-        store.transcriptStore.loadContent(id);
+    setSelectedContent = async (url: string) => {
+        try {
+           let newParagraphCount = await agent.Content.getParagraphCount({contentUrl: url});
+           runInAction(() => {
+               this.selectedContentUrl = url;
+               this.selectedParagraphIndex = 0;
+               this.selectedContentParagraphCount = newParagraphCount;
+               let newMetadata = this.loadedContents.find(v => v.contentUrl === url);
+               if (newMetadata !== undefined)
+                this.selectedContentMetadata = newMetadata;
+           }) 
+        } catch (error) {
+           console.log(error); 
+           runInAction(() => {
+               this.selectedContentUrl = url;
+               this.selectedParagraphIndex = 0;
+               this.selectedContentParagraphCount = 0;
+           }) 
+        }
+
     }
 
-    loadHeaders = async (lang: string) => {
+    prevParagraph = async () => {
+        try {
+           if (this.selectedParagraphIndex  > 0) {
+                let newIndex = this.selectedParagraphIndex - 1;
+                await this.loadParagraph(this.selectedContentUrl, newIndex);
+                runInAction(() => this.selectedParagraphIndex = newIndex)
+           } 
+        } catch (error) {
+           console.log(error); 
+        }
+    }
+    
+    nextParagraph = async () => {
+        try {
+           if (this.selectedParagraphIndex + 1 < this.selectedContentParagraphCount) {
+                let newIndex = this.selectedParagraphIndex + 1;
+                await this.loadParagraph(this.selectedContentUrl, newIndex);
+                runInAction(() => this.selectedParagraphIndex = newIndex)
+           } 
+        } catch (error) {
+           console.log(error); 
+        }
+
+    }
+
+    loadMetadata = async (lang: string) => {
         this.headersLoaded = false;
-        this.loadedHeaders = [];
+        this.loadedContents = [];
         console.log(`Loading Headers for: ${lang}`);
         try {
             var headers = await agent.Content.getLanguageContents({language: lang} );
             runInAction(() => {
-                this.loadedHeaders = headers;
+                this.loadedContents = headers;
                 this.headersLoaded = true;
             }); 
         } catch (error) {
@@ -40,15 +92,13 @@ export default class ContentStore
 
     loadKnownWords = async () => {
         this.knownWordsLoaded = false;
-        this.headerKnownWords.clear();
+        this.contentKnownWords.clear();
         try {
-            for (const header of this.loadedHeaders) {
-                console.log(`loading words for header ${header.contentName}`);
-                var knownWords = await agent.Content.getKnownWordsForContent({contentId: header.contentId});
+            for (const header of this.loadedContents) {
+                var knownWords = await agent.Content.getKnownWordsForContent({contentUrl: header.contentUrl});
                 runInAction(() => {
-                    this.headerKnownWords.set(header.contentId, knownWords);
+                    this.contentKnownWords.set(header.contentUrl, knownWords);
                 })
-                console.log(`known words loaded for header ${header.contentName}`);
             }
             runInAction(() => {
                 this.knownWordsLoaded = true;
@@ -58,5 +108,9 @@ export default class ContentStore
            runInAction(() => this.knownWordsLoaded = true);
         }
         
+    }
+
+    loadParagraph = async (url: string, index: number) => {
+
     }
 }

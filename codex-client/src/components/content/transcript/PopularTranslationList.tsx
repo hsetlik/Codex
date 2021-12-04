@@ -9,10 +9,10 @@ interface Props {
     term: AbstractTerm
 }
 
+/*
 export default observer(function PopularTranslationList({term}: Props){
-    const {transcriptStore, userStore} = useStore();
     const {createTerm} = userStore;
-    const {popTranslationsLoaded, currentPopularTranslations, loadPopularTranslations, selectedTerm} = transcriptStore;
+    //TODO fix this mess
     useEffect(() => {
        if (!popTranslationsLoaded) {
            loadPopularTranslations();
@@ -44,3 +44,4 @@ export default observer(function PopularTranslationList({term}: Props){
         )
     }
 })
+*/

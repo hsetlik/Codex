@@ -5,19 +5,15 @@ import TranscriptTerm from "./TranscriptTerm";
 import { useEffect } from "react";
 
 interface Props {
-    chunkIndex: number;
+    paragraphIndex: number;
 }
 
-export default  observer(function TranscriptPage({chunkIndex}: Props) {
-    const {transcriptStore: {currentAbstractTerms, termsAreLoaded, loadTermsForChunk, transcriptChunkIds}} = useStore();
+export default  observer(function TranscriptPage({paragraphIndex}: Props) {
+    const {contentStore: {selectedContentUrl, loadParagraph, currentParagraphTerms, paragraphLoaded}} = useStore();
     useEffect(() => {
-        const chunkId = transcriptChunkIds.find(t => t.index === chunkIndex);
-        console.log(`Loading Chunk: ${chunkId} at index ${chunkIndex}`);
-        if (chunkId !== undefined) {
-            loadTermsForChunk(chunkId.chunkId);
-        }
-    }, [loadTermsForChunk, transcriptChunkIds, chunkIndex])
-    if (!termsAreLoaded){
+        loadParagraph(selectedContentUrl, paragraphIndex);
+    }, [selectedContentUrl, loadParagraph, paragraphIndex])
+    if (!paragraphLoaded){
         return (
         <Container>
             <Header as="h2" content="Loading..." />
@@ -27,7 +23,7 @@ export default  observer(function TranscriptPage({chunkIndex}: Props) {
     return(
         <Container className="segment">
             {
-                currentAbstractTerms.map(trm => (
+                currentParagraphTerms.abstractTerms.map(trm => (
                     <TranscriptTerm term={trm} key={trm.indexInChunk} />
                 ))
             }

@@ -1,28 +1,28 @@
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { Button, Header, Label, Segment } from "semantic-ui-react";
-import { ContentHeaderDto } from "../../app/api/agent";
+import { ContentMetadataDto } from "../../app/api/agent";
 import { useStore } from "../../app/stores/store";
 import KnownWordsHeader from "./KnownWordsHeader";
 
 interface Props{
-    dto: ContentHeaderDto
+    dto: ContentMetadataDto
 }
 
 export default observer(function ContentHeader({dto}: Props)
 {
     const {userStore} = useStore();
    
-    console.log("Content ID is: " + dto.contentId);
+    console.log("Content ID is: " + dto.contentUrl);
     return (
             <Segment>
                 <Header >{dto.contentName}</Header>
-                <KnownWordsHeader contentId={dto.contentId} />
+                <KnownWordsHeader contentId={dto.contentUrl} />
                 <Label as="h2">{dto.contentType}</Label>
                 <Button as={Link} className='label'
                 color='twitter' 
-                to={`../content/${dto.contentId}/0`} 
-                onClick={() => userStore.setSelectedContent(dto.contentId)}>
+                to={`../content/${dto.contentUrl}/0`} 
+                onClick={() => userStore.setSelectedContent(dto.contentUrl)}>
                     View
                 </Button>
             </Segment>
