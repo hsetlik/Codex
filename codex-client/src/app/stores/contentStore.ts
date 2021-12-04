@@ -125,16 +125,19 @@ export default class ContentStore
     }
 
     loadParagraph = async (url: string, pIndex: number) => {
+        this.paragraphLoaded = false;
         try {
             let newParagraph = await agent.Content.abstractTermsForParagraph({contentUrl: url, index: pIndex});
-            runInAction(() => this.currentParagraphTerms = newParagraph);
+            runInAction(() => {
+            this.paragraphLoaded = true;
+            this.currentParagraphTerms = newParagraph});
         } catch (error) {
            console.log(error); 
         }
 
     }
 
-    setSelectedTerm(term: AbstractTerm) {
+    setSelectedTerm = (term: AbstractTerm) => {
         this.selectedTerm = term;
     }
 }

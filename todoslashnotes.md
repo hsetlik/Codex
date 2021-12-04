@@ -225,10 +225,12 @@ FROM YESTERDAY:
 
 3. ~~Figure out how to display/store header elements in parsed HTML pages - Once backend is ready~~
 1. Clean up unused endpoints
-2. Refactor client side for new endpoints
+2. ~~Refactor client side for new endpoints~~
 
 TODO (client refactoring):
 1. ~~Refactor functionality from transctiptStore.ts into existing stores~~
-2. Fix components to match
-3. Make ContentWithName endpoint
+2. ~~Fix components to match~~
+3. ~~Make ContentWithName endpoint~~
+4. Ensure that the TranscriptPage automatically loads from the route URL (do a useEffect probably)
+5. Fix refreshing of userTerms when they are created/ edited
 =================================================================================================

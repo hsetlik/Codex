@@ -34,7 +34,7 @@ function App() {
         <Routes >
           <Route path='/feed/:lang' element={<FeedRoute />}/>
           <Route path='/home' element={<HomeRoute />} />
-          <Route path='/content/:contentName/:index'element={<ContentRoute />}/>
+          <Route path='/content/:contentId/:index'element={<ContentRoute />}/>
           <Route path='/profiles/:username/:lang' element={<ProfilesRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 
           <Route path='account/register' element={<RegisterForm />} /> 

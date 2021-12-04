@@ -13,5 +13,6 @@ namespace Application.DomainDTOs
             public string VideoUrl { get; set; }
             public string AudioUrl { get; set; }
             public string ContentUrl { get; set; }
+            public Guid ContentId { get; set; }
         }
 }

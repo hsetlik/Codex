@@ -24,6 +24,7 @@ namespace Application.Parsing
         protected async Task LoadHtml()
         {
             var web = new HtmlWeb();
+            Console.WriteLine($"Loading HTML for: {Url}");
             loadedHtml =  await web.LoadFromWebAsync(Url);
         }
         

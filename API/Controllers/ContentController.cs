@@ -70,5 +70,20 @@ namespace API.Controllers
             Console.WriteLine($"Recieved import request for: {dto.ContentUrl}");
             return HandleResult(await Mediator.Send(new ImportContent.Query{Dto = dto}));
         }
+
+
+        public class ContentNameDto
+        {
+            public string ContentName { get; set; }
+        }
+
+        [Authorize]
+        [HttpPost("getContentWithName")]
+        public async Task<IActionResult> GetContentWithName(ContentNameDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetContentWithName.Query{ContentName= dto.ContentName}));
+        }
+
+
     }
 }

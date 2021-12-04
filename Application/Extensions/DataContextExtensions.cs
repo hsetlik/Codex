@@ -374,7 +374,8 @@ namespace Application.Extensions
                     ContentType = tag.Content.ContentType,
                     ContentName = tag.Content.ContentName,
                     Language = tag.Content.Language,
-                    ContentUrl = tag.Content.ContentUrl
+                    ContentUrl = tag.Content.ContentUrl,
+                    ContentId = tag.ContentId
                 };
                 dict[tag.TagValue] = dto;
             }

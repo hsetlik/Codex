@@ -131,7 +131,8 @@ namespace Application.Extensions
                 ContentName = content.ContentName,
                 Language = content.Language,
                 AudioUrl = content.AudioUrl,
-                VideoUrl = content.VideoUrl
+                VideoUrl = content.VideoUrl,
+                ContentId = content.ContentId
             };
         }
     }

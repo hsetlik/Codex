@@ -21,7 +21,7 @@ export default observer(function ContentHeader({dto}: Props)
                 <Label as="h2">{dto.contentType}</Label>
                 <Button as={Link} className='label'
                 color='twitter' 
-                to={`../content/${dto.contentUrl}/0`} 
+                to={`../content/${dto.contentId}/0`} 
                 onClick={() => userStore.setSelectedContent(dto.contentUrl)}>
                     View
                 </Button>

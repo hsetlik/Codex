@@ -50,6 +50,7 @@ namespace Application.Parsing
         public async Task<int> GetNumParagraphs(string contentUrl)
         {
             await PrepareForContent(contentUrl);
+            Console.WriteLine($"preparing to count paragraphs for: {contentUrl}");
             return await parser.GetNumParagraphs();
         }
 

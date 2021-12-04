@@ -51,11 +51,13 @@ namespace Application.DataObjectHandling.Contents
                 var paragraph = await _parser.GetParagraph(request.Dto.ContentUrl, request.Dto.Index);
                 var terms = paragraph.Value.Split(' ');
                 var abstractTerms = new List<AbstractTermDto>();
-                foreach (var term in terms)
+                for(int i = 0; i < terms.Count(); ++i)
                 {
+                    var term = terms[i];
                     var abstractTerm = await _context.AbstractTermFor(term, profile);
                     if (!abstractTerm.IsSuccess)
                         return Result<AbstractTermsFromParagraph>.Failure($"Failed to load term for {term}");
+                    abstractTerm.Value.IndexInChunk = i;
                     abstractTerms.Add(abstractTerm.Value);
                 }
                 var output = new AbstractTermsFromParagraph

@@ -122,7 +122,8 @@ export interface ContentMetadataDto {
     contentType: string,
     language: string,
     dateAdded: string,
-    contentUrl: string
+    contentUrl: string,
+    contentId: string
 }
 
 export interface IContentUrl {
@@ -145,11 +146,16 @@ export interface TermsFromParagraph {
     abstractTerms: AbstractTerm[]
 }
 
+export interface IContentName {
+    contentName: string
+}
+
 const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadataDto[]>('/content/getLanguageContents', language),
     getKnownWordsForContent: (contentUrl: IContentUrl) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentUrl),
-    abstractTermsForParagraph: (dto: ParagraphQueryDto) => requests.post<TermsFromParagraph>('/content/abstractTermsForContent', dto),
-    getParagraphCount: (contentUrl: IContentUrl) => requests.post<number>('/content/getParagraphCount', contentUrl)
+    abstractTermsForParagraph: (dto: ParagraphQueryDto) => requests.post<TermsFromParagraph>('/content/abstractTermsForParagraph', dto),
+    getParagraphCount: (contentUrl: IContentUrl) => requests.post<number>('/parse/getParagraphCount', contentUrl),
+    getContentWithName: (contentName: IContentName) => requests.post<ContentMetadataDto>('/content/getContentWithName', contentName)
 }
 //====================================================================================================================
 const agent = {

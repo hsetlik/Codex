@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs.Content;
 using Application.Interfaces;
 using MediatR;
 
@@ -13,7 +14,7 @@ namespace Application.DataObjectHandling.Parse
     {
         public class Query : IRequest<Result<int>>
         {
-            public string ContentUrl { get; set; }
+            public ContentUrlDto Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<int>>
@@ -26,7 +27,7 @@ namespace Application.DataObjectHandling.Parse
 
             public async Task<Result<int>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var paragraphs = await _parser.GetNumParagraphs(request.ContentUrl);
+                var paragraphs = await _parser.GetNumParagraphs(request.Dto.ContentUrl);
                 if (paragraphs < 1)
                     return Result<int>.Failure("No paragraphs found");
                 return Result<int>.Success(paragraphs);
