@@ -31,12 +31,11 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users
-                .Include(u => u.UserLanguageProfiles)
-                .FirstOrDefaultAsync(u => u.UserName == _userAccessor.GetUsername());
-                if (user == null)
-                    return Result<Unit>.Failure("Could not find user");
-                user.UserLanguageProfiles = user.UserLanguageProfiles.Where(p => p.Language != request.Dto.Language).ToList();
+                var profile = await _context.UserLanguageProfiles.Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.Language == request.Dto.Language && _userAccessor.GetUsername() == p.User.UserName);
+                if (profile == null)
+                    return Result<Unit>.Failure("Profile not found");
+                _context.UserLanguageProfiles.Remove(profile);
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)
                     return Result<Unit>.Failure($"Could not remove profile with user: {_userAccessor.GetUsername()} and language: {request.Dto.Language}");

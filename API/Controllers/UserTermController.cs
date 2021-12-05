@@ -46,7 +46,13 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UserTermDetails.Query{TermDto = dto}));
         }
-
+       
+        [Authorize]
+        [HttpPost("deleteUserTerm")]
+        public async Task<IActionResult> DeleteUserTerm(TermDto dto)
+        {
+            return HandleResult(await Mediator.Send(new UserTermDelete.Command{Dto = dto}));
+        }
         [Authorize]
         [HttpPost("answerUserTerm")]
         public async Task<IActionResult> AnswerUserTerm(UserTermAnswerDto dto)
