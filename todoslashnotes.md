@@ -252,7 +252,7 @@ TODO :
 5. ~~Add optional "paragraphHeader" property to ContentParagraph~~
 6. ~~Add some delete endpoints (top of agenda)~~
 7. Fix issue when updating terms without changing anything
-8. Selecting a term needs to make a call for a list of translations
+8. ~~Selecting a term needs to make a call for a list of translations~~
 NOTES:
 
 1. To kill 4 & 5 with one stone, define a paragraph as every 'p' element that lies between two headers

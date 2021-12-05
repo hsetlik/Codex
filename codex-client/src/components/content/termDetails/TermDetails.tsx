@@ -18,7 +18,7 @@ export default observer(function TermDetails({term}: Props) {
         <Container className="segment">
             <Header as='h2' content={term.termValue} />
             {term.hasUserTerm ? (
-                <UserTermDetails term={term} />
+                <UserTermDetails />
             ) : (
                 <UserTermCreator term={term} />
             )}

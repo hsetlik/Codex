@@ -13,6 +13,7 @@ export default class ContentStore
     knownWordsLoaded = false;
     contentKnownWords: Map<string, KnownWordsDto> = new Map();
     selectedTerm: AbstractTerm | null = null;
+    translationsLoaded = false;
 
     selectedContentMetadata: ContentMetadataDto | null = null;
     selectedContentUrl: string = "none";
@@ -133,6 +134,7 @@ export default class ContentStore
     }
 
     addTranslationToTerm = async (term: AbstractTerm, translation: string) => {
+        this.translationsLoaded = false;
         try {
            let dto: AddTranslationDto = {
                userTermId: term.userTermId,
@@ -160,7 +162,23 @@ export default class ContentStore
     }
 
     setSelectedTerm = (term: AbstractTerm) => {
+        this.translationsLoaded = false;
         console.log(`Selecting term ${term.termValue} with language ${term.language} and index ${term.indexInChunk}`);
         this.selectedTerm = term;
+    }
+
+    loadSelectedTermTranslations = async () => {
+        try {
+           const translations =  await agent.UserTermEndpoints.getTranslations({userTermId: this.selectedTerm?.userTermId!});
+           runInAction(() => {
+               this.selectedTerm!.translations = [];
+            for(const t of translations) {
+                this.selectedTerm?.translations.push(t.value);
+            }
+            this.translationsLoaded = true;
+           });
+        } catch (error) {
+           console.log(error);
+        }
     }
 }

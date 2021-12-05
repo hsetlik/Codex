@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpGet("getTranslations")]
+        [HttpPost("getTranslations")]
         public async Task<IActionResult> GetTranslations(UserTermIdDto dto)
         {
             return HandleResult(await Mediator.Send(new UserTermListTranslations.Query{GetTranslationsDto = dto}));

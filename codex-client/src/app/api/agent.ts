@@ -104,11 +104,21 @@ export interface IContentId {
     contentId: string
 }
 
+export interface IUserTermId {
+    userTermId: string
+}
+
+export interface TranslationDto {
+    translationId: string,
+    value: string
+}
+
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
     getUserTerm : (dto: TermDto) => requests.post<UserTerm>('/userTerm/getUserTerm', dto),
-    updateUserTerm: (dto: UserTermDetails) => requests.post('/userTerm/updateUserTerm', dto)
+    updateUserTerm: (dto: UserTermDetails) => requests.post('/userTerm/updateUserTerm', dto),
+    getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto)
 }
  const TermEndpoints = {
      getAbstractTerm: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto),
