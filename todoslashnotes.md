@@ -240,15 +240,20 @@ TODO (client refactoring):
 FROM YESTERDAY:
 
 1. ~~Clean up unused endpoints~~
-5. Fix refreshing of userTerms when they are created/ edited
+5. ~~Fix refreshing of userTerms when they are created/ edited~~
 6. Fix known words endpoint and client
 
 TODO :
 
 1. Fix updating of selectedTerm upon creation
-2. Add some wikipedia contents to Seed.cs and rebuild Db
+2. ~~Add some wikipedia contents to Seed.cs and rebuild Db~~
 3. Fix the "no valid characters" trailing characters thing
 4. Write algo for grouping paragraphs into a more reasonable length-  remember getParagraphCount has to reflect this
-5. Add optional "paragraphHeader" property to ContentParagraph
+5. ~~Add optional "paragraphHeader" property to ContentParagraph~~
+6. Add some delete endpoints (top of agenda)
+
+NOTES:
+
+1. To kill 4 & 5 with one stone, define a paragraph as every 'p' element that lies between two headers
 =================================================================================================
 

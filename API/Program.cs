@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using Domain;
 using Domain.DataObjects;
 using Microsoft.AspNetCore.Hosting;
@@ -26,8 +27,9 @@ namespace API
             {
                 var context = services.GetRequiredService<DataContext>(); //grabs the DbContext added in ConfigureServices() in Startup.cs
                 var userManager = services.GetRequiredService<UserManager<CodexUser>>();
+                var parser = services.GetRequiredService<IParserService>();
                 await context.Database.MigrateAsync(); //appends any pending migrations to the .db file, or creates it if none exists
-                await Seed.SeedData(context, userManager);
+                await Seed.SeedData(context, userManager, parser);
             }
             catch (Exception ex)
             { 
