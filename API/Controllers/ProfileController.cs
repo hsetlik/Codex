@@ -42,5 +42,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileDetails.Query{Dto = dto}));
         }
+
+        [Authorize]
+        [HttpPost("deleteProfile")]
+        public async Task<IActionResult> DeleteProfile(LanguageNameDto dto)
+        {
+            return HandleResult(await Mediator.Send(new UserLanguageProfileDelete.Command{Dto = dto}));
+        } 
     }
 }
