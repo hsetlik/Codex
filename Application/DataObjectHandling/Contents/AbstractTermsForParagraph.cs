@@ -45,7 +45,9 @@ namespace Application.DataObjectHandling.Contents
                 if (metadataResult == null)
                     return Result<AbstractTermsFromParagraph>.Failure($"Could not load content metadata for URL: {request.Dto.ContentUrl}");
                 var language = metadataResult.Language;
-                var profile = await _context.UserLanguageProfiles.Include(u => u.User).FirstOrDefaultAsync(p => p.User.UserName == _userAccessor.GetUsername());
+                var profile = await _context.UserLanguageProfiles.Include(u => u.User).FirstOrDefaultAsync(
+                    p => p.User.UserName == _userAccessor.GetUsername() &&
+                    p.Language == language);
                 if (profile == null)
                     return Result<AbstractTermsFromParagraph>.Failure($"Could not load content metadata for URL: {request.Dto.ContentUrl}");
                 var paragraph = await _parser.GetParagraph(request.Dto.ContentUrl, request.Dto.Index);
@@ -58,6 +60,7 @@ namespace Application.DataObjectHandling.Contents
                     if (!abstractTerm.IsSuccess)
                         return Result<AbstractTermsFromParagraph>.Failure($"Failed to load term for {term}");
                     abstractTerm.Value.IndexInChunk = i;
+                    Console.WriteLine($"Added Term: {abstractTerm.Value.TermValue} at index: {i}");
                     abstractTerms.Add(abstractTerm.Value);
                 }
                 var output = new AbstractTermsFromParagraph

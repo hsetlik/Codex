@@ -20,9 +20,7 @@ export default observer(function TermDetails({term}: Props) {
             {term.hasUserTerm ? (
                 <UserTermDetails term={term} />
             ) : (
-                <div>
-                    <UserTermCreator term={term} />
-                </div>
+                <UserTermCreator term={term} />
             )}
         </Container>
     )

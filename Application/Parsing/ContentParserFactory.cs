@@ -10,6 +10,7 @@ namespace Application.Parsing
     {
         public static HtmlContentParser ParserFor(string url)
         {
+            Console.WriteLine($"Getting profile for {url}");
             var profile = HtmlContentParser.ProfileFor(url);
             Console.WriteLine($"Creating Parser for: {url} with profile {profile.Value}");
             if (profile.Value == ParserProfile.Wikipedia.Value)

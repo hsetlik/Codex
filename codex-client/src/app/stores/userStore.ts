@@ -148,7 +148,9 @@ export default class UserStore{
             for(var i = 0; i < store.contentStore.currentParagraphTerms.abstractTerms.length; ++i)
             {
                 const aTerm = store.contentStore.currentParagraphTerms.abstractTerms[i];
-                if (asTermValue(aTerm.termValue) === value) {
+                console.log(`Checking term with value: ${aTerm.termValue} and index: ${i}`);
+                if (aTerm.termValue.includes(termValue)) {
+                    console.log(`Found match with ${value} at Index ${i}`);
                     const newTerm = await agent.TermEndpoints.getAbstractTerm({value: aTerm.termValue, language: aTerm.language});
                     console.log(`Reloaded Term: ${newTerm.termValue} at ${i}`);
                     newTerm.indexInChunk = i;
@@ -160,16 +162,13 @@ export default class UserStore{
             runInAction(() => {
                 matchingTerms.forEach((value: AbstractTerm, key: number) => {
                     //update each term in the contentStore map
+                    console.log(`Term ${value} is at index ${key}`);
                     store.contentStore.currentParagraphTerms.abstractTerms[key] = value;
+                    if (key === store.contentStore.selectedTerm?.indexInChunk) {
+                        store.contentStore.setSelectedTerm(value);
+                    }
                 });
                 //make sure the selectedTerm observable gets updated if necessary
-                if (value === asTermValue(store.contentStore.selectedTerm?.termValue!)) {
-                    console.log(
-                        `Updating selected term with value: ${matchingTerms.get(0)?.termValue} \n
-                         at index ${store.contentStore.selectedTerm?.indexInChunk}`);
-                    let oldIndex = 
-                    store.contentStore.setSelectedTerm(matchingTerms.get(0)!);
-                }
             })
         } catch (error) {
            console.log(error); 

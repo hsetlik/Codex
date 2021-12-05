@@ -81,6 +81,7 @@ export default class ContentStore
     nextParagraph = async () => {
         try {
            if (this.selectedParagraphIndex + 1 < this.selectedContentParagraphCount) {
+                console.log(`Loading paragraph number ${this.selectedParagraphIndex + 1} from URL ${this.selectedContentUrl}`);
                 let newIndex = this.selectedParagraphIndex + 1;
                 await this.loadParagraph(this.selectedContentUrl, newIndex);
                 runInAction(() => this.selectedParagraphIndex = newIndex)
@@ -146,6 +147,7 @@ export default class ContentStore
 
     loadParagraph = async (url: string, pIndex: number) => {
         this.paragraphLoaded = false;
+        console.log(`Loading paragraph number ${pIndex} of URL ${url}`);
         try {
             let newParagraph = await agent.Content.abstractTermsForParagraph({contentUrl: url, index: pIndex});
             runInAction(() => {
@@ -158,8 +160,7 @@ export default class ContentStore
     }
 
     setSelectedTerm = (term: AbstractTerm) => {
-        let indexOfSelected = this.selectedTerm?.indexInChunk;
-        term.indexInChunk = indexOfSelected!;
+        console.log(`Selecting term ${term.termValue} with language ${term.language} and index ${term.indexInChunk}`);
         this.selectedTerm = term;
     }
 }

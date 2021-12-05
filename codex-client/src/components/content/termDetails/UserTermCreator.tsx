@@ -20,7 +20,7 @@ export default observer(function UserTermCreator({term}: Props) {
             console.log(`Warning! submitted term ${dto.termValue} does not match selected term ${selectedTerm?.termValue}`);
             dto.termValue = selectedTerm?.termValue!;
             dto.language = selectedTerm?.language!;
-            console.log(`Submitting term is now: ${dto.termValue}`);
+            console.log(`Submitting term is now: ${dto.termValue} with language ${selectedTerm?.language}`);
         }
         await createTerm(dto);
     }
