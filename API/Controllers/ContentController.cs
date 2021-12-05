@@ -92,6 +92,14 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetContentWithId.Query{Dto = dto}));
         }
 
+        [Authorize]
+        [HttpPost("getKnownWordsForContent")]
+        public async Task<IActionResult> GetKnownWordsForContent(ContentIdDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetKnownWordsForContent.Query{ContentId = dto.ContentId}));
+        }
+
+
 
     }
 }

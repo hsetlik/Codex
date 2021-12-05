@@ -23,15 +23,17 @@ namespace Application.DataObjectHandling.Contents
         {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-            public Handler(DataContext context, IUserAccessor userAccessor)
+        private readonly IParserService _parser;
+            public Handler(DataContext context, IUserAccessor userAccessor, IParserService parser)
             {
+            this._parser = parser;
             this._userAccessor = userAccessor;
             this._context = context;
             }
 
             public async Task<Result<KnownWordsDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.GetKnownWords(request.ContentId, _userAccessor.GetUsername());
+                return await _context.GetKnownWords(request.ContentId, _userAccessor.GetUsername(), _parser);
             }
         }
     }

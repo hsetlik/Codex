@@ -10,6 +10,8 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
 using Application.DomainDTOs.UserLanguageProfile;
+using Application.Interfaces;
+using Application.Parsing;
 using Application.Utilities;
 using AutoMapper;
 using Domain.DataObjects;
@@ -85,6 +87,51 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Changes not saved!");
             return Result<Unit>.Success(Unit.Value);
         }
+
+        public static async Task<Result<AbstractTermsFromParagraph>> AbstractTermsForParagraph(
+            this DataContext context, 
+            string contentUrl,
+            int index,
+            IParserService parser,
+            string username)
+            {
+                //we need the appropriate LanguageProfileId so we need to get the associated content language,
+                //so we can get it from the Content's metadata in the dbContext
+                var metadataResult = await parser.GetContentMetadata(contentUrl);
+                if (metadataResult == null)
+                    return Result<AbstractTermsFromParagraph>.Failure($"Could not load content metadata for URL: {contentUrl}");
+                var language = metadataResult.Language;
+                var profile = await context.UserLanguageProfiles.Include(u => u.User).FirstOrDefaultAsync(
+                    p => p.User.UserName == username &&
+                    p.Language == language);
+                if (profile == null)
+                    return Result<AbstractTermsFromParagraph>.Failure($"Could not load content metadata for URL: {contentUrl}");
+                var paragraph = await parser.GetParagraph(contentUrl, index);
+                var terms = paragraph.Value.Split(' ');
+                var abstractTermTasks = new List<Task<Result<AbstractTermDto>>>();
+                for(int i = 0; i < terms.Count(); ++i)
+                {
+                    var term = terms[i];
+                    var abstractTerm = context.AbstractTermFor(term, profile);
+                    abstractTermTasks.Add(abstractTerm);
+                }
+                var abstractTermResults = await Task.WhenAll<Result<AbstractTermDto>>(abstractTermTasks);
+                var abstractTerms = new List<AbstractTermDto>();
+                for (int i = 0; i < abstractTermResults.Length; ++i)
+                {
+                    if(!abstractTermResults[i].IsSuccess)
+                        return Result<AbstractTermsFromParagraph>.Failure("Could not load term");
+                    abstractTermResults[i].Value.IndexInChunk = i;
+                    abstractTerms.Add(abstractTermResults[i].Value);
+                }
+                var output = new AbstractTermsFromParagraph
+                {
+                    ContentUrl = contentUrl,
+                    Index = index,
+                    AbstractTerms = abstractTerms
+                };
+                return Result<AbstractTermsFromParagraph>.Success(output);
+            }
 
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, string term, UserLanguageProfile userLangProfile)
         {
@@ -272,6 +319,7 @@ namespace Application.Extensions
             return Result<List<UserTermDetailsDto>>.Success(output);
         }
 
+
         public static async Task<Result<Unit>> RecordContentView(this DataContext context, Guid contentId, string username)
         {
             var content = await context.Contents.FindAsync(contentId);
@@ -393,16 +441,28 @@ namespace Application.Extensions
             return Result<DomainDTOs.ContentMetadataDto>.Success(value);
         }
 
-        public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username)
+        public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username, IParserService parser)
         {
-            //TODO 
-            var allTerms = await context.UserTerms
-            .Include(u => u.UserLanguageProfile)
-            .ThenInclude(t => t.User)
-            .Where(u => u.UserLanguageProfile.User.UserName == username)
-            .ToListAsync();
+            var content = await context.Contents.FindAsync(contentId);
+            if (content == null)
+                return Result<KnownWordsDto>.Failure("Could not find content");
             int total = 0;
             int known = 0;
+            var numParagraphs = await parser.GetNumParagraphs(content.ContentUrl);
+            var paragraphs = new List<ContentParagraph>();
+            for(int i = 0; i < numParagraphs; ++i)
+            {
+                paragraphs.Add(await parser.GetParagraph(content.ContentUrl, i));
+            }
+            foreach(var paragraph in paragraphs)
+            {
+                var knownWords = await context.KnownWordsForParagraph(paragraph, parser, username, content.Language);
+                Console.WriteLine($"Paragraph #{paragraph.Index} of {paragraph.ContentUrl} in language {content.Language} for user {username}");
+                if (!knownWords.IsSuccess)
+                    return Result<KnownWordsDto>.Failure($"Known words not loaded for content: {paragraph.ContentUrl} paragraph #{paragraph.Index}");
+                total += knownWords.Value.TotalWords;
+                known += knownWords.Value.KnownWords;
+            }
             var output = new KnownWordsDto
             {
                 TotalWords = total,
@@ -410,6 +470,44 @@ namespace Application.Extensions
             };
             return Result<KnownWordsDto>.Success(output);
         }        
+        
+        public static async Task<Result<KnownWordsDto>> KnownWordsForParagraph(
+            this DataContext context,
+            ContentParagraph paragraph, 
+            IParserService parser, 
+            string username, 
+            string language)
+        {
+            var allTerms = paragraph.Value.Split(' ');
+            var tasks = new List<Task<Result<AbstractTermDto>>>();
+            foreach(var term in allTerms)
+            {
+                var dto = new TermDto
+                {
+                    Value = term,
+                    Language = language
+                };
+                tasks.Add(context.AbstractTermFor(dto, username));
+            }
+            var termResults = await Task.WhenAll<Result<AbstractTermDto>>(tasks);
+            int known = 0;
+            int total = 0;
+            foreach(var res in termResults)
+            {
+                if (!res.IsSuccess)
+                    return Result<KnownWordsDto>.Failure("Failed to load term");
+                total += 1;
+                if (res.Value.Rating >= 3)
+                    known += 1;
+            }
+            var output = new KnownWordsDto
+            {
+                TotalWords = total,
+                KnownWords = known
+            };
+            return Result<KnownWordsDto>.Success(output);
+        }
+
 
         public static async Task<Result<Unit>> UpdateKnownWords(this DataContext context, UserTerm term, UserTermDetailsDto details)
         {
