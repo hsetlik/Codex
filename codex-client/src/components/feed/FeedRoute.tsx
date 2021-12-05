@@ -10,7 +10,7 @@ export default observer(function FeedRoute(){
     var {contentStore, commonStore} = useStore();
     const {loadedContents: loadedHeaders, loadMetadata: loadHeaders, headersLoaded} = contentStore;
     const {appLoaded} = commonStore;
-    const {lang} = useParams();
+
     if (!appLoaded) {
         return (
             <Loader />

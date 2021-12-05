@@ -42,6 +42,7 @@ export default class ContentStore
                 this.selectedContentMetadata = newMetadata;
                this.currentParagraphTerms = newParagraph;
                console.log("First paragraph loaded");
+               this.paragraphLoaded = true;
            }) 
         } catch (error) {
            console.log(error); 
@@ -50,6 +51,7 @@ export default class ContentStore
                this.selectedContentUrl = url;
                this.selectedParagraphIndex = 0;
                this.selectedContentParagraphCount = 0;
+               this.paragraphLoaded = true;
            }) 
         }
     }
@@ -87,6 +89,10 @@ export default class ContentStore
            console.log(error); 
         }
 
+    }
+
+    setTermAtIndex = (index: number, term: AbstractTerm) => {
+        this.currentParagraphTerms.abstractTerms[index] = term;
     }
 
     loadMetadata = async (lang: string) => {
@@ -152,6 +158,8 @@ export default class ContentStore
     }
 
     setSelectedTerm = (term: AbstractTerm) => {
+        let indexOfSelected = this.selectedTerm?.indexInChunk;
+        term.indexInChunk = indexOfSelected!;
         this.selectedTerm = term;
     }
 }

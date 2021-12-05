@@ -9,16 +9,17 @@ import TranscriptPageHeader from "./TranscriptPageHeader";
 interface Props {
     contentUrl: string;
     index: number;
+    contentId: string;
 }
 
-export default observer(function TranscriptReader({contentUrl, index}: Props){
+export default observer(function TranscriptReader({contentUrl, index, contentId}: Props){
     //TODO: useEffect to make sure content is loaded
 return(        
         <Container >
             <Grid>
                 <Grid.Column width='10'>
-                    <TranscriptPageHeader contentUrl={contentUrl} index={index} />
-                    <TranscriptPage paragraphIndex={index}  />
+                    <TranscriptPageHeader contentId={contentId} index={index} />
+                    <TranscriptPage contentUrl={contentUrl} paragraphIndex={index}  />
                 </Grid.Column>
                 <Grid.Column width='6'>
                     <TermDetails />

@@ -231,6 +231,24 @@ TODO (client refactoring):
 1. ~~Refactor functionality from transctiptStore.ts into existing stores~~
 2. ~~Fix components to match~~
 3. ~~Make ContentWithName endpoint~~
-4. Ensure that the TranscriptPage automatically loads from the route URL (do a useEffect probably)
+4. ~~Ensure that the TranscriptPage automatically loads from the route URL (do a useEffect probably)~~
 5. Fix refreshing of userTerms when they are created/ edited
+6. Fix known words endpoint and client
 =================================================================================================
+============================================== 12/5/21 ==========================================
+
+FROM YESTERDAY:
+
+1. ~~Clean up unused endpoints~~
+5. Fix refreshing of userTerms when they are created/ edited
+6. Fix known words endpoint and client
+
+TODO :
+
+1. Fix updating of selectedTerm upon creation
+2. Add some wikipedia contents to Seed.cs and rebuild Db
+3. Fix the "no valid characters" trailing characters thing
+4. Write algo for grouping paragraphs into a more reasonable length-  remember getParagraphCount has to reflect this
+5. Add optional "paragraphHeader" property to ContentParagraph
+=================================================================================================
+

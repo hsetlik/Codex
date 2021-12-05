@@ -6,13 +6,14 @@ import { useEffect } from "react";
 
 interface Props {
     paragraphIndex: number;
+    contentUrl: string;
 }
 
-export default  observer(function TranscriptPage({paragraphIndex}: Props) {
-    const {contentStore: {selectedContentUrl, loadParagraph, currentParagraphTerms, paragraphLoaded}} = useStore();
+export default  observer(function TranscriptPage({paragraphIndex, contentUrl}: Props) {
+    const {contentStore: {loadParagraph, currentParagraphTerms, paragraphLoaded}} = useStore();
     useEffect(() => {
-        loadParagraph(selectedContentUrl, paragraphIndex);
-    }, [selectedContentUrl, loadParagraph, paragraphIndex])
+        loadParagraph(contentUrl, paragraphIndex);
+    }, [contentUrl, loadParagraph, paragraphIndex])
     if (!paragraphLoaded){
         return (
         <Container>

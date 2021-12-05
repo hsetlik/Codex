@@ -7,15 +7,15 @@ import { ParagraphQueryDto } from "../../../app/api/agent";
 import ContentStore from "../../../app/stores/contentStore";
 import { useStore } from "../../../app/stores/store";
 
+interface Props {
+    index: number;
+    contentId: string;
+}
 
 
-export default observer (function TranscriptPageHeader({contentUrl, index}: ParagraphQueryDto) {
-    const nextParagraphPath = () => {
-        return `../content/${contentUrl}/${index + 1}`;
-    }
-    const prevParagraphPath = () => {
-        return `../content/${contentUrl}/${index - 1}`;
-    }
+export default observer (function TranscriptPageHeader({index, contentId}: Props) {
+    const nextParagraphPath = `../content/${contentId}/${index + 1}`;
+    const prevParagraphPath =  `../content/${contentId}/${index - 1}`;
     const {contentStore} = useStore();
     const {selectedContentParagraphCount} = contentStore;
     return(
@@ -23,8 +23,8 @@ export default observer (function TranscriptPageHeader({contentUrl, index}: Para
             <Header>
             Paragraph {index} of {selectedContentParagraphCount}
             </Header>
-            <Button basic content='Previous' disabled={index === 0} as={Link} to={prevParagraphPath()} />
-            <Button basic content='Next' disabled={index >= selectedContentParagraphCount - 1} as={Link} to={nextParagraphPath()}/>
+            <Button basic content='Previous' disabled={index === 0} as={Link} to={prevParagraphPath} />
+            <Button basic content='Next' disabled={index >= selectedContentParagraphCount - 1} as={Link} to={nextParagraphPath}/>
         </Segment>
    )
 });

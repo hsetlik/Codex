@@ -124,8 +124,7 @@ export default class UserStore{
         console.log("Creating term for: " + term.termValue);
         try {
             await agent.UserTermEndpoints.create(term);
-            //if (store.transcriptStore.selectedTerm?.indexInChunk)
-             //       await store.transcriptStore.refershTermByValue(term.termValue);
+            await this.refreshByValue(term.termValue);
         } catch (error) {
             console.log(error);
         }
@@ -135,7 +134,7 @@ export default class UserStore{
         try {
             console.log(`Term seen ${userTerm.timesSeen} times`);
            await agent.UserTermEndpoints.updateUserTerm(userTerm);
-           //runInAction(() => )); TODO: 
+           await this.refreshByValue(userTerm.termValue);
         } catch (error) {
            console.log(error); 
         }
@@ -144,14 +143,34 @@ export default class UserStore{
     refreshByValue = async (termValue: string) => {
         try {
             let value = asTermValue(termValue);
-            let matchingTerms: AbstractTerm[] = [];
-            for(const aTerm of store.contentStore.currentParagraphTerms.abstractTerms)
+            console.log(`refreshing term with ID: ${termValue}`);
+            let matchingTerms: Map<number, AbstractTerm> = new Map();
+            for(var i = 0; i < store.contentStore.currentParagraphTerms.abstractTerms.length; ++i)
             {
+                const aTerm = store.contentStore.currentParagraphTerms.abstractTerms[i];
                 if (asTermValue(aTerm.termValue) === value) {
-                    matchingTerms.push(aTerm);
+                    const newTerm = await agent.TermEndpoints.getAbstractTerm({value: aTerm.termValue, language: aTerm.language});
+                    console.log(`Reloaded Term: ${newTerm.termValue} at ${i}`);
+                    newTerm.indexInChunk = i;
+                    matchingTerms.set(i, newTerm);
+                } else {
+                    console.log(`Term with value ${aTerm.termValue} does not match ${value}`);
                 }
             }
-            
+            runInAction(() => {
+                matchingTerms.forEach((value: AbstractTerm, key: number) => {
+                    //update each term in the contentStore map
+                    store.contentStore.currentParagraphTerms.abstractTerms[key] = value;
+                });
+                //make sure the selectedTerm observable gets updated if necessary
+                if (value === asTermValue(store.contentStore.selectedTerm?.termValue!)) {
+                    console.log(
+                        `Updating selected term with value: ${matchingTerms.get(0)?.termValue} \n
+                         at index ${store.contentStore.selectedTerm?.indexInChunk}`);
+                    let oldIndex = 
+                    store.contentStore.setSelectedTerm(matchingTerms.get(0)!);
+                }
+            })
         } catch (error) {
            console.log(error); 
         }
