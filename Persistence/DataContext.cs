@@ -44,34 +44,44 @@ namespace Persistence
             .WithMany(p => p.UserLanguageProfiles)
             .HasForeignKey(k => k.UserId);
 
+            builder.Entity<UserLanguageProfile>()
+            .HasOne(u => u.ContentHistory)
+            .WithOne(u => u.UserLanguageProfile)
+            .HasForeignKey<ContentHistory>(c => c.LanguageProfileId);
+
+            builder.Entity<UserLanguageProfile>()
+            .HasOne(u => u.DailyProfileHistory)
+            .WithOne(c => c.UserLanguageProfile)
+            .HasForeignKey<DailyProfileHistory>(d => d.LanguageProfileId);
+
             //configure both relationships for UserTerm
             builder.Entity<UserTerm>()
             .HasOne(p => p.Term)
             .WithMany();
+
+            builder.Entity<ContentHistory>()
+            .HasOne(c => c.UserLanguageProfile)
+            .WithOne(c => c.ContentHistory);
 
             builder.Entity<UserTerm>()
             .HasOne(u => u.UserLanguageProfile)
             .WithMany(u => u.UserTerms)
             .HasForeignKey(p => p.LanguageProfileId);
 
-            builder.Entity<ContentHistory>()
-            .HasOne(u => u.UserLanguageProfile)
-            .WithMany(u => u.ContentHistories)
-            .HasForeignKey(u => u.LanguageProfileId);
-
             builder.Entity<ContentTag>()
             .HasOne(u => u.Content)
             .WithMany(c => c.ContentTags)
             .HasForeignKey(u => u.ContentId);
 
-            builder.Entity<DailyProfileHistory>()
-            .HasOne(d => d.UserLanguageProfile)
-            .WithOne(d => d.DailyProfileHistory);
-
             builder.Entity<DailyKnownWords>()
             .HasOne(d => d.DailyProfileHistory)
             .WithMany(h => h.DailyKnownWords)
             .HasForeignKey(d => d.DailyProfileHistoryId);
+
+            builder.Entity<ContentViewRecord>()
+            .HasOne(d => d.ContentHistory)
+            .WithMany(h => h.ContentViewRecords)
+            .HasForeignKey(h => h.ContentHistoryId);
         }
     }
 }

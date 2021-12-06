@@ -15,7 +15,6 @@ namespace Domain.DataObjects
         public Guid LanguageProfileId { get; set; }
         //Columns
         public List<ContentViewRecord> ContentViewRecords { get; set; }
-
         public string ContentUrl { get; set; }
 
     }

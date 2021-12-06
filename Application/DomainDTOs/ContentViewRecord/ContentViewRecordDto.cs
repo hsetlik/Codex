@@ -8,7 +8,7 @@ namespace Application.DomainDTOs.ContentViewRecord
     public class ContentViewRecordDto
     {
         public string Username { get; set; }
-        public Guid ContentId { get; set; }
+        public string ContentUrl { get; set; }
         public DateTime AccessedOn { get; set; }
     }
 }

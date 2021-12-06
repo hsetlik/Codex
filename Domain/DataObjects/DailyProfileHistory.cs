@@ -12,7 +12,7 @@ namespace Domain.DataObjects
         [Key]
         public Guid DailyProfileHistoryId { get; set; }
         public UserLanguageProfile UserLanguageProfile { get; set; }
-        public Guid UserLanguageProfileId { get; set; }
+        public Guid LanguageProfileId { get; set; }
         // Every datapoint which we want to record daily gets its own list
         public ICollection<DailyKnownWords> DailyKnownWords { get; set; } = new List<DailyKnownWords>();
     }
