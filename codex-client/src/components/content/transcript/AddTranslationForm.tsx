@@ -13,13 +13,13 @@ interface Props {
 
 export default observer(function AddTranslationForm({term}: Props) {
     const {userStore, contentStore} = useStore();
-    const {selectedTerm} = contentStore;
+    const {addTranslation} = contentStore;
     //TODO: replace addTranslationToSelected- probably just move old functionality into contentStore.ts
     const handleFormSubmit = async (dto: AddTranslationDto) => {
        if (dto.userTermId === undefined) {
            console.log("Term is undefned!");
        } else {
-          
+           addTranslation(dto);
        }
     }
     return(
@@ -33,7 +33,7 @@ export default observer(function AddTranslationForm({term}: Props) {
                         <ErrorMessage name='error' render={() => (
                             <Label style={{marginBottom: 10}}  basic color='red' content={errors.error}/> )}
                         />
-                        <Button loading={isSubmitting} positive content='Add Term' type='submit' fluid />
+                        <Button loading={isSubmitting} positive content='Add Translation' type='submit' fluid />
                     </Form>
                 )}
             </Formik>  

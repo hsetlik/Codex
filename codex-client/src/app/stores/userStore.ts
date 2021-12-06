@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import agent, { UserTermCreateDto } from '../api/agent';
+import agent, { IChildTranslation, UserTermCreateDto } from '../api/agent';
 import { User, UserFormValues } from '../models/user';
 import { AbstractTerm, UserTermDetails } from '../models/userTerm';
 import { asTermValue } from '../utilities/stringUtility';
@@ -170,6 +170,15 @@ export default class UserStore{
                 });
                 //make sure the selectedTerm observable gets updated if necessary
             })
+        } catch (error) {
+           console.log(error); 
+        }
+    }
+
+    deleteTranslation = async (translation: IChildTranslation) => {
+        try {
+            await agent.UserTermEndpoints.deleteTranslation(translation);
+            await store.contentStore.loadSelectedTermTranslations();
         } catch (error) {
            console.log(error); 
         }

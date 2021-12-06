@@ -5,6 +5,7 @@ import { AbstractTerm } from "../../../app/models/userTerm";
 import AddTranslationForm from "../transcript/AddTranslationForm";
 import RatingButtonGroup from "../termDetails/RatingButtonGroup"
 import { useStore } from "../../../app/stores/store";
+import Translation from "./Translation";
 
 interface Props {
     term: AbstractTerm
@@ -23,7 +24,7 @@ export default observer(function UserTermDetails() {
                 <Header as='h3' content='Translations' />
                 <List >
                     {selectedTerm!.translations.map(t => (
-                       <List.Item key={t}>{t}</List.Item>
+                       <Translation term={selectedTerm!} value={t} key={t} /> 
                     ))}
                 </List>
                 <RatingButtonGroup />

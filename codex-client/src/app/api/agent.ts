@@ -112,12 +112,18 @@ export interface TranslationDto {
     value: string
 }
 
+export interface IChildTranslation {
+    userTermId: string,
+    value: string
+}
+
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
     getUserTerm : (dto: TermDto) => requests.post<UserTerm>('/userTerm/getUserTerm', dto),
     updateUserTerm: (dto: UserTermDetails) => requests.post('/userTerm/updateUserTerm', dto),
-    getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto)
+    getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto),
+    deleteTranslation: (translation: IChildTranslation) => requests.post('/userTerm/deleteTranslation', translation)
 }
  const TermEndpoints = {
      getAbstractTerm: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto),

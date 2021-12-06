@@ -146,6 +146,17 @@ export default class ContentStore
            console.log(error); 
         }
     }
+     addTranslation = async (dto: AddTranslationDto) => {
+         this.translationsLoaded = false;
+         try {
+            await agent.UserTermEndpoints.addTranslation(dto);
+            await this.loadSelectedTermTranslations();
+            runInAction(() => this.translationsLoaded = true);
+         } catch (error) {
+            console.log("error");
+            runInAction(() => this.translationsLoaded = true);
+         }
+     }
 
     loadParagraph = async (url: string, pIndex: number) => {
         this.paragraphLoaded = false;
