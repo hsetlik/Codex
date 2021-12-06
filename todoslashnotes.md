@@ -251,10 +251,28 @@ TODO :
 4. Write algo for grouping paragraphs into a more reasonable length-  remember getParagraphCount has to reflect this
 5. ~~Add optional "paragraphHeader" property to ContentParagraph~~
 6. ~~Add some delete endpoints (top of agenda)~~
-7. Fix issue when updating terms without changing anything
+7. ~~Fix issue when updating terms without changing anything~~
 8. ~~Selecting a term needs to make a call for a list of translations~~
+9. Add delete translation functionality
 NOTES:
 
 1. To kill 4 & 5 with one stone, define a paragraph as every 'p' element that lies between two headers
 =================================================================================================
+============================================== 12/5/21 ==========================================
 
+FROM YESTERDAY:
+
+3. Fix the "no valid characters" trailing characters thing
+4. Write algo for grouping paragraphs into a more reasonable length-  remember getParagraphCount has to reflect this
+9. ~~Add delete translation functionality~~
+
+TODO:
+
+1. Add delete translation functionality to client
+2. Figure out a way to calculate known words progressively or otherwise faster in some way
+
+    - Maybe have the client make a series of calls which return the known words/total words for a given paragraph so that some number is returned
+     and displayed quickly while getting getting more accurate with each paragraph it calculates?
+3. Add ContentViewRecord from client as appropriate, write endpoints/extensions to display profile data over time (list of known word count/date objects for example)
+
+=================================================================================================

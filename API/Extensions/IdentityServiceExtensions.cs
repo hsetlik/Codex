@@ -42,17 +42,6 @@ namespace API.Extensions
                     ValidateAudience = false
                 };
             });
-            /*
-            services.AddAuthorization(opt => 
-            {
-                opt.AddPolicy("IsActivityHost", policy => 
-                {
-                    //add authorization policies to endpoints here
-                });
-            });
-            */ 
-            //wire up authorization handling like so VVVV
-            //services.AddTransient<IAuthorizationHandler>();
             services.AddScoped<TokenService>();
             return services;
         }

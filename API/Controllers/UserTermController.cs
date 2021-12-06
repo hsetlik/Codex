@@ -6,6 +6,7 @@ using Application.DataObjectHandling;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Domain.DataObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -66,6 +67,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UpdateUserTerm.Command{Dto = dto}));
         }
-        
+
+        [Authorize]
+        [HttpPost("deleteTranslation")]
+        public async Task<IActionResult> DeleteTranslation(ChildTranslationDto dto)
+        {
+            return HandleResult(await Mediator.Send(new UserTermDeleteTranslation.Command{Dto = dto}));
+        }      
     }
 }
