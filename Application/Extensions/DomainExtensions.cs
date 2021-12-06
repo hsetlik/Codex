@@ -122,6 +122,12 @@ namespace Application.Extensions
             return history;
         }
 
+        public static void AppendRecord(this UserLanguageProfile profile, ContentViewRecord record)
+        {
+            //TODO
+            //profile.ContentHistory.ContentViewRecords.Add(record);
+        }
+
         public static ContentMetadataDto GetMetadata(this Content content)
         {
             return new ContentMetadataDto

@@ -53,8 +53,8 @@ namespace Persistence
 
             builder.Entity<ContentHistory>()
             .HasOne(u => u.UserLanguageProfile)
-            .WithOne(u => u.ContentHistory)
-            .HasForeignKey<ContentHistory>(u => u.LanguageProfileId);
+            .WithMany(u => u.ContentHistory)
+            .HasForeignKey(u => u.LanguageProfileId);
 
             builder.Entity<ContentTag>()
             .HasOne(u => u.Content)

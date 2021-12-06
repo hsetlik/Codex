@@ -338,7 +338,8 @@ namespace Application.Extensions
                 UserLanguageProfile = profile,
                 AccessedOn = DateTime.Now
             };
-            profile.ContentHistory = profile.ContentHistory.AppendRecord(record);
+            //profile.ContentHistory = profile.ContentHistory.AppendRecord(record);
+            //TODO: new method to automatically insert into the correct contentHistory
             var success = await context.SaveChangesAsync() > 0;
             if(!success)
                 return Result<Unit>.Failure("Could not save changes");

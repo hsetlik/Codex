@@ -258,7 +258,7 @@ NOTES:
 
 1. To kill 4 & 5 with one stone, define a paragraph as every 'p' element that lies between two headers
 =================================================================================================
-============================================== 12/5/21 ==========================================
+============================================== 12/6/21 ==========================================
 
 FROM YESTERDAY:
 
@@ -274,5 +274,18 @@ TODO:
     - Maybe have the client make a series of calls which return the known words/total words for a given paragraph so that some number is returned
      and displayed quickly while getting getting more accurate with each paragraph it calculates?
 3. Add ContentViewRecord from client as appropriate, write endpoints/extensions to display profile data over time (list of known word count/date objects for example)
+4. Read up on LINQ stuff and threading to see if API calls & database access can be faster
+5. Rework MediatR classes to be easier on the database (avoid loading related data as much as possible, etc)
+6. Figure out refresh tokens
+7. Refactor Domain such that each UserLanguageProfile has a list of ContentHistory(one for each viewed content)
+
+NOTES:
+
+User profile data points:
+
+1. Known words over time
+2. History of contents viewed and dates
+3. Get all the UserTerms created on a certain date
+4. Maybe add something for how often other users have used translations created by the user?
 
 =================================================================================================

@@ -29,7 +29,6 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
             public async Task<Result<LanguageProfileDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var profile = await _context.UserLanguageProfiles
-                .Include(p => p.ContentHistory)
                 .FirstOrDefaultAsync(p => p.LanguageProfileId == request.Dto.LanguageProfileId);
                 if (profile == null)
                     return Result<LanguageProfileDto>.Failure("No profile found");
