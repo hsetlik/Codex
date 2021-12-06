@@ -27,17 +27,6 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetLanguageContents.Query{Dto = dto}));
         }
 
-        [HttpPost("recordContentView")]
-        public async Task<IActionResult> RecordContentView(ContentIdDto Dto)
-        {
-            return HandleResult(await Mediator.Send(new RecordContentView.Command{ContentId = Dto.ContentId}));
-        }  
-
-        [HttpPost("getContentViewRecords")]
-        public async Task<IActionResult> GetContentViewRecords(ContentIdDto Dto)
-        {
-            return HandleResult(await Mediator.Send(new GetContentViewRecords.Query{ContentId = Dto.ContentId}));
-        }  
         [HttpPost("addContentTag")]
         public async Task<IActionResult> AddContentTag(ContentTagDto dto)
         {

@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Core;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Domain.DataObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Extensions
 {
@@ -127,6 +129,9 @@ namespace Application.Extensions
             //TODO
             //profile.ContentHistory.ContentViewRecords.Add(record);
         }
+
+        
+        //NOTE: ContentHistories need to be loaded for this
 
         public static ContentMetadataDto GetMetadata(this Content content)
         {

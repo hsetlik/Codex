@@ -10,8 +10,9 @@ namespace Domain.DataObjects
     {
         [Key]
         public Guid ContentViewRecordId { get; set; }
-        public UserLanguageProfile UserLanguageProfile { get; set; } //foreign key
-        public Guid ContentId { get; set; } //which content this refers to
+        public Guid ContentHistoryId { get; set; } // foreign key
+        public ContentHistory ContentHistory { get; set; }
+        public string ContentUrl { get; set; } //which content this refers to
         public DateTime AccessedOn { get; set; }
     }
 }
