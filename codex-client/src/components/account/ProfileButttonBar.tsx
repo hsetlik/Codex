@@ -1,12 +1,14 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Menu, Button } from "semantic-ui-react";
 import { getLanguageName } from "../../app/common/langStrings";
 import { useStore } from "../../app/stores/store";
+interface Props {
+    username: string;
+}
 
-
-export default observer(function ProfileButtonBar() {
+export default observer(function ProfileButtonBar({username}: Props) {
     const {userStore: {selectedLanguage, languageProfiles}} = useStore();
     return (
         <Menu>
@@ -15,9 +17,8 @@ export default observer(function ProfileButtonBar() {
                 key={prof}
                 >
                     <Button
-                    as={Link}
-                    to={`/profiles/${prof}`}
-    
+                    as={NavLink}
+                    to={`/profiles/${username}/${prof}`}
                     active={selectedLanguage === prof}
                     >
                         {getLanguageName(prof)}

@@ -8,10 +8,7 @@ export default observer(function AccountNavComponent() {
     const {userStore} = useStore();
     return (
         <Menu fluid>
-            <Menu.Item as={NavLink} to='/account'>{userStore.user?.displayName}</Menu.Item>
-            <Menu.Item >
-                <UserLanguagePicker />
-            </Menu.Item>
+            <Menu.Item as={NavLink} to='/account'>{userStore.user?.displayName}</Menu.Item>            
         </Menu>  
     )
 });

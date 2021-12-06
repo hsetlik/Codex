@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Domain.DataObjects;
+using Domain.DataObjects.DailyProfileMetrics;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,12 +26,14 @@ namespace Persistence
 
         public DbSet<Content> Contents { get; set; }
 
-
         public DbSet<ContentViewRecord> ContentViewRecords { get; set; }
         
         public DbSet<ContentHistory> ContentHistories { get; set; }
 
         public DbSet<ContentTag> ContentTags { get; set; }
+
+        public DbSet<DailyKnownWords> DailyKnownWords { get; set; }
+        public DbSet<DailyProfileHistory> DailyProfileHistories { get; set; }
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -61,6 +64,14 @@ namespace Persistence
             .WithMany(c => c.ContentTags)
             .HasForeignKey(u => u.ContentId);
 
+            builder.Entity<DailyProfileHistory>()
+            .HasOne(d => d.UserLanguageProfile)
+            .WithOne(d => d.DailyProfileHistory);
+
+            builder.Entity<DailyKnownWords>()
+            .HasOne(d => d.DailyProfileHistory)
+            .WithMany(h => h.DailyKnownWords)
+            .HasForeignKey(d => d.DailyProfileHistoryId);
         }
     }
 }

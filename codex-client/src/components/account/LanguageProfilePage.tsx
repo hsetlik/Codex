@@ -6,10 +6,12 @@ import { useStore } from "../../app/stores/store";
 
 interface Props {
     language: string;
+    username: string;
 }
 
-export default observer(function LanguageProfilePage({language}: Props) {
-    const {userStore: {user, languageProfiles}} = useStore();
+export default observer(function LanguageProfilePage({language, username}: Props) {
+    const {userStore} = useStore();
+    const {user} = userStore;
     return(
         <div>
             <Header content={`${user?.displayName}'s ${getLanguageName(language)} profile`} />
