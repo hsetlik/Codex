@@ -11,6 +11,7 @@
     <PackageReference Include="Google.Cloud.Translate.V3" Version="2.4.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.38" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="ScrapySharp" Version="3.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
