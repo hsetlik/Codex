@@ -34,8 +34,8 @@ namespace Application.Parsing
         }
         //Abstract methods to correspond with the IParserService methods (and ultimately endpoints)
         public abstract Task<ContentMetadataDto> GetMetadata();
-        public abstract Task<int> GetNumParagraphs();
-        public abstract Task<ContentParagraph> GetParagraph(int index);
+        public abstract Task<int> GetNumSections();
+        public abstract Task<ContentSection> GetSection(int index);
         
 
         public static ParserProfile ProfileFor(string url)

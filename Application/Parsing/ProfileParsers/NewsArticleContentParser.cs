@@ -14,23 +14,23 @@ namespace Application.Parsing.ProfileParsers
 
         }
 
-        public override async Task<int> GetNumParagraphs()
+        public override async Task<int> GetNumSections()
         {
             if (loadedHtml == null)
                 await LoadHtml();
             return loadedHtml.DocumentNode.SelectNodes("//body/p").Count;
         }
 
-        public override async Task<ContentParagraph> GetParagraph(int index)
+        public override async Task<ContentSection> GetSection(int index)
         {
             if (loadedHtml == null)
                 await LoadHtml();
-            var paragraph = loadedHtml.DocumentNode.Descendants("p").ElementAt(index);
-            return new ContentParagraph
+            var section = loadedHtml.DocumentNode.Descendants("p").ElementAt(index);
+            return new ContentSection
             {
                 ContentUrl = Url,
                 Index = index,
-                Value = paragraph.GetDirectInnerText()
+                Value = section.GetDirectInnerText()
             };
         }
 

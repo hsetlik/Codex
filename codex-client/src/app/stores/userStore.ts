@@ -145,9 +145,9 @@ export default class UserStore{
             let value = asTermValue(termValue);
             console.log(`refreshing term with ID: ${termValue}`);
             let matchingTerms: Map<number, AbstractTerm> = new Map();
-            for(var i = 0; i < store.contentStore.currentParagraphTerms.abstractTerms.length; ++i)
+            for(var i = 0; i < store.contentStore.currentSectionTerms.abstractTerms.length; ++i)
             {
-                const aTerm = store.contentStore.currentParagraphTerms.abstractTerms[i];
+                const aTerm = store.contentStore.currentSectionTerms.abstractTerms[i];
                 console.log(`Checking term with value: ${aTerm.termValue} and index: ${i}`);
                 if (aTerm.termValue.includes(termValue)) {
                     console.log(`Found match with ${value} at Index ${i}`);
@@ -163,7 +163,7 @@ export default class UserStore{
                 matchingTerms.forEach((value: AbstractTerm, key: number) => {
                     //update each term in the contentStore map
                     console.log(`Term ${value} is at index ${key}`);
-                    store.contentStore.currentParagraphTerms.abstractTerms[key] = value;
+                    store.contentStore.currentSectionTerms.abstractTerms[key] = value;
                     if (key === store.contentStore.selectedTerm?.indexInChunk) {
                         store.contentStore.setSelectedTerm(value);
                     }

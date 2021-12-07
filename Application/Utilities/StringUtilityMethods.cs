@@ -41,7 +41,7 @@ namespace Application.Utilities
         }
 
         //return a Dictionary where keys are normalized TermIDs and values are original case-sensitive strings
-        public static Dictionary<string, string> GetTermValuesForParagraph(this string input)
+        public static Dictionary<string, string> GetTermValuesFor(this string input)
         {
             var dict = new Dictionary<string, string>();
             var originalStrings = input.Split(' ');

@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.DataObjectHandling.Parse
 {
-    public class GetParagraphCount
+    public class GetSectionCount
     {
         public class Query : IRequest<Result<int>>
         {
@@ -27,10 +27,10 @@ namespace Application.DataObjectHandling.Parse
 
             public async Task<Result<int>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var paragraphs = await _parser.GetNumParagraphs(request.Dto.ContentUrl);
-                if (paragraphs < 1)
-                    return Result<int>.Failure("No paragraphs found");
-                return Result<int>.Success(paragraphs);
+                var sections = await _parser.GetNumSections(request.Dto.ContentUrl);
+                if (sections < 1)
+                    return Result<int>.Failure("No sections found");
+                return Result<int>.Success(sections);
             }
         }
     }

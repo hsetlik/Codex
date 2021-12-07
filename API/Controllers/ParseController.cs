@@ -18,16 +18,16 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetContentMetadata.Query{Dto = dto}));
         }
 
-        [HttpPost("getParagraphCount")]
-        public async Task<IActionResult> GetParagraphCount(ContentUrlDto dto)
+        [HttpPost("getSectionCount")]
+        public async Task<IActionResult> GetSectionCount(ContentUrlDto dto)
         {
-            return HandleResult(await Mediator.Send(new GetParagraphCount.Query{Dto = dto}));
+            return HandleResult(await Mediator.Send(new GetSectionCount.Query{Dto = dto}));
         }
 
-        [HttpPost("getParagraph")]
-        public async Task<IActionResult> GetParagraph(ParagraphQueryDto dto)
+        [HttpPost("getSection")]
+        public async Task<IActionResult> GetSection(SectionQueryDto dto)
         {
-            return HandleResult(await Mediator.Send(new GetParagraph.Query{Dto = dto}));
+            return HandleResult(await Mediator.Send(new GetSection.Query{Dto = dto}));
         }        
     }
 }

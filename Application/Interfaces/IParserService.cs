@@ -12,8 +12,8 @@ namespace Application.Interfaces
     {
         public Task PrepareForContent(string url);
 
-        public Task<int> GetNumParagraphs(string url);
-        public Task<ContentParagraph> GetParagraph(string contentUrl, int index);
+        public Task<int> GetNumSections(string url);
+        public Task<ContentSection> GetSection(string contentUrl, int index);
         public Task<ContentMetadataDto> GetContentMetadata(string url);
     }
 }

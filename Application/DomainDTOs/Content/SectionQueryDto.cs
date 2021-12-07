@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs.Content
 {
-    public class ParagraphQueryDto
+    public class SectionQueryDto
     {
         public string ContentUrl { get; set; }
         public int Index { get; set; }

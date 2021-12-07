@@ -23,18 +23,18 @@ namespace Application.Extensions
                 return Result<KnownWordsDto>.Failure("Could not find content");
             int total = 0;
             int known = 0;
-            var numParagraphs = await parser.GetNumParagraphs(content.ContentUrl);
-            var paragraphs = new List<ContentParagraph>();
-            for(int i = 0; i < numParagraphs; ++i)
+            var numSections = await parser.GetNumSections(content.ContentUrl);
+            var sections = new List<ContentSection>();
+            for(int i = 0; i < numSections; ++i)
             {
-                paragraphs.Add(await parser.GetParagraph(content.ContentUrl, i));
+                sections.Add(await parser.GetSection(content.ContentUrl, i));
             }
-            foreach(var paragraph in paragraphs)
+            foreach(var section in sections)
             {
-                var knownWords = await context.KnownWordsForParagraph(paragraph, parser, username, content.Language);
-                Console.WriteLine($"Paragraph #{paragraph.Index} of {paragraph.ContentUrl} in language {content.Language} for user {username}");
+                var knownWords = await context.KnownWordsForSection(section, parser, username, content.Language);
+                Console.WriteLine($"Section #{section.Index} of {section.ContentUrl} in language {content.Language} for user {username}");
                 if (!knownWords.IsSuccess)
-                    return Result<KnownWordsDto>.Failure($"Known words not loaded for content: {paragraph.ContentUrl} paragraph #{paragraph.Index}");
+                    return Result<KnownWordsDto>.Failure($"Known words not loaded for content: {section.ContentUrl} section #{section.Index}");
                 total += knownWords.Value.TotalWords;
                 known += knownWords.Value.KnownWords;
             }
@@ -46,14 +46,14 @@ namespace Application.Extensions
             return Result<KnownWordsDto>.Success(output);
         }        
         
-        public static async Task<Result<KnownWordsDto>> KnownWordsForParagraph(
+        public static async Task<Result<KnownWordsDto>> KnownWordsForSection(
             this DataContext context,
-            ContentParagraph paragraph, 
+            ContentSection section, 
             IParserService parser, 
             string username, 
             string language)
         {
-            var allTerms = paragraph.Value.Split(' ');
+            var allTerms = section.Value.Split(' ');
             var tasks = new List<Task<Result<AbstractTermDto>>>();
             foreach(var term in allTerms)
             {

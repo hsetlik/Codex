@@ -47,10 +47,10 @@ namespace API.Controllers
 
 
         [Authorize]
-        [HttpPost("abstractTermsForParagraph")]
-        public async Task<IActionResult> AbstractTermsForParagraph(ParagraphQueryDto dto)
+        [HttpPost("abstractTermsForSection")]
+        public async Task<IActionResult> AbstractTermsForSection(SectionQueryDto dto)
         {
-            return HandleResult(await Mediator.Send(new AbstractTermsForParagraph.Query{Dto = dto}));
+            return HandleResult(await Mediator.Send(new AbstractTermsForSection.Query{Dto = dto}));
         }
 
         [HttpPost("importContent")]

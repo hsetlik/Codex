@@ -154,12 +154,12 @@ export interface KnownWordsDto {
     knownWords: number;
 }
 
-export interface ParagraphQueryDto {
+export interface SectionQueryDto {
     contentUrl: string,
     index: number
 }
 
-export interface TermsFromParagraph {
+export interface TermsFromSection {
     contentUrl: string,
     index: number,
     abstractTerms: AbstractTerm[]
@@ -172,8 +172,8 @@ export interface IContentName {
 const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadataDto[]>('/content/getLanguageContents', language),
     getKnownWordsForContent: (contentUrl: IContentUrl) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentUrl),
-    abstractTermsForParagraph: (dto: ParagraphQueryDto) => requests.post<TermsFromParagraph>('/content/abstractTermsForParagraph', dto),
-    getParagraphCount: (contentUrl: IContentUrl) => requests.post<number>('/parse/getParagraphCount', contentUrl),
+    abstractTermsForSection: (dto: SectionQueryDto) => requests.post<TermsFromSection>('/content/abstractTermsForSection', dto),
+    getSectionCount: (contentUrl: IContentUrl) => requests.post<number>('/parse/getSectionCount', contentUrl),
     getContentWithName: (contentName: IContentName) => requests.post<ContentMetadataDto>('/content/getContentWithName', contentName),
     getContentWithId: (contentId: IContentId) => requests.post<ContentMetadataDto>('/content/getContentWithId', contentId)
 }

@@ -47,17 +47,17 @@ namespace Application.Parsing
             return loadedContent;
         }
 
-        public async Task<int> GetNumParagraphs(string contentUrl)
+        public async Task<int> GetNumSections(string contentUrl)
         {
             await PrepareForContent(contentUrl);
-            Console.WriteLine($"preparing to count paragraphs for: {contentUrl}");
-            return await parser.GetNumParagraphs();
+            Console.WriteLine($"preparing to count sections for: {contentUrl}");
+            return await parser.GetNumSections();
         }
 
-        public async Task<ContentParagraph> GetParagraph(string contentUrl, int index)
+        public async Task<ContentSection> GetSection(string contentUrl, int index)
         {   
             await PrepareForContent(contentUrl);
-            return await parser.GetParagraph(index);
+            return await parser.GetSection(index);
         }
     }
 }

@@ -9,14 +9,14 @@ import {useAsyncEffect} from 'use-async-effect';
 
 export default function ContentRoute(){
     const {contentId, index} = useParams();
-    const {contentStore: {selectedContentMetadata, setSelectedContentById, loadParagraph}} = useStore();
+    const {contentStore: {selectedContentMetadata, setSelectedContentById, loadSection}} = useStore();
     useEffect(() => {
         if (selectedContentMetadata?.contentId !== contentId) {
             setSelectedContentById(contentId!);
         }
         const parNumber = parseInt(index!);
         if (parNumber > 0) {
-            loadParagraph(selectedContentMetadata?.contentUrl!, parNumber);
+            loadSection(selectedContentMetadata?.contentUrl!, parNumber);
         }
     }, [setSelectedContentById, selectedContentMetadata, contentId]);
     if (!contentId) {

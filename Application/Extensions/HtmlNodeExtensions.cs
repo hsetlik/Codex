@@ -19,7 +19,7 @@ namespace Application.Extensions
                 if (sibling.Name == "p")
                 {
                     output += sibling.InnerText;
-                    Console.Write($"Adding inner paragraph with text: {sibling.InnerText}\n");
+                    Console.Write($"Adding inner section with text: {sibling.InnerText}\n");
                 }
                 var previous = sibling;
                 sibling = sibling.NextSibling;

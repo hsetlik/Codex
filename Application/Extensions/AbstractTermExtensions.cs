@@ -24,7 +24,7 @@ namespace Application.Extensions
     public static class AbstractTermExtensions
     {
         
-        public static async Task<Result<AbstractTermsFromParagraph>> AbstractTermsForParagraph(
+        public static async Task<Result<AbstractTermsFromSection>> AbstractTermsForSection(
             this DataContext context, 
             string contentUrl,
             int index,
@@ -35,15 +35,15 @@ namespace Application.Extensions
                 //so we can get it from the Content's metadata in the dbContext
                 var metadataResult = await parser.GetContentMetadata(contentUrl);
                 if (metadataResult == null)
-                    return Result<AbstractTermsFromParagraph>.Failure($"Could not load content metadata for URL: {contentUrl}");
+                    return Result<AbstractTermsFromSection>.Failure($"Could not load content metadata for URL: {contentUrl}");
                 var language = metadataResult.Language;
                 var profile = await context.UserLanguageProfiles.Include(u => u.User).FirstOrDefaultAsync(
                     p => p.User.UserName == username &&
                     p.Language == language);
                 if (profile == null)
-                    return Result<AbstractTermsFromParagraph>.Failure($"Could not load content metadata for URL: {contentUrl}");
-                var paragraph = await parser.GetParagraph(contentUrl, index);
-                var terms = paragraph.Value.Split(' ');
+                    return Result<AbstractTermsFromSection>.Failure($"Could not load content metadata for URL: {contentUrl}");
+                var section = await parser.GetSection(contentUrl, index);
+                var terms = section.Value.Split(' ');
                 var abstractTermTasks = new List<Task<Result<AbstractTermDto>>>();
                 for(int i = 0; i < terms.Count(); ++i)
                 {
@@ -56,17 +56,17 @@ namespace Application.Extensions
                 for (int i = 0; i < abstractTermResults.Length; ++i)
                 {
                     if(!abstractTermResults[i].IsSuccess)
-                        return Result<AbstractTermsFromParagraph>.Failure("Could not load term");
+                        return Result<AbstractTermsFromSection>.Failure("Could not load term");
                     abstractTermResults[i].Value.IndexInChunk = i;
                     abstractTerms.Add(abstractTermResults[i].Value);
                 }
-                var output = new AbstractTermsFromParagraph
+                var output = new AbstractTermsFromSection
                 {
                     ContentUrl = contentUrl,
                     Index = index,
                     AbstractTerms = abstractTerms
                 };
-                return Result<AbstractTermsFromParagraph>.Success(output);
+                return Result<AbstractTermsFromSection>.Success(output);
             }
 
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, string term, UserLanguageProfile userLangProfile)

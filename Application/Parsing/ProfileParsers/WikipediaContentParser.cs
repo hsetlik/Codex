@@ -9,13 +9,14 @@ using Application.Utilities;
 namespace Application.Parsing.ProfileParsers
 {
    //Wikipedia
+
     public class WikipediaContentParser : HtmlContentParser
     {
         public WikipediaContentParser(string url) : base(url)
         {
         }
 
-        public override async Task<int> GetNumParagraphs()
+        public override async Task<int> GetNumSections()
         {
            if (!HasLoadedHtml)
                 await LoadHtml();
@@ -24,12 +25,12 @@ namespace Application.Parsing.ProfileParsers
             return sectionHeaders.Count + 1; //add one because we will always have an intro paragraph which does not have a mw-headline header
         }
 
-        public override async Task<ContentParagraph> GetParagraph(int index)
+        public override async Task<ContentSection> GetSection(int index)
         {
             if (!HasLoadedHtml)
                 await LoadHtml();
             string headerString = "none";
-            string paragraphContent = "";
+            string sectionContent = "";
             var parserOutputNode = loadedHtml.DocumentNode.Descendants("div").FirstOrDefault(n => n.HasClass("mw-parser-output"));
             if (index == 0)
             {
@@ -37,7 +38,7 @@ namespace Application.Parsing.ProfileParsers
                 var paragraphNode = parserOutputNode.Descendants("p").FirstOrDefault();
                 while (paragraphNode.Name == "p")
                 {
-                    paragraphContent += paragraphNode.InnerText;
+                    sectionContent += paragraphNode.InnerText;
                     paragraphNode = paragraphNode.NextSibling;
                 }
             }
@@ -48,14 +49,14 @@ namespace Application.Parsing.ProfileParsers
                 {
                     Console.WriteLine($"Section {i} has name: {sectionHeaders[i].InnerText}");
                 }
-                paragraphContent = sectionHeaders[index].ContentUnderHeaderWiki().Value;
+                sectionContent = sectionHeaders[index].ContentUnderHeaderWiki().Value;
             }
-            return new ContentParagraph
+            return new ContentSection
             {
                 ContentUrl = Url,
                 Index = index,
-                Value = StringUtilityMethods.StripWikiAnnotations(paragraphContent),
-                ParagraphHeader = headerString
+                Value = StringUtilityMethods.StripWikiAnnotations(sectionContent),
+                SectionHeader = headerString
             };
         }
 

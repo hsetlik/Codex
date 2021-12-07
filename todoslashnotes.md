@@ -303,4 +303,5 @@ TODO:
 1. Figure out Wiki HTML parsing
 2. Figure out client-side section headers
 3. Refactor the way HTML parsing works - Use ScrapySharp to get the HTML and then use CSS select to grab data to transfer to the profile class and then to the actual IParserService methods 
+
 =================================================================================================

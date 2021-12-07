@@ -19,7 +19,7 @@ return(
             <Grid>
                 <Grid.Column width='10'>
                     <TranscriptPageHeader contentId={contentId} index={index} />
-                    <TranscriptPage contentUrl={contentUrl} paragraphIndex={index}  />
+                    <TranscriptPage contentUrl={contentUrl} sectionIndex={index}  />
                 </Grid.Column>
                 <Grid.Column width='6'>
                     <TermDetails />

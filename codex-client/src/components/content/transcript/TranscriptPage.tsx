@@ -5,16 +5,16 @@ import TranscriptTerm from "./TranscriptTerm";
 import { useEffect } from "react";
 
 interface Props {
-    paragraphIndex: number;
+    sectionIndex: number;
     contentUrl: string;
 }
 
-export default  observer(function TranscriptPage({paragraphIndex, contentUrl}: Props) {
-    const {contentStore: {loadParagraph, currentParagraphTerms, paragraphLoaded}} = useStore();
+export default  observer(function TranscriptPage({sectionIndex, contentUrl}: Props) {
+    const {contentStore: {loadSection, currentSectionTerms: currentSectionTerms, sectionLoaded}} = useStore();
     useEffect(() => {
-        loadParagraph(contentUrl, paragraphIndex);
-    }, [contentUrl, loadParagraph, paragraphIndex])
-    if (!paragraphLoaded){
+        loadSection(contentUrl, sectionIndex);
+    }, [contentUrl, loadSection, sectionIndex])
+    if (!sectionLoaded){
         return (
         <Container>
             <Header as="h2" content="Loading..." />
@@ -24,7 +24,7 @@ export default  observer(function TranscriptPage({paragraphIndex, contentUrl}: P
     return(
         <Container className="segment">
             {
-                currentParagraphTerms.abstractTerms.map(trm => (
+                currentSectionTerms.abstractTerms.map(trm => (
                     <TranscriptTerm term={trm} key={trm.indexInChunk} />
                 ))
             }

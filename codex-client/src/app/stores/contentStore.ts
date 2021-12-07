@@ -1,6 +1,6 @@
 import { Agent } from "http";
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { AddTranslationDto, ContentMetadataDto, KnownWordsDto, TermsFromParagraph } from "../api/agent";
+import agent, { AddTranslationDto, ContentMetadataDto, KnownWordsDto, TermsFromSection } from "../api/agent";
 import { AbstractTerm } from "../models/userTerm";
 import { asTermValue } from "../utilities/stringUtility";
 
@@ -17,12 +17,12 @@ export default class ContentStore
 
     selectedContentMetadata: ContentMetadataDto | null = null;
     selectedContentUrl: string = "none";
-    selectedParagraphIndex = 0;
-    selectedContentParagraphCount = 0;
-    paragraphLoaded = false;
-    currentParagraphTerms: TermsFromParagraph = {
+    selectedSectionIndex = 0;
+    selectedContentSectionCount = 0;
+    sectionLoaded = false;
+    currentSectionTerms: TermsFromSection = {
         contentUrl: this.selectedContentUrl,
-        index: this.selectedParagraphIndex,
+        index: this.selectedSectionIndex,
         abstractTerms: []
     }
 
@@ -32,27 +32,27 @@ export default class ContentStore
 
     setSelectedContent = async (url: string) => {
         try {
-           let newParagraphCount = await agent.Content.getParagraphCount({contentUrl: url});
-           let newParagraph = await agent.Content.abstractTermsForParagraph({contentUrl: url, index: 0});
+           let newSectionCount = await agent.Content.getSectionCount({contentUrl: url});
+           let newSection = await agent.Content.abstractTermsForSection({contentUrl: url, index: 0});
            runInAction(() => {
                this.selectedContentUrl = url;
-               this.selectedParagraphIndex = 0;
-               this.selectedContentParagraphCount = newParagraphCount;
+               this.selectedSectionIndex = 0;
+               this.selectedContentSectionCount = newSectionCount;
                let newMetadata = this.loadedContents.find(v => v.contentUrl === url);
                if (newMetadata !== undefined)
                 this.selectedContentMetadata = newMetadata;
-               this.currentParagraphTerms = newParagraph;
-               console.log("First paragraph loaded");
-               this.paragraphLoaded = true;
+               this.currentSectionTerms = newSection;
+               console.log("First section loaded");
+               this.sectionLoaded = true;
            }) 
         } catch (error) {
            console.log(error); 
            console.log(`loading content at: ${url} failed`);
            runInAction(() => {
                this.selectedContentUrl = url;
-               this.selectedParagraphIndex = 0;
-               this.selectedContentParagraphCount = 0;
-               this.paragraphLoaded = true;
+               this.selectedSectionIndex = 0;
+               this.selectedContentSectionCount = 0;
+               this.sectionLoaded = true;
            }) 
         }
     }
@@ -67,25 +67,25 @@ export default class ContentStore
         }
     }
 
-    prevParagraph = async () => {
+    prevSection = async () => {
         try {
-           if (this.selectedParagraphIndex  > 0) {
-                let newIndex = this.selectedParagraphIndex - 1;
-                await this.loadParagraph(this.selectedContentUrl, newIndex);
-                runInAction(() => this.selectedParagraphIndex = newIndex)
+           if (this.selectedSectionIndex  > 0) {
+                let newIndex = this.selectedSectionIndex - 1;
+                await this.loadSection(this.selectedContentUrl, newIndex);
+                runInAction(() => this.selectedSectionIndex = newIndex)
            } 
         } catch (error) {
            console.log(error); 
         }
     }
     
-    nextParagraph = async () => {
+    nextSection = async () => {
         try {
-           if (this.selectedParagraphIndex + 1 < this.selectedContentParagraphCount) {
-                console.log(`Loading paragraph number ${this.selectedParagraphIndex + 1} from URL ${this.selectedContentUrl}`);
-                let newIndex = this.selectedParagraphIndex + 1;
-                await this.loadParagraph(this.selectedContentUrl, newIndex);
-                runInAction(() => this.selectedParagraphIndex = newIndex)
+           if (this.selectedSectionIndex + 1 < this.selectedContentSectionCount) {
+                console.log(`Loading section number ${this.selectedSectionIndex + 1} from URL ${this.selectedContentUrl}`);
+                let newIndex = this.selectedSectionIndex + 1;
+                await this.loadSection(this.selectedContentUrl, newIndex);
+                runInAction(() => this.selectedSectionIndex = newIndex)
            } 
         } catch (error) {
            console.log(error); 
@@ -94,7 +94,7 @@ export default class ContentStore
     }
 
     setTermAtIndex = (index: number, term: AbstractTerm) => {
-        this.currentParagraphTerms.abstractTerms[index] = term;
+        this.currentSectionTerms.abstractTerms[index] = term;
     }
 
     loadMetadata = async (lang: string) => {
@@ -158,14 +158,14 @@ export default class ContentStore
          }
      }
 
-    loadParagraph = async (url: string, pIndex: number) => {
-        this.paragraphLoaded = false;
-        console.log(`Loading paragraph number ${pIndex} of URL ${url}`);
+    loadSection = async (url: string, pIndex: number) => {
+        this.sectionLoaded = false;
+        console.log(`Loading section number ${pIndex} of URL ${url}`);
         try {
-            let newParagraph = await agent.Content.abstractTermsForParagraph({contentUrl: url, index: pIndex});
+            let newSection = await agent.Content.abstractTermsForSection({contentUrl: url, index: pIndex});
             runInAction(() => {
-            this.paragraphLoaded = true;
-            this.currentParagraphTerms = newParagraph});
+            this.sectionLoaded = true;
+            this.currentSectionTerms = newSection});
         } catch (error) {
            console.log(error); 
         }

@@ -6,7 +6,7 @@ using Application.DataObjectHandling.Terms;
 
 namespace Application.DomainDTOs.Content
 {
-    public class AbstractTermsFromParagraph
+    public class AbstractTermsFromSection
     {
         public string ContentUrl { get; set; }
         public int Index { get; set; }

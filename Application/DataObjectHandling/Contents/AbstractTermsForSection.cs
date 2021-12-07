@@ -16,14 +16,14 @@ using Persistence;
 
 namespace Application.DataObjectHandling.Contents
 {
-    public class AbstractTermsForParagraph
+    public class AbstractTermsForSection
     {
-        public class Query : IRequest<Result<AbstractTermsFromParagraph>>
+        public class Query : IRequest<Result<AbstractTermsFromSection>>
         {
-            public ParagraphQueryDto Dto { get; set; }
+            public SectionQueryDto Dto { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<AbstractTermsFromParagraph>>
+        public class Handler : IRequestHandler<Query, Result<AbstractTermsFromSection>>
         {
         private readonly IUserAccessor _userAccessor;
         private readonly IParserService _parser;
@@ -37,9 +37,9 @@ namespace Application.DataObjectHandling.Contents
             this._userAccessor = userAccessor;
             }
 
-            public async Task<Result<AbstractTermsFromParagraph>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<AbstractTermsFromSection>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.AbstractTermsForParagraph(request.Dto.ContentUrl, request.Dto.Index, _parser, _userAccessor.GetUsername());
+                return await _context.AbstractTermsForSection(request.Dto.ContentUrl, request.Dto.Index, _parser, _userAccessor.GetUsername());
             }
         }
 
