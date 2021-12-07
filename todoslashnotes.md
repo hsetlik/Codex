@@ -273,12 +273,12 @@ TODO:
 
     - Maybe have the client make a series of calls which return the known words/total words for a given paragraph so that some number is returned
      and displayed quickly while getting getting more accurate with each paragraph it calculates?
-3. Add ContentViewRecord from client as appropriate, write endpoints/extensions to display profile data over time (list of known word count/date objects for example)- also API endpoints for doing these things
+3. ~~Add ContentViewRecord from client as appropriate, write endpoints/extensions to display profile data over time (list of known word count/date objects for example)- also API endpoints for doing these things~~
 4. Read up on LINQ stuff and threading to see if API calls & database access can be faster
 5. Rework MediatR classes to be easier on the database (avoid loading related data as much as possible, etc)
 6. Figure out refresh tokens
 7. ~~Refactor Domain such that each UserLanguageProfile has a list of ContentHistory(one for each viewed content)~~
-8. Figure out what kind of graphs to use on the client side, let that inform the API code
+8. ~~Figure out what kind of graphs to use on the client side, let that inform the API code~~
 
 NOTES:
 

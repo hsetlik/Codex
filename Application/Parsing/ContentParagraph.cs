@@ -10,6 +10,6 @@ namespace Application.Parsing
         public string ContentUrl { get; set; }
         public int Index { get; set; }
         public string Value { get; set; }
-        public string ParagraphHeader { get; set; } // this should be "none" if there is no header
+        public string ParagraphHeader { get; set; } 
     }
 }

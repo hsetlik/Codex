@@ -26,11 +26,32 @@ namespace Application.Parsing.ProfileParsers
              if (!HasLoadedHtml)
                 await LoadHtml();
             var paragraph = loadedHtml.DocumentNode.Descendants("p").ElementAt(index);
+            bool headerFound = false;
+            var headerSibling = paragraph.PreviousSibling;
+            var headerString = "none";
+            while (headerSibling != null && !headerFound)
+            {
+                if (headerSibling.Name == "h2")
+                {
+                   var titleSpan = headerSibling.Descendants("span").FirstOrDefault(s => s.HasClass("mw-headline"));
+                   if (titleSpan != null)
+                   {
+                       headerString = titleSpan.InnerText;
+                       headerFound = true;
+                   }
+                }
+                else if (headerSibling.HasClass("toc"))
+                {
+                    headerFound = true;
+                }
+                headerSibling = headerSibling.PreviousSibling;
+            }
             return new ContentParagraph
             {
                 ContentUrl = Url,
                 Index = index,
-                Value = StringUtilityMethods.StripWikiAnnotations(paragraph.InnerText)
+                Value = StringUtilityMethods.StripWikiAnnotations(paragraph.InnerText),
+                ParagraphHeader = headerString
             };
         }
 
