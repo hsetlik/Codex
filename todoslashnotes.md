@@ -290,3 +290,16 @@ User profile data points:
 4. Maybe add something for how often other users have used translations created by the user?
 
 =================================================================================================
+============================================== 12/7/21 ==========================================
+
+FROM YESTERDAY:
+
+2. Figure out a way to calculate known words progressively or otherwise faster in some way
+    - Maybe have the client make a series of calls which return the known words/total words for a given paragraph so that some number is returned
+     and displayed quickly while getting getting more accurate with each paragraph it calculates?
+
+TODO:
+
+1. Figure out Wiki HTML parsing
+2. Figure out client-side section headers
+=================================================================================================

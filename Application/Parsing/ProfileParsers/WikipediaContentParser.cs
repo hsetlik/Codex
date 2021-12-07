@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DomainDTOs;
+using Application.Extensions;
 using Application.Utilities;
 
 namespace Application.Parsing.ProfileParsers
@@ -18,39 +19,42 @@ namespace Application.Parsing.ProfileParsers
         {
            if (!HasLoadedHtml)
                 await LoadHtml();
-            return loadedHtml.DocumentNode.Descendants("p").ToList().Count;
+            var parserOutputNode = loadedHtml.DocumentNode.Descendants("div").FirstOrDefault(n => n.HasClass("mw-parser-output"));
+            var sectionHeaders = parserOutputNode.Descendants("span").Where(n => n.HasClass("mw-headline")).ToList();
+            return sectionHeaders.Count + 1; //add one because we will always have an intro paragraph which does not have a mw-headline header
         }
 
         public override async Task<ContentParagraph> GetParagraph(int index)
         {
-             if (!HasLoadedHtml)
+            if (!HasLoadedHtml)
                 await LoadHtml();
-            var paragraph = loadedHtml.DocumentNode.Descendants("p").ElementAt(index);
-            bool headerFound = false;
-            var headerSibling = paragraph.PreviousSibling;
-            var headerString = "none";
-            while (headerSibling != null && !headerFound)
+            string headerString = "none";
+            string paragraphContent = "";
+            var parserOutputNode = loadedHtml.DocumentNode.Descendants("div").FirstOrDefault(n => n.HasClass("mw-parser-output"));
+            if (index == 0)
             {
-                if (headerSibling.Name == "h2")
+                //in this case, just take the intro paragraphs
+                var paragraphNode = parserOutputNode.Descendants("p").FirstOrDefault();
+                while (paragraphNode.Name == "p")
                 {
-                   var titleSpan = headerSibling.Descendants("span").FirstOrDefault(s => s.HasClass("mw-headline"));
-                   if (titleSpan != null)
-                   {
-                       headerString = titleSpan.InnerText;
-                       headerFound = true;
-                   }
+                    paragraphContent += paragraphNode.InnerText;
+                    paragraphNode = paragraphNode.NextSibling;
                 }
-                else if (headerSibling.HasClass("toc"))
+            }
+            else
+            {
+                var sectionHeaders = parserOutputNode.Descendants("span").Where(n => n.HasClass("mw-headline")).ToList();
+                for(int i = 0; i < sectionHeaders.Count; ++i)
                 {
-                    headerFound = true;
+                    Console.WriteLine($"Section {i} has name: {sectionHeaders[i].InnerText}");
                 }
-                headerSibling = headerSibling.PreviousSibling;
+                paragraphContent = sectionHeaders[index].ContentUnderHeaderWiki().Value;
             }
             return new ContentParagraph
             {
                 ContentUrl = Url,
                 Index = index,
-                Value = StringUtilityMethods.StripWikiAnnotations(paragraph.InnerText),
+                Value = StringUtilityMethods.StripWikiAnnotations(paragraphContent),
                 ParagraphHeader = headerString
             };
         }
