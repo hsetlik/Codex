@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs.HistoryQueries
 {
-    public class KnownWordsQuery
+    public class DailyKnownWordsQuery
     {
         public int NumDays { get; set; }
         public Guid UserLanguageProfileId { get; set; }

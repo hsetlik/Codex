@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs.ContentHistory;
 using Application.DomainDTOs.HistoryQueries;
+using Application.DomainDTOs.UserLanguageProfile;
 using Application.Extensions;
 using MediatR;
 using Persistence;
@@ -16,7 +17,7 @@ namespace Application.DataObjectHandling.ProfileHistory
     {
         public class Query : IRequest<Result<List<DailyKnownWordsDto>>>
         {
-            public KnownWordsQuery Dto { get; set; }
+            public DailyKnownWordsQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<DailyKnownWordsDto>>>

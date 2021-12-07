@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling.ProfileHistory;
 using Application.DataObjectHandling.UserLanguageProfiles;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.HistoryQueries;
 using Application.DomainDTOs.UserLanguageProfile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +17,12 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ProfileController : CodexControllerBase
     {
+        
         [HttpPost("createProfile")]
         public async Task<IActionResult> CreateProfile(LanguageNameDto profileDto)
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileCreate.Command{LanguageId = profileDto.Language}));
         }
-
 
         [Authorize]
         [HttpPost("getDueNow")]
@@ -49,5 +51,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileDelete.Command{Dto = dto}));
         } 
+
+        [Authorize]
+        [HttpPost("getKnownWordsForDays")]
+        public async Task<IActionResult> GetKnownWordsForDays(DailyKnownWordsQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new GetDailyKnownWords.Query{Dto = dto}));
+        }
     }
 }
