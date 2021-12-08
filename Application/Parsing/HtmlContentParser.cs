@@ -27,7 +27,7 @@ namespace Application.Parsing
             Console.WriteLine($"Loading HTML for: {Url}");
             loadedHtml =  await web.LoadFromWebAsync(Url);
         }
-        
+
         public async Task<ContentMetadataDto> Parse()
         {
             return await GetMetadata();
@@ -36,6 +36,7 @@ namespace Application.Parsing
         public abstract Task<ContentMetadataDto> GetMetadata();
         public abstract Task<int> GetNumSections();
         public abstract Task<ContentSection> GetSection(int index);
+        public abstract Task ParseToContent(); //do the actual scraping logic to load data into subclass memory
         
 
         public static ParserProfile ProfileFor(string url)

@@ -304,4 +304,8 @@ TODO:
 2. Figure out client-side section headers
 3. Refactor the way HTML parsing works - Use ScrapySharp to get the HTML and then use CSS select to grab data to transfer to the profile class and then to the actual IParserService methods 
 
+NOTES:
+
+1. Maybe content sections should just be loaded into memory? Look into speed/ download speed/ memory footprint questions
+
 =================================================================================================

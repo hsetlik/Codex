@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.DomainDTOs;
 using Application.Extensions;
+using Application.Parsing.ContentStorage;
 using Application.Utilities;
 
 namespace Application.Parsing.ProfileParsers
@@ -12,6 +13,8 @@ namespace Application.Parsing.ProfileParsers
 
     public class WikipediaContentParser : HtmlContentParser
     {
+
+        private WikiContentStorage storage;
         public WikipediaContentParser(string url) : base(url)
         {
         }
@@ -76,6 +79,28 @@ namespace Application.Parsing.ProfileParsers
                 AudioUrl = "none",
                 ContentUrl = Url
             };
+        }
+
+        public override async Task ParseToContent()
+        {
+            // get metadata first
+            Console.WriteLine("GETTING WIKIPEDIA METADATA...");
+            if (!HasLoadedHtml)
+                await LoadHtml();
+            var name = loadedHtml.DocumentNode.DescendantsAndSelf().SingleOrDefault(u => u.Name == "title").InnerText;
+            var lang = loadedHtml.DocumentNode.Descendants("html").FirstOrDefault().GetAttributeValue("lang", "not found");
+            storage.Metadata = new ContentMetadataDto
+            {
+                ContentName = name,
+                ContentType = "Wikipedia",
+                Language = lang,
+                VideoUrl = "none",
+                AudioUrl = "none",
+                ContentUrl = Url
+            };
+
+            //Now to grip the sections
+            
         }
     }
 

@@ -45,6 +45,10 @@ namespace Application.Parsing.ProfileParsers
 
         }
 
+        public override Task ParseToContent()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
