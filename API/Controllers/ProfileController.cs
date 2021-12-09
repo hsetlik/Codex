@@ -58,5 +58,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetDailyKnownWords.Query{Dto = dto}));
         }
+
+        [Authorize]
+        [HttpPost("allUserTerms")]
+        public async Task<IActionResult> AllUserTerms(LanguageNameDto dto)
+        {
+            return HandleResult(await Mediator.Send(new AllUserTerms.Query{Dto = dto}));
+        }
     }
 }

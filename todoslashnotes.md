@@ -317,6 +317,8 @@ TODO:
 
 1. Add stuff to parse some other HTML elements (ul, table, etc) from Wikipedia
 2. Have it do something other than Wikipedia
-3. Fix AbstractTermsForSection
+3. ~~Fix AbstractTermsForSection~~
+4. Maybe add a dateCreated thing to UserTerm entity?
+5. Endpoint to list all of the userTerms in a profile
 
 =================================================================================================

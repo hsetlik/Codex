@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Domain.DataObjects;
@@ -128,6 +129,22 @@ namespace Application.Extensions
         {
             //TODO
             //profile.ContentHistory.ContentViewRecords.Add(record);
+        }
+
+        public static UserTermDto GetDto(this UserTerm term)
+        {
+            return new UserTermDto
+            {
+                Value = term.Term.NormalizedValue,
+                Language = term.Term.Language,
+                EaseFactor = term.EaseFactor,
+                SrsIntervalDays = term.SrsIntervalDays,
+                Rating = term.Rating,
+                TimesSeen = term.TimesSeen,
+                UserTermId = term.UserTermId,
+                Translations = term.GetTranslationStrings()
+            };
+            
         }
 
         
