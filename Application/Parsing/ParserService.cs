@@ -16,17 +16,19 @@ namespace Application.Parsing
 
 
         public string CurrentUrl { get; private set; }
-        public ParserService()
-        {
-            
-            
-        }
+
         private async Task EnsureLoaded(string url)
         {
-            if (scraper == null)
+            if (scraper == null || scraper.Url != url)
+            {
+                Console.WriteLine($"Need to set scraper for {url}");
                 scraper = ContentScraperFactory.ScraperFor(url);
-            if (!scraper.ContentsLoaded || scraper.Url != url)
-                await scraper.PrepareAsync();
+            }
+                
+            if (!scraper.ContentsLoaded)
+            {
+                 await scraper.PrepareAsync();
+            }
         }
 
         public async Task<int> GetNumSections(string url)
@@ -37,12 +39,14 @@ namespace Application.Parsing
 
         public async Task<ContentSection> GetSection(string contentUrl, int index)
         {
+           Console.WriteLine($"Getting section {index} of content: {contentUrl}"); 
            await EnsureLoaded(contentUrl);
            return scraper.GetSection(index);
         }
 
         public async Task<ContentMetadataDto> GetContentMetadata(string url)
         {
+            Console.WriteLine($"Metadata requested for {url}");
             await EnsureLoaded(url);
             return scraper.GetMetadata();
         }

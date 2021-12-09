@@ -32,7 +32,7 @@ namespace Application.DataObjectHandling.Contents
             {
                 var content =  await _context.Contents.FirstOrDefaultAsync(c => c.ContentId == request.Dto.ContentId);
                 if (content == null)
-                    return Result<ContentMetadataDto>.Failure("content not loaded");
+                    return Result<ContentMetadataDto>.Failure($"content not loaded for GUID: {request.Dto.ContentId.ToString()}");
                 var output = content.GetMetadata();
                 return Result<ContentMetadataDto>.Success(output);
             }

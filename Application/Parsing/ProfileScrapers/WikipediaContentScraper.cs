@@ -26,15 +26,8 @@ namespace Application.Parsing.ProfileScrapers
             storage = new WikiContentStorage();
         }
 
-        private void checkLoaded()
-        {
-            if (!contentsLoaded)
-                Console.WriteLine("Warning! contents not loaded!");
-        }
-
         public override ContentMetadataDto GetMetadata()
         {
-            checkLoaded();
             return storage.Metadata;
         }
 
@@ -57,7 +50,7 @@ namespace Application.Parsing.ProfileScrapers
             var topNode = page.Html;
             //sort out the metadata first
             var contentName = topNode.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
-            var lang = topNode.SelectSingleNode("//html/head/title").GetAttributeValue<string>("lang", "not found");
+            var lang = topNode.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
 
             storage.Metadata = new ContentMetadataDto
             {
@@ -101,29 +94,27 @@ namespace Application.Parsing.ProfileScrapers
             var allSectionHeaders = mainBody.Descendants().Where(n => (n.Name == "h2" || n.Name == "h3")).ToList();
             foreach(var header in allSectionHeaders)
             {
-                Console.WriteLine($"Header .Name prop: {header.Name}");
                 var h = header.CssSelect("span").FirstOrDefault();
                 var headerName = (h == null) ? "ERROR" : h.InnerText;
                 Console.WriteLine($"Header name is: {headerName}");
                 var section = new ContentSection
                 {
                     ContentUrl = this.Url,
-                    Index = allSectionHeaders.IndexOf(header) + 1,
+                    Index = allSectionHeaders.IndexOf(header) - 1,
                     SectionHeader = headerName,
                     Value =""
                 };
                 var p = header.NextSibling;
                 while (p != null && p.Name != "h2" && p.Name != "h3")
                 {
-                    Console.WriteLine($"This Element has tag name: {p.Name} and inner text: {p.InnerText}");
                     if (p.Name == "p")
                     {
-                        Console.WriteLine($"Element has hame: {p.Name}");
-                        section.Value += p.InnerText;
+                        section.Value += StringUtilityMethods.StripWikiAnnotations(p.InnerText);
                     }
                     p = p.NextSibling;
                 }
-                storage.Sections.Add(section);
+                if (section.Value.Length > 0)
+                    storage.Sections.Add(section);
             }
             contentsLoaded = true;
         }

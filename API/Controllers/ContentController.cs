@@ -88,7 +88,12 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetKnownWordsForContent.Query{ContentId = dto.ContentId}));
         }
 
-
+        [Authorize]
+        [HttpPost("deleteContent")]
+        public async Task<IActionResult> DeleteContent(ContentUrlDto dto)
+        {
+            return HandleResult(await Mediator.Send(new DeleteContent.Command{Dto = dto}));
+        }
 
     }
 }

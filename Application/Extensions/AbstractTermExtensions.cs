@@ -37,11 +37,13 @@ namespace Application.Extensions
                 if (metadataResult == null)
                     return Result<AbstractTermsFromSection>.Failure($"Could not load content metadata for URL: {contentUrl}");
                 var language = metadataResult.Language;
-                var profile = await context.UserLanguageProfiles.Include(u => u.User).FirstOrDefaultAsync(
-                    p => p.User.UserName == username &&
+                Console.WriteLine($"Language for {contentUrl} is {language}");
+                var profile = await context.UserLanguageProfiles
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(p => p.User.UserName == username &&
                     p.Language == language);
                 if (profile == null)
-                    return Result<AbstractTermsFromSection>.Failure($"Could not load content metadata for URL: {contentUrl}");
+                    return Result<AbstractTermsFromSection>.Failure($"Could not load profile for language: {language}");
                 var section = await parser.GetSection(contentUrl, index);
                 var terms = section.Value.Split(' ');
                 var abstractTermTasks = new List<Task<Result<AbstractTermDto>>>();

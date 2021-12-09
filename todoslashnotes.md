@@ -305,3 +305,18 @@ TODO:
 3. Refactor the way HTML parsing works - Use ScrapySharp to get the HTML and then use CSS select to grab data to transfer to the profile class and then to the actual IParserService methods 
 
 =================================================================================================
+============================================== 12/8/21 ==========================================
+
+FROM YESTERDAY:
+
+1. ~~Figure out Wiki HTML parsing~~
+2. Figure out client-side section headers
+3. ~~Refactor the way HTML parsing works - Use ScrapySharp to get the HTML and then use CSS select to grab data to transfer to the profile class and then to the actual IParserService methods~~ 
+
+TODO:
+
+1. Add stuff to parse some other HTML elements (ul, table, etc) from Wikipedia
+2. Have it do something other than Wikipedia
+3. Fix AbstractTermsForSection
+
+=================================================================================================

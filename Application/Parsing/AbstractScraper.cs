@@ -43,7 +43,7 @@ namespace Application.Parsing
         
         public static ScraperProfile ProfileFor(string url)
         {
-            Console.WriteLine($"Getting parser for content: {url}");
+            Console.WriteLine($"Getting scraper for content: {url}");
             if (url.Contains("wikipedia"))
             {
                 Console.WriteLine($"Found wikipedia page at: {url}");

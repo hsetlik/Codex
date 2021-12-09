@@ -31,6 +31,7 @@ export default class ContentStore
     }
 
     setSelectedContent = async (url: string) => {
+        console.log(`Selecting Content: ${url}`);
         try {
            let newSectionCount = await agent.Content.getSectionCount({contentUrl: url});
            let newSection = await agent.Content.abstractTermsForSection({contentUrl: url, index: 0});

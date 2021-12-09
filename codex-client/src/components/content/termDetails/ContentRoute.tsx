@@ -11,10 +11,9 @@ export default function ContentRoute(){
     const {contentId, index} = useParams();
     const {contentStore: {selectedContentMetadata, setSelectedContentById, loadSection}} = useStore();
     useEffect(() => {
-        if (selectedContentMetadata?.contentId !== contentId) {
-            setSelectedContentById(contentId!);
-        }
+        setSelectedContentById(contentId!);
         const parNumber = parseInt(index!);
+        console.log(`parNumber for ${contentId} is: ${parNumber}`);
         if (parNumber > 0) {
             loadSection(selectedContentMetadata?.contentUrl!, parNumber);
         }
