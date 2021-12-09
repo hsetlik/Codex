@@ -32,27 +32,22 @@ namespace Application.Utilities
         public static string StripWikiAnnotations(string input)
         {
             const string expression = @"(&#)([\w;]+)";
+            var output = StrippedOfMatches(input, expression);
+            var words = output.Split(' ');
+            foreach(var word in words)
+            {
+                Console.WriteLine($"Word is: {word}");
+            }
             return StrippedOfMatches(input, expression);
         }
-
+        
         private static string StrippedOfMatches(string input, string pattern)
         {
             return Regex.Replace(input, pattern, "");
         }
 
-        //return a Dictionary where keys are normalized TermIDs and values are original case-sensitive strings
-        public static Dictionary<string, string> GetTermValuesFor(this string input)
-        {
-            var dict = new Dictionary<string, string>();
-            var originalStrings = input.Split(' ');
-            foreach(var orig in originalStrings)
-            {
-                var id = orig.AsTermValue();
-                dict[id] = orig;
-            }
-            return dict;
-            
-        }
+       
 
     }
+     
 }

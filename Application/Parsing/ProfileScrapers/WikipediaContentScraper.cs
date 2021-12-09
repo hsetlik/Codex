@@ -109,7 +109,7 @@ namespace Application.Parsing.ProfileScrapers
                 {
                     if (p.Name == "p")
                     {
-                        section.Value += StringUtilityMethods.StripWikiAnnotations(p.InnerText);
+                        section.Value += ' ' + StringUtilityMethods.StripWikiAnnotations(p.InnerText);
                     }
                     p = p.NextSibling;
                 }

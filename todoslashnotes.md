@@ -319,6 +319,14 @@ TODO:
 2. Have it do something other than Wikipedia
 3. ~~Fix AbstractTermsForSection~~
 4. Maybe add a dateCreated thing to UserTerm entity?
-5. Endpoint to list all of the userTerms in a profile
+5. ~~Endpoint to list all of the userTerms in a profile~~
+6. Rework regex stuff/ trailing characters
+8. Add list of UserTerms with data to the profile route
 
+
+NOTES: 
+
+new regex algorithm:
+
+1. Strip Annotations
 =================================================================================================

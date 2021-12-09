@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Utilities;
 using Domain.DataObjects;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -10,8 +11,17 @@ namespace Application.DataObjectHandling.Terms
 {
     public class AbstractTermDto
     {
-        public string TermValue { get; set; }
-        public string TrailingCharacters { get; set; } 
+        private SplitString _split = new SplitString("none");
+        public string TermValue { get 
+        { 
+            return _split.Word; 
+        }
+            set 
+        { 
+            _split = new SplitString(value); 
+        } }
+        public string TrailingCharacters {get { return _split.Trailing; } } 
+        public string LeadingCharacters { get { return _split.Leading; } }
         public string Language { get; set; } 
         public int IndexInChunk { get; set; }
         public bool HasUserTerm { get; set; } // Whether a matching userTerm exists

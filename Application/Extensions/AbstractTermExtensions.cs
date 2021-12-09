@@ -85,7 +85,6 @@ namespace Application.Extensions
                  //HasUserTerm = true
                  output = new AbstractTermDto
                  {
-                    TrailingCharacters = trailing,
                     Language = userLangProfile.Language,
                     HasUserTerm = true,
                     EaseFactor = userTerm.EaseFactor,
@@ -100,7 +99,6 @@ namespace Application.Extensions
              {
                  output = new AbstractTermDto
                  {
-                    TrailingCharacters = trailing,
                     Language = userLangProfile.Language,
                     HasUserTerm = false,
                     EaseFactor = 0.0f,
@@ -143,7 +141,7 @@ namespace Application.Extensions
                  //HasUserTerm = true
                  output = new AbstractTermDto
                  {
-                    TrailingCharacters = trailing,
+                 
                     Language = dto.Language,
                     HasUserTerm = true,
                     EaseFactor = userTerm.EaseFactor,
@@ -158,7 +156,6 @@ namespace Application.Extensions
              {
                  output = new AbstractTermDto
                  {
-                    TrailingCharacters = trailing,
                     Language = dto.Language,
                     HasUserTerm = false,
                     EaseFactor = 0.0f,

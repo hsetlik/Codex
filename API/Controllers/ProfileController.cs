@@ -52,12 +52,14 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new UserLanguageProfileDelete.Command{Dto = dto}));
         } 
 
+/*
         [Authorize]
         [HttpPost("getKnownWordsForDays")]
         public async Task<IActionResult> GetKnownWordsForDays(DailyKnownWordsQuery dto)
         {
             return HandleResult(await Mediator.Send(new GetDailyKnownWords.Query{Dto = dto}));
         }
+*/
 
         [Authorize]
         [HttpPost("allUserTerms")]
