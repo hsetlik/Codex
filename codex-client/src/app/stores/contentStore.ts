@@ -23,7 +23,8 @@ export default class ContentStore
     currentSectionTerms: TermsFromSection = {
         contentUrl: this.selectedContentUrl,
         index: this.selectedSectionIndex,
-        abstractTerms: []
+        abstractTerms: [],
+        sectionHeader: ''
     }
 
     constructor() {

@@ -29,7 +29,7 @@ export default class UserStore{
                 console.log(`User has token ${user.token}`);
                 store.commonStore.setToken(user.token);
             } );
-            const profiles = await agent.Account.getUserProfiles();
+            const profiles = await agent.Profile.getUserProfiles();
             console.log("PROFILES FOUND");
             console.log(profiles);
             runInAction(() => {
@@ -68,7 +68,7 @@ export default class UserStore{
     setSelectedLanguage = (iso: string) => {
         console.log("Setting selected language: " + iso);
         this.selectedLanguage = iso;
-        store.contentStore.loadMetadata(iso).finally(() => store.contentStore.loadKnownWords());
+        store.contentStore.loadMetadata(iso); //.finally(() => store.contentStore.loadKnownWords());
     }
 
     setSelectedContent = (url: string) => {
@@ -91,7 +91,7 @@ export default class UserStore{
     getUser = async () => {
         try {
             const user = await agent.Account.current();
-            const profiles = await agent.Account.getUserProfiles();
+            const profiles = await agent.Profile.getUserProfiles();
             runInAction(()=> {
                 this.languageProfiles = [];
                 for(var i = 0; i < profiles.length; ++i)

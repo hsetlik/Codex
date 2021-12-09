@@ -30,7 +30,6 @@ namespace Application.Utilities
                     if (input.Length - leadLength > Word.Length)
                     {
                         Trailing = input.Substring(leadLength + Word.Length);
-                        //Word = Word.Substring(0, Word.Length - Trailing.Length);
                     }
                 }
                                

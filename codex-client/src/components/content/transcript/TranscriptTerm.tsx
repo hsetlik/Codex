@@ -4,6 +4,7 @@ import "../../styles/styles.css";
 import BaseTranscriptTerm from "../termDetails/BaseTranscriptTerm";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/store";
+import LeadingCharacterGroup from "./LeadingCharacterGroup";
 
 interface Props {
     term: AbstractTerm
@@ -11,15 +12,16 @@ interface Props {
 
 
 export default observer(function  TranscriptTerm({term}: Props) {
-    if (term.trailingCharacters.length) {
         return (
             <>
+                {term.leadingCharacters != 'none' &&
+                    <LeadingCharacterGroup term={term} />
+                }
                <BaseTranscriptTerm term={term} />
-               <TrailingCharacterGroup term={term} />
+               {term.trailingCharacters != 'none' &&
+                     <TrailingCharacterGroup term={term} />
+               }
             </>
-        )
-    }
-    else {
-        return <BaseTranscriptTerm term={term} />
-    }
-})
+        );
+}
+)

@@ -315,18 +315,14 @@ FROM YESTERDAY:
 
 TODO:
 
-1. Add stuff to parse some other HTML elements (ul, table, etc) from Wikipedia
-2. Have it do something other than Wikipedia
+1. Add stuff to parse some other HTML elements (ul, table, etc) from Wikipedia- LATER
+2. Have it do something other than Wikipedia- LATER
 3. ~~Fix AbstractTermsForSection~~
-4. Maybe add a dateCreated thing to UserTerm entity?
+4. Maybe add a dateCreated thing to UserTerm entity?- LATER
 5. ~~Endpoint to list all of the userTerms in a profile~~
-6. Rework regex stuff/ trailing characters
-8. Add list of UserTerms with data to the profile route
+6. ~~Rework regex stuff/ trailing characters~~
+8. ~~Add list of UserTerms with data to the profile route~~
+9. Handle hyphen/apastrophe cases
+10. Add some automatic typo handling (missed spaces after a period, etc)
 
-
-NOTES: 
-
-new regex algorithm:
-
-1. Strip Annotations
 =================================================================================================

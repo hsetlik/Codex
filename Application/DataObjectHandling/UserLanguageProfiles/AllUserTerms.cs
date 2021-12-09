@@ -49,7 +49,10 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                     return Result<List<UserTermDto>>.Failure("Could not load user terms");
                 foreach(var t in userTerms)
                 {
-                    output.Add(t.GetDto());
+                    var newTerm = t.GetDto();
+                    newTerm.Value = t.Term.NormalizedValue;
+                    Console.WriteLine($"User term value is: {newTerm.Value}");
+                    output.Add(newTerm);
                 }
                 return Result<List<UserTermDto>>.Success(output);
             }

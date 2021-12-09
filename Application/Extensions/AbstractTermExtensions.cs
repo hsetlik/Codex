@@ -66,7 +66,8 @@ namespace Application.Extensions
                 {
                     ContentUrl = contentUrl,
                     Index = index,
-                    AbstractTerms = abstractTerms
+                    AbstractTerms = abstractTerms,
+                    SectionHeader = section.SectionHeader
                 };
                 return Result<AbstractTermsFromSection>.Success(output);
             }

@@ -4,12 +4,13 @@ export interface Term {
 }
 
 export interface UserTerm {
-    termValue: string,
+    value: string,
     language: string,
     timesSeen: number,
     rating: number,
     easeFactor: number,
-    translations: string[]
+    translations: string[],
+    userTermId: string
 }
 
 export interface UserTermDetails {
@@ -25,6 +26,7 @@ export interface AbstractTerm {
     termValue: string,
     language: string,
     trailingCharacters: string,
+    leadingCharacters: string,
     //determine which type of term
     hasUserTerm: boolean,
     //and the userTerm-specific props

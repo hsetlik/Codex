@@ -56,6 +56,10 @@ axios.interceptors.request.use(config => {
     return config;
   }
 )
+
+export interface ILanguageString {
+    language: string
+}
 //
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 //object to hold generic HTTP requests
@@ -80,7 +84,11 @@ const Account = {
     current: () => requests.get<User>('/Account'),
     login: (user: UserFormValues) => requests.post<User>('/Account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/Account/register', user),
-    getUserProfiles: () => requests.get<LangProfileItem[]>('Profile/getUserProfiles')
+}
+
+const Profile = {
+    getUserProfiles: () => requests.get<LangProfileItem[]>('Profile/getUserProfiles'),
+    allUserTerms: (lang: ILanguageString) => requests.post<UserTerm[]>('profile/allUserTerms', lang)
 }
 
 export interface UserTermCreateDto {
@@ -131,9 +139,7 @@ const UserTermEndpoints = {
  }
 
 //==============================================================================================================
-export interface ILanguageString {
-    language: string
-}
+
 export interface ContentMetadataDto {
     videoUrl: string,
     audioUrl: string,
@@ -162,7 +168,8 @@ export interface SectionQueryDto {
 export interface TermsFromSection {
     contentUrl: string,
     index: number,
-    abstractTerms: AbstractTerm[]
+    abstractTerms: AbstractTerm[],
+    sectionHeader: string
 }
 
 export interface IContentName {
@@ -180,6 +187,7 @@ const Content = {
 //====================================================================================================================
 const agent = {
     Account,
+    Profile,
     Content,
     UserTermEndpoints,
     TermEndpoints

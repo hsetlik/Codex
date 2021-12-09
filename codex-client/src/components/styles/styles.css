@@ -34,3 +34,11 @@
     margin-right: 6px !important;
     margin-left: 0px !important;
   }
+
+  .trailing-character-group {
+    padding: 0px !important;
+    background: white !important;
+    text-align: left !important;
+    margin-right: 6px !important;
+    margin-left: 0px !important;
+  }

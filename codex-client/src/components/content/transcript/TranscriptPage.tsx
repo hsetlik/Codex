@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default  observer(function TranscriptPage({sectionIndex, contentUrl}: Props) {
-    const {contentStore: {loadSection, currentSectionTerms: currentSectionTerms, sectionLoaded}} = useStore();
+    const {contentStore: {loadSection, currentSectionTerms, sectionLoaded, selectedContentMetadata}} = useStore();
     useEffect(() => {
         loadSection(contentUrl, sectionIndex);
     }, [contentUrl, loadSection, sectionIndex])
@@ -21,13 +21,18 @@ export default  observer(function TranscriptPage({sectionIndex, contentUrl}: Pro
         </Container>
         );  
     }
+    const headerText = (currentSectionTerms.sectionHeader === 'none') ? selectedContentMetadata?.contentName : currentSectionTerms.sectionHeader;
     return(
-        <Container className="segment">
+        <div>
+            <Header as='h2'>{headerText}</Header>
+            <Container className="segment">
             {
                 currentSectionTerms.abstractTerms.map(trm => (
                     <TranscriptTerm term={trm} key={trm.indexInChunk} />
                 ))
             }
-        </Container>
+            </Container>
+        </div>
+        
     )
 });

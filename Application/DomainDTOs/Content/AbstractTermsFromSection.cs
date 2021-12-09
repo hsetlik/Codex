@@ -11,5 +11,6 @@ namespace Application.DomainDTOs.Content
         public string ContentUrl { get; set; }
         public int Index { get; set; }
         public List<AbstractTermDto> AbstractTerms { get; set; }
+        public string SectionHeader { get; set; }
     }
 }
