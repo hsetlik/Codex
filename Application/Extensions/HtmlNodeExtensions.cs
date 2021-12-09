@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.Parsing;
 using HtmlAgilityPack;
 
 namespace Application.Extensions
@@ -31,6 +32,8 @@ namespace Application.Extensions
             }
             return Result<string>.Success(output);
         }
+
+        
         
     }
 }

@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
 using HtmlAgilityPack;
+using MediatR;
 
 namespace Application.Parsing
 {
-    public abstract class HtmlContentParser
+    public abstract class AbstractScraper
     {
         public string Url { get; private set; }
         protected HtmlDocument loadedHtml = null;
-        public bool HasLoadedHtml {get {return !(loadedHtml == null);}}
 
-        public HtmlContentParser(string url)
+        protected bool contentsLoaded = false;
+
+        public bool ContentsLoaded {get {return contentsLoaded; }}
+
+        public AbstractScraper(string url)
         {
             this.Url = url;
         }
@@ -28,27 +32,26 @@ namespace Application.Parsing
             loadedHtml =  await web.LoadFromWebAsync(Url);
         }
         
-        public async Task<ContentMetadataDto> Parse()
-        {
-            return await GetMetadata();
-        }
         //Abstract methods to correspond with the IParserService methods (and ultimately endpoints)
-        public abstract Task<ContentMetadataDto> GetMetadata();
-        public abstract Task<int> GetNumSections();
-        public abstract Task<ContentSection> GetSection(int index);
-        
+        public abstract ContentMetadataDto GetMetadata();
+        public abstract int GetNumSections();
+        public abstract ContentSection GetSection(int index);
 
-        public static ParserProfile ProfileFor(string url)
+        // do the actual scraping in here
+        public abstract Task PrepareAsync();
+
+        
+        public static ScraperProfile ProfileFor(string url)
         {
             Console.WriteLine($"Getting parser for content: {url}");
             if (url.Contains("wikipedia"))
             {
                 Console.WriteLine($"Found wikipedia page at: {url}");
-                return ParserProfile.Wikipedia;
+                return ScraperProfile.Wikipedia;
             }
             else
             {
-                return ParserProfile.NewsArticle;
+                return ScraperProfile.NewsArticle;
             }
         }   
     }

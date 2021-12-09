@@ -2,25 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Parsing.ProfileParsers;
+using Application.Parsing;
+using Application.Parsing.ProfileScrapers;
 
 namespace Application.Parsing
 {
-    public static class ContentParserFactory
+    public static class ContentScraperFactory
     {
-        public static HtmlContentParser ParserFor(string url)
+        public static AbstractScraper ScraperFor(string url)
         {
             Console.WriteLine($"Getting profile for {url}");
-            var profile = HtmlContentParser.ProfileFor(url);
+            var profile = AbstractScraper.ProfileFor(url);
             Console.WriteLine($"Creating Parser for: {url} with profile {profile.Value}");
-            if (profile.Value == ParserProfile.Wikipedia.Value)
+            if (profile.Value == ScraperProfile.Wikipedia.Value)
             {
                 Console.WriteLine("Creating Wikipedia parser....");
-                return new WikipediaContentParser(url);
+                return new WikipediaContentScraper(url);
             }
             else
             {
-                return new NewsArticleContentParser(url);
+                return new NewsArticleContentScraper(url);
             }
         }
         

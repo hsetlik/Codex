@@ -10,8 +10,6 @@ namespace Application.Interfaces
 {
     public interface IParserService
     {
-        public Task PrepareForContent(string url);
-
         public Task<int> GetNumSections(string url);
         public Task<ContentSection> GetSection(string contentUrl, int index);
         public Task<ContentMetadataDto> GetContentMetadata(string url);
