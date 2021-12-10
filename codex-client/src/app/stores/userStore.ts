@@ -132,7 +132,7 @@ export default class UserStore{
 
     updateUserTerm = async (userTerm: UserTermDetails) => {
         try {
-            console.log(`Term seen ${userTerm.timesSeen} times`);
+            //console.log(`Term seen ${userTerm.timesSeen} times`);
            await agent.UserTermEndpoints.updateUserTerm(userTerm);
            await this.refreshByValue(userTerm.termValue);
         } catch (error) {
@@ -143,26 +143,24 @@ export default class UserStore{
     refreshByValue = async (termValue: string) => {
         try {
             let value = asTermValue(termValue);
-            console.log(`refreshing term with ID: ${termValue}`);
+            //console.log(`refreshing term with ID: ${termValue}`);
             let matchingTerms: Map<number, AbstractTerm> = new Map();
             for(var i = 0; i < store.contentStore.currentSectionTerms.abstractTerms.length; ++i)
             {
                 const aTerm = store.contentStore.currentSectionTerms.abstractTerms[i];
-                console.log(`Checking term with value: ${aTerm.termValue} and index: ${i}`);
-                if (aTerm.termValue.includes(termValue)) {
-                    console.log(`Found match with ${value} at Index ${i}`);
-                    const newTerm = await agent.TermEndpoints.getAbstractTerm({value: aTerm.termValue, language: aTerm.language});
-                    console.log(`Reloaded Term: ${newTerm.termValue} at ${i}`);
+                //console.log(`Checking term with value: ${aTerm.termValue} and index: ${i}`);
+                if (aTerm.termValue.normalize() === termValue.normalize()) {
+                    //console.log(`Found match with ${value} at Index ${i}`);
+                    const newTerm = await agent.TermEndpoints.getAbstractTerm({termValue: aTerm.termValue, language: aTerm.language});
+                    //console.log(`Reloaded Term: ${newTerm.termValue} at ${i}`);
                     newTerm.indexInChunk = i;
                     matchingTerms.set(i, newTerm);
-                } else {
-                    console.log(`Term with value ${aTerm.termValue} does not match ${value}`);
                 }
             }
             runInAction(() => {
                 matchingTerms.forEach((value: AbstractTerm, key: number) => {
                     //update each term in the contentStore map
-                    console.log(`Term ${value} is at index ${key}`);
+                    //console.log(`Term ${value} is at index ${key}`);
                     store.contentStore.currentSectionTerms.abstractTerms[key] = value;
                     if (key === store.contentStore.selectedTerm?.indexInChunk) {
                         store.contentStore.setSelectedTerm(value);

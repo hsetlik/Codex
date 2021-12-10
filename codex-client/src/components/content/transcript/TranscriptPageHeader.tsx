@@ -21,7 +21,7 @@ export default observer (function TranscriptPageHeader({index, contentId}: Props
     return(
         <Segment>
             <Header>
-            Section {index} of {selectedContentSectionCount}
+            Section {index + 1} of {selectedContentSectionCount}
             </Header>
             <Button basic content='Previous' disabled={index === 0} as={Link} to={prevSectionPath} />
             <Button basic content='Next' disabled={index >= selectedContentSectionCount - 1} as={Link} to={nextSectionPath}/>

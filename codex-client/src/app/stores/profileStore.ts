@@ -22,9 +22,6 @@ export default class ProfileStore
                this.currentUserTerms = newUserTerms;
                this.currentLanguage = lang;
                store.userStore.setSelectedLanguage(lang);
-               for(var t of this.currentUserTerms) {
-                   console.log(`UserTerm value: ${t.value}`);
-               }
            }) 
         } catch (error) {
            console.log(error);

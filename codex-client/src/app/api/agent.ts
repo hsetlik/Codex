@@ -3,7 +3,7 @@ import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
-import { AbstractTerm, UserTerm, UserTermDetails } from "../models/userTerm";
+import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -74,10 +74,7 @@ interface LangProfileItem {
     language: string
 }
 
-export interface TermDto {
-    value: string,
-    language: string
-}
+
 
 //use create one of these for each endpoint group
 const Account = {
@@ -128,14 +125,14 @@ export interface IChildTranslation {
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
-    getUserTerm : (dto: TermDto) => requests.post<UserTerm>('/userTerm/getUserTerm', dto),
+    getUserTerm : (dto: Term) => requests.post<UserTerm>('/userTerm/getUserTerm', dto),
     updateUserTerm: (dto: UserTermDetails) => requests.post('/userTerm/updateUserTerm', dto),
     getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto),
     deleteTranslation: (translation: IChildTranslation) => requests.post('/userTerm/deleteTranslation', translation)
 }
  const TermEndpoints = {
-     getAbstractTerm: (dto: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto),
-     getPopularTranslations: (dto: TermDto) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', dto)
+     getAbstractTerm: (dto: Term) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto),
+     getPopularTranslations: (dto: Term) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', dto)
  }
 
 //==============================================================================================================

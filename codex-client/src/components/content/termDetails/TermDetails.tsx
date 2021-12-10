@@ -5,6 +5,7 @@ import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 import UserTermCreator from "./UserTermCreator";
 import UserTermDetails from "../termDetails/UserTermDetails";
+import PopTranslations from "./PopTranslations";
 
 interface Props {
     term: AbstractTerm
@@ -20,7 +21,10 @@ export default observer(function TermDetails({term}: Props) {
             {term.hasUserTerm ? (
                 <UserTermDetails />
             ) : (
-                <UserTermCreator term={term} />
+                <div>
+                    <PopTranslations term={term} />
+                    <UserTermCreator term={term} />
+                </div>
             )}
         </Container>
     )
