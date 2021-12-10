@@ -1,7 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
-import { Container, Segment, Grid } from "semantic-ui-react";
-import { useStore } from "../../../app/stores/store";
+import { Container, Grid } from "semantic-ui-react";
 import TermDetails from "../termDetails/AbstractTermDetails";
 import TranscriptPage from "./TranscriptPage";
 import TranscriptPageHeader from "./TranscriptPageHeader";

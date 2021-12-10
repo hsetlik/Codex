@@ -1,10 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { Header, Segment, Button } from "semantic-ui-react";
-import { SectionQueryDto } from "../../../app/api/agent";
-import ContentStore from "../../../app/stores/contentStore";
 import { useStore } from "../../../app/stores/store";
 
 interface Props {

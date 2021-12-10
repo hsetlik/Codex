@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { useEffect } from "react";
 import { Segment, Button } from "semantic-ui-react";
-import { AbstractTerm, Term } from "../../../app/models/userTerm";
+import { Term } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 export default observer(function PopTranslations({term}: Props){
     const {translationStore: {currentPopTranslations, currentTermValue, prepareForTerm}} = useStore();
     useEffect(() => {
-        if (currentTermValue !== term) {
+        if (currentTermValue.termValue !== term.termValue) {
             prepareForTerm({termValue: term.termValue, language: term.language});
         }
       

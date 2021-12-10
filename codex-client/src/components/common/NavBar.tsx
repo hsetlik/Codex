@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { Container, Menu} from 'semantic-ui-react';
 import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
-import UserStore from '../../app/stores/userStore';
 
 export default observer(function NavBar()
 {

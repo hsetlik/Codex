@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../app/stores/store";
 import { Container } from "semantic-ui-react";
 import { useParams } from "react-router";
 import LanguageProfilePage from "./LanguageProfilePage";

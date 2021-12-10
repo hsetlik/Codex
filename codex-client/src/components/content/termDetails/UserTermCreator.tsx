@@ -1,7 +1,7 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
-import { Header, Segment, Button, Label } from "semantic-ui-react";
+import React, { useEffect } from "react";
+import { Header, Button, Label } from "semantic-ui-react";
 import { UserTermCreateDto } from "../../../app/api/agent";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
@@ -13,7 +13,12 @@ interface Props {
 
 export default observer(function UserTermCreator({term}: Props) {
     const {userStore, contentStore} = useStore();
-    const {selectedTerm} = contentStore;
+    const {selectedTerm, setSelectedTerm} = contentStore;
+    useEffect(() => {
+        if (selectedTerm?.termValue !== term.termValue) {
+            setSelectedTerm(term);
+        }
+    }, [selectedTerm, setSelectedTerm, term]);
     const {createTerm} = userStore;
     const handleFormSubmit = async (dto: UserTermCreateDto) => {
         if (dto.termValue !== selectedTerm?.termValue) {

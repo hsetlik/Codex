@@ -5,11 +5,6 @@ import { User, UserFormValues } from "../models/user";
 import { toast } from "react-toastify";
 import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
 
-const sleep = (delay: number) => {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    })
-}
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
@@ -74,8 +69,6 @@ interface LangProfileItem {
     language: string
 }
 
-
-
 //use create one of these for each endpoint group
 const Account = {
     current: () => requests.get<User>('/Account'),
@@ -130,13 +123,17 @@ const UserTermEndpoints = {
     getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto),
     deleteTranslation: (translation: IChildTranslation) => requests.post('/userTerm/deleteTranslation', translation)
 }
- const TermEndpoints = {
+interface PopTranslationsRequest {
+    value: string,
+    language: string
+}
+
+const TermEndpoints = {
      getAbstractTerm: (dto: Term) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto),
-     getPopularTranslations: (dto: Term) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', dto)
- }
+     getPopularTranslations: ({value, language}: PopTranslationsRequest) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', {value, language})
+}
 
 //==============================================================================================================
-
 export interface ContentMetadataDto {
     videoUrl: string,
     audioUrl: string,

@@ -2,7 +2,6 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import agent, { IChildTranslation, UserTermCreateDto } from '../api/agent';
 import { User, UserFormValues } from '../models/user';
 import { AbstractTerm, UserTermDetails } from '../models/userTerm';
-import { asTermValue } from '../utilities/stringUtility';
 import { store } from './store';
 
 export default class UserStore{
@@ -142,7 +141,6 @@ export default class UserStore{
 
     refreshByValue = async (termValue: string) => {
         try {
-            let value = asTermValue(termValue);
             //console.log(`refreshing term with ID: ${termValue}`);
             let matchingTerms: Map<number, AbstractTerm> = new Map();
             for(var i = 0; i < store.contentStore.currentSectionTerms.abstractTerms.length; ++i)

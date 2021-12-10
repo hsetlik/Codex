@@ -24,7 +24,6 @@ namespace Application.Parsing
                 Console.WriteLine($"Need to set scraper for {url}");
                 scraper = ContentScraperFactory.ScraperFor(url);
             }
-                
             if (!scraper.ContentsLoaded)
             {
                  await scraper.PrepareAsync();

@@ -1,8 +1,7 @@
-import { Agent } from "http";
 import { makeAutoObservable, runInAction } from "mobx";
 import agent, { AddTranslationDto, ContentMetadataDto, KnownWordsDto, TermsFromSection } from "../api/agent";
 import { AbstractTerm } from "../models/userTerm";
-import { asTermValue } from "../utilities/stringUtility";
+
 
 
 export default class ContentStore
@@ -116,6 +115,7 @@ export default class ContentStore
         console.log(`Headers loaded for: ${lang}`);
     }
 
+    /*
     loadKnownWords = async () => {
         this.knownWordsLoaded = false;
         this.contentKnownWords.clear();
@@ -134,21 +134,9 @@ export default class ContentStore
            runInAction(() => this.knownWordsLoaded = true);
         }
     }
+    */
 
-    addTranslationToTerm = async (term: AbstractTerm, translation: string) => {
-        this.translationsLoaded = false;
-        try {
-           let dto: AddTranslationDto = {
-               userTermId: term.userTermId,
-               newTranslation: translation
-           };
-           await agent.UserTermEndpoints.addTranslation(dto);
-
-        } catch (error) {
-           console.log(error); 
-        }
-    }
-     addTranslation = async (dto: AddTranslationDto) => {
+    addTranslation = async (dto: AddTranslationDto) => {
          this.translationsLoaded = false;
          try {
             await agent.UserTermEndpoints.addTranslation(dto);

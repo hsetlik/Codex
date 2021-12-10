@@ -1,8 +1,8 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
-import { Header, Segment, Button, Label } from "semantic-ui-react";
-import { AddTranslationDto, UserTermCreateDto } from "../../../app/api/agent";
+import React from "react";
+import { Button, Label } from "semantic-ui-react";
+import { AddTranslationDto } from "../../../app/api/agent";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 import MyTextInput from "../../formComponents/MyTextInput";
@@ -12,7 +12,7 @@ interface Props {
 
 
 export default observer(function AddTranslationForm({term}: Props) {
-    const {userStore, contentStore} = useStore();
+    const {contentStore} = useStore();
     const {addTranslation} = contentStore;
     //TODO: replace addTranslationToSelected- probably just move old functionality into contentStore.ts
     const handleFormSubmit = async (dto: AddTranslationDto) => {

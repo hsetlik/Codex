@@ -7,9 +7,6 @@ using Application.DomainDTOs;
 using Application.Extensions;
 using Application.Parsing.ContentStorage;
 using Application.Utilities;
-using HtmlAgilityPack;
-using MediatR;
-using ScrapySharp;
 using ScrapySharp.Extensions;
 using ScrapySharp.Network;
 
@@ -119,5 +116,4 @@ namespace Application.Parsing.ProfileScrapers
             contentsLoaded = true;
         }
     }
-
 }

@@ -1,9 +1,11 @@
 import Color from "color";
 import { AbstractTerm } from "../models/userTerm";
 
+/*
 function toCssColor(r: number, g: number, b: number) {
     return `rgb(${r}, ${g}, ${b})!important`;
 }
+*/
 
 function lerp(a: number, b: number, t: number)
 {

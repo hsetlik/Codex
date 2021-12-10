@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent, { PopularTranslationDto} from "../api/agent";
-import { AbstractTerm, Term } from "../models/userTerm";
+import { Term } from "../models/userTerm";
 
 
 export default class TranslationStore
@@ -15,7 +15,7 @@ export default class TranslationStore
     prepareForTerm = async (input: Term) => {
         this.translationsLoaded = false;
         try {
-           const newTranslations = await agent.TermEndpoints.getPopularTranslations(input);
+           const newTranslations = await agent.TermEndpoints.getPopularTranslations({value: input.termValue, language: input.language});
            runInAction(() => {
                this.currentPopTranslations = newTranslations;
                this.currentTermValue = input;

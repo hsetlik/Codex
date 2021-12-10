@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Button, Header, Icon, List, Segment } from "semantic-ui-react";
+import { Button, List } from "semantic-ui-react";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 
