@@ -1,5 +1,7 @@
 import { observer } from "mobx-react-lite";
-import { Container, Grid } from "semantic-ui-react";
+import { useEffect } from "react";
+import { useRef } from "react";
+import { Container, Grid, Ref, Sticky } from "semantic-ui-react";
 import TermDetails from "../termDetails/AbstractTermDetails";
 import TranscriptPage from "./TranscriptPage";
 import TranscriptPageHeader from "./TranscriptPageHeader";
@@ -12,17 +14,25 @@ interface Props {
 
 export default observer(function TranscriptReader({contentUrl, index, contentId}: Props){
     //TODO: useEffect to make sure content is loaded
+    const ref = useRef<any>(null);
+    useEffect(() => {
+        ref.current?.focus();
+    },[ref]);
 return(        
         <Container >
-            <Grid>
-                <Grid.Column width='10'>
+           <Ref innerRef={ref}>
+                <Grid>
+                <   Grid.Column width='10'>
                     <TranscriptPageHeader contentId={contentId} index={index} />
                     <TranscriptPage contentUrl={contentUrl} sectionIndex={index}  />
                 </Grid.Column>
                 <Grid.Column width='6'>
-                    <TermDetails />
+                    <Sticky context={ref} >
+                        <TermDetails />
+                    </Sticky>
                 </Grid.Column>
-            </Grid>
+                </Grid>
+            </Ref>
         </Container>
     )
 })

@@ -35,10 +35,21 @@
     margin-left: 0px !important;
   }
 
-  .trailing-character-group {
+  .leading-character-group {
     padding: 0px !important;
     background: white !important;
     text-align: left !important;
     margin-right: 6px !important;
     margin-left: 0px !important;
+  }
+
+  .sticky__wrapper {
+    position: relative;
+    height: 4rem;
+  }
+  
+  .sticky .sticky--inner {
+    position: fixed;
+    top: 0; 
+    z-index: 1;
   }

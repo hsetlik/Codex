@@ -32,10 +32,6 @@ namespace Application.Utilities
             const string expression = @"(&#)([\w;]+)";
             var output = StrippedOfMatches(input, expression);
             var words = output.Split(' ');
-            foreach(var word in words)
-            {
-                Console.WriteLine($"Word is: {word}");
-            }
             return StrippedOfMatches(input, expression);
         }
         

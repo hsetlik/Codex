@@ -335,17 +335,23 @@ FROM YESTERDAY:
 
 TODO:
 
-1. Split long sections into subsections
+1. ~~Split long sections into subsections~~
 2. ~~popularTranslations should return an empty array rather than 400 when no matches are found~~
 =================================================================================================
 ============================================== 12/11/21 ==========================================
 
 FROM YESTERDAY:
 
-1. Add some automatic typo handling (missed spaces after a period, etc)
-2. Split long sections into subsections
+1. ~~Add some automatic typo handling (missed spaces after a period, etc)~~
+2. ~~Split long sections into subsections~~
 
 TODO:
 
-1. Fix sentence ending at paragraph thing- try splitting by newline, THEN by single space?
+1. ~~Fix sentence ending at paragraph thing- try splitting by newline, THEN by single space?~~
+2. ~~Fix returning of sections/ getting abstractTerms and handling newlines~~
+3. ~~Fix client redirecting to first section~~
+4. ~~Fix leading characters CSS~~
+5. Make the termDetails thing sticky- figure out useRef() thing
+6. Fix refreshing of content pages without making redundant API calls
+7. Add Bookmark functionality (have one-to-many between ContentHistory and new 'Bookmark' entity)
 =================================================================================================

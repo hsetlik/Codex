@@ -70,10 +70,6 @@ export default class UserStore{
         store.contentStore.loadMetadata(iso); //.finally(() => store.contentStore.loadKnownWords());
     }
 
-    setSelectedContent = (url: string) => {
-        store.contentStore.setSelectedContent(url);
-    }
-    
     selectDefaultLanguage = () => {
         if (this.languageProfiles.length < 1) {
             console.log("No profiles loaded!");

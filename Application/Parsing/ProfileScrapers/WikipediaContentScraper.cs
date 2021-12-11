@@ -76,6 +76,7 @@ namespace Application.Parsing.ProfileScrapers
             storage.Sections = new List<ContentSection>();
             // stick all the paragraph nodes into a big list
             var mainBody = topNode.Descendants().FirstOrDefault(n => n.HasClass("mw-parser-output"));
+            //TODO: this needs to select the first p node at  the app
             var allParagraphs = mainBody.CssSelect("p").ToList();
             for(int i = 0; i < allParagraphs.Count; ++i)
             {
@@ -84,8 +85,8 @@ namespace Application.Parsing.ProfileScrapers
             // grab the TOC node
             string introBody = "";
             var tableOfContents = mainBody.CssSelect("div.toc").FirstOrDefault();
-            // start with the first paragraph and grab each one until we hit the table of contents
-            var pNode = allParagraphs[0];
+            // make sure we don't start with a nested p element inside something else
+            var pNode = allParagraphs.FirstOrDefault(p => p.ParentNode == mainBody);
             while (pNode != tableOfContents && pNode != null)
             {
                 if (pNode.Name == "p" && pNode.InnerText.Length > 0)

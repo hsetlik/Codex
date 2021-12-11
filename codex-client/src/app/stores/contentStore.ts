@@ -34,7 +34,6 @@ export default class ContentStore
         console.log(`Selecting Content: ${url}`);
         try {
            let newSectionCount = await agent.Content.getSectionCount({contentUrl: url});
-           let newSection = await agent.Content.abstractTermsForSection({contentUrl: url, index: 0});
            runInAction(() => {
                this.selectedContentUrl = url;
                this.selectedSectionIndex = 0;
@@ -42,9 +41,7 @@ export default class ContentStore
                let newMetadata = this.loadedContents.find(v => v.contentUrl === url);
                if (newMetadata !== undefined)
                 this.selectedContentMetadata = newMetadata;
-               this.currentSectionTerms = newSection;
                console.log("First section loaded");
-               this.sectionLoaded = true;
            }) 
         } catch (error) {
            console.log(error); 
@@ -53,7 +50,6 @@ export default class ContentStore
                this.selectedContentUrl = url;
                this.selectedSectionIndex = 0;
                this.selectedContentSectionCount = 0;
-               this.sectionLoaded = true;
            }) 
         }
     }

@@ -13,7 +13,7 @@ interface Props {
 export default observer(function TermDetails({term}: Props) {
    
     return (
-        <Container className="segment">
+        <div>
             <Header as='h2' content={term.termValue} />
             {term.hasUserTerm ? (
                 <UserTermDetails />
@@ -23,7 +23,7 @@ export default observer(function TermDetails({term}: Props) {
                     <UserTermCreator term={term} />
                 </div>
             )}
-        </Container>
+        </div>
     )
 
 })
