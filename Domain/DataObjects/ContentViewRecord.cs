@@ -14,5 +14,6 @@ namespace Domain.DataObjects
         public ContentHistory ContentHistory { get; set; }
         public string ContentUrl { get; set; } //which content this refers to
         public DateTime AccessedOn { get; set; }
+        public int LastSectionViewed { get; set; }
     }
 }

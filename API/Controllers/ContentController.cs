@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling.ContentRecords;
 using Application.DataObjectHandling.Contents;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
@@ -95,5 +96,11 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new DeleteContent.Command{Dto = dto}));
         }
 
+        [Authorize]
+        [HttpPost("viewContent")]
+        public async Task<IActionResult> ViewContent(SectionQueryDto dto)
+        {
+            return HandleResult(await Mediator.Send(new ViewContent.Command{Dto = dto}));
+        }
     }
 }

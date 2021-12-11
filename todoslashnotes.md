@@ -351,7 +351,7 @@ TODO:
 2. ~~Fix returning of sections/ getting abstractTerms and handling newlines~~
 3. ~~Fix client redirecting to first section~~
 4. ~~Fix leading characters CSS~~
-5. Make the termDetails thing sticky- figure out useRef() thing
+5. Make the termDetails sticky- figure out useRef() thing
 6. Fix refreshing of content pages without making redundant API calls
-7. Add Bookmark functionality (have one-to-many between ContentHistory and new 'Bookmark' entity)
+7. Make stuff to automatically tag contents on import
 =================================================================================================
