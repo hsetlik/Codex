@@ -14,25 +14,26 @@ namespace Application.Utilities
 
             public SplitString(string input)
             {
-                Word = Regex.Match(input, @"([^\p{P}^\s]+)").Value;
-                Leading = "none";
                 Trailing = "none";
-                if(Word.Length < 1)
-                    return;
-                if (input.Length > Word.Length)
+                Leading = "none";
+                var temp = input;
+                Word = Regex.Match(input, @"([^\p{P}^\s]+)").Value;
+               
+                var leadingMatch = Regex.Match(input, @"^[\p{P}\s]+");
+                if (leadingMatch.Success)
                 {
-                    int leadLength = 0;
-                    if(input[0] != Word[0])
-                    {
-                        leadLength = input.IndexOf(Word[0]);
-                        Leading = input.Substring(0, leadLength);
-                    }
-                    if (input.Length - leadLength > Word.Length)
-                    {
-                        Trailing = input.Substring(leadLength + Word.Length);
-                    }
+                    Leading = leadingMatch.Value;
+                    temp = temp.Substring(Leading.Length);
                 }
-                               
+                var trailingMatch = Regex.Match(input, @"[\p{P}\s]+$");
+                if (trailingMatch.Success)
+                {
+                    Trailing = trailingMatch.Value;
+                    var length = temp.Length - Trailing.Length;
+                    if (length >= 1)
+                        temp = temp.Substring(0, length);
+                }
+                Word = temp;           
             }
         }
 }

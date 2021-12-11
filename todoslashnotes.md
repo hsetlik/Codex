@@ -326,3 +326,16 @@ TODO:
 10. Add some automatic typo handling (missed spaces after a period, etc)
 
 =================================================================================================
+============================================== 12/10/21 ==========================================
+
+FROM YESTERDAY:
+
+9. ~~Handle hyphen/apastrophe cases~~
+10. Add some automatic typo handling (missed spaces after a period, etc)
+
+TODO:
+
+1. Split long sections into subsections
+2. popularTranslations should return an empty array rather than 400 when no matches are found
+
+=================================================================================================
