@@ -336,6 +336,16 @@ FROM YESTERDAY:
 TODO:
 
 1. Split long sections into subsections
-2. popularTranslations should return an empty array rather than 400 when no matches are found
+2. ~~popularTranslations should return an empty array rather than 400 when no matches are found~~
+=================================================================================================
+============================================== 12/11/21 ==========================================
 
+FROM YESTERDAY:
+
+1. Add some automatic typo handling (missed spaces after a period, etc)
+2. Split long sections into subsections
+
+TODO:
+
+1. Fix sentence ending at paragraph thing- try splitting by newline, THEN by single space?
 =================================================================================================

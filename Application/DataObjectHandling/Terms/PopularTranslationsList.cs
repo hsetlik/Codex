@@ -32,16 +32,18 @@ namespace Application.DataObjectHandling.Terms
             public async Task<Result<List<PopTranslationDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 // 1. Find the term
-                var term = await _context.Terms.FirstOrDefaultAsync(u => u.NormalizedValue == request.Dto.Value.AsTermValue()
-                 && u.Language == request.Dto.Language); 
-                if (term == null) return Result<List<PopTranslationDto>>.Failure("No valid term found");
-                
-                // 2. grab all corresponding UserTerms and their translations
                 var userTerms = await _context.UserTerms
+                .Include(t => t.Term)
                 .Include(u => u.Translations)
-                .Where(u => u.TermId == term.TermId)
+                .Where(u => u.Term.NormalizedValue == request.Dto.Value.AsTermValue() &&
+                u.Term.Language == request.Dto.Language)
                 .ToListAsync();
+                
 
+                if (userTerms == null)
+                {
+                    return Result<List<PopTranslationDto>>.Failure("could not load matching userTerms");
+                }
                 // 3. Go through each translation and add them to a dictionary
                 var translationFrequencies = new Dictionary<string, int>();
                 foreach (var userTerm in userTerms)
