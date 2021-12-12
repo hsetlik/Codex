@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { useEffect } from "react";
 import { Header } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 
@@ -8,20 +9,18 @@ interface Props {
 }
 
 export default observer(function KnownWordsHeader({contentId}: Props) {
-    const {contentStore} = useStore();
-    const {contentKnownWords: headerKnownWords} = contentStore;
+    const {knownWordsStore: {knownWords, loadKnownWordsFor}} = useStore();
+    useEffect(() => {
+        if (!knownWords.has(contentId)) {
+            loadKnownWordsFor(contentId);
+        }
+    }, [knownWords, loadKnownWordsFor, contentId]);
+    const knownWordsData = knownWords.get(contentId);
     return (
         <div>
-            { headerKnownWords.get(contentId) !== undefined ? (
-                <Header as='h4' >
-                    {`${headerKnownWords.get(contentId)?.knownWords} known of ${headerKnownWords.get(contentId)?.totalWords} total words`}
-                </Header>
-            ) : (
-                <Header as='h4'>
-                    Loading...
-                </Header>
-            )
-            }
+            <Header as='h3'>
+                {knownWordsData?.knownWords} of {knownWordsData?.totalWords} words known
+            </Header>
         </div>
     )
 })

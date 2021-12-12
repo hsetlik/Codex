@@ -5,6 +5,7 @@ import ModalStore from "./modalStore";
 import ContentStore from "./contentStore";
 import ProfileStore from "./profileStore";
 import TranslationStore from "./translationStore";
+import KnownWordStore from "./knownWordsStore";
 
 interface Store {
   commonStore: CommonStore,
@@ -12,7 +13,8 @@ interface Store {
   modalStore: ModalStore,
   contentStore: ContentStore,
   profileStore: ProfileStore,
-  translationStore: TranslationStore
+  translationStore: TranslationStore,
+  knownWordsStore: KnownWordStore
 }
 export const store: Store = {
     commonStore: new CommonStore(),
@@ -20,7 +22,8 @@ export const store: Store = {
     modalStore: new ModalStore(),
     contentStore: new ContentStore(),
     profileStore: new ProfileStore(),
-    translationStore: new TranslationStore()
+    translationStore: new TranslationStore(),
+    knownWordsStore: new KnownWordStore()
 }
 
 export const storeContext = createContext(store);

@@ -376,6 +376,8 @@ TODO:
 
 1. ~~Add bookmark to contentMetadata~~
 2. ~~abstract retreiving content metadata in  a context extention~~
-3. Add number of sections to ContentMetadataDto (to match/display the bookmark)
-4. Refactor all the known words stuff
+3. ~~Add number of sections to ContentMetadataDto (to match/display the bookmark)~~
+4. ~~Refactor all the known words stuff~~
+5. Optimize the getting of known words (read up on async stuff)
+6. Client-side display for KnownWords on content header
 =================================================================================================
