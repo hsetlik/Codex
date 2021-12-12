@@ -149,5 +149,10 @@ namespace Application.Parsing.ProfileScrapers
             storage.Metadata.NumSections = storage.Sections.Count;
             contentsLoaded = true;
         }
+
+        public override List<ContentSection> GetAllSections()
+        {
+            return storage.Sections;
+        }
     }
 }

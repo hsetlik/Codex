@@ -26,7 +26,10 @@ namespace Application.Parsing
             }
             if (!scraper.ContentsLoaded)
             {
-                 await scraper.PrepareAsync();
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                await scraper.PrepareAsync();
+                watch.Stop();
+                Console.WriteLine($"Scraper preparation for {url} took {watch.ElapsedMilliseconds} ms");
             }
         }
 
@@ -48,6 +51,12 @@ namespace Application.Parsing
             Console.WriteLine($"Metadata requested for {url}");
             await EnsureLoaded(url);
             return scraper.GetMetadata();
+        }
+
+        public async Task<List<ContentSection>> GetAllSections(string contentUrl)
+        {
+            await EnsureLoaded(contentUrl);
+            return scraper.GetAllSections();
         }
     }
 }

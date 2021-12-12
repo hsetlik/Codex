@@ -37,6 +37,8 @@ namespace Application.Parsing
         public abstract int GetNumSections();
         public abstract ContentSection GetSection(int index);
 
+        public abstract List<ContentSection> GetAllSections();
+
         // do the actual scraping in here: needs to populate the ContentStorage object from the URL
         public abstract Task PrepareAsync();
 

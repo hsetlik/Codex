@@ -16,6 +16,11 @@ namespace Application.Parsing.ProfileScrapers
 
         }
 
+        public override List<ContentSection> GetAllSections()
+        {
+            throw new NotImplementedException();
+        }
+
         public override ContentMetadataDto GetMetadata()
         {
             throw new NotImplementedException();
