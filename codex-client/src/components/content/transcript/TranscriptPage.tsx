@@ -9,11 +9,9 @@ interface Props {
     contentUrl: string;
 }
 
-export default  observer(function TranscriptPage({sectionIndex, contentUrl}: Props) {
-    const {contentStore: {loadSection, currentSectionTerms, sectionLoaded, selectedContentMetadata}} = useStore();
-    useEffect(() => {
-        loadSection(contentUrl, sectionIndex);
-    }, [contentUrl, loadSection, sectionIndex])
+export default  observer(function TranscriptPage() {
+    const {contentStore: {currentSectionTerms, sectionLoaded, selectedContentMetadata}} = useStore();
+    
     if (!sectionLoaded){
         return (
         <Container>

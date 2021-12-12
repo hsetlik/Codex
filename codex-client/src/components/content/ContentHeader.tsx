@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Header, Label, Segment } from "semantic-ui-react";
 import { ContentMetadataDto } from "../../app/api/agent";
@@ -12,7 +13,10 @@ interface Props{
 export default observer(function ContentHeader({dto}: Props)
 {
     const {contentStore} = useStore();
-   
+    const [bookmarkValue, setBookmarkValue] = useState(0);
+    useEffect(() => {
+        
+    }, [])
     console.log("Content ID is: " + dto.contentUrl);
     return (
             <Segment>

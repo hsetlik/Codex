@@ -338,7 +338,7 @@ TODO:
 1. ~~Split long sections into subsections~~
 2. ~~popularTranslations should return an empty array rather than 400 when no matches are found~~
 =================================================================================================
-============================================== 12/11/21 ==========================================
+============================================== 12/11/21 =========================================
 
 FROM YESTERDAY:
 
@@ -351,7 +351,29 @@ TODO:
 2. ~~Fix returning of sections/ getting abstractTerms and handling newlines~~
 3. ~~Fix client redirecting to first section~~
 4. ~~Fix leading characters CSS~~
-5. Make the termDetails sticky- figure out useRef() thing
-6. Fix refreshing of content pages without making redundant API calls
+5. ~~Make the termDetails sticky- figure out useRef() thing~~
+6. ~~Fix refreshing of content pages without making redundant API calls~~
 7. Make stuff to automatically tag contents on import
+8. Add bookmark to ContentMetadata and display it on headers in list
+9. Dictionary API (4 real)
+
+NOTES:
+
+next content types to support:
+
+1. E-books (probably easy, may need more heavy-duty file hosting service depending)
+2. Youtube videos with subtitles (maybe: have a little highlight thing to show where in the transcript the video/audio playback is)
+=================================================================================================
+============================================== 12/12/21 =========================================
+
+FROM YESTERDAY:
+
+7. Make stuff to automatically tag contents on import
+8. Add bookmark to ContentMetadata and display it on headers in list
+9. Dictionary API (4 real)
+
+TODO:
+
+1. Add bookmark to contentMetadata
+2. abstract retreiving content metadata in  a context extention
 =================================================================================================

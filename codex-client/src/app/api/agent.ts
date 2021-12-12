@@ -123,14 +123,16 @@ const UserTermEndpoints = {
     getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto),
     deleteTranslation: (translation: IChildTranslation) => requests.post('/userTerm/deleteTranslation', translation)
 }
-interface PopTranslationsRequest {
+interface ITerm {
     value: string,
     language: string
 }
 
+
+
 const TermEndpoints = {
-     getAbstractTerm: (dto: Term) => requests.post<AbstractTerm>('/term/getAbstractTerm', dto),
-     getPopularTranslations: ({value, language}: PopTranslationsRequest) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', {value, language})
+     getAbstractTerm: (term: ITerm) => requests.post<AbstractTerm>('/term/getAbstractTerm', term),
+     getPopularTranslations: ({value, language}: ITerm) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', {value, language})
 }
 
 //==============================================================================================================
@@ -176,7 +178,9 @@ const Content = {
     abstractTermsForSection: (dto: SectionQueryDto) => requests.post<TermsFromSection>('/content/abstractTermsForSection', dto),
     getSectionCount: (contentUrl: IContentUrl) => requests.post<number>('/parse/getSectionCount', contentUrl),
     getContentWithName: (contentName: IContentName) => requests.post<ContentMetadataDto>('/content/getContentWithName', contentName),
-    getContentWithId: (contentId: IContentId) => requests.post<ContentMetadataDto>('/content/getContentWithId', contentId)
+    getContentWithId: (contentId: IContentId) => requests.post<ContentMetadataDto>('/content/getContentWithId', contentId),
+    viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
+    getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl)
 }
 //====================================================================================================================
 const agent = {

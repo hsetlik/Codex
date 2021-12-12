@@ -145,7 +145,7 @@ export default class UserStore{
                 //console.log(`Checking term with value: ${aTerm.termValue} and index: ${i}`);
                 if (aTerm.termValue.normalize() === termValue.normalize()) {
                     //console.log(`Found match with ${value} at Index ${i}`);
-                    const newTerm = await agent.TermEndpoints.getAbstractTerm({termValue: aTerm.termValue, language: aTerm.language});
+                    const newTerm = await agent.TermEndpoints.getAbstractTerm({value: aTerm.termValue, language: aTerm.language});
                     //console.log(`Reloaded Term: ${newTerm.termValue} at ${i}`);
                     newTerm.indexInChunk = i;
                     matchingTerms.set(i, newTerm);
