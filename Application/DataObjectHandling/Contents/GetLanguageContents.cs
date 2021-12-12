@@ -32,20 +32,10 @@ namespace Application.DataObjectHandling.Contents
 
             public async Task<Result<List<ContentMetadataDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var langName = request.Dto.Language;
-                Console.WriteLine( $"Finding contents for: {langName}");
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == _userAccessor.GetUsername());
-                if (user == null)
-                    return Result<List<ContentMetadataDto>>.Failure("User not found");
-                var langContents = await _context.Contents.Where(x => x.Language == request.Dto.Language).ToListAsync();
-                if (langContents == null || langContents.Count < 1) 
-                    return Result<List<ContentMetadataDto>>.Failure("No matching content found!");
-                var output = new List<ContentMetadataDto>();
-                foreach(var content in langContents)
-                {
-                    output.Add(content.GetMetadata());
-                }
-                return Result<List<ContentMetadataDto>>.Success(output);
+                var output = await _context.GetContentsForLanguage(_userAccessor.GetUsername(), request.Dto.Language);
+                if (!output.IsSuccess)
+                    return Result<List<ContentMetadataDto>>.Failure($"Failed to get language contents! Error Message: {output.Error}");
+                return Result<List<ContentMetadataDto>>.Success(output.Value);
             }
         }
     }

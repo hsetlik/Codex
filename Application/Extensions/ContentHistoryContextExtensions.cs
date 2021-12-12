@@ -50,6 +50,20 @@ namespace Application.Extensions
                 return Result<ContentHistory>.Failure("Could not update database");
             return Result<ContentHistory>.Success(history);
         }
+
+        public static async Task<Result<ContentViewRecord>> LatestRecordFor(this DataContext context, string username, string contentUrl)
+        {
+            var historyResult = await context.ContentHistoryFor(username, contentUrl);
+            if (!historyResult.IsSuccess)
+                return Result<ContentViewRecord>.Failure($"Could not get history! Error Message: {historyResult.Error}");
+            var records = await context.ContentViewRecords
+            .Where(r => r.ContentHistoryId == historyResult.Value.ContentHistoryId)
+            .ToListAsync();
+            if (records == null || records.Count < 1) 
+                return Result<ContentViewRecord>.Failure($"No view records for user {username} at {contentUrl}");
+            var newestRecord = records.Aggregate((r1, r2) => r1.AccessedOn > r2.AccessedOn ? r1 : r2);
+            return Result<ContentViewRecord>.Success(newestRecord);
+        }
   
     }
 }

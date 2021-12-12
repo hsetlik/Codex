@@ -14,5 +14,6 @@ namespace Application.DomainDTOs
             public string AudioUrl { get; set; }
             public string ContentUrl { get; set; }
             public Guid ContentId { get; set; }
+            public int Bookmark { get; set; }
         }
 }
