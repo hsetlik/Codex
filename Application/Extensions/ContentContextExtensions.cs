@@ -116,6 +116,23 @@ namespace Application.Extensions
             return Result<ContentMetadataDto>.Success(metadata);
         }
 
+        public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string username, Guid contentId)
+        {
+            var content = await context.Contents.FindAsync(contentId);
+            if (content == null)
+                return Result<ContentMetadataDto>.Failure($"Could not load content with ID: {contentId}");
+            var url = content.ContentUrl;
+            var metadataResult = await context.GetMetadataFor(url);
+            if (!metadataResult.IsSuccess)
+                return Result<ContentMetadataDto>.Failure($"Failed to get content metadata. Error Message: {metadataResult.Error}");
+            var metadata = metadataResult.Value;
+            var record = await context.LatestRecordFor(username, url);
+            // if we have a record, update the bookmark
+            if(record.IsSuccess)
+                metadata.Bookmark = record.Value.LastSectionViewed;
+            return Result<ContentMetadataDto>.Success(metadata);
+        }
+
         // functionality for GetLanguageContents.cs
 
         public static async Task<Result<List<ContentMetadataDto>>> GetContentsForLanguage(this DataContext context, string username, string lang)

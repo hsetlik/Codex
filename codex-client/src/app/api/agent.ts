@@ -144,7 +144,8 @@ export interface ContentMetadataDto {
     language: string,
     dateAdded: string,
     contentUrl: string,
-    contentId: string
+    contentId: string,
+    bookmark: number
 }
 
 export interface IContentUrl {

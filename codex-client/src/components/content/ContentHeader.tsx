@@ -13,19 +13,15 @@ interface Props{
 export default observer(function ContentHeader({dto}: Props)
 {
     const {contentStore} = useStore();
-    const [bookmarkValue, setBookmarkValue] = useState(0);
-    useEffect(() => {
-        
-    }, [])
     console.log("Content ID is: " + dto.contentUrl);
     return (
             <Segment>
                 <Header >{dto.contentName}</Header>
-                <KnownWordsHeader contentId={dto.contentUrl} />
                 <Label as="h2">{dto.contentType}</Label>
+                <Label as="h3">Section {dto.bookmark}</Label>
                 <Button as={Link} className='label'
                 color='twitter' 
-                to={`../content/${dto.contentId}/0`} 
+                to={`../content/${dto.contentId}/${dto.bookmark}`} 
                 onClick={() => contentStore.setSelectedContent(dto.contentUrl)}>
                     View
                 </Button>

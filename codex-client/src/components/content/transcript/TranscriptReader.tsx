@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { Container, Grid, Ref, Sticky } from "semantic-ui-react";
+import { Container, Grid, Sticky } from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
 import TermDetails from "../termDetails/AbstractTermDetails";
 import TranscriptPage from "./TranscriptPage";
 import TranscriptPageHeader from "./TranscriptPageHeader";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default observer(function TranscriptReader({index, contentId}: Props){
+    const {contentStore} = useStore();
    
 return(        
         <Container >

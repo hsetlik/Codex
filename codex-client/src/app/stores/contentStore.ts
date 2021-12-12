@@ -16,7 +16,6 @@ export default class ContentStore
 
     selectedContentMetadata: ContentMetadataDto | null = null;
     selectedContentUrl: string = "none";
-    selectedContentBookmark = 0;
     selectedSectionIndex = 0;
     selectedContentSectionCount = 0;
     sectionLoaded = false;
@@ -31,18 +30,21 @@ export default class ContentStore
         makeAutoObservable(this);
     }
 
+    //NOTE: this is only for updating metadata. Actual sections will not be loaded until loadSection runs
     setSelectedContent = async (url: string) => {
         console.log(`Selecting Content: ${url}`);
         try {
            let newSectionCount = await agent.Content.getSectionCount({contentUrl: url});
-           let newBookmark = await agent.Content.getBookmark({contentUrl: url});
            runInAction(() => {
                this.selectedContentUrl = url;
-               this.selectedSectionIndex = newBookmark;
+               this.selectedSectionIndex = 0;
                this.selectedContentSectionCount = newSectionCount;
                let newMetadata = this.loadedContents.find(v => v.contentUrl === url);
                if (newMetadata !== undefined)
+               {
                 this.selectedContentMetadata = newMetadata;
+                this.selectedSectionIndex = this.selectedContentMetadata.bookmark;
+               }
                console.log("First section loaded");
            }) 
         } catch (error) {

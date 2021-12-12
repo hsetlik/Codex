@@ -369,11 +369,13 @@ next content types to support:
 FROM YESTERDAY:
 
 7. Make stuff to automatically tag contents on import
-8. Add bookmark to ContentMetadata and display it on headers in list
+8. ~~Add bookmark to ContentMetadata and display it on headers in list~~
 9. Dictionary API (4 real)
 
 TODO:
 
-1. Add bookmark to contentMetadata
-2. abstract retreiving content metadata in  a context extention
+1. ~~Add bookmark to contentMetadata~~
+2. ~~abstract retreiving content metadata in  a context extention~~
+3. Add number of sections to ContentMetadataDto (to match/display the bookmark)
+4. Refactor all the known words stuff
 =================================================================================================

@@ -8,9 +8,8 @@ import TranscriptReader from "../transcript/TranscriptReader";
 
 
 export default observer(function ContentRoute(){
-    const navigate = useNavigate();
     const {contentId, index} = useParams();
-    const {contentStore: {selectedContentMetadata, loadSectionById, selectedSectionIndex}} = useStore();
+    const {contentStore: {loadSectionById}} = useStore();
     useEffect(() => {
         loadSectionById(contentId!, parseInt(index!))
     }, [contentId, index, loadSectionById])
