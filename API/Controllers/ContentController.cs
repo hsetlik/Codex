@@ -95,7 +95,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new DeleteContent.Command{Dto = dto}));
         }
-
+        [Authorize]
+        [HttpPost("getBookmark")]
+        public async Task<IActionResult> GetBookmark(ContentUrlDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetBookmark.Query{Dto = dto}));
+        }
         [Authorize]
         [HttpPost("viewContent")]
         public async Task<IActionResult> ViewContent(SectionQueryDto dto)
