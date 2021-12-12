@@ -59,6 +59,7 @@ namespace Application.DataObjectHandling.UserTerms
                 {
                     UserLanguageProfile = profile,
                     Term = term,
+                    NormalizedTermValue = term.NormalizedValue,
                     Translations = 
                     { new Translation
                         {

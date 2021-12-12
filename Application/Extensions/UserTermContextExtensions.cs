@@ -47,7 +47,8 @@ namespace Application.Extensions
                 SrsIntervalDays = dto.SrsIntervalDays,
                 EaseFactor = dto.EaseFactor,
                 DateTimeDue = DateTime.Today.ToString(),
-                TimesSeen = dto.TimesSeen
+                TimesSeen = dto.TimesSeen,
+                NormalizedTermValue = term.NormalizedValue
             };
 
             uTerm.Translations = uTerm.GetAsTranslations(dto.Translations);

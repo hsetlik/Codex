@@ -379,5 +379,6 @@ TODO:
 3. ~~Add number of sections to ContentMetadataDto (to match/display the bookmark)~~
 4. ~~Refactor all the known words stuff~~
 5. Optimize the getting of known words (read up on async stuff)
+6. Write a method to just return a 'known' bool based on termValue & profileId
 6. Client-side display for KnownWords on content header
 =================================================================================================

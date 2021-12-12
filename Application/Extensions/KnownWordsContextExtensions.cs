@@ -67,5 +67,7 @@ namespace Application.Extensions
            });
         }
 
+        //public static async Task<bool> TermKnown(this DataContext context, Guid lanuageProfileId, )
+
     }
 }
