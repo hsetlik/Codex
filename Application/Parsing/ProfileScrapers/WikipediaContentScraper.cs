@@ -146,6 +146,7 @@ namespace Application.Parsing.ProfileScrapers
                     SectionHeader = sectionHeaders[i].Name
                 });
             }
+            storage.Metadata.NumSections = storage.Sections.Count;
             contentsLoaded = true;
         }
     }

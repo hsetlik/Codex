@@ -145,7 +145,8 @@ export interface ContentMetadataDto {
     dateAdded: string,
     contentUrl: string,
     contentId: string,
-    bookmark: number
+    bookmark: number,
+    numSections: number
 }
 
 export interface IContentUrl {
@@ -177,7 +178,6 @@ const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadataDto[]>('/content/getLanguageContents', language),
     getKnownWordsForContent: (contentUrl: IContentUrl) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentUrl),
     abstractTermsForSection: (dto: SectionQueryDto) => requests.post<TermsFromSection>('/content/abstractTermsForSection', dto),
-    getSectionCount: (contentUrl: IContentUrl) => requests.post<number>('/parse/getSectionCount', contentUrl),
     getContentWithName: (contentName: IContentName) => requests.post<ContentMetadataDto>('/content/getContentWithName', contentName),
     getContentWithId: (contentId: IContentId) => requests.post<ContentMetadataDto>('/content/getContentWithId', contentId),
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),

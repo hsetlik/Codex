@@ -17,7 +17,6 @@ export default class ContentStore
     selectedContentMetadata: ContentMetadataDto | null = null;
     selectedContentUrl: string = "none";
     selectedSectionIndex = 0;
-    selectedContentSectionCount = 0;
     sectionLoaded = false;
     currentSectionTerms: TermsFromSection = {
         contentUrl: this.selectedContentUrl,
@@ -34,11 +33,9 @@ export default class ContentStore
     setSelectedContent = async (url: string) => {
         console.log(`Selecting Content: ${url}`);
         try {
-           let newSectionCount = await agent.Content.getSectionCount({contentUrl: url});
            runInAction(() => {
                this.selectedContentUrl = url;
                this.selectedSectionIndex = 0;
-               this.selectedContentSectionCount = newSectionCount;
                let newMetadata = this.loadedContents.find(v => v.contentUrl === url);
                if (newMetadata !== undefined)
                {
@@ -53,7 +50,6 @@ export default class ContentStore
            runInAction(() => {
                this.selectedContentUrl = url;
                this.selectedSectionIndex = 0;
-               this.selectedContentSectionCount = 0;
            }) 
         }
     }
@@ -72,7 +68,7 @@ export default class ContentStore
     
     nextSection = async () => {
         try {
-           if (this.selectedSectionIndex + 1 < this.selectedContentSectionCount) {
+           if (this.selectedSectionIndex + 1 < this.selectedContentMetadata?.numSections!) {
                 console.log(`Loading section number ${this.selectedSectionIndex + 1} from URL ${this.selectedContentUrl}`);
                 let newIndex = this.selectedSectionIndex + 1;
                 await this.loadSectionById(this.selectedContentMetadata?.contentId!, newIndex);
@@ -143,14 +139,12 @@ export default class ContentStore
         try {
            let content = await agent.Content.getContentWithId({contentId: id}); 
            let newSection = await agent.Content.abstractTermsForSection({contentUrl: content.contentUrl, index: pIndex});
-           let numSections = await agent.Content.getSectionCount({contentUrl: content.contentUrl});
            if (pIndex > 0) {
              await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});
            }
            runInAction(() => {
                this.sectionLoaded = true;
                this.currentSectionTerms = newSection;
-               this.selectedContentSectionCount = numSections;
            })
         } catch (error) {
            console.log(error); 

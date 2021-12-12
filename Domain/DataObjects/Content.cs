@@ -18,5 +18,6 @@ namespace Domain.DataObjects
         public string Language { get; set; }
         public string DateAdded { get; set; }
         public List<ContentTag> ContentTags { get; set; }
+        public int NumSections { get; set; }
     }
 }

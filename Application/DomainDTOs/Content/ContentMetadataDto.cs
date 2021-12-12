@@ -15,5 +15,6 @@ namespace Application.DomainDTOs
             public string ContentUrl { get; set; }
             public Guid ContentId { get; set; }
             public int Bookmark { get; set; }
+            public int NumSections { get; set; }
         }
 }

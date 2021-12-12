@@ -20,93 +20,52 @@ namespace Application.Extensions
         {
             var content = await context.Contents.FindAsync(contentId);
             if (content == null)
-                return Result<KnownWordsDto>.Failure("Could not find content");
+                return Result<KnownWordsDto>.Failure($"Could not load content with id: {contentId}");
             int total = 0;
             int known = 0;
-            var numSections = await parser.GetNumSections(content.ContentUrl);
-            var sections = new List<ContentSection>();
-            for(int i = 0; i < numSections; ++i)
+            for(int i = 0; i < content.NumSections; ++i)
             {
-                sections.Add(await parser.GetSection(content.ContentUrl, i));
+                var section =  await parser.GetSection(content.ContentUrl, i);
+                if (section == null)
+                    return Result<KnownWordsDto>.Failure($"Could not load section {i} from URL {content.ContentUrl}");
+                var knownResult = await context.KnownWordsForSection(section, parser, username);
+                if (!knownResult.IsSuccess)
+                    return Result<KnownWordsDto>.Failure($"Failed to get known words! Error message: {knownResult.Error}");
+                total += knownResult.Value.TotalWords;
+                known += knownResult.Value.KnownWords;
             }
-            foreach(var section in sections)
-            {
-                var knownWords = await context.KnownWordsForSection(section, parser, username, content.Language);
-                Console.WriteLine($"Section #{section.Index} of {section.ContentUrl} in language {content.Language} for user {username}");
-                if (!knownWords.IsSuccess)
-                    return Result<KnownWordsDto>.Failure($"Known words not loaded for content: {section.ContentUrl} section #{section.Index}");
-                total += knownWords.Value.TotalWords;
-                known += knownWords.Value.KnownWords;
-            }
-            var output = new KnownWordsDto
+            return Result<KnownWordsDto>.Success(new KnownWordsDto
             {
                 TotalWords = total,
                 KnownWords = known
-            };
-            return Result<KnownWordsDto>.Success(output);
+            });
         }        
         
         public static async Task<Result<KnownWordsDto>> KnownWordsForSection(
             this DataContext context,
             ContentSection section, 
             IParserService parser, 
-            string username, 
-            string language)
+            string username)
         {
-            var allTerms = section.Value.Split(' ');
-            var tasks = new List<Task<Result<AbstractTermDto>>>();
-            foreach(var term in allTerms)
-            {
-                var dto = new TermDto
-                {
-                    Value = term,
-                    Language = language
-                };
-                tasks.Add(context.AbstractTermFor(dto, username));
-            }
-            var termResults = await Task.WhenAll<Result<AbstractTermDto>>(tasks);
-            int known = 0;
-            int total = 0;
-            foreach(var res in termResults)
-            {
-                if (!res.IsSuccess)
-                    return Result<KnownWordsDto>.Failure("Failed to load term");
-                total += 1;
-                if (res.Value.Rating >= 3)
-                    known += 1;
-            }
-            var output = new KnownWordsDto
-            {
-                TotalWords = total,
-                KnownWords = known
-            };
-            return Result<KnownWordsDto>.Success(output);
+           var chunk = await context.AbstractTermsForSection(section.ContentUrl, section.Index, parser, username);
+           if (!chunk.IsSuccess)
+           {
+               return Result<KnownWordsDto>.Failure($"Could not get abstract terms! Error message: {chunk.Error}");
+           }
+           var terms = chunk.Value.AbstractTerms;
+           int known = 0;
+           int total = terms.Count;
+           foreach(var term in terms)
+           {
+               if(term.Rating >= 3)
+                ++known;
+           }
+           return Result<KnownWordsDto>.Success(new KnownWordsDto
+           {
+               TotalWords = total,
+               KnownWords = known
+           });
         }
 
-
-        public static async Task<Result<Unit>> UpdateKnownWords(this DataContext context, UserTerm term, UserTermDetailsDto details)
-        {
-            var originalRating = term.Rating;
-            var profile = await context.UserLanguageProfiles.FindAsync(term.LanguageProfileId);
-            if (profile == null)
-                return Result<Unit>.Failure("Could not load profile");
-            var newTerm = term.UpdatedWith(details);
-            if (originalRating < 3 && newTerm.Rating >= 3)
-            {
-                profile.KnownWords = profile.KnownWords + 1;
-
-            }
-            if (originalRating >= 3 && newTerm.Rating < 3)
-            {
-                profile.KnownWords = profile.KnownWords - 1;
-            }
-            var success = await context.SaveChangesAsync() > 0;
-            if (!success)
-                return Result<Unit>.Failure("Could not save changes");
-            return Result<Unit>.Success(Unit.Value);
-        }
-
-
-        
     }
 }

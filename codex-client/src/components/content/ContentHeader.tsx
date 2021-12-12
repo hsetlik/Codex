@@ -18,7 +18,7 @@ export default observer(function ContentHeader({dto}: Props)
             <Segment>
                 <Header >{dto.contentName}</Header>
                 <Label as="h2">{dto.contentType}</Label>
-                <Label as="h3">Section {dto.bookmark}</Label>
+                <Label as="h3">Section {dto.bookmark} of {dto.numSections}</Label>
                 <Button as={Link} className='label'
                 color='twitter' 
                 to={`../content/${dto.contentId}/${dto.bookmark}`} 

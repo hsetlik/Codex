@@ -48,11 +48,10 @@ namespace Application.DataObjectHandling.Contents
                     VideoUrl = metadata.VideoUrl,
                     Language = metadata.Language,
                     DateAdded = date,
-                    ContentTags = new List<ContentTag>()
+                    ContentTags = new List<ContentTag>(),
+                    NumSections = metadata.NumSections
                 };
-
                 _context.Contents.Add(content);
-
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)
                     return Result<Unit>.Failure("Could not save changes");

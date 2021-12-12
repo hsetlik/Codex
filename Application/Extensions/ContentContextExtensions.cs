@@ -98,7 +98,9 @@ namespace Application.Extensions
                 VideoUrl = content.VideoUrl,
                 AudioUrl = content.AudioUrl,
                 ContentId = content.ContentId,
-                Bookmark = 0
+                Bookmark = 0,
+                NumSections = content.NumSections
+                
             });
         }
         // get the metadata WITH the bookmark

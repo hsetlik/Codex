@@ -16,9 +16,22 @@ namespace Domain
     {
        public static readonly List<string> Urls = new List<string>()
        {
+
+            //Spanish
+            "https://es.wikipedia.org/wiki/Fotograf%C3%ADa",
             "https://es.wikipedia.org/wiki/Sudeste_Asi%C3%A1tico",
+            "https://es.wikipedia.org/wiki/Ruta_del_Cares",
+            //English
             "https://en.wikipedia.org/wiki/Huffman_coding",
+            "https://en.wikipedia.org/wiki/Harry_E._Claiborne",
+            "https://en.wikipedia.org/wiki/Indian_Air_Force",
+            //German 
             "https://de.wikipedia.org/wiki/Ravensbr%C3%BCck-Prozesse",
+            "https://de.wikipedia.org/wiki/Heilige_Familie_(Weiler)",
+            "https://de.wikipedia.org/wiki/Dieselmotor",
+            //Russian
+            "https://ru.wikipedia.org/wiki/%D0%90%D0%BB%D1%82%D0%B0%D0%B9%D1%81%D0%BA%D0%B8%D0%B9_%D0%BA%D1%80%D0%B0%D0%B9",
+            "https://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B0%D0%BB%D0%B8%D1%88%D0%B2%D0%B8%D0%BB%D0%B8,_%D0%9C%D0%B0%D0%BB%D1%85%D0%B0%D0%B7_%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%D0%B8%D1%87",
             "https://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D0%BE%D0%B2%D0%BE_%D0%BE_%D0%BF%D0%BE%D0%BB%D0%BA%D1%83_%D0%98%D0%B3%D0%BE%D1%80%D0%B5%D0%B2%D0%B5"
        };
     }
@@ -94,7 +107,8 @@ namespace Domain
                     ContentName = metadata.ContentName,
                     Language = metadata.Language,
                     DateAdded = DateTime.Now.ToString(),
-                    ContentTags = new List<ContentTag>()
+                    ContentTags = new List<ContentTag>(),
+                    NumSections = metadata.NumSections
                 });
             }
             await context.SaveChangesAsync();
