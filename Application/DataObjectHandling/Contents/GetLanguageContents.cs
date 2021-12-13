@@ -24,15 +24,17 @@ namespace Application.DataObjectHandling.Contents
         {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-            public Handler(DataContext context, IUserAccessor userAccessor)
+        private readonly IDataRepository _factory;
+            public Handler(DataContext context, IUserAccessor userAccessor, IDataRepository factory)
             {
+            this._factory = factory;
             this._userAccessor = userAccessor;
             this._context = context;
             }
 
             public async Task<Result<List<ContentMetadataDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var output = await _context.GetContentsForLanguage(_userAccessor.GetUsername(), request.Dto.Language);
+                var output = await _factory.GetContentsForLanguage(_userAccessor.GetUsername(), request.Dto.Language);
                 if (!output.IsSuccess)
                     return Result<List<ContentMetadataDto>>.Failure($"Failed to get language contents! Error Message: {output.Error}");
                 return Result<List<ContentMetadataDto>>.Success(output.Value);

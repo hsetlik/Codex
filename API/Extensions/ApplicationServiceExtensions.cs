@@ -52,6 +52,7 @@ namespace API.Extensions
             });
             // add the repository to access the factory
             services.AddScoped<IDataRepository, DataRepository>();
+            
             services.AddCors(opt => 
             {
                 opt.AddPolicy("CorsPolicy", policy => {

@@ -378,9 +378,21 @@ TODO:
 2. ~~abstract retreiving content metadata in  a context extention~~
 3. ~~Add number of sections to ContentMetadataDto (to match/display the bookmark)~~
 4. ~~Refactor all the known words stuff~~
-5. Optimize the getting of known words (read up on async stuff)
+5. ~~Optimize the getting of known words (read up on async stuff)~~
 6. ~~Write a method to just return a 'known' bool based on termValue & profileId~~
 7. ~~Client-side display for KnownWords on content header~~
-8. Look into setting up multiple DbContexts to multi-thread
+8. ~~Look into setting up multiple DbContexts to multi-thread~~
 9. Set up IDataRepository and DataRepository classes to move context extension functionality to a repository class
+=================================================================================================
+============================================== 12/13/21 =========================================
+
+FROM YESTERDAY:
+
+7. Make stuff to automatically tag contents on import
+9. Dictionary API (4 real)
+9. ~~Set up IDataRepository and DataRepository classes to move context extension functionality to a repository class~~
+
+TODO:
+
+1. write multi-thread implementation of GetKnownWords
 =================================================================================================

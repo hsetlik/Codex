@@ -21,6 +21,8 @@ namespace Application
     public class DataRepository : IDataRepository
     {
         private readonly Func<DataContext> _factory;
+
+        public DataContext context {get {return _factory.Invoke();} }
         public DataRepository(Func<DataContext> factory) 
         {
             this._factory = factory;
