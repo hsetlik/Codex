@@ -36,9 +36,40 @@ namespace Application.Parsing
         public abstract ContentMetadataDto GetMetadata();
         public abstract int GetNumSections();
         public abstract ContentSection GetSection(int index);
-
         public abstract List<ContentSection> GetAllSections();
 
+        public List<List<string>> GetWordLists(int size = 50)
+        {
+            var output = new List<List<string>>();
+            var allTerms = new List<string>();
+            var sections = GetAllSections();
+            // get all the words into one list
+            foreach(var section in sections)
+            {
+                var sectionTerms = section.Value.Split(' ');
+                allTerms.AddRange(sectionTerms);
+            }
+            while (allTerms.Count > 0)
+            {
+                List<string> newTerms = null;
+                if (allTerms.Count >= size)
+                {
+                   newTerms = allTerms.Take(size).ToList();
+                   output.Add(newTerms);
+                   allTerms.RemoveRange(0, size); 
+                }
+                else
+                {
+                    var cpy = new List<string>(allTerms);
+                    Console.WriteLine($"{cpy.Count} terms in final list");
+                    output.Add(cpy);
+                    allTerms.Clear();
+                }
+            }
+            var lastList = output.Last();
+            Console.WriteLine($"Last chunk has size: {lastList.Count}");
+            return output;
+        }
         // do the actual scraping in here: needs to populate the ContentStorage object from the URL
         public abstract Task PrepareAsync();
 

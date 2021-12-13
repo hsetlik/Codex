@@ -58,5 +58,11 @@ namespace Application.Parsing
             await EnsureLoaded(contentUrl);
             return scraper.GetAllSections();
         }
+
+        public async Task<AbstractScraper> GetScraper(string url)
+        {
+            await EnsureLoaded(url);
+            return scraper;
+        }
     }
 }

@@ -7,6 +7,5 @@ namespace Application.Parsing.ContentStorage
 {
     public class WikiContentStorage : BaseContentStorage
     {
-        public List<ContentSection> Sections { get; set; }
     }
 }

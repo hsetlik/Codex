@@ -394,5 +394,5 @@ FROM YESTERDAY:
 
 TODO:
 
-1. write multi-thread implementation of GetKnownWords
+1. write multi-thread implementation of GetKnownWords- split content into specific-sized chunks and run them in parallel
 =================================================================================================

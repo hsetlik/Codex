@@ -183,5 +183,24 @@ namespace Application
                 return await context.UserTermsDueNow(dto, username);
             }
         }
+
+        public async Task<Result<KnownWordsDto>> KnownWordsForList(List<string> words, Guid languageProfileId)
+        {
+            using (var context = _factory.Invoke())
+            {
+                var list = await context.KnownWordsForList(words, languageProfileId);
+                if (list == null)
+                    return Result<KnownWordsDto>.Failure("Could not retreive list");
+                return Result<KnownWordsDto>.Success(list);
+            }
+        }
+
+        public async Task<Result<UserLanguageProfile>> ProfileFor(string username, string language)
+        {
+            using (var context = _factory.Invoke())
+            {
+                return await context.GetProfileAsync(username, language);
+            }
+        }
     }
 }

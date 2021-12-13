@@ -78,6 +78,24 @@ namespace Application.Extensions
             });
         }
 
+
+        public static async Task<KnownWordsDto> KnownWordsForList(this DataContext context, List<string> words, Guid languageProfileId)
+        {
+            int known = 0;
+            foreach(var word in words)
+            {
+                if (await context.TermKnown(languageProfileId, word))
+                {
+                     ++known;
+                } 
+            }
+            return new KnownWordsDto
+            {
+                KnownWords = known,
+                TotalWords = words.Count
+            };
+        }
+
         public static async Task<bool> TermKnown(this DataContext context, Guid languageProfileId, string term, int threshold=3)
         {
             var userTerm = await context.UserTerms.FirstOrDefaultAsync(u => u.LanguageProfileId == languageProfileId && u.NormalizedTermValue == term.ToUpper());

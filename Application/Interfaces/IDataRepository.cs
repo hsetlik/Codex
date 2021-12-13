@@ -34,6 +34,7 @@ namespace Application.Interfaces
         //from KnownWordsContextExtensions.cs
         public Task<Result<KnownWordsDto>> GetKnownWords(Guid contentId, string username, IParserService parser);
         public Task<Result<KnownWordsDto>> KnownWordsForSection(ContentSection section, Guid languageProfileId);
+        public Task<Result<KnownWordsDto>> KnownWordsForList(List<string> words, Guid languageProfileId);
         public Task<bool> TermKnown(Guid langProfileId, string term, int threshold);
         //from TermContextExtensions.cs
         public Task<Result<Unit>> CreateTerm(string language, string termValue);
@@ -43,5 +44,8 @@ namespace Application.Interfaces
         public Task<Result<Unit>> UpdateUserTerm(UserTermDto dto);
         public Task<Result<Unit>> CreateUserTerm(UserTermDto dto, string username);
         public Task<Result<List<UserTermDetailsDto>>> UserTermsDueNow(LanguageNameDto dto, string username);
+
+        //other getters
+        public Task<Result<UserLanguageProfile>> ProfileFor(string username, string language);
     }
 }

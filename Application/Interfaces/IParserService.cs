@@ -14,5 +14,6 @@ namespace Application.Interfaces
         public Task<ContentSection> GetSection(string contentUrl, int index);
         public Task<ContentMetadataDto> GetContentMetadata(string url);
         public Task<List<ContentSection>> GetAllSections(string contentUrl);
+        public Task<AbstractScraper> GetScraper(string url);
     }
 }

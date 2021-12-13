@@ -9,5 +9,6 @@ namespace Application.Parsing.ContentStorage
     public class BaseContentStorage
     {
         public ContentMetadataDto Metadata { get; set; }
+        public List<ContentSection> Sections { get; set; }
     }
 }
