@@ -21,12 +21,12 @@ namespace Application
     public class DataRepository : IDataRepository
     {
         private readonly Func<DataContext> _factory;
-        public DataRepository(Func<DataContext> factory) //TODO
+        public DataRepository(Func<DataContext> factory) 
         {
             this._factory = factory;
         }
 
-        public async Task<Result<Unit>> AddContentTag(ContentTagDto dto)//TODO
+        public async Task<Result<Unit>> AddContentTag(ContentTagDto dto)
         {
             // Create a scoped context instance like so
             using (var context = _factory.Invoke())
@@ -35,8 +35,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<ContentHistory>> ContentHistoryFor(string username, string contentUrl)//TODO
-
+        public async Task<Result<ContentHistory>> ContentHistoryFor(string username, string contentUrl)
         {
             using (var context = _factory.Invoke())
             {
@@ -44,7 +43,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<Unit>> CreateTerm(string language, string termValue)//TODO
+        public async Task<Result<Unit>> CreateTerm(string language, string termValue)
         {
             using (var context = _factory.Invoke())
             {
@@ -53,7 +52,7 @@ namespace Application
 
         }
 
-        public async Task<Result<Unit>> CreateUserTerm(UserTermDto dto, string username)//TODO
+        public async Task<Result<Unit>> CreateUserTerm(UserTermDto dto, string username)
         {
             using (var context = _factory.Invoke())
             {
@@ -61,7 +60,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<List<ContentMetadataDto>>> GetContentsForLanguage(string username, string lang)//TODO
+        public async Task<Result<List<ContentMetadataDto>>> GetContentsForLanguage(string username, string lang)
         {
             using (var context = _factory.Invoke())
             {
@@ -69,7 +68,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<List<ContentMetadataDto>>> GetContentsWithTag(string tagValue)//TODO
+        public async Task<Result<List<ContentMetadataDto>>> GetContentsWithTag(string tagValue)
         {
             using (var context = _factory.Invoke())
             {
@@ -77,7 +76,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<List<ContentTagDto>>> GetContentTags(Guid contentId)//TODO
+        public async Task<Result<List<ContentTagDto>>> GetContentTags(Guid contentId)
         {
             using (var context = _factory.Invoke())
             {
@@ -85,7 +84,7 @@ namespace Application
             }
          }
 
-        public async Task<Result<KnownWordsDto>> GetKnownWords(Guid contentId, string username, IParserService parser)//TODO
+        public async Task<Result<KnownWordsDto>> GetKnownWords(Guid contentId, string username, IParserService parser)
         {
             using (var context = _factory.Invoke())
             {
@@ -94,7 +93,7 @@ namespace Application
  
         }
 
-        public async Task<Result<DailyKnownWordsDto>> GetKnownWordsForDay(DateTime dateTime, string lang, string username)//TODO
+        public async Task<Result<DailyKnownWordsDto>> GetKnownWordsForDay(DateTime dateTime, string lang, string username)
         {
             using (var context = _factory.Invoke())
             {
@@ -103,7 +102,7 @@ namespace Application
  
         }
 
-        public async Task<Result<DailyKnownWordsDto>> GetKnownWordsForDay(DateTime date, Guid langProfileId)//TODO
+        public async Task<Result<DailyKnownWordsDto>> GetKnownWordsForDay(DateTime date, Guid langProfileId)
         {
             using (var context = _factory.Invoke())
             {
@@ -111,7 +110,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<ContentMetadataDto>> GetMetadataFor(string url)//TODO
+        public async Task<Result<ContentMetadataDto>> GetMetadataFor(string url)
         {
             using (var context = _factory.Invoke())
             {
@@ -119,7 +118,7 @@ namespace Application
             }    
         }
 
-        public async Task<Result<ContentMetadataDto>> GetMetadataFor(string username, string url)//TODO
+        public async Task<Result<ContentMetadataDto>> GetMetadataFor(string username, string url)
         {
            using (var context = _factory.Invoke())
             {
@@ -127,7 +126,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<ContentMetadataDto>> GetMetadataFor(string username, Guid contentId)//TODO
+        public async Task<Result<ContentMetadataDto>> GetMetadataFor(string username, Guid contentId)
         {
            using (var context = _factory.Invoke())
             {
@@ -135,7 +134,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<KnownWordsDto>> KnownWordsForSection(ContentSection section, Guid languageProfileId)//TODO
+        public async Task<Result<KnownWordsDto>> KnownWordsForSection(ContentSection section, Guid languageProfileId)
         {
             using (var context = _factory.Invoke())
             {
@@ -143,7 +142,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<ContentViewRecord>> LatestRecordFor(string username, string contentUrl)//TODO
+        public async Task<Result<ContentViewRecord>> LatestRecordFor(string username, string contentUrl)
         {
             using (var context = _factory.Invoke())
             {
@@ -151,7 +150,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<Unit>> SetLastStudiedLanguage(string iso, string username)//TODO
+        public async Task<Result<Unit>> SetLastStudiedLanguage(string iso, string username)
         {
             using (var context = _factory.Invoke())
             {
@@ -159,7 +158,7 @@ namespace Application
             }
         }
 
-        public async Task<bool> TermKnown(Guid langProfileId, string term, int threshold)//TODO
+        public async Task<bool> TermKnown(Guid langProfileId, string term, int threshold)
         {
             using (var context = _factory.Invoke())
             {
@@ -167,7 +166,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<Unit>> UpdateUserTerm(UserTermDto dto)//TODO
+        public async Task<Result<Unit>> UpdateUserTerm(UserTermDto dto)
         {
             using (var context = _factory.Invoke())
             {
@@ -175,7 +174,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<List<UserTermDetailsDto>>> UserTermsDueNow(LanguageNameDto dto, string username)//TODO
+        public async Task<Result<List<UserTermDetailsDto>>> UserTermsDueNow(LanguageNameDto dto, string username)
         {
             using (var context = _factory.Invoke())
             {
