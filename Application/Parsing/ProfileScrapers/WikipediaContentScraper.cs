@@ -78,10 +78,6 @@ namespace Application.Parsing.ProfileScrapers
             var mainBody = topNode.Descendants().FirstOrDefault(n => n.HasClass("mw-parser-output"));
             //TODO: this needs to select the first p node at  the app
             var allParagraphs = mainBody.CssSelect("p").ToList();
-            for(int i = 0; i < allParagraphs.Count; ++i)
-            {
-                Console.Write($"PARAGRAPH #{i}: {allParagraphs[i].InnerText}");
-            }
             // grab the TOC node
             string introBody = "";
             var tableOfContents = mainBody.CssSelect("div.toc").FirstOrDefault();
@@ -91,12 +87,10 @@ namespace Application.Parsing.ProfileScrapers
             {
                 if (pNode.Name == "p" && pNode.InnerText.Length > 0)
                 {
-                    Console.WriteLine($"ADDING INTRO PARAGRAPH: {pNode.InnerText}");
                     introBody += pNode.InnerText;
                 }
                 pNode = pNode.NextSibling;
             }
-            Console.WriteLine("INTRO FINISHED");
             if (introBody.Length > 0)
             {
                 storage.Sections.Add(new ContentSection
@@ -113,8 +107,8 @@ namespace Application.Parsing.ProfileScrapers
             foreach(var span in sectionSpans)
             {
                 var potentialHeader = span.ParentNode;
-                Console.WriteLine($"Potential header has name : {potentialHeader.Name}");
-                Console.WriteLine($"Span has text: {span.InnerText}");
+                //Console.WriteLine($"Potential header has name : {potentialHeader.Name}");
+                //Console.WriteLine($"Span has text: {span.InnerText}");
                 if (potentialHeader.Name == "h2" || potentialHeader.Name == "h3")
                 {
                     sectionHeaders.Add(new WikiSectionHeader(potentialHeader, span.InnerText));

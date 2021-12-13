@@ -34,26 +34,30 @@ namespace Application.DataObjectHandling.Contents
             public async Task<Result<KnownWordsDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-
                 var cResult = await _factory.GetMetadataFor(_userAccessor.GetUsername(), request.ContentId);
                 if (!cResult.IsSuccess)
                     return Result<KnownWordsDto>.Failure("Could not load content");
-                
+                watch.Stop();
+                Console.WriteLine($"Loading content metatata took {watch.ElapsedMilliseconds} ms");
+                watch.Restart();
                 var scraper = await _parser.GetScraper(cResult.Value.ContentUrl);
                 if (scraper == null)
                     return Result<KnownWordsDto>.Failure("Could not get scraper!");
-
+                watch.Stop();
+                Console.WriteLine($"Getting scraper took {watch.ElapsedMilliseconds} ms");
+                watch.Restart();
                 var profileResult = await _factory.ProfileFor(_userAccessor.GetUsername(), cResult.Value.Language);
                 if (!profileResult.IsSuccess)
                     return Result<KnownWordsDto>.Failure("could not load profile");
-                
                 var lists = scraper.GetWordLists();
                 watch.Stop();
                 Console.WriteLine($"Getting {lists.Count} lists took {watch.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
                 int known = 0;
                 int total = 0;
+                int idx = 0;
                 Parallel.ForEach(lists, async list => 
                 {
+                    Console.WriteLine($"List {idx} has {list.Count} words");
                     var w = System.Diagnostics.Stopwatch.StartNew();
                     var results =  await _factory.KnownWordsForList(list, profileResult.Value.LanguageProfileId);
                     if (results.IsSuccess)
@@ -64,11 +68,12 @@ namespace Application.DataObjectHandling.Contents
                     else
                         Console.WriteLine($"Failed with error message: {results.Error}");
                     w.Stop();
-                    Console.WriteLine($"Parsing {list.Count} words took {w.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
+                    Console.WriteLine($"Parsing {list.Count} words in list {idx} took {w.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
                     if (list == lists.Last())
                     {
                         Console.WriteLine($"Finished final list with {list.Count} words!"); // IMPORTANT: this line is being hit about halfway through the lists. Why is it running everything twice?
                     }
+                    ++idx;
                 });
                 return Result<KnownWordsDto>.Success(new KnownWordsDto
                 {

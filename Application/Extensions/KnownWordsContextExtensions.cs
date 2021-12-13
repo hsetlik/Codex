@@ -82,12 +82,16 @@ namespace Application.Extensions
         public static async Task<KnownWordsDto> KnownWordsForList(this DataContext context, List<string> words, Guid languageProfileId)
         {
             int known = 0;
+            var tasks = new List<Task<bool>>();
             foreach(var word in words)
             {
-                if (await context.TermKnown(languageProfileId, word))
-                {
-                     ++known;
-                } 
+                tasks.Add(context.TermKnown(languageProfileId, word));
+            }
+            var data = await Task.WhenAll(tasks);
+            foreach(var word in data)
+            {
+                if (word)
+                    ++known;
             }
             return new KnownWordsDto
             {

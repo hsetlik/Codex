@@ -38,7 +38,7 @@ namespace Application.Parsing
         public abstract ContentSection GetSection(int index);
         public abstract List<ContentSection> GetAllSections();
 
-        public List<List<string>> GetWordLists(int size = 50)
+        public List<List<string>> GetWordLists(int size = 100, int maximum = 1000)
         {
             var output = new List<List<string>>();
             var allTerms = new List<string>();
@@ -49,25 +49,25 @@ namespace Application.Parsing
                 var sectionTerms = section.Value.Split(' ');
                 allTerms.AddRange(sectionTerms);
             }
-            while (allTerms.Count > 0)
+            // cut allTerms down to size as needed
+            var surplus = allTerms.Count - maximum;
+            if (surplus > 0)
+                allTerms.RemoveRange(maximum, surplus);
+            // slice up into lists
+            while(allTerms.Count > 0)
             {
-                List<string> newTerms = null;
-                if (allTerms.Count >= size)
+                if (allTerms.Count > size)
                 {
-                   newTerms = allTerms.Take(size).ToList();
-                   output.Add(newTerms);
-                   allTerms.RemoveRange(0, size); 
+                    output.Add(allTerms.Take(size).ToList());
+                    allTerms.RemoveRange(0, size);
                 }
                 else
                 {
                     var cpy = new List<string>(allTerms);
-                    Console.WriteLine($"{cpy.Count} terms in final list");
                     output.Add(cpy);
                     allTerms.Clear();
                 }
             }
-            var lastList = output.Last();
-            Console.WriteLine($"Last chunk has size: {lastList.Count}");
             return output;
         }
         // do the actual scraping in here: needs to populate the ContentStorage object from the URL
