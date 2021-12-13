@@ -1,14 +1,14 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useEffect } from "react";
-import { Header } from "semantic-ui-react";
+import { Header, Label, Loader, Segment } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 
 interface Props {
     contentId: string
 }
 
-export default observer(function KnownWordsHeader({contentId}: Props) {
+export default observer(function KnownWordsLabel({contentId}: Props) {
     const {knownWordsStore: {knownWords, loadKnownWordsFor}} = useStore();
     useEffect(() => {
         if (!knownWords.has(contentId)) {
@@ -16,11 +16,11 @@ export default observer(function KnownWordsHeader({contentId}: Props) {
         }
     }, [knownWords, loadKnownWordsFor, contentId]);
     const knownWordsData = knownWords.get(contentId);
+    const knownPercentage = () => {
+        let ratio = (knownWordsData?.knownWords! / knownWordsData?.totalWords!);
+        return Math.round(ratio * 100);
+    }
     return (
-        <div>
-            <Header as='h3'>
-                {knownWordsData?.knownWords} of {knownWordsData?.totalWords} words known
-            </Header>
-        </div>
+        <Label content={(knownWords.has(contentId)) ? `${knownPercentage()}% of words known` : 'Loading...'} />
     )
 })
