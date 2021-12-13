@@ -382,4 +382,5 @@ TODO:
 6. ~~Write a method to just return a 'known' bool based on termValue & profileId~~
 7. ~~Client-side display for KnownWords on content header~~
 8. Look into setting up multiple DbContexts to multi-thread
+9. Set up IDataRepository and DataRepository classes to move context extension functionality to a repository class
 =================================================================================================

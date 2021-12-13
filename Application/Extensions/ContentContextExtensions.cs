@@ -16,7 +16,8 @@ namespace Application.Extensions
 {
     public static class ContentContextExtensions
     {
-         public static async Task<Result<Unit>> AddContentTag(this DataContext context, ContentTagDto dto)
+        //====
+        public static async Task<Result<Unit>> AddContentTag(this DataContext context, ContentTagDto dto)
          {
             var content = await context.Contents
             .Include(c => c.ContentTags)
@@ -36,6 +37,8 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
          }
 
+
+        //===
         public static async Task<Result<List<ContentTagDto>>> GetContentTags(this DataContext context, Guid contentId)
         {
             var output = new List<ContentTagDto>();
@@ -53,6 +56,7 @@ namespace Application.Extensions
             return Result<List<ContentTagDto>>.Success(output);
         }
 
+        //===
         public static async Task<Result<List<ContentMetadataDto>>> GetContentsWithTag(this DataContext context, string tagValue)
         {
             var contents = await context.ContentTags
@@ -81,6 +85,7 @@ namespace Application.Extensions
         }
 
         // get the metadata without the bookmark (no username passed)
+        //===
         public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string url)
         {
             var content = await context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == url);
@@ -104,6 +109,7 @@ namespace Application.Extensions
             });
         }
         // get the metadata WITH the bookmark
+        //=====
         public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string username, string url)
         {
             var metadataResult = await context.GetMetadataFor(url);
@@ -118,6 +124,7 @@ namespace Application.Extensions
             return Result<ContentMetadataDto>.Success(metadata);
         }
 
+        //===
         public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string username, Guid contentId)
         {
             var content = await context.Contents.FindAsync(contentId);

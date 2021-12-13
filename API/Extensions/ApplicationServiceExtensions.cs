@@ -14,6 +14,8 @@ using Application.Interfaces;
 using Application.Core;
 using Application.DataObjectHandling.UserTerms;
 using Application.Parsing;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 //using Application.Interfaces;
 
 //This is just here to move some ugly service configuration code out of Startup.cs
@@ -24,6 +26,8 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+           
+
            services.AddControllers(opt => 
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -38,7 +42,7 @@ namespace API.Extensions
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
-            services.AddDbContext<DataContext>(opt => 
+            services.AddDbContextFactory<DataContext>(opt => 
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
