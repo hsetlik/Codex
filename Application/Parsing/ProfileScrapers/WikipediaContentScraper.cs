@@ -56,8 +56,18 @@ namespace Application.Parsing.ProfileScrapers
             // load the web page
             var sBrower = new ScrapingBrowser();
             var page = await sBrower.NavigateToPageAsync(new Uri(this.Url));
+            Console.WriteLine($"Encoding is: {page.Html.OwnerDocument.Encoding.EncodingName}");
             //grab the HTML
             var topNode = page.Html;
+            Console.Write(topNode.InnerHtml);
+            Console.WriteLine($"Root node has {topNode.Descendants().Count()} descendants, {topNode.Attributes.Count} attributes, and name {topNode.Name}");
+            var bodyNode1 = topNode.SelectSingleNode("/html/body");
+            if (bodyNode1 != null)
+                Console.WriteLine($"BodyNode1 node has {bodyNode1.Descendants().Count()} descendants, {bodyNode1.Attributes.Count} attributes, and name {bodyNode1.Name}");
+            else
+                Console.WriteLine("BodyNode1 is null");
+           
+
             //sort out the metadata first
             var contentName = topNode.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
             var lang = topNode.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");

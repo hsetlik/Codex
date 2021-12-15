@@ -12,5 +12,12 @@ namespace Application.Parsing
         public int Index { get; set; }
         public string Value { get; set; }
         public string SectionHeader { get; set; } 
+        public ContentSection(string _url="none", int _index=0, string _value="", string _sectionHeader="none")
+        {
+            this.ContentUrl = _url;
+            this.Index = _index;
+            this.Value = _value;
+            this.SectionHeader = _sectionHeader;
+        }
     }
 }

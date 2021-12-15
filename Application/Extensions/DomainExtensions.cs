@@ -160,7 +160,8 @@ namespace Application.Extensions
                 Language = content.Language,
                 AudioUrl = content.AudioUrl,
                 VideoUrl = content.VideoUrl,
-                ContentId = content.ContentId
+                ContentId = content.ContentId,
+                NumSections = content.NumSections
             };
         }
     }

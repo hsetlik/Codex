@@ -7,5 +7,6 @@ namespace Application.Parsing.ContentStorage
 {
     public class WikiContentStorage : BaseContentStorage
     {
+
     }
 }

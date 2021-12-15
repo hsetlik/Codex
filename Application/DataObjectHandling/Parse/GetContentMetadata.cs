@@ -33,10 +33,10 @@ namespace Application.DataObjectHandling.Parse
 
             public async Task<Result<ContentMetadataDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var content = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
-                if (content == null)
+                var contentEntity = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
+                if (contentEntity == null)
                     return Result<ContentMetadataDto>.Failure("Could not find matching content");
-                var output = content.GetMetadata();
+                var output = contentEntity.GetMetadata();
                 return Result<ContentMetadataDto>.Success(output);
             }
         }
