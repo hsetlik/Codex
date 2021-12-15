@@ -397,3 +397,15 @@ TODO:
 1. ~~write multi-thread implementation of GetKnownWords- split content into specific-sized chunks and run them in parallel~~
 2. ~~Return an approximate ratio of known words based on a smaller section for speed~~
 =================================================================================================
+============================================== 12/14/21 =========================================
+
+FROM YESTERDAY:
+
+9. Dictionary API (4 real)
+
+TODO:
+
+1. Test out article parsing on various websites/ in various languages
+2. Refactor to return chunks of text along with HTML tags and adjust components accordingly
+3. Figure out issue with single spaces in some russian text (https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit)
+=================================================================================================
