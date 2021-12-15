@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { Container, Header, List } from "semantic-ui-react";
-import AddTranslationForm from "../transcript/AddTranslationForm";
+import AddTranslationForm from "../reader/AddTranslationForm";
 import RatingButtonGroup from "../termDetails/RatingButtonGroup"
 import { useStore } from "../../../app/stores/store";
 import Translation from "./Translation";
