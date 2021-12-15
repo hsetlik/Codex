@@ -24,7 +24,7 @@ namespace Application.Extensions
     public static class AbstractTermExtensions
     {
         
-        public static async Task<Result<AbstractTermsFromSection>> AbstractTermsForSection(
+        public static async Task<Result<SectionAbstractTerms>> AbstractTermsForSection(
             this DataContext context, 
             string contentUrl,
             int index,
@@ -35,7 +35,7 @@ namespace Application.Extensions
                 //so we can get it from the Content's metadata in the dbContext
                 var metadataResult = await parser.GetContentMetadata(contentUrl);
                 if (metadataResult == null)
-                    return Result<AbstractTermsFromSection>.Failure($"Could not load content metadata for URL: {contentUrl}");
+                    return Result<SectionAbstractTerms>.Failure($"Could not load content metadata for URL: {contentUrl}");
                 var language = metadataResult.Language;
                 Console.WriteLine($"Language for {contentUrl} is {language}");
                 var profile = await context.UserLanguageProfiles
@@ -43,34 +43,46 @@ namespace Application.Extensions
                 .FirstOrDefaultAsync(p => p.User.UserName == username &&
                     p.Language == language);
                 if (profile == null)
-                    return Result<AbstractTermsFromSection>.Failure($"Could not load profile for language: {language}");
+                    return Result<SectionAbstractTerms>.Failure($"Could not load profile for language: {language}");
                 var section = await parser.GetSection(contentUrl, index);
-                var terms = section.Body.Split(' ');
-                var abstractTermTasks = new List<Task<Result<AbstractTermDto>>>();
-                //TODO: try this in parallel w/ the context factory- 
-                for(int i = 0; i < terms.Count(); ++i)
+                foreach(var element in section.TextElements)
                 {
-                    var term = terms[i];
-                    var abstractTerm = context.AbstractTermFor(term, profile);
-                    abstractTermTasks.Add(abstractTerm);
+                    var abstractTermTasks = new List<Task<Result<AbstractTermDto>>>();
+                    //TODO: try this in parallel w/ the context factory- 
+                    var terms = element.Value.Split(' ').ToList();
+                    for(int i = 0; i < terms.Count; ++i)
+                    {
+                        var term = terms[i];
+                        var abstractTerm = context.AbstractTermFor(term, profile);
+                        abstractTermTasks.Add(abstractTerm);
+                    }
+                    var abstractTermResults = await Task.WhenAll<Result<AbstractTermDto>>(abstractTermTasks);
+                    var abstractTerms = abstractTermResults.Where(r => r.IsSuccess).Select(a => a.Value).ToList();
+                    var elementTerms = new ElementAbstractTerms
+                    {
+                        Tag = element.Tag,
+                        AbstractTerms = abstractTerms
+                    };
                 }
-                var abstractTermResults = await Task.WhenAll<Result<AbstractTermDto>>(abstractTermTasks);
+                /*
+                
                 var abstractTerms = new List<AbstractTermDto>();
                 for (int i = 0; i < abstractTermResults.Length; ++i)
                 {
                     if(!abstractTermResults[i].IsSuccess)
-                        return Result<AbstractTermsFromSection>.Failure("Could not load term");
+                        return Result<SectionAbstractTerms>.Failure("Could not load term");
                     abstractTermResults[i].Value.IndexInChunk = i;
                     abstractTerms.Add(abstractTermResults[i].Value);
                 }
-                var output = new AbstractTermsFromSection
+                */
+                var output = new SectionAbstractTerms
                 {
                     ContentUrl = contentUrl,
                     Index = index,
-                    AbstractTerms = abstractTerms,
+                   
                     SectionHeader = section.SectionHeader
                 };
-                return Result<AbstractTermsFromSection>.Success(output);
+                return Result<SectionAbstractTerms>.Success(output);
             }
 
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, string term, UserLanguageProfile userLangProfile)

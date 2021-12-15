@@ -6,19 +6,18 @@ using Application.DataObjectHandling.Terms;
 
 namespace Application.DomainDTOs.Content
 {
-    public class AbstractTermsForElement
+    public class ElementAbstractTerms
     {
         public string Tag { get; set; }
         public List<AbstractTermDto> AbstractTerms { get; set; }
     }
-    public class AbstractTermsFromSection
+    public class SectionAbstractTerms
     {
         public string ContentUrl { get; set; }
         public int Index { get; set; }
-        public List<AbstractTermDto> AbstractTerms { get; set; }
+        public List<AbstractTermDto> AbstractTerms { get; set; } //TODO: move all this functionality into ElementGroups
         public string SectionHeader { get; set; }
-
         // for functionality with HTML tags
-        public List<AbstractTermsForElement> ElementGroups { get; set; }
+        public List<ElementAbstractTerms> ElementGroups { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { AddTranslationDto, ContentMetadataDto, KnownWordsDto, TermsFromSection } from "../api/agent";
+import agent from "../api/agent";
+import { ContentMetadata } from "../models/content";
+import { AddTranslationDto, KnownWordsDto, TermsFromSection } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
 
 
@@ -8,13 +10,13 @@ export default class ContentStore
 {
 
     headersLoaded = false;
-    loadedContents: ContentMetadataDto[] = [];
+    loadedContents: ContentMetadata[] = [];
     knownWordsLoaded = false;
     contentKnownWords: Map<string, KnownWordsDto> = new Map();
     selectedTerm: AbstractTerm | null = null;
     translationsLoaded = false;
 
-    selectedContentMetadata: ContentMetadataDto | null = null;
+    selectedContentMetadata: ContentMetadata | null = null;
     selectedContentUrl: string = "none";
     selectedSectionIndex = 0;
     sectionLoaded = false;
@@ -100,27 +102,6 @@ export default class ContentStore
         }
         console.log(`Headers loaded for: ${lang}`);
     }
-
-    /*
-    loadKnownWords = async () => {
-        this.knownWordsLoaded = false;
-        this.contentKnownWords.clear();
-        try {
-            for (const header of this.loadedContents) {
-                var knownWords = await agent.Content.getKnownWordsForContent({contentUrl: header.contentUrl});
-                runInAction(() => {
-                    this.contentKnownWords.set(header.contentUrl, knownWords);
-                })
-            }
-            runInAction(() => {
-                this.knownWordsLoaded = true;
-            })
-        } catch (error) {
-           console.log(error); 
-           runInAction(() => this.knownWordsLoaded = true);
-        }
-    }
-    */
 
     addTranslation = async (dto: AddTranslationDto) => {
          this.translationsLoaded = false;

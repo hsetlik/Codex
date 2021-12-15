@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { KnownWordsDto } from "../api/agent";
+import agent from "../api/agent";
+import { KnownWordsDto } from "../models/dtos";
 
 
 export default class KnownWordStore {

@@ -2,7 +2,7 @@ import { Formik, Form, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { Header, Button, Label } from "semantic-ui-react";
-import { UserTermCreateDto } from "../../../app/api/agent";
+import { UserTermCreateDto } from "../../../app/models/dtos";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 import MyTextInput from "../../formComponents/MyTextInput";

@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { Button, Header, Label, Segment } from "semantic-ui-react";
-import { ContentMetadataDto } from "../../app/api/agent";
+import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
 import KnownWordsLabel from "./KnownWordsLabel";
 
 interface Props{
-    dto: ContentMetadataDto
+    dto: ContentMetadata
 }
 
 export default observer(function ContentHeader({dto}: Props)

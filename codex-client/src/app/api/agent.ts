@@ -4,7 +4,8 @@ import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
 import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
-import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, PopularTranslationDto, IContentId } from "../models/dtos";
+import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, PopularTranslationDto, IContentId, IContentName, IContentUrl, ILanguageString, KnownWordsDto, LangProfileItem, SectionQueryDto, TermsFromSection } from "../models/dtos";
+import { ContentMetadata } from "../models/content";
 
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
@@ -53,9 +54,7 @@ axios.interceptors.request.use(config => {
   }
 )
 
-export interface ILanguageString {
-    language: string
-}
+
 //
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 //object to hold generic HTTP requests
@@ -66,9 +65,6 @@ const requests = {
     del:<T> (url: string) => axios.delete<T>(url).then(responseBody)
 }
 
-interface LangProfileItem {
-    language: string
-}
 
 //use create one of these for each endpoint group
 const Account = {
@@ -105,50 +101,16 @@ const TermEndpoints = {
 }
 
 //==============================================================================================================
-export interface ContentMetadataDto {
-    videoUrl: string,
-    audioUrl: string,
-    contentName: string,
-    contentType: string,
-    language: string,
-    dateAdded: string,
-    contentUrl: string,
-    contentId: string,
-    bookmark: number,
-    numSections: number
-}
 
-export interface IContentUrl {
-    contentUrl: string
-}
 
-export interface KnownWordsDto {
-    totalWords: number;
-    knownWords: number;
-}
 
-export interface SectionQueryDto {
-    contentUrl: string,
-    index: number
-}
-
-export interface TermsFromSection {
-    contentUrl: string,
-    index: number,
-    abstractTerms: AbstractTerm[],
-    sectionHeader: string
-}
-
-export interface IContentName {
-    contentName: string
-}
 
 const Content = {
-    getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadataDto[]>('/content/getLanguageContents', language),
+    getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadata[]>('/content/getLanguageContents', language),
     getKnownWordsForContent: (contentId: IContentId) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentId),
     abstractTermsForSection: (dto: SectionQueryDto) => requests.post<TermsFromSection>('/content/abstractTermsForSection', dto),
-    getContentWithName: (contentName: IContentName) => requests.post<ContentMetadataDto>('/content/getContentWithName', contentName),
-    getContentWithId: (contentId: IContentId) => requests.post<ContentMetadataDto>('/content/getContentWithId', contentId),
+    getContentWithName: (contentName: IContentName) => requests.post<ContentMetadata>('/content/getContentWithName', contentName),
+    getContentWithId: (contentId: IContentId) => requests.post<ContentMetadata>('/content/getContentWithId', contentId),
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
     getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl)
 }

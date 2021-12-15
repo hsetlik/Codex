@@ -1,3 +1,5 @@
+import { AbstractTerm } from "./userTerm";
+
 export interface TextElement {
     value: string,
     tag: string,
@@ -18,9 +20,19 @@ export interface ContentMetadata {
     audioUrl: string,
     contentType: string,
     contentName: string,
+    dateAdded: string,
     language: string,
     bookmark: number,
     numSections: number
+}
+
+export interface ElementAbstractTerms {
+    tag: string,
+    abstractTerms: AbstractTerm
+}
+
+export interface SectionAbstractTerms {
+    
 }
 
 

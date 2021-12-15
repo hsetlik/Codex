@@ -411,3 +411,17 @@ TODO:
 4. Fix client side to handle new content section scheme
 5. Update AbstractTermsForSection to use multithreading and context factory- do speed tests
 =================================================================================================
+============================================== 12/15/21 =========================================
+
+FROM YESTERDAY:
+
+9. Dictionary API (4 real)
+1. Test out article parsing on various websites/ in various languages
+3. Figure out issue with single spaces in some russian text (https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit)
+4. Fix client side to handle new content section scheme
+5. Update AbstractTermsForSection to use multithreading and context factory- do speed tests
+
+TODO: 
+
+1. fix AbstractTermsForSection
+=================================================================================================

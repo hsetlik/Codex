@@ -18,12 +18,12 @@ namespace Application.DataObjectHandling.Contents
 {
     public class AbstractTermsForSection
     {
-        public class Query : IRequest<Result<AbstractTermsFromSection>>
+        public class Query : IRequest<Result<SectionAbstractTerms>>
         {
             public SectionQueryDto Dto { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<AbstractTermsFromSection>>
+        public class Handler : IRequestHandler<Query, Result<SectionAbstractTerms>>
         {
         private readonly IUserAccessor _userAccessor;
         private readonly IParserService _parser;
@@ -37,7 +37,7 @@ namespace Application.DataObjectHandling.Contents
             this._userAccessor = userAccessor;
             }
 
-            public async Task<Result<AbstractTermsFromSection>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<SectionAbstractTerms>> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.AbstractTermsForSection(request.Dto.ContentUrl, request.Dto.Index, _parser, _userAccessor.GetUsername());
             }

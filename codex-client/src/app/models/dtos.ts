@@ -1,3 +1,5 @@
+import { AbstractTerm } from "./userTerm";
+
 export interface UserTermCreateDto {
     language: string,
     termValue: string,
@@ -30,4 +32,37 @@ export interface TranslationDto {
 export interface IChildTranslation {
     userTermId: string,
     value: string
+}
+
+export interface LangProfileItem {
+    language: string
+}
+
+export interface ILanguageString {
+    language: string
+}
+
+export interface IContentName {
+    contentName: string
+}
+
+export interface IContentUrl {
+    contentUrl: string
+}
+
+export interface KnownWordsDto {
+    totalWords: number;
+    knownWords: number;
+}
+
+export interface SectionQueryDto {
+    contentUrl: string,
+    index: number
+}
+
+export interface TermsFromSection {
+    contentUrl: string,
+    index: number,
+    abstractTerms: AbstractTerm[],
+    sectionHeader: string
 }

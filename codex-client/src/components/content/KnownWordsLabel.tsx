@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { useEffect } from "react";
-import { Header, Label, Loader, Segment } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 
 interface Props {

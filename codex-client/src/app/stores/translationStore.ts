@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent, { PopularTranslationDto} from "../api/agent";
+import agent from "../api/agent";
+import { PopularTranslationDto } from "../models/dtos";
 import { Term } from "../models/userTerm";
 
 

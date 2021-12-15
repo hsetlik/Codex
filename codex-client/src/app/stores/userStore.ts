@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import agent, { IChildTranslation, UserTermCreateDto } from '../api/agent';
+import agent from '../api/agent';
+import { IChildTranslation, UserTermCreateDto } from '../models/dtos';
 import { User, UserFormValues } from '../models/user';
 import { AbstractTerm, UserTermDetails } from '../models/userTerm';
 import { store } from './store';
