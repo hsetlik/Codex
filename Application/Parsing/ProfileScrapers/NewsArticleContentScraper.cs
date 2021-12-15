@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
 using Application.Parsing.ContentStorage;
+using Application.Parsing.ParsingExtensions;
 using HtmlAgilityPack;
 using MediatR;
 using ScrapySharp.Extensions;
@@ -69,45 +70,10 @@ namespace Application.Parsing.ProfileScrapers
             uNodes.AddRange(root.CssSelect("h1").ToList());
             uNodes.AddRange(root.CssSelect("h2").ToList());
             var nodes = uNodes.OrderBy(n => n.Line).ToList();
-            var elements = new List<ArticleElement>();
+            var elements = new List<TextElement>();
             foreach(var node in uNodes)
             {
-                if (node.Name == "p")
-                {
-                    //Console.WriteLine($"Found <p> element with InnerText: {node.InnerText}");
-                    elements.Add(new ArticleElement
-                    {
-                        Value = node.InnerText,
-                        ElementType = ArticleElementType.BodyParagraph
-                    });
-                }
-                else if (node.Name == "span")
-                {
-                    //Console.WriteLine($"Found <span> element with InnerText: {node.InnerText}");
-                    elements.Add(new ArticleElement
-                    {
-                        Value = node.InnerText,
-                        ElementType =  (node.InnerText.Length < 65)? ArticleElementType.Subhead : ArticleElementType.BlockQuote
-                    });
-                }
-                else if (node.Name == "h1")
-                {
-                    //Console.WriteLine($"Found <h1> element with InnerText: {node.InnerText}");
-                    elements.Add(new ArticleElement
-                    {
-                        Value = node.InnerText,
-                        ElementType =  ArticleElementType.Headline
-                    });
-                }
-                else if (node.Name == "h2")
-                {
-                    //Console.WriteLine($"Found <h2> element with InnerText: {node.InnerText}");
-                    elements.Add(new ArticleElement
-                    {
-                        Value = node.InnerText,
-                        ElementType =  ArticleElementType.Subhead
-                    });
-                }
+                elements.Add(node.AsTextElement());
             }
             
             storage.Metadata = new ContentMetadataDto
@@ -121,8 +87,36 @@ namespace Application.Parsing.ProfileScrapers
                 AudioUrl = "none",
                 NumSections = 0
             };
+            var sections = new List<ContentSection>();
+            // now to parse the elements into sections
+            var currentSection = new ContentSection
+            {
+                ContentUrl = Url,
+                Index = sections.Count,
+                SectionHeader = headline,
+                TextElements = new List<TextElement>()
+            };
+            foreach(var element in elements)
+            {
+                if ((element.Tag == "h1" || element.Tag == "h2") && currentSection.TextElements.Count < 1)
+                {
+                    currentSection.SectionHeader = element.Value;
+                }
+                currentSection.TextElements.Add(element);
+                if (currentSection.Body.Split(' ').Count() > 300)
+                {
+                    sections.Add(currentSection);
+                    currentSection = new ContentSection
+                    {
+                        ContentUrl = Url,
+                        Index = sections.Count,
+                        SectionHeader = headline,
+                        TextElements = new List<TextElement>()
+                    };
+                }
+            }
+
             storage.Elements = elements;
-            var sections = storage.GetSections();
             Console.WriteLine($"Article has {sections.Count} sections");
             storage.Sections = sections;
             storage.Metadata.NumSections = sections.Count;

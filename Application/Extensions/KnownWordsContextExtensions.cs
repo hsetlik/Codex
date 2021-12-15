@@ -59,7 +59,7 @@ namespace Application.Extensions
 
         public static async Task<Result<KnownWordsDto>> KnownWordsForSection(this DataContext context, ContentSection section, Guid languageProfileId)
         {
-            var terms = section.Value.Split(' ');
+            var terms = section.Body.Split(' ');
             int known = 0;
             Console.WriteLine($"\nChecking {terms.Length} terms in section {section.SectionHeader} on thread {Thread.CurrentThread.ManagedThreadId} \n");
             var watch = System.Diagnostics.Stopwatch.StartNew();

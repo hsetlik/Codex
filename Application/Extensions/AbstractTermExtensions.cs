@@ -45,8 +45,9 @@ namespace Application.Extensions
                 if (profile == null)
                     return Result<AbstractTermsFromSection>.Failure($"Could not load profile for language: {language}");
                 var section = await parser.GetSection(contentUrl, index);
-                var terms = section.Value.Split(' ');
+                var terms = section.Body.Split(' ');
                 var abstractTermTasks = new List<Task<Result<AbstractTermDto>>>();
+                //TODO: try this in parallel w/ the context factory- 
                 for(int i = 0; i < terms.Count(); ++i)
                 {
                     var term = terms[i];

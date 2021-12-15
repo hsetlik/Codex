@@ -406,6 +406,7 @@ FROM YESTERDAY:
 TODO:
 
 1. Test out article parsing on various websites/ in various languages
-2. Refactor to return chunks of text along with HTML tags and adjust components accordingly
+2. ~~Refactor to return chunks of text along with HTML tags and adjust components accordingly~~ 
 3. Figure out issue with single spaces in some russian text (https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit)
+4. Fix client side to handle new content section scheme
 =================================================================================================

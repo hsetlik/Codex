@@ -5,19 +5,29 @@ using System.Threading.Tasks;
 
 namespace Application.Parsing
 {
+    public class TextElement
+    {
+        public string Tag { get; set; }
+        public string Value { get; set; }
+    }
     //note: this can be subclassed to do more complicated stuff as needed
     public class ContentSection
     {
         public string ContentUrl { get; set; }
         public int Index { get; set; }
-        public string Value { get; set; }
-        public string SectionHeader { get; set; } 
-        public ContentSection(string _url="none", int _index=0, string _value="", string _sectionHeader="none")
+        public string SectionHeader { get; set; }
+        public List<TextElement> TextElements { get; set; } = new List<TextElement>();
+        public string Body {get 
         {
-            this.ContentUrl = _url;
-            this.Index = _index;
-            this.Value = _value;
-            this.SectionHeader = _sectionHeader;
-        }
+            string full = "";
+            foreach(var e in TextElements)
+            {
+                full += e.Value + ' ';
+            }
+            return full;
+        }}
+       
+       
+
     }
 }

@@ -46,7 +46,7 @@ namespace Application.Parsing
             // get all the words into one list
             foreach(var section in sections)
             {
-                var sectionTerms = section.Value.Split(' ');
+                var sectionTerms = section.Body.Split(' ');
                 allTerms.AddRange(sectionTerms);
             }
             // cut allTerms down to size as needed

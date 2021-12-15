@@ -57,20 +57,12 @@ namespace Application.Parsing.ProfileScrapers
             var sBrower = new ScrapingBrowser();
             var page = await sBrower.NavigateToPageAsync(new Uri(this.Url));
             Console.WriteLine($"Encoding is: {page.Html.OwnerDocument.Encoding.EncodingName}");
-            //grab the HTML
-            var topNode = page.Html;
-            Console.Write(topNode.InnerHtml);
-            Console.WriteLine($"Root node has {topNode.Descendants().Count()} descendants, {topNode.Attributes.Count} attributes, and name {topNode.Name}");
-            var bodyNode1 = topNode.SelectSingleNode("/html/body");
-            if (bodyNode1 != null)
-                Console.WriteLine($"BodyNode1 node has {bodyNode1.Descendants().Count()} descendants, {bodyNode1.Attributes.Count} attributes, and name {bodyNode1.Name}");
-            else
-                Console.WriteLine("BodyNode1 is null");
-           
 
-            //sort out the metadata first
-            var contentName = topNode.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
-            var lang = topNode.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
+            //grab the HTML
+            var root = page.Html;
+            // TODO 
+            var contentName = root.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
+            var lang = root.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
 
             // 1. get the metadata
             storage.Metadata = new ContentMetadataDto
@@ -82,74 +74,45 @@ namespace Application.Parsing.ProfileScrapers
                 AudioUrl = "none",
                 VideoUrl = "none"
             };
-            // don't forget that the list needs to exist before we can add to it
+            // 2. grab the main body node
+            var mainBody = root.Descendants().FirstOrDefault(n => n.HasClass("mw-parser-output"));
+            // 3. Collect all the relevant nodes and ensure they're in DOM order
+            var bodyNodes = new List<HtmlNode>();
+            bodyNodes.AddRange(mainBody.CssSelect("p"));
+            bodyNodes.AddRange(mainBody.CssSelect("h2").Where(n => n.CssSelect("span.mw-headline").Any()));
+            bodyNodes.AddRange(mainBody.CssSelect("h3").Where(n => n.CssSelect("span.mw-headline").Any()));
+            var bodyNodesOrdered = bodyNodes.OrderBy(n => n.Line).ToList();
+            
+            //4. create the intro section
             storage.Sections = new List<ContentSection>();
-            // stick all the paragraph nodes into a big list
-            var mainBody = topNode.Descendants().FirstOrDefault(n => n.HasClass("mw-parser-output"));
-            //TODO: this needs to select the first p node at  the app
-            var allParagraphs = mainBody.CssSelect("p").ToList();
-            // grab the TOC node
-            string introBody = "";
-            var tableOfContents = mainBody.CssSelect("div.toc").FirstOrDefault();
-            // make sure we don't start with a nested p element inside something else
-            var pNode = allParagraphs.FirstOrDefault(p => p.ParentNode == mainBody);
-            while (pNode != tableOfContents && pNode != null)
+            var currentSection = new ContentSection
             {
-                if (pNode.Name == "p" && pNode.InnerText.Length > 0)
-                {
-                    introBody += pNode.InnerText;
-                }
-                pNode = pNode.NextSibling;
-            }
-            if (introBody.Length > 0)
+                ContentUrl = Url,
+                Index = storage.Sections.Count,
+                SectionHeader = contentName,
+                TextElements = new List<TextElement>()
+            };
+            foreach (var node in bodyNodesOrdered)
             {
-                storage.Sections.Add(new ContentSection
+                // if we've hit a header, then the last node was the end of the previous section
+                Console.WriteLine($"Node has name {node.Name} and inner text {node.InnerText}");
+                if (node.Name == "h1" || node.Name == "h2") 
                 {
-                    ContentUrl = this.Url,
-                    Index = 0,
-                    Value = StringUtilityMethods.StripWikiAnnotations(introBody),
-                    SectionHeader = "none"
-                });
-            }
-            var sectionHeaders = new List<WikiSectionHeader>();
-            // grab all the span elements w/ class "mw-headline"
-            var sectionSpans = mainBody.CssSelect("span.mw-headline").ToList();
-            foreach(var span in sectionSpans)
-            {
-                var potentialHeader = span.ParentNode;
-                //Console.WriteLine($"Potential header has name : {potentialHeader.Name}");
-                //Console.WriteLine($"Span has text: {span.InnerText}");
-                if (potentialHeader.Name == "h2" || potentialHeader.Name == "h3")
-                {
-                    sectionHeaders.Add(new WikiSectionHeader(potentialHeader, span.InnerText));
-                }
-            }
-            // now loop through all the headers and get their paragraphs
-            HtmlNode refNode = mainBody.CssSelect("div.reflist").FirstOrDefault();
-            for(int i = 0; i < sectionHeaders.Count; ++i)
-            {
-                // determine which node will be our indication to break the loop
-                var endNode = (i == sectionHeaders.Count - 1) ? refNode : sectionHeaders[i + 1].Node;
-                string sectionBody = "";
-                var current = sectionHeaders[i].Node.NextSibling;
-                // iterate and add each paragraph until we hit the end
-                while (current != endNode && current != null)
-                {
-                    if (current.Name == "p")
+                    storage.Sections.Add(currentSection);
+                    currentSection = new ContentSection
                     {
-                        sectionBody += StringUtilityMethods.StripWikiAnnotations(current.InnerText);
-                    }
-                    current = current.NextSibling;
+                        ContentUrl = Url,
+                        Index = storage.Sections.Count,
+                        SectionHeader = node.InnerText,
+                        TextElements = new List<TextElement>()
+                    };
                 }
-                // create the ContentSection object
-                storage.Sections.Add(new ContentSection
+                currentSection.TextElements.Add(new TextElement
                 {
-                    ContentUrl = this.Url,
-                    Index = i + 1, // +1 because the intro paragraph is already at index 0
-                    Value = sectionBody,
-                    SectionHeader = sectionHeaders[i].Name
+                    Value = StringUtilityMethods.StripWikiAnnotations(node.InnerText),
+                    Tag = node.Name
                 });
-            }
+            }          
             storage.Metadata.NumSections = storage.Sections.Count;
             contentsLoaded = true;
         }
