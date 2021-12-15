@@ -15,7 +15,6 @@ namespace Application.DomainDTOs.Content
     {
         public string ContentUrl { get; set; }
         public int Index { get; set; }
-        public List<AbstractTermDto> AbstractTerms { get; set; } //TODO: move all this functionality into ElementGroups
         public string SectionHeader { get; set; }
         // for functionality with HTML tags
         public List<ElementAbstractTerms> ElementGroups { get; set; }

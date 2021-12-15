@@ -95,9 +95,10 @@ namespace Application.Parsing.ProfileScrapers
             foreach (var node in bodyNodesOrdered)
             {
                 // if we've hit a header, then the last node was the end of the previous section
-                Console.WriteLine($"Node has name {node.Name} and inner text {node.InnerText}");
+                string inner = StringUtilityMethods.StripWikiAnnotations(node.InnerText);
                 if (node.Name == "h1" || node.Name == "h2") 
                 {
+                    inner = StringUtilityMethods.WithoutSquareBrackets(inner);
                     storage.Sections.Add(currentSection);
                     currentSection = new ContentSection
                     {
@@ -107,9 +108,10 @@ namespace Application.Parsing.ProfileScrapers
                         TextElements = new List<TextElement>()
                     };
                 }
+                Console.WriteLine($"Node has name {node.Name} and inner text {inner}");
                 currentSection.TextElements.Add(new TextElement
                 {
-                    Value = StringUtilityMethods.StripWikiAnnotations(node.InnerText),
+                    Value = inner,
                     Tag = node.Name
                 });
             }          

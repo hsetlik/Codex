@@ -27,19 +27,17 @@ namespace Application.DataObjectHandling.Contents
         {
         private readonly IUserAccessor _userAccessor;
         private readonly IParserService _parser;
-        private readonly DataContext _context;
-        private readonly IMapper _mapper;
-            public Handler(DataContext context, IParserService parser, IUserAccessor userAccessor, IMapper mapper)
+        private readonly IDataRepository _factory;
+            public Handler(IDataRepository factory, IParserService parser, IUserAccessor userAccessor)
             {
-            this._mapper = mapper;
-            this._context = context;
+            this._factory = factory;
             this._parser = parser;
             this._userAccessor = userAccessor;
             }
 
             public async Task<Result<SectionAbstractTerms>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.AbstractTermsForSection(request.Dto.ContentUrl, request.Dto.Index, _parser, _userAccessor.GetUsername());
+                return await _factory.AbstractTermsForSection(request.Dto.ContentUrl, request.Dto.Index, _userAccessor.GetUsername(), _parser);
             }
         }
 

@@ -12,6 +12,7 @@ using Application.DomainDTOs.UserLanguageProfile;
 using Application.Extensions;
 using Application.Interfaces;
 using Application.Parsing;
+using Application.Utilities;
 using Domain.DataObjects;
 using MediatR;
 using Persistence;
@@ -202,5 +203,47 @@ namespace Application
                 return await context.GetProfileAsync(username, language);
             }
         }
+
+        public async Task<Result<SectionAbstractTerms>> AbstractTermsForSection(string contentUrl, int index, string username, IParserService parser)
+        {
+            using (var context = _factory.Invoke())
+            {
+                var metadata = await parser.GetContentMetadata(contentUrl);
+                var section = await parser.GetSection(contentUrl, index);
+                if (section == null)
+                    return Result<SectionAbstractTerms>.Failure("Could not get section!");
+                var groups = new List<ElementAbstractTerms>();
+                foreach(var element in section.TextElements)
+                {
+                    var words = element.Value.Split(' ').ToList();
+                    var terms = new List<AbstractTermDto>();
+                    for(int i = 0; i < words.Count; ++i)
+                    {
+                        var result = await context.AbstractTermFor(new TermDto{Value = words[i], Language = metadata.Language}, username);
+                        if (!result.IsSuccess)
+                            return Result<SectionAbstractTerms>.Failure($"Failed to get abstract term! Error message: {result.Error}");
+                        result.Value.IndexInChunk = i;
+                        terms.Add(result.Value);    
+                    }
+                    var termGroup = new ElementAbstractTerms
+                    {
+                        Tag = element.Tag,
+                        AbstractTerms = terms
+                    };
+                    groups.Add(termGroup);
+                }
+
+                var output = new SectionAbstractTerms
+                {
+                    ContentUrl = contentUrl,
+                    Index = index,
+                    SectionHeader = section.SectionHeader,
+                    ElementGroups = groups
+                };
+                return Result<SectionAbstractTerms>.Success(output);
+            }
+        }
+
+        
     }
 }

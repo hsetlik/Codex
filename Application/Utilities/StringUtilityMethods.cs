@@ -30,11 +30,14 @@ namespace Application.Utilities
         public static string StripWikiAnnotations(string input)
         {
             const string expression = @"(&#)([\w;]+)";
-            var output = StrippedOfMatches(input, expression);
-            var words = output.Split(' ');
             return StrippedOfMatches(input, expression);
         }
         
+        public static string WithoutSquareBrackets(string input)
+        {
+            const string expression = @"\[([\s\S])+\]";
+            return StrippedOfMatches(input, expression);
+        }
         private static string StrippedOfMatches(string input, string pattern)
         {
             return Regex.Replace(input, pattern, "");

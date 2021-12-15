@@ -25,6 +25,7 @@ namespace Application.Interfaces
         public Task<Result<ContentMetadataDto>> GetMetadataFor(string username, string url);
         public Task<Result<ContentMetadataDto>> GetMetadataFor(string username, Guid contentId);
         public Task<Result<List<ContentMetadataDto>>> GetContentsForLanguage(string username, string lang);
+        public Task<Result<SectionAbstractTerms>> AbstractTermsForSection(string contentUrl, int index, string username, IParserService parser);
         // from ContentHistoryContextEntensions.cs
         public Task<Result<ContentHistory>> ContentHistoryFor(string username, string contentUrl);
         public Task<Result<ContentViewRecord>> LatestRecordFor(string username, string contentUrl);

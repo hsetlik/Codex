@@ -24,108 +24,6 @@ namespace Application.Extensions
     public static class AbstractTermExtensions
     {
         
-        public static async Task<Result<SectionAbstractTerms>> AbstractTermsForSection(
-            this DataContext context, 
-            string contentUrl,
-            int index,
-            IParserService parser,
-            string username)
-            {
-                //we need the appropriate LanguageProfileId so we need to get the associated content language,
-                //so we can get it from the Content's metadata in the dbContext
-                var metadataResult = await parser.GetContentMetadata(contentUrl);
-                if (metadataResult == null)
-                    return Result<SectionAbstractTerms>.Failure($"Could not load content metadata for URL: {contentUrl}");
-                var language = metadataResult.Language;
-                Console.WriteLine($"Language for {contentUrl} is {language}");
-                var profile = await context.UserLanguageProfiles
-                .Include(u => u.User)
-                .FirstOrDefaultAsync(p => p.User.UserName == username &&
-                    p.Language == language);
-                if (profile == null)
-                    return Result<SectionAbstractTerms>.Failure($"Could not load profile for language: {language}");
-                var section = await parser.GetSection(contentUrl, index);
-                foreach(var element in section.TextElements)
-                {
-                    var abstractTermTasks = new List<Task<Result<AbstractTermDto>>>();
-                    //TODO: try this in parallel w/ the context factory- 
-                    var terms = element.Value.Split(' ').ToList();
-                    for(int i = 0; i < terms.Count; ++i)
-                    {
-                        var term = terms[i];
-                        var abstractTerm = context.AbstractTermFor(term, profile);
-                        abstractTermTasks.Add(abstractTerm);
-                    }
-                    var abstractTermResults = await Task.WhenAll<Result<AbstractTermDto>>(abstractTermTasks);
-                    var abstractTerms = abstractTermResults.Where(r => r.IsSuccess).Select(a => a.Value).ToList();
-                    var elementTerms = new ElementAbstractTerms
-                    {
-                        Tag = element.Tag,
-                        AbstractTerms = abstractTerms
-                    };
-                }
-                /*
-                
-                var abstractTerms = new List<AbstractTermDto>();
-                for (int i = 0; i < abstractTermResults.Length; ++i)
-                {
-                    if(!abstractTermResults[i].IsSuccess)
-                        return Result<SectionAbstractTerms>.Failure("Could not load term");
-                    abstractTermResults[i].Value.IndexInChunk = i;
-                    abstractTerms.Add(abstractTermResults[i].Value);
-                }
-                */
-                var output = new SectionAbstractTerms
-                {
-                    ContentUrl = contentUrl,
-                    Index = index,
-                   
-                    SectionHeader = section.SectionHeader
-                };
-                return Result<SectionAbstractTerms>.Success(output);
-            }
-
-        public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, string term, UserLanguageProfile userLangProfile)
-        {
-            string termValue = term.AsTermValue();
-            var userTerm = await context.UserTerms
-            .Include(u => u.Term)
-            .FirstOrDefaultAsync(u => u.LanguageProfileId == userLangProfile.LanguageProfileId &&
-            u.Term.NormalizedValue == termValue);
-            AbstractTermDto output;
-             var trailing = StringUtilityMethods.GetTrailing(term);
-             if (userTerm != null) 
-             {
-                 //HasUserTerm = true
-                 output = new AbstractTermDto
-                 {
-                    Language = userLangProfile.Language,
-                    HasUserTerm = true,
-                    EaseFactor = userTerm.EaseFactor,
-                    SrsIntervalDays = userTerm.SrsIntervalDays,
-                    Rating = userTerm.Rating,
-                    Translations = userTerm.GetTranslationStrings(),
-                    UserTermId = userTerm.UserTermId,
-                    TimesSeen = userTerm.TimesSeen
-                 };
-             }
-             else
-             {
-                 output = new AbstractTermDto
-                 {
-                    Language = userLangProfile.Language,
-                    HasUserTerm = false,
-                    EaseFactor = 0.0f,
-                    SrsIntervalDays = 0,
-                    Rating = 0,
-                    Translations = new List<string>(),
-                    TimesSeen = 0
-                 };
-             }
-             //set this back to the original case-sensitive
-             output.TermValue = term;
-             return Result<AbstractTermDto>.Success(output);
-        }
 
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
         {
@@ -135,7 +33,17 @@ namespace Application.Extensions
                 t => t.Language == dto.Language &&
                 t.NormalizedValue == normValue);
             if (term == null)
-                return Result<AbstractTermDto>.Failure("No matching term");
+            {
+                //if the term doesn't exist yet, just create it
+                var createTermResult = await context.CreateTerm(dto.Language, dto.Value);
+                if (!createTermResult.IsSuccess)
+                    return Result<AbstractTermDto>.Failure($"Could not create term! Error message: {createTermResult.Error}");
+                term = await context.Terms.FirstOrDefaultAsync(
+                t => t.Language == dto.Language &&
+                t.NormalizedValue == normValue);
+                if (term == null)
+                    return Result<AbstractTermDto>.Failure($"Could not find created term!");
+            }
             // 2. Get the UserLanguageProfile
             var profile = await context.UserLanguageProfiles
             .Include(p => p.User)
