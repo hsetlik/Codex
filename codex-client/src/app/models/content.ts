@@ -27,12 +27,16 @@ export interface ContentMetadata {
 }
 
 export interface ElementAbstractTerms {
+    index: number,
     tag: string,
     abstractTerms: AbstractTerm
 }
 
 export interface SectionAbstractTerms {
-    
+    contentUrl: string,
+    index: number,
+    sectionHeader: string,
+    elementGroups: ElementAbstractTerms[]
 }
 
 

@@ -228,7 +228,8 @@ namespace Application
                     var termGroup = new ElementAbstractTerms
                     {
                         Tag = element.Tag,
-                        AbstractTerms = terms
+                        AbstractTerms = terms,
+                        Index = groups.Count
                     };
                     groups.Add(termGroup);
                 }
