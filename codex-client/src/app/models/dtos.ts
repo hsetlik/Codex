@@ -60,9 +60,3 @@ export interface SectionQueryDto {
     index: number
 }
 
-export interface TermsFromSection {
-    contentUrl: string,
-    index: number,
-    abstractTerms: AbstractTerm[],
-    sectionHeader: string
-}

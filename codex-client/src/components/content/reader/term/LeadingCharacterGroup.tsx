@@ -1,6 +1,6 @@
 import { Label } from "semantic-ui-react";
-import { AbstractTerm } from "../../../app/models/userTerm";
-import "../../styles/styles.css"
+import { AbstractTerm } from "../../../../app/models/userTerm";
+import "../../../styles/styles.css";
 
 interface Props {
     term: AbstractTerm

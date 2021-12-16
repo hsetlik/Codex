@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata } from "../models/content";
-import { AddTranslationDto, KnownWordsDto, TermsFromSection } from "../models/dtos";
+import { ContentMetadata, SectionAbstractTerms } from "../models/content";
+import { AddTranslationDto, KnownWordsDto } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
 
 
@@ -20,12 +20,12 @@ export default class ContentStore
     selectedContentUrl: string = "none";
     selectedSectionIndex = 0;
     sectionLoaded = false;
-    currentSectionTerms: TermsFromSection = {
-        contentUrl: this.selectedContentUrl,
-        index: this.selectedSectionIndex,
-        abstractTerms: [],
-        sectionHeader: ''
-    }
+    currentSectionTerms: SectionAbstractTerms = {
+        contentUrl: 'none',
+        index: 0,
+        sectionHeader: 'none',
+        elementGroups: []
+    } 
 
     constructor() {
         makeAutoObservable(this);
@@ -82,10 +82,6 @@ export default class ContentStore
 
     }
 
-    setTermAtIndex = (index: number, term: AbstractTerm) => {
-        this.currentSectionTerms.abstractTerms[index] = term;
-    }
-
     loadMetadata = async (lang: string) => {
         this.headersLoaded = false;
         this.loadedContents = [];
@@ -131,6 +127,11 @@ export default class ContentStore
            console.log(error); 
            runInAction(() => this.sectionLoaded = true); 
         }
+    }
+
+    setTermInSection(elementIndex: number, termIndex: number, term: AbstractTerm) {
+        term.indexInChunk = termIndex;
+        this.currentSectionTerms.elementGroups[elementIndex].abstractTerms[termIndex] = term;
     }
 
     setSelectedTerm = (term: AbstractTerm) => {

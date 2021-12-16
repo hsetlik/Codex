@@ -29,7 +29,7 @@ export interface ContentMetadata {
 export interface ElementAbstractTerms {
     index: number,
     tag: string,
-    abstractTerms: AbstractTerm
+    abstractTerms: AbstractTerm[]
 }
 
 export interface SectionAbstractTerms {

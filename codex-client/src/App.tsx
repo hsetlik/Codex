@@ -4,12 +4,12 @@ import { useStore } from './app/stores/store'
 import { Route, Routes } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import NavBar from './components/common/NavBar';
-import ContentRoute from './components/content/termDetails/ContentRoute';
 import FeedRoute from './components/feed/FeedRoute';
 import LoginForm from './components/account/LoginForm';
 import ProfilesRoute from './components/account/ProfilesRoute';
 import HomeRoute from './components/common/HomeRoute';
 import RegisterForm from './components/account/RegisterForm';
+import ContentRoute from './components/content/ContentRoute';
 
 function App() {
 //const location = useLocation();

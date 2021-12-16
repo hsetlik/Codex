@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
 import { IChildTranslation, UserTermCreateDto } from '../models/dtos';
 import { User, UserFormValues } from '../models/user';
-import { AbstractTerm, UserTermDetails } from '../models/userTerm';
+import { UserTermDetails } from '../models/userTerm';
 import { store } from './store';
 
 export default class UserStore{
@@ -141,30 +141,18 @@ export default class UserStore{
     refreshByValue = async (termValue: string) => {
         try {
             //console.log(`refreshing term with ID: ${termValue}`);
-            let matchingTerms: Map<number, AbstractTerm> = new Map();
-            for(var i = 0; i < store.contentStore.currentSectionTerms.abstractTerms.length; ++i)
+            let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedLanguage});
+            for(var i = 0; i < store.contentStore.currentSectionTerms.elementGroups.length; ++i)
             {
-                const aTerm = store.contentStore.currentSectionTerms.abstractTerms[i];
-                //console.log(`Checking term with value: ${aTerm.termValue} and index: ${i}`);
-                if (aTerm.termValue.normalize() === termValue.normalize()) {
-                    //console.log(`Found match with ${value} at Index ${i}`);
-                    const newTerm = await agent.TermEndpoints.getAbstractTerm({value: aTerm.termValue, language: aTerm.language});
-                    //console.log(`Reloaded Term: ${newTerm.termValue} at ${i}`);
-                    newTerm.indexInChunk = i;
-                    matchingTerms.set(i, newTerm);
+                for (var n = 0; n < store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms.length; ++n)
+                {
+                    if (store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue === termValue) {
+                        store.contentStore.setTermInSection(i, n, updatedTermValue);
+                    }
                 }
             }
-            runInAction(() => {
-                matchingTerms.forEach((value: AbstractTerm, key: number) => {
-                    //update each term in the contentStore map
-                    //console.log(`Term ${value} is at index ${key}`);
-                    store.contentStore.currentSectionTerms.abstractTerms[key] = value;
-                    if (key === store.contentStore.selectedTerm?.indexInChunk) {
-                        store.contentStore.setSelectedTerm(value);
-                    }
-                });
-                //make sure the selectedTerm observable gets updated if necessary
-            })
+        
+            
         } catch (error) {
            console.log(error); 
         }
