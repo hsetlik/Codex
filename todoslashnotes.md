@@ -426,3 +426,19 @@ TODO:
 1. ~~fix AbstractTermsForSection~~
 
 =================================================================================================
+============================================== 12/16/21 =========================================
+
+FROM YESTERDAY:
+
+9. Dictionary API (4 real)
+1. Test out article parsing on various websites/ in various languages
+3. Figure out issue with single spaces in some russian text (https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit)
+4. ~~Fix client side to handle new content section scheme~~
+
+
+TODO:
+
+1. New forward/back browser for reader
+2. Implement HTML tags
+
+=================================================================================================
