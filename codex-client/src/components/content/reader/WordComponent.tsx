@@ -9,7 +9,7 @@ interface Props {
     term: AbstractTerm
 }
 
-export default observer(function BaseTranscriptTerm({term}: Props) {
+export default observer(function WordComponent({term}: Props) {
     const {contentStore} = useStore();
     const {setSelectedTerm} = contentStore;
     const termColor = getColorForTerm(term);

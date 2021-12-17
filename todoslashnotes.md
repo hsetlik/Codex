@@ -14,7 +14,6 @@ OTHER ISSUES:
 2. Need loading components, esp. for content feed
 
 ================================================================================================
-
 ============================================= 11/13/21 =========================================
 
 FROM YESTERDAY:
@@ -430,7 +429,6 @@ TODO:
 
 FROM YESTERDAY:
 
-9. Dictionary API (4 real)
 1. Test out article parsing on various websites/ in various languages
 3. Figure out issue with single spaces in some russian text (https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit)
 4. ~~Fix client side to handle new content section scheme~~
@@ -438,7 +436,24 @@ FROM YESTERDAY:
 
 TODO:
 
-1. New forward/back browser for reader
+1. ~~New forward/back browser for reader~~
 2. Implement HTML tags
+3. Update TermDetils when a Userterm is created/edited
+4. Make proper loading component for paging throught reader
+
+=================================================================================================
+============================================== 12/17/21 =========================================
+
+FROM YESTERDAY:
+
+1. Test out article parsing on various websites/ in various languages
+3. Figure out issue with single spaces in some russian text (https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit)
+2. Implement HTML tags
+3. ~~Update TermDetils when a Userterm is created/edited~~
+4. ~~Make proper loading component for paging through reader~~
+
+TODO:
+1. refactor AbstractTermsForSection to load by element so that long pages can be loaded in chunks
+
 
 =================================================================================================

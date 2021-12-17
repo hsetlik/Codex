@@ -1,8 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Grid } from "semantic-ui-react";
+import { Grid, Sticky } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
+import SectionNavigator from "./reader/section/SectionNavigator";
 import SectionReader from "./reader/section/SectionReader";
 import AbstractTermDetails from "./termDetails/AbstractTermDetails";
 
@@ -18,10 +19,13 @@ export default observer(function ContentRoute() {
         <div>
             <Grid>
                 <Grid.Column width={10}>
+                    <SectionNavigator contentId={contentId!} currentIndex={parseInt(index!)} />
                     <SectionReader section={currentSectionTerms} />
                 </Grid.Column>
                 <Grid.Column width={6}>
-                    <AbstractTermDetails />
+                    <Sticky offset={35} pushing={false} >
+                        <AbstractTermDetails  />
+                    </Sticky>
                 </Grid.Column>
             </Grid>
             

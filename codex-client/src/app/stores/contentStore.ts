@@ -3,6 +3,7 @@ import agent from "../api/agent";
 import { ContentMetadata, SectionAbstractTerms } from "../models/content";
 import { AddTranslationDto, KnownWordsDto } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
+import { store } from "./store";
 
 
 
@@ -45,6 +46,7 @@ export default class ContentStore
                 this.selectedSectionIndex = this.selectedContentMetadata.bookmark;
                }
                console.log("First section loaded");
+               store.userStore.setSelectedLanguage(this.selectedContentMetadata?.language!);
            }) 
         } catch (error) {
            console.log(error); 

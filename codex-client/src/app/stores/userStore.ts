@@ -142,6 +142,9 @@ export default class UserStore{
         try {
             //console.log(`refreshing term with ID: ${termValue}`);
             let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedLanguage});
+            if (store.contentStore.selectedTerm?.termValue === termValue) {
+                store.contentStore.setSelectedTerm(updatedTermValue);
+            }
             for(var i = 0; i < store.contentStore.currentSectionTerms.elementGroups.length; ++i)
             {
                 for (var n = 0; n < store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms.length; ++n)
