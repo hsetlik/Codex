@@ -245,6 +245,12 @@ namespace Application
             }
         }
 
-        
+        public async Task<Result<AbstractTermDto>> GetAbstractTerm(TermDto term, string username)
+        {
+            using (var context = _factory.Invoke())
+            {
+                return await context.AbstractTermFor(term, username);
+            }
+        }
     }
 }

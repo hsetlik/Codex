@@ -107,5 +107,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new ViewContent.Command{Dto = dto}));
         }
+
+        [Authorize]
+        [HttpPost("abstractTermsForElement")]
+        public async Task<IActionResult> AbstractTermsForElement(ElementTermsQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{Dto = dto}));
+        }
     }
 }
