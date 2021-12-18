@@ -87,7 +87,7 @@ namespace Application.Extensions
             return Result<List<UserTermDetailsDto>>.Success(output);
         }
 
-        public static async Task<Result<List<UserTermDetailsDto>>> UserTermsCreatedAt(this DataContext context, string language, string username, DateQuery date)
+        public static async Task<Result<List<UserTermDetailsDto>>> UserTermsCreatedAt(this DataContext context, string language, string username, DateTime date)
         {
             var profile = await context.UserLanguageProfiles
                 .Include(u => u.User)
@@ -96,7 +96,7 @@ namespace Application.Extensions
                 return Result<List<UserTermDetailsDto>>.Failure($"Could not find profile for user {username} and language {language}");
             var matches = await context.UserTerms
             .Include(u => u.Term)
-            .Where(u => u.LanguageProfileId == profile.LanguageProfileId && date.Matches(u.CreatedAt))
+            .Where(u => u.LanguageProfileId == profile.LanguageProfileId && u.CreatedAt.Date == date.Date)
             .ToListAsync();
 
             if (matches == null || matches.Count < 1)

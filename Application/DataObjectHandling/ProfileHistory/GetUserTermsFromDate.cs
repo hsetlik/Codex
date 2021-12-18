@@ -33,7 +33,8 @@ namespace Application.DataObjectHandling.ProfileHistory
 
             public async Task<Result<List<UserTermDetailsDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.UserTermsCreatedAt(request.Dto.Language, _userAccessor.GetUsername(), request.Dto.DateQuery);
+                var time = new DateTime(request.Dto.Year, request.Dto.Month, request.Dto.Day);
+                return await _context.UserTermsCreatedAt(request.Dto.Language, _userAccessor.GetUsername(), time);
             }
         }
     }
