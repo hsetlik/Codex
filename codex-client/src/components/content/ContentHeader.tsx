@@ -18,7 +18,7 @@ export default observer(function ContentHeader({dto}: Props)
                 <Header >{dto.contentName}</Header>
                 <div style={{padding: '10px'}}>
                     <Label >{dto.contentType}</Label>
-                    <Label >Section {dto.bookmark} of {dto.numSections}</Label>
+                    <Label >Section {dto.bookmark + 1} of {dto.numSections}</Label>
                     <KnownWordsLabel contentId={dto.contentId} />
                 </div>
                 <div style={{padding: '10px'}}>

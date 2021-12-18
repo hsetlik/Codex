@@ -95,16 +95,15 @@ namespace Application.Parsing.ProfileScrapers
             foreach (var node in bodyNodesOrdered)
             {
                 // if we've hit a header, then the last node was the end of the previous section
-                string inner = StringUtilityMethods.StripWikiAnnotations(node.InnerText);
+                string inner = node.InnerText.StripWikiAnnotations();
                 if (node.Name == "h1" || node.Name == "h2") 
                 {
-                    inner = StringUtilityMethods.WithoutSquareBrackets(inner);
                     storage.Sections.Add(currentSection);
                     currentSection = new ContentSection
                     {
                         ContentUrl = Url,
                         Index = storage.Sections.Count,
-                        SectionHeader = node.InnerText,
+                        SectionHeader = inner,
                         TextElements = new List<TextElement>()
                     };
                 }

@@ -60,3 +60,8 @@ export interface SectionQueryDto {
     index: number
 }
 
+export interface ElementQueryDto {
+    contentUrl: string,
+    sectionIndex: number,
+    elementIndex: number
+}

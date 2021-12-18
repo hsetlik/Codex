@@ -103,7 +103,7 @@ namespace Application.Parsing.ProfileScrapers
                     currentSection.SectionHeader = element.Value;
                 }
                 currentSection.TextElements.Add(element);
-                if (currentSection.Body.Split(' ').Count() > 300)
+                if (currentSection.Body.Split(null).Count() > 300)
                 {
                     sections.Add(currentSection);
                     currentSection = new ContentSection

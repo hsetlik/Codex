@@ -38,18 +38,29 @@ namespace Application.DataObjectHandling.Contents
                     return Result<ElementAbstractTerms>.Failure("Could not load section");
                 var element = section.TextElements[request.Dto.ElementIndex];
                 var terms = new List<AbstractTermDto>();
-                var words = element.Value.Split(' ');
-                Parallel.ForEach(words, async word => 
+                var words = element.Value.Split(null).ToList();
+                var wordDict = new Dictionary<int, string>();
+                for(int i = 0; i < words.Count; ++i)
                 {
-                    var newTerm = await _factory.GetAbstractTerm(new TermDto{Value = word, Language = content.Language}, _userAccessor.GetUsername());
-                    if (newTerm.IsSuccess)
-                        terms.Add(newTerm.Value);
+                    wordDict[i] = words[i];
+                }
+                Parallel.ForEach(wordDict, async word => 
+                {
+                    var newTermResult = await _factory.GetAbstractTerm(new TermDto{Value = word.Value, Language = content.Language}, _userAccessor.GetUsername());
+                    if (newTermResult.IsSuccess)
+                    {
+                        var newTerm = newTermResult.Value;
+                        newTerm.IndexInChunk = word.Key;
+                        terms.Add(newTerm);
+                        Console.WriteLine($"Term with value {newTerm.TermValue} at index {word.Key}");
+                    }
                 });
+                var orderedTerms = terms.OrderBy(t => t.IndexInChunk).ToList();
                 var output = new ElementAbstractTerms
                 {
                     Index = request.Dto.ElementIndex,
                     Tag = element.Tag,
-                    AbstractTerms = terms
+                    AbstractTerms = orderedTerms
                 };
                 return Result<ElementAbstractTerms>.Success(output);
             }

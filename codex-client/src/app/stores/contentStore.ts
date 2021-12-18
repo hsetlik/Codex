@@ -117,14 +117,23 @@ export default class ContentStore
         this.sectionLoaded = false;
         try {
            let content = await agent.Content.getContentWithId({contentId: id}); 
-           let newSection = await agent.Content.abstractTermsForSection({contentUrl: content.contentUrl, index: pIndex});
-           if (pIndex > 0) {
-             await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});
-           }
+           let section = await agent.Content.getSectionMetadata({contentUrl: content.contentUrl, index: pIndex});
            runInAction(() => {
+               this.currentSectionTerms = {
+                   contentUrl: content.contentUrl,
+                   index: pIndex,
+                   sectionHeader: section.sectionHeader,
+                   elementGroups: []
+               };
                this.sectionLoaded = true;
-               this.currentSectionTerms = newSection;
            })
+           for(var i = 0; i < section.numElements; ++i) {
+               let element = await agent.Content.abstractTermsForElement({contentUrl: content.contentUrl, sectionIndex: section.index, elementIndex: i});
+               runInAction(() => {
+                   this.currentSectionTerms.elementGroups.push(element);
+               })
+           }
+           await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});
         } catch (error) {
            console.log(error); 
            runInAction(() => this.sectionLoaded = true); 

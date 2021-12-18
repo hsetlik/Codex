@@ -215,7 +215,7 @@ namespace Application
                 var groups = new List<ElementAbstractTerms>();
                 foreach(var element in section.TextElements)
                 {
-                    var words = element.Value.Split(' ').ToList();
+                    var words = element.Value.Split(null).ToList();
                     var terms = new List<AbstractTermDto>();
                     for(int i = 0; i < words.Count; ++i)
                     {

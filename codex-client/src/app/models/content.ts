@@ -26,6 +26,13 @@ export interface ContentMetadata {
     numSections: number
 }
 
+export interface ContentSectionMetadata {
+    contentUrl: string,
+    sectionHeader: string,
+    index: number,
+    numElements: number
+}
+
 export interface ElementAbstractTerms {
     index: number,
     tag: string,

@@ -453,7 +453,23 @@ FROM YESTERDAY:
 4. ~~Make proper loading component for paging through reader~~
 
 TODO:
-1. refactor AbstractTermsForSection to load by element so that long pages can be loaded in chunks
+1. ~~refactor AbstractTermsForSection to load by element so that long pages can be loaded in chunks~~
+
+
+=================================================================================================
+============================================== 12/18/21 =========================================
+
+FROM YESTERDAY:
+
+1. ~~Test out article parsing on various websites/ in various languages~~
+3. ~~Figure out issue with single spaces in some russian text (https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit)~~
+2. Implement HTML tags
+
+TODO:
+
+1. Support for saving phrases
+2. User-created content collections
+3. More history graphing stuff
 
 
 =================================================================================================

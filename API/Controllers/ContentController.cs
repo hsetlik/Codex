@@ -114,5 +114,13 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{Dto = dto}));
         }
+
+
+        [Authorize]
+        [HttpPost("getSectionMetadata")]
+        public async Task<IActionResult> GetSectionMetadata(SectionQueryDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetSectionMetadata.Query{Dto = dto}));
+        }
     }
 }

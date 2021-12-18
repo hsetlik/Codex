@@ -3,12 +3,17 @@ import { useStore } from "../../app/stores/store";
 import ContentHeader from "../content/ContentHeader";
 import { observer } from "mobx-react-lite";
 import FeedHeader from "./FeedHeader";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default observer(function FeedRoute(){
+    const {lang} = useParams();
     var {contentStore, commonStore} = useStore();
-    const {loadedContents: loadedHeaders } = contentStore;
+    const {loadedContents: loadedHeaders, loadMetadata } = contentStore;
     const {appLoaded} = commonStore;
-
+    useEffect(() => {
+        loadMetadata(lang!);
+    }, [loadMetadata, lang])
     if (!appLoaded) {
         return (
             <Loader />

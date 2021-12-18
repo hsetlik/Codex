@@ -27,13 +27,14 @@ namespace Application.Utilities
             return "";
         }
 
-        public static string StripWikiAnnotations(string input)
+        public static string StripWikiAnnotations(this string input)
         {
             const string expression = @"(&#)([\w;]+)";
-            return StrippedOfMatches(input, expression);
+
+            return StrippedOfMatches(input, expression).WithoutSquareBrackets();
         }
         
-        public static string WithoutSquareBrackets(string input)
+        private static string WithoutSquareBrackets(this string input)
         {
             const string expression = @"\[([\s\S])+\]";
             return StrippedOfMatches(input, expression);
