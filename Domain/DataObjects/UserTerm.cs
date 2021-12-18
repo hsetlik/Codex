@@ -38,5 +38,6 @@ namespace Domain.DataObjects
         public int Rating { get; set; }
         public string DateTimeDue { get; set; }
         public float SrsIntervalDays { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

@@ -104,7 +104,8 @@ namespace Application.Extensions
                 Rating = userTerm.Rating,
                 DateTimeDue = userTerm.DateTimeDue,
                 SrsIntervalDays = userTerm.SrsIntervalDays,
-                UserTermId = userTerm.UserTermId
+                UserTermId = userTerm.UserTermId,
+                CreatedAt = userTerm.CreatedAt
             };
         }
 
@@ -116,6 +117,7 @@ namespace Application.Extensions
             userTerm.DateTimeDue = details.DateTimeDue;
             userTerm.SrsIntervalDays = details.SrsIntervalDays;
             userTerm.UserTermId = details.UserTermId;
+            userTerm.CreatedAt = details.CreatedAt;
             return userTerm;
         }
 

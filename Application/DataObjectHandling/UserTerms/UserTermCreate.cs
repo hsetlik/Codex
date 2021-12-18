@@ -70,7 +70,8 @@ namespace Application.DataObjectHandling.UserTerms
                     EaseFactor = 2.5f,
                     Rating = 0,
                     DateTimeDue = currentDateTime,
-                    SrsIntervalDays = 0
+                    SrsIntervalDays = 0,
+                    CreatedAt = DateTime.Now
                 };
 
                 _context.UserTerms.Add(userTerm);

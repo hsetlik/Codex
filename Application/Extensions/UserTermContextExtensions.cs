@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.ProfileHistory;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +50,8 @@ namespace Application.Extensions
                 EaseFactor = dto.EaseFactor,
                 DateTimeDue = DateTime.Today.ToString(),
                 TimesSeen = dto.TimesSeen,
-                NormalizedTermValue = term.NormalizedValue
+                NormalizedTermValue = term.NormalizedValue,
+                CreatedAt = DateTime.Now
             };
 
             uTerm.Translations = uTerm.GetAsTranslations(dto.Translations);
@@ -59,6 +62,7 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Changes not saved!");
             return Result<Unit>.Success(Unit.Value);
         }
+
         public static async Task<Result<List<UserTermDetailsDto>>> UserTermsDueNow(this DataContext context, LanguageNameDto dto, string username)
         {
             var output = new List<UserTermDetailsDto>();
@@ -80,6 +84,28 @@ namespace Application.Extensions
                     output.Add(term.GetUserTermDetailsDto());
                 }
             };
+            return Result<List<UserTermDetailsDto>>.Success(output);
+        }
+
+        public static async Task<Result<List<UserTermDetailsDto>>> UserTermsCreatedAt(this DataContext context, string language, string username, DateQuery date)
+        {
+            var profile = await context.UserLanguageProfiles
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(u => u.Language == language && u.User.UserName == username);
+            if (profile == null)
+                return Result<List<UserTermDetailsDto>>.Failure($"Could not find profile for user {username} and language {language}");
+            var matches = await context.UserTerms
+            .Include(u => u.Term)
+            .Where(u => u.LanguageProfileId == profile.LanguageProfileId && date.Matches(u.CreatedAt))
+            .ToListAsync();
+
+            if (matches == null || matches.Count < 1)
+                return Result<List<UserTermDetailsDto>>.Failure($"No matches found");
+            var output = new List<UserTermDetailsDto>();
+            foreach(var match in matches)
+            {
+                output.Add(match.GetUserTermDetailsDto());
+            }
             return Result<List<UserTermDetailsDto>>.Success(output);
         }
     }

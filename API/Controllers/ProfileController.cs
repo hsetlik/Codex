@@ -7,6 +7,7 @@ using Application.DataObjectHandling.UserLanguageProfiles;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.HistoryQueries;
+using Application.DomainDTOs.ProfileHistory;
 using Application.DomainDTOs.UserLanguageProfile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,14 @@ namespace API.Controllers
         public async Task<IActionResult> AllUserTerms(LanguageNameDto dto)
         {
             return HandleResult(await Mediator.Send(new AllUserTerms.Query{Dto = dto}));
+        }
+
+
+        [Authorize]
+        [HttpPost("userTermsFromDate")]
+        public async Task<IActionResult> UserTermsFromDate(LanguageDateQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new GetUserTermsFromDate.Query{Dto = dto}));
         }
     }
 }

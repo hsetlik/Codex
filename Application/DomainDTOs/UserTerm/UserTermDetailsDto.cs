@@ -14,5 +14,6 @@ namespace Application.DataObjectHandling.UserTerms
         public string DateTimeDue { get; set; }
         public float SrsIntervalDays { get; set; } 
         public Guid UserTermId { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

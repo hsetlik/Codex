@@ -470,6 +470,7 @@ TODO:
 1. Support for saving phrases
 2. User-created content collections
 3. More history graphing stuff
+4. Add DateCreated to UserTerm
 
 
 =================================================================================================
