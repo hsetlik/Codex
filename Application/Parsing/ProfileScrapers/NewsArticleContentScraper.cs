@@ -124,7 +124,6 @@ namespace Application.Parsing.ProfileScrapers
             }
 
             storage.Elements = elements;
-            Console.WriteLine($"Article has {sections.Count} sections");
             storage.Sections = sections;
             storage.Metadata.NumSections = sections.Count;
             contentsLoaded = true;

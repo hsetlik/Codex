@@ -28,7 +28,7 @@ namespace Application.Parsing
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 await scraper.PrepareAsync();
                 watch.Stop();
-                Console.WriteLine($"Scraper preparation for {url} took {watch.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"Scraper preparation for {url} took {watch.ElapsedMilliseconds} ms");
             }
         }
             public async Task<ContentSection> GetSection(string contentUrl, int index)

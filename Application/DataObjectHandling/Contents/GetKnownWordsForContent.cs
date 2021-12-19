@@ -37,28 +37,27 @@ namespace Application.DataObjectHandling.Contents
                 var cResult = await _factory.GetMetadataFor(_userAccessor.GetUsername(), request.ContentId);
                 if (!cResult.IsSuccess)
                     return Result<KnownWordsDto>.Failure("Could not load content");
-                watch.Stop();
-                Console.WriteLine($"Loading content metatata took {watch.ElapsedMilliseconds} ms");
-                watch.Restart();
+                //Console.WriteLine($"Loading content metatata took {watch.ElapsedMilliseconds} ms");
                 var scraper = await _parser.GetScraper(cResult.Value.ContentUrl);
                 if (scraper == null)
                     return Result<KnownWordsDto>.Failure("Could not get scraper!");
-                watch.Stop();
-                Console.WriteLine($"Getting scraper took {watch.ElapsedMilliseconds} ms");
-                watch.Restart();
+                Console.WriteLine($"GETTING KNOWN WORDS FOR {scraper.GetMetadata().ContentName}. . .");
+                //Console.WriteLine($"Getting scraper took {watch.ElapsedMilliseconds} ms");
                 var profileResult = await _factory.ProfileFor(_userAccessor.GetUsername(), cResult.Value.Language);
                 if (!profileResult.IsSuccess)
                     return Result<KnownWordsDto>.Failure("could not load profile");
                 var lists = scraper.GetWordLists();
                 watch.Stop();
                 Console.WriteLine($"Getting {lists.Count} lists took {watch.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
+                watch.Start();
                 int known = 0;
                 int total = 0;
-                int idx = 0;
                 Parallel.ForEach(lists, async list => 
                 {
+                    int idx = lists.IndexOf(list);
                     Console.WriteLine($"List {idx} has {list.Count} words");
                     var w = System.Diagnostics.Stopwatch.StartNew();
+                   
                     var results =  await _factory.KnownWordsForList(list, profileResult.Value.LanguageProfileId);
                     if (results.IsSuccess)
                     {
@@ -68,9 +67,11 @@ namespace Application.DataObjectHandling.Contents
                     else
                         Console.WriteLine($"Failed with error message: {results.Error}");
                     w.Stop();
-                    Console.WriteLine($"Parsing {list.Count} words in list {idx} took {w.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
-                    ++idx;
+                    
+                    Console.WriteLine($"Parsing list {idx} took {w.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}. List had {results.Value.KnownWords} of {results.Value.TotalWords}");
                 });
+                watch.Stop();
+                Console.WriteLine($"FINISHED KNOWN WORDS FOR {scraper.GetMetadata().ContentName} AFTER {watch.ElapsedMilliseconds} ms");
                 return Result<KnownWordsDto>.Success(new KnownWordsDto
                 {
                     KnownWords = known,

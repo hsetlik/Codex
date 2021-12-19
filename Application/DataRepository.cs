@@ -43,16 +43,6 @@ namespace Application
                 return await context.GetMetadataFor(username, contentId);
             }
         }
-        public async Task<Result<KnownWordsDto>> KnownWordsForList(List<string> words, Guid languageProfileId)
-        {
-            using (var context = _factory.Invoke())
-            {
-                var list = await context.KnownWordsForList(words, languageProfileId);
-                if (list == null)
-                    return Result<KnownWordsDto>.Failure("Could not retreive list");
-                return Result<KnownWordsDto>.Success(list);
-            }
-        }
 
         public async Task<Result<UserLanguageProfile>> ProfileFor(string username, string language)
         {
@@ -62,46 +52,7 @@ namespace Application
             }
         }
 
-        public async Task<Result<SectionAbstractTerms>> AbstractTermsForSection(string contentUrl, int index, string username, IParserService parser)
-        {
-            using (var context = _factory.Invoke())
-            {
-                var metadata = await parser.GetContentMetadata(contentUrl);
-                var section = await parser.GetSection(contentUrl, index);
-                if (section == null)
-                    return Result<SectionAbstractTerms>.Failure("Could not get section!");
-                var groups = new List<ElementAbstractTerms>();
-                foreach(var element in section.TextElements)
-                {
-                    var words = element.Value.Split(null).ToList();
-                    var terms = new List<AbstractTermDto>();
-                    for(int i = 0; i < words.Count; ++i)
-                    {
-                        var result = await context.AbstractTermFor(new TermDto{Value = words[i], Language = metadata.Language}, username);
-                        if (!result.IsSuccess)
-                            return Result<SectionAbstractTerms>.Failure($"Failed to get abstract term! Error message: {result.Error}");
-                        result.Value.IndexInChunk = i;
-                        terms.Add(result.Value);    
-                    }
-                    var termGroup = new ElementAbstractTerms
-                    {
-                        Tag = element.Tag,
-                        AbstractTerms = terms,
-                        Index = groups.Count
-                    };
-                    groups.Add(termGroup);
-                }
-
-                var output = new SectionAbstractTerms
-                {
-                    ContentUrl = contentUrl,
-                    Index = index,
-                    SectionHeader = section.SectionHeader,
-                    ElementGroups = groups
-                };
-                return Result<SectionAbstractTerms>.Success(output);
-            }
-        }
+        
         public async Task<Result<AbstractTermDto>> GetAbstractTerm(TermDto term, string username)
         {
             using (var context = _factory.Invoke())
@@ -110,9 +61,14 @@ namespace Application
             }
         }
 
-        Task<Result<DomainDTOs.UserLanguageProfile.KnownWordsDto>> IDataRepository.KnownWordsForList(List<string> words, Guid languageProfileId)
+
+        public async Task<Result<bool>> WordIsKnown(string value, Guid languageProfileId)
         {
-            throw new NotImplementedException();
+            using (var context = _factory.Invoke())
+            {
+                var known = await context.TermKnown(languageProfileId, value);
+                return Result<bool>.Success(known);
+            }
         }
     }
 }

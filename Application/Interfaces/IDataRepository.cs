@@ -18,10 +18,9 @@ namespace Application.Interfaces
     {
         public Task<Result<ContentMetadataDto>> GetMetadataFor(string username, Guid contentId);
         public Task<Result<List<ContentMetadataDto>>> GetContentsForLanguage(string username, string lang);
-        public Task<Result<SectionAbstractTerms>> AbstractTermsForSection(string contentUrl, int index, string username, IParserService parser);
         public Task<Result<AbstractTermDto>> GetAbstractTerm(TermDto term, string username);
         // from ContentHistoryContextEntensions.cs
-        public Task<Result<KnownWordsDto>> KnownWordsForList(List<string> words, Guid languageProfileId);
         public Task<Result<UserLanguageProfile>> ProfileFor(string username, string language);
+        public Task<Result<bool>> WordIsKnown(string value, Guid languageProfileId);
     }
 }
