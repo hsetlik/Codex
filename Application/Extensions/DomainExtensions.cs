@@ -28,7 +28,7 @@ namespace Application.Extensions
                 }
                 if (!exists)
                 {
-                    var translation = new Translation
+                    var translation = new UserTermTranslation
                     {
                         Value = t,
                         UserTerm = userTerm
@@ -38,12 +38,12 @@ namespace Application.Extensions
             }
         }
         
-        public static List<Translation> GetAsTranslations(this UserTerm userTerm, List<string> values)
+        public static List<UserTermTranslation> GetAsTranslations(this UserTerm userTerm, List<string> values)
         {
-            var output = new List<Translation>();
+            var output = new List<UserTermTranslation>();
             foreach(var value in values)
             {
-                var translation = new Translation
+                var translation = new UserTermTranslation
                 {
                     Value = value,
                     UserTerm = userTerm

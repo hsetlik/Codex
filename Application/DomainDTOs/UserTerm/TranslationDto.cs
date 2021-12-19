@@ -12,7 +12,7 @@ namespace Application.DomainDTOs
         public Guid TranslationId { get; set; }
         public string Value { get; set; }
 
-        public static TranslationDto AsDto(Translation t)
+        public static TranslationDto AsDto(UserTermTranslation t)
         {
             return new TranslationDto
             {

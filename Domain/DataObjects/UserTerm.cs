@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Domain.DataObjects
 {
     //basic class to hold translations
-    public class Translation
+    public class UserTermTranslation
     {
         [Key]
         public Guid TranslationId { get; set; }
@@ -31,7 +31,7 @@ namespace Domain.DataObjects
         public Term Term { get; set; }
         public string NormalizedTermValue { get; set; }
         //ICollection to create the translations
-        public ICollection<Translation> Translations { get; set; } = new List<Translation>();
+        public ICollection<UserTermTranslation> Translations { get; set; } = new List<UserTermTranslation>();
         //Actual UserTerm specific data
         public int TimesSeen { get; set; }
         public float EaseFactor { get; set; }

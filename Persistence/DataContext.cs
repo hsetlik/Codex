@@ -22,7 +22,11 @@ namespace Persistence
 
         public DbSet<UserTerm> UserTerms { get; set; }
 
-        public DbSet<Translation> Translations { get; set; }
+        public DbSet<Phrase> Phrases { get; set; }
+
+        public DbSet<PhraseTranslation> PhraseTranslations { get; set; }
+
+        public DbSet<UserTermTranslation> UserTermTranslations { get; set; }
 
         public DbSet<Content> Contents { get; set; }
 
@@ -80,6 +84,17 @@ namespace Persistence
             .HasOne(d => d.ContentHistory)
             .WithMany(h => h.ContentViewRecords)
             .HasForeignKey(h => h.ContentHistoryId);
+
+            builder.Entity<Phrase>()
+            .HasOne(p => p.UserLanguageProfile)
+            .WithMany(p => p.Phrases)
+            .HasForeignKey(i => i.LanguageProfileId);
+
+            builder.Entity<PhraseTranslation>()
+            .HasOne(t => t.Phrase)
+            .WithMany(p => p.Translations)
+            .HasForeignKey(i => i.PhraseId);
+            
         }
     }
 }

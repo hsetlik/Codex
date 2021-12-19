@@ -61,7 +61,7 @@ namespace Application.DataObjectHandling.UserTerms
                     Term = term,
                     NormalizedTermValue = term.NormalizedValue,
                     Translations = 
-                    { new Translation
+                    { new UserTermTranslation
                         {
                             Value = request.termCreateDto.FirstTranslation
                         }

@@ -16,6 +16,7 @@ namespace Domain.DataObjects
         public string Language { get; set; }
         //Naviagtion Property
         public ICollection<UserTerm> UserTerms { get; set; } = new List<UserTerm>(); // EF will automatically configure a one-to-many relationship
+        public ICollection<Phrase> Phrases { get; set; } = new List<Phrase>();
         public int KnownWords { get; set; }
         public ICollection<ContentHistory> ContentHistories { get; set; } = new List<ContentHistory>();
         public DailyProfileHistory DailyProfileHistory { get; set; }

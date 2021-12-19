@@ -38,7 +38,7 @@ namespace Application.DataObjectHandling.UserTerms
                 var userTerm = await _context.UserTerms
                 .FirstOrDefaultAsync(u => u.UserTermId == request.AddTranslationDto.UserTermId);
                 if (userTerm == null) return Result<Unit>.Failure("No corresponding UserTerm found");
-                var translation = new Translation
+                var translation = new UserTermTranslation
                 {
                     Value = request.AddTranslationDto.NewTranslation,
                     UserTerm = userTerm

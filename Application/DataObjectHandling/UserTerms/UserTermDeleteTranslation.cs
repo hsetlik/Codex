@@ -39,7 +39,7 @@ namespace Application.DataObjectHandling.UserTerms
                 var translation = userTerm.Translations.FirstOrDefault(t => t.Value == request.Dto.Value);
                 if (translation == null)
                     return Result<Unit>.Failure("Could not find matching translation");
-                _context.Translations.Remove(translation);
+                _context.UserTermTranslations.Remove(translation);
 
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)
