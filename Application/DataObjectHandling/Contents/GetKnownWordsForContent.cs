@@ -46,32 +46,30 @@ namespace Application.DataObjectHandling.Contents
                 var profileResult = await _factory.ProfileFor(_userAccessor.GetUsername(), cResult.Value.Language);
                 if (!profileResult.IsSuccess)
                     return Result<KnownWordsDto>.Failure("could not load profile");
+                var profile = profileResult.Value;
                 var lists = scraper.GetWordLists();
                 watch.Stop();
                 Console.WriteLine($"Getting {lists.Count} lists took {watch.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
-                watch.Start();
+                watch.Restart();
+                var listData = new List<KnownWordsDto>();
+                var listTasks = new List<Task<Result<KnownWordsDto>>>();
+                foreach(var list in lists)
+                {
+                    listTasks.Add(_factory.KnownWordsForList(list, profile.LanguageProfileId));
+                }
                 int known = 0;
                 int total = 0;
-                Parallel.ForEach(lists, async list => 
+                var listResults = await Task.WhenAll(listTasks);
+                foreach(var result in listResults)
                 {
-                    int idx = lists.IndexOf(list);
-                    Console.WriteLine($"List {idx} has {list.Count} words");
-                    var w = System.Diagnostics.Stopwatch.StartNew();
-                   
-                    var results =  await _factory.KnownWordsForList(list, profileResult.Value.LanguageProfileId);
-                    if (results.IsSuccess)
+                    if (result.IsSuccess)
                     {
-                        known += results.Value.KnownWords;
-                        total += list.Count;
+                        known += result.Value.KnownWords;
+                        total += result.Value.TotalWords;
                     }
-                    else
-                        Console.WriteLine($"Failed with error message: {results.Error}");
-                    w.Stop();
-                    
-                    Console.WriteLine($"Parsing list {idx} took {w.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}. List had {results.Value.KnownWords} of {results.Value.TotalWords}");
-                });
+                }
                 watch.Stop();
-                Console.WriteLine($"FINISHED KNOWN WORDS FOR {scraper.GetMetadata().ContentName} AFTER {watch.ElapsedMilliseconds} ms");
+                Console.WriteLine($"FINISHED KNOWN WORDS FOR {scraper.GetMetadata().ContentName} AFTER {watch.ElapsedMilliseconds} ms- {known} Known of {total} total");
                 return Result<KnownWordsDto>.Success(new KnownWordsDto
                 {
                     KnownWords = known,

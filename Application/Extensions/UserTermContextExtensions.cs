@@ -152,15 +152,6 @@ namespace Application.Extensions
                 DateTimeDue = createTime.ToString()
             };
 
-            var translation = new UserTermTranslation
-            {
-                Value = dto.FirstTranslation,
-                UserTermId = userTerm.UserTermId,
-                UserTerm = userTerm,
-            };
-
-            userTerm.Translations.Add(translation);
-
             context.UserTerms.Add(userTerm);
 
             var success = await context.SaveChangesAsync() > 0;
