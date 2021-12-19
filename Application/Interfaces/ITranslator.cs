@@ -9,6 +9,6 @@ namespace Application.Interfaces
 {
     public interface ITranslator
     {
-        public Task<Result<TranslatorResponse>> GetTranslation(TranslatorQuery query);
+        Task<Result<TranslatorResponse>> GetTranslation(TranslatorQuery query);
     }
 }

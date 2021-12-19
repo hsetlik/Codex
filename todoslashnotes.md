@@ -493,6 +493,7 @@ FROM YESTERDAY:
 TODO:
 
 1. Client-side phrase creation
-2. Fix KnownWordsForList to take advantage of multi-threading (do this as a factory extension method), IDataRepository needs a WordKnown() method
+2. ~~Fix KnownWordsForList to take advantage of multi-threading (do this as a factory extension method), IDataRepository needs a WordKnown() method~~
+3. Create DailyMetric structure and endpoints
 
 =================================================================================================

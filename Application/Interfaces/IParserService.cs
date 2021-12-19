@@ -10,9 +10,9 @@ namespace Application.Interfaces
 {
     public interface IParserService
     {
-        public Task<ContentSection> GetSection(string contentUrl, int index);
-        public Task<ContentMetadataDto> GetContentMetadata(string url);
-        public Task<List<ContentSection>> GetAllSections(string contentUrl);
-        public Task<AbstractScraper> GetScraper(string url);
+        Task<ContentSection> GetSection(string contentUrl, int index);
+        Task<ContentMetadataDto> GetContentMetadata(string url);
+        Task<List<ContentSection>> GetAllSections(string contentUrl);
+        Task<AbstractScraper> GetScraper(string url);
     }
 }
