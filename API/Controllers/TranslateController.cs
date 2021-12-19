@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.DataObjectHandling;
 using Application.DataObjectHandling.Translate;
+using Application.DataObjectHandling.Terms;
 
 namespace API.Controllers
 {
@@ -20,6 +21,13 @@ namespace API.Controllers
         {
             Console.WriteLine($"Requesting translation for {dto.QueryValue} in language {dto.QueryLanguage}");
             return HandleResult(await Mediator.Send(new GetTranslation.Query{Dto = dto}));
+        }
+
+        [Authorize]
+        [HttpPost("getTranslations")]
+        public async Task<IActionResult> GetTranslations(TermDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetTranslations.Query{Dto = dto}));
         }
         
     }

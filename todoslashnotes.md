@@ -476,9 +476,9 @@ TODO:
 
 NEW PAGE LOADING STEPS:
 
-1. Load content metadata if not loaded
-2. Load appropriate ContentSection (incl. list of textElements w/ content)
-3. Get AbstractTerms for each already-loaded element (pass language, index, and body text to endpoint)
+1. ~~Load content metadata if not loaded~~
+2. ~~Load appropriate ContentSection (incl. list of textElements w/ content)~~
+3. ~~Get AbstractTerms for each already-loaded element (pass language, index, and body text to endpoint)~~
 
 
 
