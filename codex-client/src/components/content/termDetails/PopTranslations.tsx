@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { useEffect } from "react";
 import { Segment, Button } from "semantic-ui-react";
-import { PopularTranslationDto } from "../../../app/models/dtos";
+import { TranslationResultDto } from "../../../app/models/dtos";
 import { Term } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 
@@ -11,14 +11,14 @@ interface Props {
 }
 
 export default observer(function PopTranslations({term}: Props){
-    const {translationStore: {currentPopTranslations, currentTermValue, prepareForTerm}, userStore: {createTerm}} = useStore();
+    const {translationStore: {currentTranslations: currentPopTranslations, currentTermValue, prepareForTerm}, userStore: {createTerm}} = useStore();
     useEffect(() => {
         if (currentTermValue.termValue !== term.termValue) {
             prepareForTerm({termValue: term.termValue, language: term.language});
         }
       
     }, [term, currentTermValue, prepareForTerm])
-    const createWithTranslation  = async (translation: PopularTranslationDto) => {
+    const createWithTranslation  = async (translation: TranslationResultDto) => {
         await createTerm({termValue: term.termValue, language: term.language, firstTranslation: translation.value});
     }
     return(

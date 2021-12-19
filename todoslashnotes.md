@@ -472,7 +472,7 @@ TODO:
 3. More history graphing stuff
 4. ~~Add DateCreated to UserTerm~~
 5. ~~Pass the text of the sectionBody to the AbstractTerms function, save on time to parse sections~~
-6. Client-side translations
+6. ~~Client-side translations~~
 
 NEW PAGE LOADING STEPS:
 

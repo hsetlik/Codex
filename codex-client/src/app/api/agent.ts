@@ -4,7 +4,7 @@ import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
 import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
-import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, PopularTranslationDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LangProfileItem, SectionQueryDto, ElementQueryDto } from "../models/dtos";
+import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, TranslationResultDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LangProfileItem, SectionQueryDto, ElementQueryDto, TermDto } from "../models/dtos";
 import { ContentMetadata, ContentSectionMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 
 
@@ -88,16 +88,12 @@ const UserTermEndpoints = {
     getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto),
     deleteTranslation: (translation: IChildTranslation) => requests.post('/userTerm/deleteTranslation', translation)
 }
-interface ITerm {
-    value: string,
-    language: string
-}
 
 
 
 const TermEndpoints = {
-     getAbstractTerm: (term: ITerm) => requests.post<AbstractTerm>('/term/getAbstractTerm', term),
-     getPopularTranslations: ({value, language}: ITerm) => requests.post<PopularTranslationDto[]>('/term/popularTranslationsFor', {value, language})
+     getAbstractTerm: (term: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', term),
+     getPopularTranslations: ({value, language}: TermDto) => requests.post<TranslationResultDto[]>('/term/popularTranslationsFor', {value, language})
 }
 
 //==============================================================================================================
@@ -119,6 +115,10 @@ const Parse = {
     getSection: (dto: SectionQueryDto) => requests.post<ContentSection>('/parse/getSection', dto)
 }
 
+const Translate = {
+    getTranslations: (dto: TermDto) => requests.post<TranslationResultDto[]>('translate/getTranslations', dto)
+}
+
 //====================================================================================================================
 const agent = {
     Account,
@@ -126,6 +126,7 @@ const agent = {
     Content,
     UserTermEndpoints,
     TermEndpoints,
-    Parse
+    Parse,
+    Translate
 }
 export default agent;

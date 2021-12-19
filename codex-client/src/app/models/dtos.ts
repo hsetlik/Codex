@@ -10,10 +10,14 @@ export interface AddTranslationDto {
     userTermId: string,
     newTranslation: string
 }
-
-export interface PopularTranslationDto {
+export interface TermDto {
     value: string,
-    numInstances: number
+    language: string
+}
+
+export interface TranslationResultDto {
+    value: string,
+    annotation: string
 }
 
 export interface IContentId {
