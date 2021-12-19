@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Domain.DataObjects;
-using Domain.DataObjects.DailyProfileMetrics;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +35,7 @@ namespace Persistence
 
         public DbSet<ContentTag> ContentTags { get; set; }
 
-        public DbSet<DailyKnownWords> DailyKnownWords { get; set; }
+        public DbSet<DailyProfileRecord> DailyProfileRecords { get; set; }
 
         public DbSet<DailyProfileHistory> DailyProfileHistories { get; set; }
 
@@ -75,11 +74,6 @@ namespace Persistence
             .WithMany(c => c.ContentTags)
             .HasForeignKey(u => u.ContentId);
 
-            builder.Entity<DailyKnownWords>()
-            .HasOne(d => d.DailyProfileHistory)
-            .WithMany(h => h.DailyKnownWords)
-            .HasForeignKey(d => d.DailyProfileHistoryId);
-
             builder.Entity<ContentViewRecord>()
             .HasOne(d => d.ContentHistory)
             .WithMany(h => h.ContentViewRecords)
@@ -94,6 +88,15 @@ namespace Persistence
             .HasOne(t => t.Phrase)
             .WithMany(p => p.Translations)
             .HasForeignKey(i => i.PhraseId);
+
+            builder.Entity<DailyProfileRecord>()
+            .HasOne(r => r.DailyProfileHistory)
+            .WithMany(h => h.DailyProfileRecords)
+            .HasForeignKey(k => k.DailyProfileHistoryId);
+
+            builder.Entity<DailyProfileRecord>()
+            .HasOne(r => r.UserLanguageProfile)
+            .WithMany();
             
         }
     }

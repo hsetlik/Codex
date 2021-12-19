@@ -7,6 +7,8 @@ using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.ProfileHistory;
+using Application.Interfaces;
+using Application.Parsing;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -107,6 +109,65 @@ namespace Application.Extensions
                 output.Add(match.GetUserTermDetailsDto());
             }
             return Result<List<UserTermDetailsDto>>.Success(output);
+        }
+
+        public static async Task<Result<Unit>> CreateDummyUserTerm(this DataContext context, UserTermCreateDto dto, string username, int dateRange=14)
+        {
+            Console.WriteLine($"Creating dummy userterm for {dto.TermValue}");
+            var profile = await context.UserLanguageProfiles.Include(p => p.User).FirstOrDefaultAsync(p => p.User.UserName == username && p.Language == dto.Language);
+            if (profile == null)
+                return Result<Unit>.Failure($"Could not get profile for {username} with language {dto.Language}");
+            var termResult = await context.CreateAndGetTerm(dto.Language, dto.TermValue);
+            if (!termResult.IsSuccess)
+                return Result<Unit>.Failure($"Could not get term!: Error message{termResult.Error}");
+            var term = termResult.Value;
+            var r = new Random();
+            var dateOffset = r.NextDouble() * dateRange;
+            var createTime = DateTime.Now.AddDays(dateOffset * -1.0f);
+
+            int timesSeen = (int)(r.NextDouble() * 5);
+            int rating = (int)(r.NextDouble() * 5);
+            float intervalDays = (float)r.NextDouble() * 4.0f;
+
+
+            var userTerm = new UserTerm
+            {
+                LanguageProfileId = profile.LanguageProfileId,
+                UserLanguageProfile = profile,
+                TermId = term.TermId,
+                Term = term,
+                NormalizedTermValue = term.NormalizedValue,
+                Translations = 
+                {
+                    new UserTermTranslation
+                    {
+                        Value = dto.FirstTranslation
+                    }
+                },
+                TimesSeen = timesSeen,
+                EaseFactor = 2.5f,
+                Rating = rating,
+                SrsIntervalDays = intervalDays,
+                CreatedAt = createTime,
+                DateTimeDue = createTime.ToString()
+            };
+
+            var translation = new UserTermTranslation
+            {
+                Value = dto.FirstTranslation,
+                UserTermId = userTerm.UserTermId,
+                UserTerm = userTerm,
+            };
+
+            userTerm.Translations.Add(translation);
+
+            context.UserTerms.Add(userTerm);
+
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("Could not create userTerm!");
+            Console.WriteLine($"Created userTerm for {dto.TermValue} and user {username}");
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

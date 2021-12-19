@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.Extensions;
 using Application.Interfaces;
 using Domain.DataObjects;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 //initializing w/ dummy data
@@ -36,11 +38,68 @@ namespace Domain
             "https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit"
        };
     }
+    public static class UserTermCreators
+    {
+        public static readonly List<UserTermCreateDto> RussianTermSeeds = new List<UserTermCreateDto>()
+        {
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },
+            
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },       
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },
+            new UserTermCreateDto
+            {
+                TermValue = "погода",
+                Language = "ru",
+                FirstTranslation = "weather"
+            },
+        };
+    }
+    
     public static class Seed
     {
         public static async Task SeedData(DataContext context,
             UserManager<CodexUser> userManager,
-            IParserService parser)
+            IParserService parser,
+            ITranslator translator)
         {
             if (!userManager.Users.Any() && !context.Terms.Any())
             {
@@ -65,24 +124,24 @@ namespace Domain
                 },
                 new CodexUser
                 {
+                    UserName = "maria",
+                    DisplayName = "Maria",
+                    Email = "maria@test.com",
+                    NativeLanguage = "es",
+                    UserLanguageProfiles = new List<UserLanguageProfile>()
+                },
+                new CodexUser
+                {
                     UserName = "sonya",
                     DisplayName = "Sonya",
                     Email = "sonya@test.com",
                     NativeLanguage = "ru",
                     UserLanguageProfiles = new List<UserLanguageProfile>()
                  
-                },
-                new CodexUser
-                {
-                    UserName = "maria",
-                    DisplayName = "Maria",
-                    Email = "maria@test.com",
-                    NativeLanguage = "es",
-                    UserLanguageProfiles = new List<UserLanguageProfile>()
                 }
             };
             //create each user on the server
-            string[] langs = {"es", "en", "de", "ru"};
+            string[] langs = {"ru", "en", "de", "es"};
             for(int i = 0; i < 4; i++)
             {
                 var profile = new UserLanguageProfile
@@ -113,7 +172,20 @@ namespace Domain
                 });
             }
             await context.SaveChangesAsync();
+            Console.WriteLine("Added all contents");
+
+            var user = await context.Users.Include(u => u.UserLanguageProfiles).FirstOrDefaultAsync(u => u.UserLanguageProfiles.Any(p => p.Language == "ru"));
+            var content = await context.Contents.FirstOrDefaultAsync(c => c.Language == "ru");
+            var section = await parser.GetSection(content.ContentUrl, 1);
+            Console.WriteLine($"Section is : {section.Body}");
+            var creators = await section.CreatorsFor(translator, content.Language);
+            foreach (var creator in creators)
+            {
+                Console.WriteLine($"Creator has value {creator.TermValue} and language {creator.Language}");
+                await context.CreateDummyUserTerm(creator, user.UserName);
             }
+        }
+            Console.WriteLine("Seeding database finished");
         }
     }
 }

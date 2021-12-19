@@ -486,13 +486,13 @@ NEW PAGE LOADING STEPS:
 FROM YESTERDAY:
 
 2. Implement HTML tags
-1. Support for saving phrases
+1. ~~Support for saving phrases~~
 2. User-created content collections
 3. More history graphing stuff
 
 TODO:
 
 1. Client-side phrase creation
-2. 
+2. Fix KnownWordsForList to take advantage of multi-threading (do this as a factory extension method), IDataRepository needs a WordKnown() method
 
 =================================================================================================

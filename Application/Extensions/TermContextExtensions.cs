@@ -40,6 +40,25 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
         }
 
+        public static async Task<Result<Term>> CreateAndGetTerm(this DataContext context, string language, string value)
+        {
+            Term term = await context.Terms.FirstOrDefaultAsync(t => t.Language == language && t.NormalizedValue == value.AsTermValue());
+            if (term == null)
+            {
+                // create the term if it doesn't exist
+                var createTermResult = await context.CreateTerm(language, value);
+                if (!createTermResult.IsSuccess)
+                    return Result<Term>.Failure($"Failed to create term! Error message: {createTermResult.Error}");
+                // now load the new term
+                term = await context.Terms.FirstOrDefaultAsync(t => t.Language == language && t.NormalizedValue == value.AsTermValue()); 
+            }
+            if (term == null)
+            {
+                return Result<Term>.Failure("Term could not be created or found!");
+            }
+           return Result<Term>.Success(term);
+        }
+
         
     }
 }

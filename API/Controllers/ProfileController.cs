@@ -6,7 +6,6 @@ using Application.DataObjectHandling.ProfileHistory;
 using Application.DataObjectHandling.UserLanguageProfiles;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
-using Application.DomainDTOs.HistoryQueries;
 using Application.DomainDTOs.ProfileHistory;
 using Application.DomainDTOs.UserLanguageProfile;
 using Microsoft.AspNetCore.Authorization;
@@ -52,16 +51,6 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileDelete.Command{Dto = dto}));
         } 
-
-/*
-        [Authorize]
-        [HttpPost("getKnownWordsForDays")]
-        public async Task<IActionResult> GetKnownWordsForDays(DailyKnownWordsQuery dto)
-        {
-            return HandleResult(await Mediator.Send(new GetDailyKnownWords.Query{Dto = dto}));
-        }
-*/
-
         [Authorize]
         [HttpPost("allUserTerms")]
         public async Task<IActionResult> AllUserTerms(LanguageNameDto dto)

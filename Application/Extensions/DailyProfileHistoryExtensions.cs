@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
-using Application.DomainDTOs.ContentHistory;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Extensions
 {
+    /*
     public static class DailyProfileHistoryExtensions
     {
         public static async Task<Result<DailyKnownWordsDto>> GetKnownWordsForDay(
@@ -63,4 +63,5 @@ namespace Application.Extensions
             return Result<DailyKnownWordsDto>.Success(output);
         }
     }
+    */
 }

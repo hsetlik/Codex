@@ -28,8 +28,9 @@ namespace API
                 var context = services.GetRequiredService<DataContext>(); //grabs the DbContext added in ConfigureServices() in Startup.cs
                 var userManager = services.GetRequiredService<UserManager<CodexUser>>();
                 var parser = services.GetRequiredService<IParserService>();
+                var translator = services.GetRequiredService<ITranslator>();
                 await context.Database.MigrateAsync(); //appends any pending migrations to the .db file, or creates it if none exists
-                await Seed.SeedData(context, userManager, parser);
+                await Seed.SeedData(context, userManager, parser, translator);
             }
             catch (Exception ex)
             { 

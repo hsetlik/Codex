@@ -6,6 +6,8 @@ using Application.Core;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.Interfaces;
+using Application.Parsing;
 using Application.Utilities;
 using Domain.DataObjects;
 using Microsoft.EntityFrameworkCore;
@@ -217,6 +219,38 @@ namespace Application.Extensions
                 }
             }
             return input;
+        }
+
+        public static async Task<List<UserTermCreateDto>> CreatorsFor(this ContentSection section, ITranslator translator, string language)
+        {
+            Console.WriteLine($"Getting creators for {section.ContentUrl} section #{section.Index}");
+            var output = new List<UserTermCreateDto>();
+            var words = section.Body.Split(null).ToList();
+            foreach(var word in words)
+            {
+                Console.WriteLine($"Word is: {word}");
+                var tResult = await translator.GetTranslation(new DomainDTOs.Translator.TranslatorQuery
+                {
+                    ResponseLanguage = "en",
+                    QueryLanguage = language,
+                    QueryValue = word
+                });
+                if (tResult.IsSuccess)
+                {
+                    output.Add(new UserTermCreateDto
+                    {
+                        TermValue = word,
+                        Language = language,
+                        FirstTranslation = tResult.Value.ResponseValue
+                    });
+                }
+                else
+                {
+                    Console.WriteLine($"Translation failed! Error message: {tResult.Error}");
+                }
+            }
+            return output;
+
         }
     }
 }
