@@ -66,31 +66,9 @@ export interface ElementQueryDto {
     elementIndex: number
 }
 
-export interface DateQuery {
-    day: number,
-    month: number,
-    year: number,
-}
-
-export const asDateQuery = (date: Date) : DateQuery => {
-
-    return {
-        day: date.getDay(),
-        month: date.getMonth(),
-        year: date.getFullYear()
-    };
-}
-
 export interface LanguageDateQuery {
     language: string,
-    dateQuery: DateQuery
-}
-
-
-export const queryDaysAgo = (lang: string, daysAgo: number) : LanguageDateQuery => {
-    var date = new Date(Date.now() - daysAgo);
-    return {
-        language: lang,
-        dateQuery: asDateQuery(date)
-    };
+    day: number,
+    month: number,
+    year: number
 }

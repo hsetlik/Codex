@@ -40,15 +40,6 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public static async Task<Result<Unit>> EnsureTerm(this DataContext context, TermDto dto)
-        {
-            var term = await context.Terms.FirstOrDefaultAsync(t => t.NormalizedValue == dto.Value.AsTermValue() && t.Language == dto.Language);
-            if (term == null)
-            {
-                
-
-            }
-            return Result<Unit>.Success(Unit.Value);
-        }
+        
     }
 }

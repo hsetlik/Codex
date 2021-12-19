@@ -9,6 +9,8 @@ namespace Application.Parsing
     {
         public string Tag { get; set; }
         public string Value { get; set; }
+        public string ContentUrl { get; set; }
+        public int Index { get; set; }
     }
     //note: this can be subclassed to do more complicated stuff as needed
     public class ContentSection

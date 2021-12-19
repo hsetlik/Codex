@@ -7,7 +7,10 @@ using Application.Core;
 using Application.DataObjectHandling.Terms;
 using Application.DomainDTOs.Content;
 using Application.Interfaces;
+using Application.Parsing;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.DataObjectHandling.Contents
 {
@@ -15,30 +18,28 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Query : IRequest<Result<ElementAbstractTerms>>
         {
-            public ElementTermsQuery Dto { get; set; }
+            public TextElement TextElement { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<ElementAbstractTerms>>
         {
         private readonly IDataRepository _factory;
         private readonly IUserAccessor _userAccessor;
-        private readonly IParserService _parser;
-            public Handler(IDataRepository factory, IUserAccessor userAccessor, IParserService parser)
+        private readonly DataContext _context;
+            public Handler(IDataRepository factory, IUserAccessor userAccessor, DataContext context)
             {
-            this._parser = parser;
+            this._context = context;
             this._userAccessor = userAccessor;
             this._factory = factory;
             }
 
             public async Task<Result<ElementAbstractTerms>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var content = await _parser.GetContentMetadata(request.Dto.ContentUrl);
-                var section = await _parser.GetSection(request.Dto.ContentUrl, request.Dto.SectionIndex);
-                if (section == null)
-                    return Result<ElementAbstractTerms>.Failure("Could not load section");
-                var element = section.TextElements[request.Dto.ElementIndex];
+                var content = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.TextElement.ContentUrl);
+                if (content == null)
+                    return Result<ElementAbstractTerms>.Failure("Could not load content");
                 var terms = new List<AbstractTermDto>();
-                var words = element.Value.Split(null).ToList();
+                var words = request.TextElement.Value.Split(null).ToList();
                 var wordDict = new Dictionary<int, string>();
                 for(int i = 0; i < words.Count; ++i)
                 {
@@ -58,8 +59,8 @@ namespace Application.DataObjectHandling.Contents
                 var orderedTerms = terms.OrderBy(t => t.IndexInChunk).ToList();
                 var output = new ElementAbstractTerms
                 {
-                    Index = request.Dto.ElementIndex,
-                    Tag = element.Tag,
+                    Index = request.TextElement.Index,
+                    Tag = request.TextElement.Tag,
                     AbstractTerms = orderedTerms
                 };
                 return Result<ElementAbstractTerms>.Success(output);

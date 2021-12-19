@@ -3,6 +3,8 @@ import { AbstractTerm } from "./userTerm";
 export interface TextElement {
     value: string,
     tag: string,
+    index: number,
+    contentUrl: string
 }
 
 export interface ContentSection {

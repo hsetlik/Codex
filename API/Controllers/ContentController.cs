@@ -7,6 +7,7 @@ using Application.DataObjectHandling.Contents;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.ContentViewRecord;
+using Application.Parsing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -110,9 +111,9 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("abstractTermsForElement")]
-        public async Task<IActionResult> AbstractTermsForElement(ElementTermsQuery dto)
+        public async Task<IActionResult> AbstractTermsForElement(TextElement dto)
         {
-            return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{Dto = dto}));
+            return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{TextElement = dto}));
         }
 
 

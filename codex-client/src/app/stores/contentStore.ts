@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, SectionAbstractTerms } from "../models/content";
+import { ContentMetadata, ContentSection, SectionAbstractTerms } from "../models/content";
 import { AddTranslationDto, KnownWordsDto } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
@@ -21,6 +21,7 @@ export default class ContentStore
     selectedContentUrl: string = "none";
     selectedSectionIndex = 0;
     sectionLoaded = false;
+    currentSection: ContentSection | null = null;
     currentSectionTerms: SectionAbstractTerms = {
         contentUrl: 'none',
         index: 0,
@@ -117,8 +118,9 @@ export default class ContentStore
         this.sectionLoaded = false;
         try {
            let content = await agent.Content.getContentWithId({contentId: id}); 
-           let section = await agent.Content.getSectionMetadata({contentUrl: content.contentUrl, index: pIndex});
+           let section = await agent.Parse.getSection({contentUrl: content.contentUrl, index: pIndex});
            runInAction(() => {
+               this.currentSection = section;
                this.currentSectionTerms = {
                    contentUrl: content.contentUrl,
                    index: pIndex,
@@ -127,10 +129,10 @@ export default class ContentStore
                };
                this.sectionLoaded = true;
            })
-           for(var i = 0; i < section.numElements; ++i) {
-               let element = await agent.Content.abstractTermsForElement({contentUrl: content.contentUrl, sectionIndex: section.index, elementIndex: i});
+           for(var element of this.currentSection?.textElements!) {
+               var elementTerms = await agent.Content.abstractTermsForElement(element);
                runInAction(() => {
-                   this.currentSectionTerms.elementGroups.push(element);
+                   this.currentSectionTerms.elementGroups.push(elementTerms);
                })
            }
            await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});

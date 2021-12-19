@@ -5,7 +5,7 @@ import { User, UserFormValues } from "../models/user";
 import { toast } from "react-toastify";
 import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
 import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, PopularTranslationDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LangProfileItem, SectionQueryDto, ElementQueryDto } from "../models/dtos";
-import { ContentMetadata, ContentSectionMetadata, ElementAbstractTerms } from "../models/content";
+import { ContentMetadata, ContentSectionMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
@@ -109,10 +109,14 @@ const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadata[]>('/content/getLanguageContents', language),
     getKnownWordsForContent: (contentId: IContentId) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentId),
     getSectionMetadata: (dto: SectionQueryDto) => requests.post<ContentSectionMetadata>('/content/getSectionMetadata', dto),
-    abstractTermsForElement: (dto: ElementQueryDto) => requests.post<ElementAbstractTerms>('/content/abstractTermsForElement', dto),
+    abstractTermsForElement: (dto: TextElement) => requests.post<ElementAbstractTerms>('/content/abstractTermsForElement', dto),
     getContentWithId: (contentId: IContentId) => requests.post<ContentMetadata>('/content/getContentWithId', contentId),
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
     getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl)
+}
+
+const Parse = {
+    getSection: (dto: SectionQueryDto) => requests.post<ContentSection>('/parse/getSection', dto)
 }
 
 //====================================================================================================================
@@ -121,6 +125,7 @@ const agent = {
     Profile,
     Content,
     UserTermEndpoints,
-    TermEndpoints
+    TermEndpoints,
+    Parse
 }
 export default agent;

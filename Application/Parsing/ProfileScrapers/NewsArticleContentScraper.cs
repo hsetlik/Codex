@@ -71,9 +71,16 @@ namespace Application.Parsing.ProfileScrapers
             uNodes.AddRange(root.CssSelect("h2").ToList());
             var nodes = uNodes.OrderBy(n => n.Line).ToList();
             var elements = new List<TextElement>();
-            foreach(var node in uNodes)
+            for(int i = 0; i < nodes.Count; ++i)
             {
-                elements.Add(node.AsTextElement());
+                var element = new TextElement
+                {
+                    Tag = nodes[i].Name,
+                    Value = nodes[i].InnerText,
+                    ContentUrl = this.Url,
+                    Index = i
+                };
+                elements.Add(element);
             }
             
             storage.Metadata = new ContentMetadataDto

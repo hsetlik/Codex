@@ -111,7 +111,9 @@ namespace Application.Parsing.ProfileScrapers
                 currentSection.TextElements.Add(new TextElement
                 {
                     Value = inner,
-                    Tag = node.Name
+                    Tag = node.Name,
+                    ContentUrl = Url,
+                    Index = currentSection.TextElements.Count
                 });
             }          
             storage.Metadata.NumSections = storage.Sections.Count;

@@ -38,7 +38,7 @@ namespace Application.Parsing
         public abstract ContentSection GetSection(int index);
         public abstract List<ContentSection> GetAllSections();
 
-        public List<List<string>> GetWordLists(int size = 100, int maximum = 1000)
+        public List<List<string>> GetWordLists(int size = 50, int maximum = 1000)
         {
             var output = new List<List<string>>();
             var allTerms = new List<string>();

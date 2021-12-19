@@ -69,10 +69,6 @@ namespace Application.DataObjectHandling.Contents
                         Console.WriteLine($"Failed with error message: {results.Error}");
                     w.Stop();
                     Console.WriteLine($"Parsing {list.Count} words in list {idx} took {w.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
-                    if (list == lists.Last())
-                    {
-                        Console.WriteLine($"Finished final list with {list.Count} words!"); // IMPORTANT: this line is being hit about halfway through the lists. Why is it running everything twice?
-                    }
                     ++idx;
                 });
                 return Result<KnownWordsDto>.Success(new KnownWordsDto
