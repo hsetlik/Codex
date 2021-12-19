@@ -471,13 +471,15 @@ TODO:
 2. User-created content collections
 3. More history graphing stuff
 4. ~~Add DateCreated to UserTerm~~
-5. Pass the text of the sectionBody to the AbstractTerms function, save on time to parse sections
+5. ~~Pass the text of the sectionBody to the AbstractTerms function, save on time to parse sections~~
+6. Client-side translations
 
 NEW PAGE LOADING STEPS:
 
 1. Load content metadata if not loaded
 2. Load appropriate ContentSection (incl. list of textElements w/ content)
 3. Get AbstractTerms for each already-loaded element (pass language, index, and body text to endpoint)
+
 
 
 =================================================================================================

@@ -16,6 +16,7 @@ using Application.DataObjectHandling.UserTerms;
 using Application.Parsing;
 using EFCore.DbContextFactory.Extensions;
 using Application;
+using Application.TranslationService;
 //using Application.Interfaces;
 
 //This is just here to move some ugly service configuration code out of Startup.cs
@@ -63,6 +64,7 @@ namespace API.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IParserService, ParserService>();
+            services.AddScoped<ITranslator, Translator>();
 
             return services;
         }
