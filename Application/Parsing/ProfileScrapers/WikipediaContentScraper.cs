@@ -56,7 +56,6 @@ namespace Application.Parsing.ProfileScrapers
             // load the web page
             var sBrower = new ScrapingBrowser();
             var page = await sBrower.NavigateToPageAsync(new Uri(this.Url));
-            Console.WriteLine($"Encoding is: {page.Html.OwnerDocument.Encoding.EncodingName}");
 
             //grab the HTML
             var root = page.Html;
@@ -107,7 +106,6 @@ namespace Application.Parsing.ProfileScrapers
                         TextElements = new List<TextElement>()
                     };
                 }
-                Console.WriteLine($"Node has name {node.Name} and inner text {inner}");
                 currentSection.TextElements.Add(new TextElement
                 {
                     Value = inner,

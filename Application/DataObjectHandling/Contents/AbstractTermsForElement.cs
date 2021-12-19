@@ -35,9 +35,12 @@ namespace Application.DataObjectHandling.Contents
 
             public async Task<Result<ElementAbstractTerms>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 var content = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.TextElement.ContentUrl);
                 if (content == null)
                     return Result<ElementAbstractTerms>.Failure("Could not load content");
+                watch.Stop();
+                Console.WriteLine($"Getting content {content.ContentUrl} took {watch.ElapsedMilliseconds} ms");
                 var terms = new List<AbstractTermDto>();
                 var words = request.TextElement.Value.Split(null).ToList();
                 var wordDict = new Dictionary<int, string>();
@@ -45,6 +48,7 @@ namespace Application.DataObjectHandling.Contents
                 {
                     wordDict[i] = words[i];
                 }
+                watch.Restart();
                 Parallel.ForEach(wordDict, async word => 
                 {
                     var newTermResult = await _factory.GetAbstractTerm(new TermDto{Value = word.Value, Language = content.Language}, _userAccessor.GetUsername());
@@ -53,9 +57,10 @@ namespace Application.DataObjectHandling.Contents
                         var newTerm = newTermResult.Value;
                         newTerm.IndexInChunk = word.Key;
                         terms.Add(newTerm);
-                        Console.WriteLine($"Term with value {newTerm.TermValue} at index {word.Key}");
                     }
                 });
+                watch.Stop();
+                Console.WriteLine($"Getting AbstractTerms for element {request.TextElement.Index}: {request.TextElement.Value} took {watch.ElapsedMilliseconds} ms");
                 var orderedTerms = terms.OrderBy(t => t.IndexInChunk).ToList();
                 var output = new ElementAbstractTerms
                 {
