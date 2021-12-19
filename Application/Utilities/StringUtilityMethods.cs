@@ -43,6 +43,20 @@ namespace Application.Utilities
         {
             return Regex.Replace(input, pattern, "");
         }
+        
+
+        public static string AsPhraseValue(this string value)
+        {
+            string output = "";
+            var words = value.Split(null).ToList();
+            foreach(string word in words)
+            {
+                output += word.AsTermValue();
+                if (word != words.Last())
+                    output += ' ';
+            }
+            return output;
+        }
 
        
 

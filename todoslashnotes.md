@@ -480,6 +480,19 @@ NEW PAGE LOADING STEPS:
 2. ~~Load appropriate ContentSection (incl. list of textElements w/ content)~~
 3. ~~Get AbstractTerms for each already-loaded element (pass language, index, and body text to endpoint)~~
 
+=================================================================================================
+============================================== 12/19/21 =========================================
 
+FROM YESTERDAY:
+
+2. Implement HTML tags
+1. Support for saving phrases
+2. User-created content collections
+3. More history graphing stuff
+
+TODO:
+
+1. Client-side phrase creation
+2. 
 
 =================================================================================================

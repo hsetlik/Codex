@@ -12,14 +12,14 @@ using Persistence;
 
 namespace Application.DataObjectHandling.Phrase
 {
-    public class CreatePhrase
+    public class GetPhraseDetails
     {
-        public class Command : IRequest<Result<Unit>>
+        public class Query : IRequest<Result<PhraseDetailsDto>>
         {
-            public PhraseCreateDto Dto { get; set; }
+            public PhraseQuery Dto { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Result<Unit>>
+        public class Handler : IRequestHandler<Query, Result<PhraseDetailsDto>>
         {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
@@ -29,9 +29,9 @@ namespace Application.DataObjectHandling.Phrase
             this._context = context;
             }
 
-            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<PhraseDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.CreatePhrase(request.Dto, _userAccessor.GetUsername());
+                return await _context.GetDetails(request.Dto, _userAccessor.GetUsername());
             }
         }
     }

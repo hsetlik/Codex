@@ -6,6 +6,7 @@ using Application.Core;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.Utilities;
 using Domain.DataObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -149,8 +150,6 @@ namespace Application.Extensions
             
         }
 
-        
-        //NOTE: ContentHistories need to be loaded for this
 
         public static ContentMetadataDto GetMetadata(this Content content)
         {
@@ -165,6 +164,59 @@ namespace Application.Extensions
                 ContentId = content.ContentId,
                 NumSections = content.NumSections
             };
+        }
+
+
+        public static List<TermDto> TermList(this Phrase phrase)
+        {
+            var words = phrase.Value.Split(null).ToArray();
+            var output = new List<TermDto>();
+            foreach(var word in words)
+            {
+                output.Add(new TermDto
+                {
+                    Value = word.AsTermValue(),
+                    Language = phrase.UserLanguageProfile.Language
+                });
+            }
+            return output;
+        }
+
+        public static Phrase UpdatedWith(this Phrase input, PhraseDetailsDto details)
+        {
+            input.Value = details.Value;
+            input.TimesSeen = details.TimesSeen;
+            input.EaseFactor = details.EaseFactor;
+            input.Rating = details.Rating;
+            input.DateTimeDue = details.DateTimeDue;
+            input.SrsIntervalDays = details.SrsIntervalDays;
+
+            if (input.Translations.Count > details.Translations.Count)
+            { //deleting a translation
+                foreach(var translation in input.Translations)
+                {
+                    if (!details.Translations.Contains(translation.Value))
+                        input.Translations.Remove(translation);
+                }
+            }
+            else if (input.Translations.Count < details.Translations.Count)
+            { // adding a translation
+                foreach(var word in details.Translations)
+                {
+                    if (input.Translations.Any(p => p.Value == word))
+                    {
+                        var translation = new PhraseTranslation
+                        {
+                            Value = word,
+                            PhraseId = input.PhraseId,
+                            Phrase = input,
+                            TranslationId = Guid.NewGuid()
+                        };
+                        input.Translations.Add(translation);
+                    }
+                }
+            }
+            return input;
         }
     }
 }
