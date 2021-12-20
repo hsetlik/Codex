@@ -99,6 +99,65 @@ namespace Application.Extensions
                 return Result<Unit>.Success(Unit.Value);
         }
 
+        public static async Task<Result<Unit>> AddRecordForDate(this DataContext context, Guid langProfileId, DateTime time)
+        {
+            var profile = await context.UserLanguageProfiles.FirstOrDefaultAsync(p => p.LanguageProfileId == langProfileId);
+            if (profile == null)
+                return Result<Unit>.Failure($"Could not get profile with ID {langProfileId}");
+            return Result<Unit>.Success(Unit.Value);
+        }
 
+        public static async Task<Result<Unit>> AddRecord(this DataContext context, LanguageProfileDto dto, DateTime date)
+        {
+            var profile = await context.UserLanguageProfiles
+                .Include(p => p.DailyProfileHistory)
+                .FirstOrDefaultAsync(p => p.LanguageProfileId == dto.LanguageProfileId);
+            if (profile == null)
+                return Result<Unit>.Failure($"Could not get profile with ID {dto.LanguageProfileId}");
+            // check for an existing record from today
+            var existingRecord = await context.DailyProfileRecords
+            .FirstOrDefaultAsync(r => r.LanguageProfileId == dto.LanguageProfileId && r.CreatedAt.Date == date.Date);
+            // if we find one, remove it from the context
+            if(existingRecord != null)
+                context.DailyProfileRecords.Remove(existingRecord);
+            var record = new DailyProfileRecord
+            {
+                DailyProfileHistoryId = profile.DailyProfileHistory.DailyProfileHistoryId,
+                DailyProfileHistory = profile.DailyProfileHistory,
+                LanguageProfileId = profile.LanguageProfileId,
+                CreatedAt = date,
+                KnownWords = dto.KnownWords
+            };
+            context.DailyProfileRecords.Add(record);
+
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("Could not save changes!");
+            return Result<Unit>.Success(Unit.Value);
+        }
+
+        public static async Task<Result<Unit>> CreateDummyRecords(this DataContext context, Guid profileId, List<int> knownWordsValues, DateTime start)
+        {
+            var profile = await context.UserLanguageProfiles.FirstOrDefaultAsync(p => p.LanguageProfileId == profileId);
+            var current = start;
+            foreach(var wordCount in knownWordsValues)
+            {
+                var dto = new LanguageProfileDto
+                {
+                    LanguageProfileId = profile.LanguageProfileId,
+                    Language = profile.Language,
+                    KnownWords = wordCount
+                };
+                var addResult = await context.AddRecord(dto, current);
+                if (!addResult.IsSuccess)
+                    return Result<Unit>.Failure($"Could not add record! Error message: {addResult.Error}");
+                current = current.AddDays(1.0f);
+            }
+            return Result<Unit>.Success(Unit.Value);
+        }
     }
+
+    
+
+    
 }

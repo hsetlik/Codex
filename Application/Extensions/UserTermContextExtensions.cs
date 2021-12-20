@@ -136,9 +136,9 @@ namespace Application.Extensions
 
             int timesSeen = (int)(r.NextDouble() * 5);
             int rating = (int)(r.NextDouble() * 5);
+            if (rating >= 3)
+                profile.KnownWords = profile.KnownWords + 1;
             float intervalDays = (float)r.NextDouble() * 4.0f;
-
-
             var userTerm = new UserTerm
             {
                 LanguageProfileId = profile.LanguageProfileId,
@@ -167,6 +167,15 @@ namespace Application.Extensions
             if (!success)
                 return Result<Unit>.Failure("Could not create userTerm!");
             Console.WriteLine($"Created userTerm for {dto.TermValue} and user {username}");
+            var updateResult = await context.AddRecord(new DomainDTOs.UserLanguageProfile.LanguageProfileDto
+            {
+                Language = dto.Language,
+                LanguageProfileId = profile.LanguageProfileId,
+                KnownWords = profile.KnownWords
+            }, createTime);
+            if (!updateResult.IsSuccess)
+                return Result<Unit>.Failure($"Could not update history! Error message: {updateResult.Error}");
+            Console.WriteLine($"Updated history for {dto.TermValue} and user {username}");
             return Result<Unit>.Success(Unit.Value);
         }
     }
