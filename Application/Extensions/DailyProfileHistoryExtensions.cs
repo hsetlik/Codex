@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs.ProfileHistory;
 using Application.DomainDTOs.ProfileHistory.DailyData;
+using Application.DomainDTOs.UserLanguageProfile;
 using Domain.DataObjects;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -64,6 +66,37 @@ namespace Application.Extensions
                 End = query.End,
                 DataPoints = points
             });
+        }
+
+
+        public static async Task<Result<Unit>> UpdateHistory(this DataContext context, ProfileIdDto dto)
+        {
+                var profile = await context.UserLanguageProfiles
+                    .Include(p => p.DailyProfileHistory)
+                    .FirstOrDefaultAsync(p => p.LanguageProfileId == dto.LanguageProfileId);
+                if (profile == null)
+                    return Result<Unit>.Failure($"Could not get profile: {dto.LanguageProfileId}");
+
+                // check for an existing record from today
+                var existingRecord = await context.DailyProfileRecords
+                .FirstOrDefaultAsync(r => r.LanguageProfileId == dto.LanguageProfileId && r.CreatedAt.Date == DateTime.Now.Date);
+                // if we find one, remove it from the context
+                if(existingRecord != null)
+                    context.DailyProfileRecords.Remove(existingRecord);
+                var record = new DailyProfileRecord
+                {
+                    DailyProfileHistoryId = profile.DailyProfileHistory.DailyProfileHistoryId,
+                    DailyProfileHistory = profile.DailyProfileHistory,
+                    LanguageProfileId = dto.LanguageProfileId,
+                    UserLanguageProfile = profile,
+                    CreatedAt = DateTime.Now,
+                    KnownWords = profile.KnownWords
+                };
+                context.DailyProfileRecords.Add(record);
+                var success = await context.SaveChangesAsync() > 0;
+                if (!success)
+                    return Result<Unit>.Failure($"Could not save changes!");
+                return Result<Unit>.Success(Unit.Value);
         }
 
 

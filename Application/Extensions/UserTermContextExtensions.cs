@@ -113,22 +113,23 @@ namespace Application.Extensions
 
         public static async Task<Result<Unit>> CreateDummyUserTerm(this DataContext context, UserTermCreateDto dto, string username, int dateRange=14)
         {
-            Console.WriteLine($"Creating dummy userterm for {dto.TermValue}");
             var profile = await context.UserLanguageProfiles.Include(p => p.User).FirstOrDefaultAsync(p => p.User.UserName == username && p.Language == dto.Language);
             if (profile == null)
                 return Result<Unit>.Failure($"Could not get profile for {username} with language {dto.Language}");
+            Console.WriteLine($"Profile found: {profile.LanguageProfileId}");
             var termResult = await context.CreateAndGetTerm(dto.Language, dto.TermValue);
             if (!termResult.IsSuccess)
                 return Result<Unit>.Failure($"Could not get term!: Error message{termResult.Error}");
             var term = termResult.Value;
-            var existingTerm = context.UserTerms
-                .FirstOrDefaultAsync(u => u.LanguageProfileId == profile.LanguageProfileId && 
-                u.TermId == term.TermId);
-            if (existingTerm != null)
+            Console.WriteLine($"Term {term.NormalizedValue} with ID {term.TermId}");
+            var termExists = await context.UserTerms.AnyAsync(u => u.LanguageProfileId == profile.LanguageProfileId && u.TermId == term.TermId);
+            if (termExists)
             {
                 Console.WriteLine($"UserTerm for {term.NormalizedValue} already exists!");
                 return Result<Unit>.Success(Unit.Value);
             }
+            else 
+                Console.WriteLine($"No existing term for term {term.NormalizedValue} with ID {term.TermId}");
             var r = new Random();
             var dateOffset = r.NextDouble() * dateRange;
             var createTime = DateTime.Now.AddDays(dateOffset * -1.0f);

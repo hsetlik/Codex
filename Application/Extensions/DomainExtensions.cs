@@ -228,7 +228,6 @@ namespace Application.Extensions
             var words = section.Body.Split(null).ToList();
             foreach(var word in words)
             {
-                Console.WriteLine($"Word is: {word}");
                 var tResult = await translator.GetTranslation(new DomainDTOs.Translator.TranslatorQuery
                 {
                     ResponseLanguage = (language == "en") ? "de" : "en",
@@ -243,6 +242,7 @@ namespace Application.Extensions
                         Language = language,
                         FirstTranslation = tResult.Value.ResponseValue
                     });
+                    Console.WriteLine($"Word is: {word} with translation {tResult.Value.ResponseValue}");
                 }
                 else
                 {

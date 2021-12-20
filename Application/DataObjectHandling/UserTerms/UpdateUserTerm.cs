@@ -47,6 +47,10 @@ namespace Application.DataObjectHandling.UserTerms
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)
                     return Result<Unit>.Failure("Could not save Changes!");
+                // 
+                var historyResult = await _context.UpdateHistory(new DomainDTOs.UserLanguageProfile.ProfileIdDto{LanguageProfileId = userTerm.LanguageProfileId});
+                if (!historyResult.IsSuccess)
+                    return Result<Unit>.Failure($"Could not update history! Error message: {historyResult.Error}");
                 return Result<Unit>.Success(Unit.Value);
             }
         }
