@@ -4,8 +4,9 @@ import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
 import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
-import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, TranslationResultDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LangProfileItem, SectionQueryDto, ElementQueryDto, TermDto } from "../models/dtos";
+import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, TranslationResultDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LanguageProfileDto, SectionQueryDto, TermDto, IProfileId } from "../models/dtos";
 import { ContentMetadata, ContentSectionMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
+import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
@@ -66,7 +67,6 @@ const requests = {
 }
 
 
-//use create one of these for each endpoint group
 const Account = {
     current: () => requests.get<User>('/Account'),
     login: (user: UserFormValues) => requests.post<User>('/Account/login', user),
@@ -74,8 +74,10 @@ const Account = {
 }
 
 const Profile = {
-    getUserProfiles: () => requests.get<LangProfileItem[]>('Profile/getUserProfiles'),
-    allUserTerms: (lang: ILanguageString) => requests.post<UserTerm[]>('profile/allUserTerms', lang)
+    getUserProfiles: () => requests.get<LanguageProfileDto[]>('Profile/getUserProfiles'),
+    allUserTerms: (lang: ILanguageString) => requests.post<UserTerm[]>('profile/allUserTerms', lang),
+    getMetricGraph: (query: MetricGraphQuery) => requests.post<MetricGraph>('/profile/getMetricData', query),
+    updateHistory: (id: IProfileId) => requests.post('profile/updateHistory', id)
 }
 
 

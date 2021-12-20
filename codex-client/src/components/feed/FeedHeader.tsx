@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 export default observer(function FeedHeader(){
     const {userStore} = useStore();
-    const {languageProfiles} = userStore;
+    const {languageProfileStrings: languageProfiles} = userStore;
     const navigate = useNavigate();
     var idx = 0;
     return(

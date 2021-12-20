@@ -509,6 +509,6 @@ FROM YESTERDAY:
 
 TODO:
 
-1. 
+1. GetDailyMetric endpoint & objects on client
 
 =================================================================================================

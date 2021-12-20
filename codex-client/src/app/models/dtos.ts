@@ -38,8 +38,10 @@ export interface IChildTranslation {
     value: string
 }
 
-export interface LangProfileItem {
-    language: string
+export interface LanguageProfileDto {
+    language: string,
+    languageProfileId: string,
+    knownWords: number
 }
 
 export interface ILanguageString {
@@ -54,6 +56,10 @@ export interface IContentUrl {
     contentUrl: string
 }
 
+export interface IProfileId {
+    languageProfileId: string
+}
+
 export interface KnownWordsDto {
     totalWords: number;
     knownWords: number;
@@ -64,15 +70,4 @@ export interface SectionQueryDto {
     index: number
 }
 
-export interface ElementQueryDto {
-    contentUrl: string,
-    sectionIndex: number,
-    elementIndex: number
-}
 
-export interface LanguageDateQuery {
-    language: string,
-    day: number,
-    month: number,
-    year: number
-}

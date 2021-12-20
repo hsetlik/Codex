@@ -8,7 +8,7 @@ import { store } from './store';
 export default class UserStore{
     user: User | null = null;
 
-    languageProfiles: string[] = [];
+    languageProfileStrings: string[] = [];
 
     selectedLanguage: string = "none"
 
@@ -33,13 +33,13 @@ export default class UserStore{
             console.log("PROFILES FOUND");
             console.log(profiles);
             runInAction(() => {
-                this.languageProfiles = [];
+                this.languageProfileStrings = [];
                 for(var i = 0; i < profiles.length; ++i)
                 {
-                    this.languageProfiles.push(profiles[i].language);
+                    this.languageProfileStrings.push(profiles[i].language);
                 }
                 
-                console.log(this.languageProfiles);
+                console.log(this.languageProfileStrings);
                 console.log("Selected: " + this.selectedLanguage);
             });
             this.setSelectedLanguage(user.lastStudiedLanguage);
@@ -56,7 +56,7 @@ export default class UserStore{
         store.commonStore.setToken(null);
         window.localStorage.removeItem('jwt');
         this.user = null;
-        this.languageProfiles = [];
+        this.languageProfileStrings = [];
         this.selectedLanguage = "none";
         if(window.localStorage.getItem('jwt') != null)
         {
@@ -74,14 +74,14 @@ export default class UserStore{
     }
 
     selectDefaultLanguage = () => {
-        if (this.languageProfiles.length < 1) {
+        if (this.languageProfileStrings.length < 1) {
             console.log("No profiles loaded!");
             return;
         }
         let lang = this.user?.lastStudiedLanguage!;
         if (lang === null || lang === undefined)
         {
-            lang = this.languageProfiles[0];
+            lang = this.languageProfileStrings[0];
         }
         this.setSelectedLanguage(lang);
     }
@@ -91,13 +91,13 @@ export default class UserStore{
             const user = await agent.Account.current();
             const profiles = await agent.Profile.getUserProfiles();
             runInAction(()=> {
-                this.languageProfiles = [];
+                this.languageProfileStrings = [];
                 for(var i = 0; i < profiles.length; ++i)
                 {
-                    this.languageProfiles.push(profiles[i].language);
+                    this.languageProfileStrings.push(profiles[i].language);
                 }
-                this.selectedLanguage = this.languageProfiles[0];
-                console.log(this.languageProfiles);
+                this.selectedLanguage = this.languageProfileStrings[0];
+                console.log(this.languageProfileStrings);
             }); 
             runInAction(() => this.user = user);
         } catch(error) {

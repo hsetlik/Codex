@@ -130,7 +130,7 @@ export default class ContentStore
                this.sectionLoaded = true;
            })
            for(var element of this.currentSection?.textElements!) {
-               var elementTerms = await agent.Content.abstractTermsForElement(element);
+               const elementTerms = await agent.Content.abstractTermsForElement(element);
                runInAction(() => {
                    this.currentSectionTerms.elementGroups.push(elementTerms);
                })

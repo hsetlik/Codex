@@ -5,7 +5,7 @@ import { useStore } from "../../app/stores/store";
 export default function UserLanguagePicker(){
     const {userStore} = useStore();
     var dropdownItems: {}[] = [];
-    for (const i in userStore.languageProfiles) {
+    for (const i in userStore.languageProfileStrings) {
         const item = {
             key: i,
             text: i,
