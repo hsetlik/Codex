@@ -509,6 +509,7 @@ FROM YESTERDAY:
 
 TODO:
 
-1. GetDailyMetric endpoint & objects on client
+1. ~~GetDailyMetric endpoint & objects on client~~
+2. Create MetricGraph component and query components (i.e. MetricType and NumDays dropdowns)
 
 =================================================================================================

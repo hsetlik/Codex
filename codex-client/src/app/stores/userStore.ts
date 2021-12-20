@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
-import { IChildTranslation, UserTermCreateDto } from '../models/dtos';
+import { IChildTranslation, LanguageProfileDto, UserTermCreateDto } from '../models/dtos';
 import { User, UserFormValues } from '../models/user';
 import { UserTermDetails } from '../models/userTerm';
 import { store } from './store';
@@ -9,7 +9,9 @@ export default class UserStore{
     user: User | null = null;
 
     languageProfileStrings: string[] = [];
+    languageProfiles: LanguageProfileDto[] = [];
 
+    selectedProfile: LanguageProfileDto | null = null;
     selectedLanguage: string = "none"
 
     constructor() {
@@ -34,17 +36,16 @@ export default class UserStore{
             console.log(profiles);
             runInAction(() => {
                 this.languageProfileStrings = [];
+                this.languageProfiles = [];
                 for(var i = 0; i < profiles.length; ++i)
                 {
                     this.languageProfileStrings.push(profiles[i].language);
+                    this.languageProfiles.push(profiles[i]);
                 }
-                
                 console.log(this.languageProfileStrings);
                 console.log("Selected: " + this.selectedLanguage);
             });
             this.setSelectedLanguage(user.lastStudiedLanguage);
-            //redirect user to home page on successful login
-            
             console.log(user);
         } catch (error) {
             throw error;
@@ -58,16 +59,15 @@ export default class UserStore{
         this.user = null;
         this.languageProfileStrings = [];
         this.selectedLanguage = "none";
-        if(window.localStorage.getItem('jwt') != null)
-        {
+        if(window.localStorage.getItem('jwt') != null) {
             console.log("WARNING: TOKEN NOT DELETED!!");
         }
-        
     }
 
     setSelectedLanguage = (iso: string) => {
         console.log("Setting selected language: " + iso);
         this.selectedLanguage = iso;
+        this.selectedProfile = this.languageProfiles.find(p => p.language === iso)!;
         store.contentStore.loadMetadata(iso);
         if (store.knownWordsStore.knownWords.size > 0)
             store.knownWordsStore.clearKnownWords();
@@ -140,7 +140,6 @@ export default class UserStore{
 
     refreshByValue = async (termValue: string) => {
         try {
-            //console.log(`refreshing term with ID: ${termValue}`);
             let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedLanguage});
             if (store.contentStore.selectedTerm?.termValue === termValue) {
                 store.contentStore.setSelectedTerm(updatedTermValue);
@@ -154,8 +153,6 @@ export default class UserStore{
                     }
                 }
             }
-        
-            
         } catch (error) {
            console.log(error); 
         }
@@ -169,5 +166,4 @@ export default class UserStore{
            console.log(error); 
         }
     }
-
 }

@@ -27,3 +27,18 @@ export interface MetricGraph {
     end: string,
     dataPoints: DailyDataPoint[]
 }
+
+export const getGraphQuery = (name: string, days: number, profileId: string) : MetricGraphQuery => {
+    const startDate = new Date(Date.now() - days);
+    return {
+        metricName: name,
+        languageProfileId: profileId,
+        start: getDotnetDateTime(startDate),
+        end: getDotnetDateTime(new Date(Date.now()))
+    }
+}
+
+export const allMetricNames = [
+    "KnownWords",
+    "NumUserTerms"
+]
