@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
+using Application.DomainDTOs.UserLanguageProfile;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -16,12 +17,12 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
 {
     public class UserLanguageProfileList
     {
-        public class Query : IRequest<Result<List<LanguageNameDto>>>
+        public class Query : IRequest<Result<List<LanguageProfileDto>>>
         {
             
         }
 
-        public class Handler : IRequestHandler<Query, Result<List<LanguageNameDto>>>
+        public class Handler : IRequestHandler<Query, Result<List<LanguageProfileDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -35,22 +36,23 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
 
             }
 
-            public async Task<Result<List<LanguageNameDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<LanguageProfileDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users.Include(x => x.UserLanguageProfiles).FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
                 
                 var profiles = user.UserLanguageProfiles;
-                var profileDtos = new List<LanguageNameDto>();
+                var profileDtos = new List<LanguageProfileDto>();
                 foreach(var profile in profiles)
                 {
                     profileDtos.Add(
-                        new LanguageNameDto
+                        new LanguageProfileDto
                     {
-                        Language = profile.Language
+                        Language = profile.Language,
+                        LanguageProfileId = profile.LanguageProfileId,
+                        KnownWords = profile.KnownWords
                     });
                 }
-
-                return Result<List<LanguageNameDto>>.Success(profileDtos);
+                return Result<List<LanguageProfileDto>>.Success(profileDtos);
 
             }
         }

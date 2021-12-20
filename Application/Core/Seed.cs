@@ -38,61 +38,6 @@ namespace Domain
             "https://meduza.io/feature/2021/09/23/menya-nelzya-bylo-ostanovit"
        };
     }
-    public static class UserTermCreators
-    {
-        public static readonly List<UserTermCreateDto> RussianTermSeeds = new List<UserTermCreateDto>()
-        {
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },
-            
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },       
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },
-            new UserTermCreateDto
-            {
-                TermValue = "погода",
-                Language = "ru",
-                FirstTranslation = "weather"
-            },
-        };
-    }
     
     public static class Seed
     {
@@ -101,6 +46,7 @@ namespace Domain
             IParserService parser,
             ITranslator translator)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             if (!userManager.Users.Any() && !context.Terms.Any())
             {
                 //make some dummy users w/ whatever info
@@ -137,20 +83,13 @@ namespace Domain
                     Email = "sonya@test.com",
                     NativeLanguage = "ru",
                     UserLanguageProfiles = new List<UserLanguageProfile>()
-                 
                 }
             };
             //create each user on the server
             string[] langs = {"ru", "en", "de", "es"};
             for(int i = 0; i < 4; i++)
             {
-                var profile = new UserLanguageProfile
-                {
-                    Language = langs[i],
-                    UserId = users[i].UserName,
-                    User = users[i],
-                    KnownWords = 0
-                };
+                var profile = users[i].CreateProfileFor(langs[i]);
                 users[i].UserLanguageProfiles.Add(profile);
                 await userManager.CreateAsync(users[i], "Pa$$w0rd");
             }
@@ -173,19 +112,31 @@ namespace Domain
             }
             await context.SaveChangesAsync();
             Console.WriteLine("Added all contents");
-
-            var user = await context.Users.Include(u => u.UserLanguageProfiles).FirstOrDefaultAsync(u => u.UserLanguageProfiles.Any(p => p.Language == "ru"));
-            var content = await context.Contents.FirstOrDefaultAsync(c => c.Language == "ru");
-            var section = await parser.GetSection(content.ContentUrl, 1);
-            Console.WriteLine($"Section is : {section.Body}");
-            var creators = await section.CreatorsFor(translator, content.Language);
-            foreach (var creator in creators)
+            var timeString = new List<string>();
+            foreach(var lang in langs)
             {
-                Console.WriteLine($"Creator has value {creator.TermValue} and language {creator.Language}");
-                await context.CreateDummyUserTerm(creator, user.UserName);
+                var lWatch = System.Diagnostics.Stopwatch.StartNew();
+                var user = await context.Users.Include(u => u.UserLanguageProfiles)
+                 .FirstOrDefaultAsync(u => u.UserLanguageProfiles.Any(p => p.Language == lang));
+                var content = await context.Contents.FirstOrDefaultAsync(c => c.Language == lang);
+                var section = await parser.GetSection(content.ContentUrl, 1);
+                var creators = await section.CreatorsFor(translator, content.Language);
+                foreach (var creator in creators)
+                {
+                    Console.WriteLine($"Creator has value {creator.TermValue} and language {creator.Language}");
+                    await context.CreateDummyUserTerm(creator, user.UserName);
+                }
+                lWatch.Stop();
+                Console.WriteLine($"Creating UserTerms for section {section.SectionHeader} took {lWatch.Elapsed} or {lWatch.ElapsedMilliseconds} ms");
+                timeString.Add($"Creating UserTerms for section {section.SectionHeader} took {lWatch.Elapsed} or {lWatch.ElapsedMilliseconds} ms");
             }
-        }
-            Console.WriteLine("Seeding database finished");
+            watch.Stop();
+            foreach(var str in timeString)
+            {
+                Console.WriteLine(str);
+            }
+            Console.WriteLine($"Seeding Database took {watch.Elapsed.ToString()} or {watch.ElapsedMilliseconds} ms");
+            }
         }
     }
 }

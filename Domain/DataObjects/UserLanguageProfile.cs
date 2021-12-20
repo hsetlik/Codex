@@ -19,6 +19,6 @@ namespace Domain.DataObjects
         public ICollection<Phrase> Phrases { get; set; } = new List<Phrase>();
         public int KnownWords { get; set; }
         public ICollection<ContentHistory> ContentHistories { get; set; } = new List<ContentHistory>();
-        public DailyProfileHistory DailyProfileHistory { get; set; }
+        public DailyProfileHistory DailyProfileHistory { get; set; } = new DailyProfileHistory();
     }
 }

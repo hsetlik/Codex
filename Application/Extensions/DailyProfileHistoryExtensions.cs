@@ -15,12 +15,13 @@ namespace Application.Extensions
     {
         public static async Task<Result<DailyProfileRecord>> GetClosestRecord(this DataContext context, Guid langProfileId, DateTime time)
         {
-            var record = await context.DailyProfileRecords
-            .OrderByDescending(r => Math.Abs(time.CompareTo(r)))
-            .FirstOrDefaultAsync(r => r.LanguageProfileId == langProfileId);
-            if (record == null)
-                return Result<DailyProfileRecord>.Failure("Could not load record");
-            return Result<DailyProfileRecord>.Success(record);
+            var records = await context.DailyProfileRecords
+            .Where(rec => rec.LanguageProfileId == langProfileId)
+            .ToListAsync();
+            if (records == null)
+                return Result<DailyProfileRecord>.Failure($"Could not get record for profile {langProfileId} at time: {time}");
+            records = records.OrderByDescending(rec => Math.Abs((time - rec.CreatedAt).Milliseconds)).ToList();
+            return Result<DailyProfileRecord>.Success(records.First());
         }
 
         public static async Task<Result<DailyDataPoint>> GetDataPoint(this DataContext context, DataPointQuery query)

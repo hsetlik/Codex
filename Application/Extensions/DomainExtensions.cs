@@ -231,7 +231,7 @@ namespace Application.Extensions
                 Console.WriteLine($"Word is: {word}");
                 var tResult = await translator.GetTranslation(new DomainDTOs.Translator.TranslatorQuery
                 {
-                    ResponseLanguage = "en",
+                    ResponseLanguage = (language == "en") ? "de" : "en",
                     QueryLanguage = language,
                     QueryValue = word
                 });
@@ -250,7 +250,28 @@ namespace Application.Extensions
                 }
             }
             return output;
+        }
 
+        public static DailyProfileHistory CreateHistory(this UserLanguageProfile profile)
+        {
+            return new DailyProfileHistory
+            {
+                UserLanguageProfile = profile,
+                LanguageProfileId = profile.LanguageProfileId
+            };
+        }
+
+        public static UserLanguageProfile CreateProfileFor(this CodexUser user, string language)
+        {
+            var prof =  new UserLanguageProfile
+            {
+                Language = language,
+                User = user,
+                UserId = user.Id,
+                KnownWords = 0
+            };
+            prof.DailyProfileHistory = prof.CreateHistory();
+            return prof;
         }
     }
 }

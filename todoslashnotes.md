@@ -497,3 +497,18 @@ TODO:
 3. Create DailyMetric structure and endpoints
 
 =================================================================================================
+============================================== 12/20/21 =========================================
+
+FROM YESTERDAY:
+
+2. Implement HTML tags
+2. User-created content collections
+3. ~~More history graphing stuff~~
+1. Client-side phrase creation
+3. ~~create DailyMetric structure and endpoints~~
+
+TODO:
+
+1. 
+
+=================================================================================================

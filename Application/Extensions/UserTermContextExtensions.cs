@@ -121,6 +121,14 @@ namespace Application.Extensions
             if (!termResult.IsSuccess)
                 return Result<Unit>.Failure($"Could not get term!: Error message{termResult.Error}");
             var term = termResult.Value;
+            var existingTerm = context.UserTerms
+                .FirstOrDefaultAsync(u => u.LanguageProfileId == profile.LanguageProfileId && 
+                u.TermId == term.TermId);
+            if (existingTerm != null)
+            {
+                Console.WriteLine($"UserTerm for {term.NormalizedValue} already exists!");
+                return Result<Unit>.Success(Unit.Value);
+            }
             var r = new Random();
             var dateOffset = r.NextDouble() * dateRange;
             var createTime = DateTime.Now.AddDays(dateOffset * -1.0f);

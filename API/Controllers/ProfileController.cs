@@ -51,6 +51,7 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileDelete.Command{Dto = dto}));
         } 
+
         [Authorize]
         [HttpPost("allUserTerms")]
         public async Task<IActionResult> AllUserTerms(LanguageNameDto dto)
@@ -64,6 +65,20 @@ namespace API.Controllers
         public async Task<IActionResult> UserTermsFromDate(LanguageDateQuery dto)
         {
             return HandleResult(await Mediator.Send(new GetUserTermsFromDate.Query{Dto = dto}));
+        }
+
+        [Authorize]
+        [HttpPost("getMetricGraph")]
+        public async Task<IActionResult> GetMetricGraph(MetricGraphQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new GetMetricGraph.Query{Dto = dto}));
+        }
+
+        [Authorize]
+        [HttpPost("updateHistory")]
+        public async Task<IActionResult> UpdateHistory(ProfileIdDto dto)
+        {
+            return HandleResult(await Mediator.Send(new UpdateHistory.Command{Dto = dto}));
         }
     }
 }
