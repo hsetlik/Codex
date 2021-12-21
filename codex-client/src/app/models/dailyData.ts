@@ -2,7 +2,7 @@
 export const getDotnetDateTime = (date: Date) : string => {
     let dayStr = (date.getDate() < 10) ? date.getDate().toString() : `0${date.getDate().toString()}`;
     let monthStr = (date.getMonth() < 10) ? date.getMonth().toString() : `0${date.getMonth().toString()}`;
-    return `${date.getFullYear()}-${dayStr}-${monthStr}T00:00:00.799Z`;
+    return `${date.getFullYear()}-${dayStr}-${monthStr}`;
 }
 
 export interface DailyDataPoint {
@@ -29,13 +29,30 @@ export interface MetricGraph {
 }
 
 export const getGraphQuery = (name: string, days: number, profileId: string) : MetricGraphQuery => {
+    const endDate = new Date(Date.now());
     const startDate = new Date(Date.now() - days);
     return {
         metricName: name,
         languageProfileId: profileId,
-        start: getDotnetDateTime(startDate),
-        end: getDotnetDateTime(new Date(Date.now()))
+        start: startDate.toDateString(),
+        end: endDate.toDateString()
     }
+}
+
+export interface GraphDataPoint {
+    date: string,
+    uv: number
+}
+
+export const getGraphDataPoints = (graph: MetricGraph) : GraphDataPoint[] => {
+    let dataPoints: GraphDataPoint[] = [];
+    for (let p of graph.dataPoints) {
+        dataPoints.push({
+            date: p.dateTime,
+            uv: parseInt(p.valueString)
+        });
+    }
+    return dataPoints;
 }
 
 export const allMetricNames = [

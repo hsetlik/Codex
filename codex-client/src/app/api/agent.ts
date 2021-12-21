@@ -76,7 +76,7 @@ const Account = {
 const Profile = {
     getUserProfiles: () => requests.get<LanguageProfileDto[]>('Profile/getUserProfiles'),
     allUserTerms: (lang: ILanguageString) => requests.post<UserTerm[]>('profile/allUserTerms', lang),
-    getMetricGraph: (query: MetricGraphQuery) => requests.post<MetricGraph>('/profile/getMetricData', query),
+    getMetricGraph: (query: MetricGraphQuery) => requests.post<MetricGraph>('/profile/getMetricGraph', query),
     updateHistory: (id: IProfileId) => requests.post('profile/updateHistory', id)
 }
 

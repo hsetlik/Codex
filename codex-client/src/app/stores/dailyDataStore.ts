@@ -1,11 +1,13 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
+import { allMetricNames, MetricGraph, MetricGraphQuery } from "../models/dailyData";
 
 
 export default class DailyDataStore {
     graphLoaded = false;
     currentGraph: MetricGraph | null = null;
+    currentMetricName = allMetricNames[0];
+    currentNumDays = 7;
     constructor(){
         makeAutoObservable(this);
     }
@@ -21,5 +23,13 @@ export default class DailyDataStore {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    setCurrentMetricName = (name: string) => {
+        this.currentMetricName = name;
+    }
+
+    setCurrentNumDays = (value: number) => {
+        this.currentNumDays = value;
     }
 }
