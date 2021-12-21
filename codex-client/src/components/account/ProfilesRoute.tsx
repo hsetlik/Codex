@@ -8,14 +8,15 @@ import { useStore } from "../../app/stores/store";
 
 export default observer(function ProfilesRoute() {
     const {username, lang} = useParams();
-    const {userStore: {setSelectedLanguage}} = useStore();
+    const {userStore: {setSelectedLanguage, selectedProfile}} = useStore();
     useEffect(() => {
         setSelectedLanguage(lang!);
-    }, [lang, setSelectedLanguage])
+        console.log(selectedProfile);
+    }, [lang, setSelectedLanguage, selectedProfile])
     return (
             <Container>
                 <ProfileButttonBar username={username!} />
-                <MetricView />
+                <MetricView profileId={selectedProfile?.languageProfileId!} />
             </Container>
     );
 

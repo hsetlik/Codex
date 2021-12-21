@@ -29,7 +29,6 @@ namespace Application.DomainDTOs.ProfileHistory.DailyData
             string tString = typeof(T).ToString();
             if (tString != ValueTypeName) // if we've gotten a different type we need to change this
             {
-                Console.WriteLine($"WARNING! CHANGING TYPE FROM {ValueTypeName} TO {tString} WITH VALUE {newValue}");
                 ValueTypeName = tString;
             }
             ValueString = Convert.ToString(newValue);

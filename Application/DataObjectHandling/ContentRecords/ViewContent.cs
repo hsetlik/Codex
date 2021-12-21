@@ -38,7 +38,7 @@ namespace Application.DataObjectHandling.ContentRecords
                 .FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
                 if (content == null)
                     return Result<Unit>.Failure($"Content not found for URL: {request.Dto.ContentUrl}");
-                Console.WriteLine($"Content found for: {request.Dto.ContentUrl}");
+                //Console.WriteLine($"Content found for: {request.Dto.ContentUrl}");
                 var historyResult = await _context.ContentHistoryFor(_userAccessor.GetUsername(), request.Dto.ContentUrl);
                 var history = (historyResult.IsSuccess) ? historyResult.Value : null;
                 if (history == null) {

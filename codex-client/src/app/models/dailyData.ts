@@ -1,8 +1,10 @@
 
 export const getDotnetDateTime = (date: Date) : string => {
-    let dayStr = (date.getDate() < 10) ? date.getDate().toString() : `0${date.getDate().toString()}`;
-    let monthStr = (date.getMonth() < 10) ? date.getMonth().toString() : `0${date.getMonth().toString()}`;
-    return `${date.getFullYear()}-${dayStr}-${monthStr}`;
+    const day = date.getDate() + 1;
+    const month = date.getMonth() + 1;
+    let dayStr = (day > 9) ? date.getDate().toString() : `0${date.getDate().toString()}`;
+    let monthStr = (month > 9) ? date.getMonth().toString() : `0${date.getMonth().toString()}`;
+    return `${date.getFullYear()}-${monthStr}-${dayStr}`;
 }
 
 export interface DailyDataPoint {
@@ -28,14 +30,18 @@ export interface MetricGraph {
     dataPoints: DailyDataPoint[]
 }
 
+//const getDateString = ()
+
 export const getGraphQuery = (name: string, days: number, profileId: string) : MetricGraphQuery => {
     const endDate = new Date(Date.now());
+    console.log(`End date is: ${endDate}`);
     const startDate = new Date(Date.now() - days);
+    console.log(`Start date is: ${startDate}`);
     return {
         metricName: name,
         languageProfileId: profileId,
-        start: startDate.toDateString(),
-        end: endDate.toDateString()
+        start: getDotnetDateTime(startDate),
+        end: getDotnetDateTime(endDate)
     }
 }
 

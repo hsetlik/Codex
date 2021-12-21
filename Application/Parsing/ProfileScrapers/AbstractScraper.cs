@@ -79,7 +79,6 @@ namespace Application.Parsing
             Console.WriteLine($"Getting scraper for content: {url}");
             if (url.Contains("wikipedia"))
             {
-                Console.WriteLine($"Found wikipedia page at: {url}");
                 return ScraperProfile.Wikipedia;
             }
             else

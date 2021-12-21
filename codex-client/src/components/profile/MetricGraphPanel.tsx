@@ -8,13 +8,13 @@ import { useStore } from "../../app/stores/store";
 
 interface Props {
     metricName: string,
-    days: number
+    days: number,
+    profileId: string
 }
 
-export default observer(function MetricGraphPanel({metricName, days}: Props) {
-    const {dailyDataStore, userStore: {selectedProfile}} = useStore();
+export default observer(function MetricGraphPanel({metricName, days, profileId}: Props) {
+    const {dailyDataStore} = useStore();
     const {currentGraph, graphLoaded, loadMetricGraph} = dailyDataStore;
-    const profileId = selectedProfile?.languageProfileId;
     useEffect(() => {
         const query = getGraphQuery(metricName, days, profileId!);
         loadMetricGraph(query);

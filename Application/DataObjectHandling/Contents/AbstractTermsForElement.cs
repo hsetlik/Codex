@@ -40,7 +40,7 @@ namespace Application.DataObjectHandling.Contents
                 if (content == null)
                     return Result<ElementAbstractTerms>.Failure("Could not load content");
                 watch.Stop();
-                Console.WriteLine($"Getting content {content.ContentUrl} took {watch.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"Getting content {content.ContentUrl} took {watch.ElapsedMilliseconds} ms");
                 var terms = new List<AbstractTermDto>();
                 var words = request.TextElement.Value.Split(null).ToList();
                 var wordDict = new Dictionary<int, string>();
@@ -60,7 +60,7 @@ namespace Application.DataObjectHandling.Contents
                     }
                 });
                 watch.Stop();
-                Console.WriteLine($"Getting AbstractTerms for element {request.TextElement.Index}: {request.TextElement.Value} took {watch.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"Getting AbstractTerms for element {request.TextElement.Index}: {request.TextElement.Value} took {watch.ElapsedMilliseconds} ms");
                 var orderedTerms = terms.OrderBy(t => t.IndexInChunk).ToList();
                 var output = new ElementAbstractTerms
                 {

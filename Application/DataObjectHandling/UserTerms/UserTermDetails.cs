@@ -40,11 +40,11 @@ namespace Application.DataObjectHandling.UserTerms
                     x => x.UserId == user.Id &&
                     x.Language == request.TermDto.Language);
                 if (profile == null) return Result<UserTermDetailsDto>.Failure("No associated profile found");
-                Console.WriteLine("Language profile found");
+                //Console.WriteLine("Language profile found");
                 var profileId = profile.LanguageProfileId;
                 var parsedTerm = request.TermDto.Value.AsTermValue(); 
-                Console.WriteLine($"Parsed term is: {parsedTerm}");
-                Console.WriteLine($"Language profile ID is: {profileId}");
+                //Console.WriteLine($"Parsed term is: {parsedTerm}");
+                //Console.WriteLine($"Language profile ID is: {profileId}");
                 var userTerm = await _context.UserTerms.Include(u => u.Term).FirstOrDefaultAsync(
                     x => x.LanguageProfileId == profileId &&
                     x.Term.NormalizedValue == parsedTerm);

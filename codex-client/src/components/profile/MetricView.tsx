@@ -6,7 +6,11 @@ import MetricGraphPanel from "./MetricGraphPanel";
 import MetricTypeMenu from "./MetricTypeMenu";
 import NumDaysDropdown from "./NumDaysDropdown";
 
-export default observer(function MetricView() {
+interface Props {
+    profileId: string
+}
+
+export default observer(function MetricView({profileId}: Props) {
     const {dailyDataStore} = useStore();
     const {currentMetricName, currentNumDays} = dailyDataStore;
     return (
@@ -15,7 +19,7 @@ export default observer(function MetricView() {
                     <MetricTypeMenu />
                     <NumDaysDropdown />
                 </Segment>
-                <MetricGraphPanel metricName={currentMetricName} days={currentNumDays} />
+                <MetricGraphPanel profileId={profileId} metricName={currentMetricName} days={currentNumDays} />
             </Container>
     )
 })

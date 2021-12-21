@@ -50,7 +50,6 @@ axios.interceptors.request.use(config => {
     config.headers = Object.assign({
       Authorization: `Bearer ${token}`
     }, config.headers);
-    //console.log(config.headers);
     return config;
   }
 )

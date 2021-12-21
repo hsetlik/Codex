@@ -41,7 +41,7 @@ namespace Application.DataObjectHandling.Contents
                 var scraper = await _parser.GetScraper(cResult.Value.ContentUrl);
                 if (scraper == null)
                     return Result<KnownWordsDto>.Failure("Could not get scraper!");
-                Console.WriteLine($"GETTING KNOWN WORDS FOR {scraper.GetMetadata().ContentName}. . .");
+                //Console.WriteLine($"GETTING KNOWN WORDS FOR {scraper.GetMetadata().ContentName}. . .");
                 //Console.WriteLine($"Getting scraper took {watch.ElapsedMilliseconds} ms");
                 var profileResult = await _factory.ProfileFor(_userAccessor.GetUsername(), cResult.Value.Language);
                 if (!profileResult.IsSuccess)
@@ -49,7 +49,7 @@ namespace Application.DataObjectHandling.Contents
                 var profile = profileResult.Value;
                 var lists = scraper.GetWordLists();
                 watch.Stop();
-                Console.WriteLine($"Getting {lists.Count} lists took {watch.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
+                //Console.WriteLine($"Getting {lists.Count} lists took {watch.ElapsedMilliseconds} ms on thread {Thread.CurrentThread.ManagedThreadId}");
                 watch.Restart();
                 var listData = new List<KnownWordsDto>();
                 var listTasks = new List<Task<Result<KnownWordsDto>>>();
@@ -69,7 +69,7 @@ namespace Application.DataObjectHandling.Contents
                     }
                 }
                 watch.Stop();
-                Console.WriteLine($"FINISHED KNOWN WORDS FOR {scraper.GetMetadata().ContentName} AFTER {watch.ElapsedMilliseconds} ms- {known} Known of {total} total");
+                //Console.WriteLine($"FINISHED KNOWN WORDS FOR {scraper.GetMetadata().ContentName} AFTER {watch.ElapsedMilliseconds} ms- {known} Known of {total} total");
                 return Result<KnownWordsDto>.Success(new KnownWordsDto
                 {
                     KnownWords = known,

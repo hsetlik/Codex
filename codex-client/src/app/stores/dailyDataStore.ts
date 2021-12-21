@@ -13,6 +13,7 @@ export default class DailyDataStore {
     }
 
     loadMetricGraph = async (query: MetricGraphQuery) => {
+        console.log(query);
         this.graphLoaded = false;
         try {
             const newGraph = await agent.Profile.getMetricGraph(query);

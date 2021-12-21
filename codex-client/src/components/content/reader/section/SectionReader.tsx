@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Loader } from "semantic-ui-react";
+import { Container, Loader } from "semantic-ui-react";
 import { SectionAbstractTerms } from "../../../../app/models/content";
 import { useStore } from "../../../../app/stores/store";
 import TextElement from "../textElement/TextElement";
@@ -12,14 +12,14 @@ export default observer (function SectionReader({section}: Props){
     const {contentStore: {sectionLoaded}} = useStore();
     if (!sectionLoaded) {
         return (
-            <div>
-                <Loader />
-            </div>
+            <Container>
+                <Loader active={!sectionLoaded} />
+            </Container>
         )
     }
     return (
-        <div>
+        <Container>
             {section.elementGroups.map(group => (<TextElement terms={group} key={group.index}/>)) }
-        </div>
+        </Container>
     )
 })

@@ -125,9 +125,8 @@ namespace Domain
                 {
                     Console.WriteLine($"Creator has value {creator.TermValue} and language {creator.Language}");
                     var termResult = await context.CreateDummyUserTerm(creator, user.UserName);
-                    if (!termResult.IsSuccess)
-                        Console.WriteLine($"WARNING: FAILED TO CREATE USERTERM WITH MESSAGE: {termResult.Error}");
                 }
+
                 lWatch.Stop();
                 Console.WriteLine($"Creating UserTerms for section {section.SectionHeader} took {lWatch.Elapsed} or {lWatch.ElapsedMilliseconds} ms");
                 timeString.Add($"Creating UserTerms for section {section.SectionHeader} took {lWatch.Elapsed} or {lWatch.ElapsedMilliseconds} ms");

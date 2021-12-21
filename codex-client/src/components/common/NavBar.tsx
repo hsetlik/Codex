@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 
 export default observer(function NavBar()
 {
-    const {userStore: {user, logout, isLoggedIn, selectedLanguage, languageProfileStrings: languageProfiles}} = useStore();
+    const {userStore: {user, logout, isLoggedIn, selectedLanguage, languageProfileStrings}} = useStore();
     let accountComponent;
     if (isLoggedIn) {
         accountComponent = (
@@ -17,10 +17,8 @@ export default observer(function NavBar()
         )
     }
     const getLang = () => {
-        var profile = languageProfiles.find(p => p === selectedLanguage);
-        if (profile === undefined) {
-            profile = languageProfiles[0];
-        }
+        var profile = languageProfileStrings.find(p => p === selectedLanguage);
+        
         return profile;
     }
     return (

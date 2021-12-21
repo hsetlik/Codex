@@ -27,7 +27,6 @@ namespace Application.DataObjectHandling.Translate
 
             public async Task<Result<TranslatorResponse>> Handle(Query request, CancellationToken cancellationToken)
             {
-                Console.WriteLine($"Requesting translation for {request.Dto.QueryValue} in language {request.Dto.QueryLanguage}");
                 return await _translator.GetTranslation(request.Dto);
             }
         }
