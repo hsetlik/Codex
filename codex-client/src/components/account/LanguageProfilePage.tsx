@@ -3,7 +3,7 @@ import React from "react";
 import { Header } from "semantic-ui-react";
 import { getLanguageName } from "../../app/common/langStrings";
 import { useStore } from "../../app/stores/store";
-import ProfileVocabList from "./ProfileVocabList";
+import ProfileVocabList from "../profile/ProfileVocabList";
 
 interface Props {
     language: string;

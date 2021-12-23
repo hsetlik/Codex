@@ -5,26 +5,21 @@ import { observer } from 'mobx-react-lite';
 
 export default observer(function NavBar()
 {
-    const {userStore: {user, logout, isLoggedIn, selectedLanguage, languageProfileStrings}} = useStore();
+    const {userStore: {user, logout, isLoggedIn, selectedProfile}} = useStore();
     let accountComponent;
     if (isLoggedIn) {
         accountComponent = (
-            <Menu.Item as={Link} to={`/profiles/${user?.username}/${selectedLanguage}`} name={user?.displayName} />
+            <Menu.Item as={Link} to={`/profiles/${user?.username}/${selectedProfile?.language}`} name={user?.displayName} />
         )
     } else {
         accountComponent = (
             <Menu.Item as={Link} to='/account/login' content='Login' />
         )
     }
-    const getLang = () => {
-        var profile = languageProfileStrings.find(p => p === selectedLanguage);
-        
-        return profile;
-    }
     return (
         <Menu inverted fixed='top'>
             <Container >
-                <Menu.Item as={Link} to={`feed/${getLang()}`} name="Content" header/>
+                <Menu.Item as={Link} to={`feed/${selectedProfile?.language}`} name="Content" header/>
                 {accountComponent}
                 <Menu.Item name="Logout" onClick={logout} />
             </Container>

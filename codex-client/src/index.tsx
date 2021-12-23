@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '../src/components/styles/styles.css';
@@ -8,7 +9,7 @@ import { store, storeContext as StoreContext } from './app/stores/store';
 
 
 ReactDOM.render(
-  <StoreContext.Provider value={store} >
+<StoreContext.Provider value={store} >
   <BrowserRouter >
     <App />
   </BrowserRouter>

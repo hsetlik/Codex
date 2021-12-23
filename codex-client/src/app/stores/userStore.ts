@@ -1,3 +1,4 @@
+import { kMaxLength } from 'buffer';
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
 import { IChildTranslation, LanguageProfileDto, UserTermCreateDto } from '../models/dtos';
@@ -8,12 +9,11 @@ import { store } from './store';
 export default class UserStore{
     user: User | null = null;
 
-    languageProfileStrings: string[] = [];
+    profilesLoaded = false;
+
     languageProfiles: LanguageProfileDto[] = [];
 
     selectedProfile: LanguageProfileDto | null = null;
-    selectedLanguage: string = "none"
-
     constructor() {
         makeAutoObservable(this);
     }
@@ -25,31 +25,26 @@ export default class UserStore{
             console.log("Starting login");
             const user = await agent.Account.login(creds);
             console.log("User found: " + user.username);
-            runInAction(() => {
-                this.user = user;
-                console.log("User set");
-                console.log(`User has token ${user.token}`);
-                store.commonStore.setToken(user.token);
-            } );
             const profiles = await agent.Profile.getUserProfiles();
             console.log("PROFILES FOUND");
             console.log(profiles);
             runInAction(() => {
-                this.languageProfileStrings = [];
-                this.languageProfiles = [];
-                for(var i = 0; i < profiles.length; ++i)
-                {
-                    this.languageProfileStrings.push(profiles[i].language);
-                    this.languageProfiles.push(profiles[i]);
-                }
-                console.log(this.languageProfileStrings);
-                console.log("Selected: " + this.selectedLanguage);
-            });
-            this.setSelectedLanguage(user.lastStudiedLanguage);
+                this.user = user;
+                console.log("User set");
+                console.log(`User has token ${user.token}`);
+                this.languageProfiles = profiles;
+                this.profilesLoaded = true;
+                store.commonStore.setToken(user.token);
+                const defaultProfile = this.languageProfiles.find(p => p.language === user.lastStudiedLanguage);
+                const currentProfile = (defaultProfile !== undefined) ? defaultProfile : this.languageProfiles[0];
+                this.selectedProfile = currentProfile;
+                console.log(`Selected profile has id ${this.selectedProfile.languageProfileId} and language ${this.selectedProfile.language}}`);
+            } );
             console.log(user);
         } catch (error) {
             throw error;
         }
+
     }
 
     logout = () => {
@@ -57,8 +52,6 @@ export default class UserStore{
         store.commonStore.setToken(null);
         window.localStorage.removeItem('jwt');
         this.user = null;
-        this.languageProfileStrings = [];
-        this.selectedLanguage = "none";
         if(window.localStorage.getItem('jwt') != null) {
             console.log("WARNING: TOKEN NOT DELETED!!");
         }
@@ -66,40 +59,32 @@ export default class UserStore{
 
     setSelectedLanguage = (iso: string) => {
         console.log("Setting selected language: " + iso);
-        this.selectedLanguage = iso;
         this.selectedProfile = this.languageProfiles.find(p => p.language === iso)!;
         store.contentStore.loadMetadata(iso);
         if (store.knownWordsStore.knownWords.size > 0)
             store.knownWordsStore.clearKnownWords();
     }
 
-    selectDefaultLanguage = () => {
-        if (this.languageProfileStrings.length < 1) {
-            console.log("No profiles loaded!");
-            return;
-        }
-        let lang = this.user?.lastStudiedLanguage!;
-        if (lang === null || lang === undefined)
-        {
-            lang = this.languageProfileStrings[0];
-        }
-        this.setSelectedLanguage(lang);
+    setSelectedProfile = (prof: LanguageProfileDto) => {
+        this.selectedProfile = prof;
     }
 
     getUser = async () => {
+        this.profilesLoaded = false;
         try {
             const user = await agent.Account.current();
             const profiles = await agent.Profile.getUserProfiles();
+            console.log(profiles);
             runInAction(()=> {
-                this.languageProfileStrings = [];
-                for(var i = 0; i < profiles.length; ++i)
-                {
-                    this.languageProfileStrings.push(profiles[i].language);
-                }
-                this.selectedLanguage = this.languageProfileStrings[0];
-                console.log(this.languageProfileStrings);
+                this.languageProfiles = profiles;
+                this.profilesLoaded = true;
+                this.user = user;
+                console.log(this.languageProfiles);
+                const defaultProfile = this.languageProfiles.find(p => p.language === user.lastStudiedLanguage);
+                const currentProfile = (defaultProfile !== undefined) ? defaultProfile : this.languageProfiles[0];
+                this.selectedProfile = currentProfile;
+                console.log(`Selected profile has id ${this.selectedProfile.languageProfileId} and language ${this.selectedProfile.language}}`);
             }); 
-            runInAction(() => this.user = user);
         } catch(error) {
             console.log(error);
         }
@@ -110,7 +95,6 @@ export default class UserStore{
             const user = await agent.Account.register(creds);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
-            
             console.log(user);
         } catch (error) {
             throw error;
@@ -140,7 +124,7 @@ export default class UserStore{
 
     refreshByValue = async (termValue: string) => {
         try {
-            let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedLanguage});
+            let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedProfile?.language!});
             if (store.contentStore.selectedTerm?.termValue === termValue) {
                 store.contentStore.setSelectedTerm(updatedTermValue);
             }

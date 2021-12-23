@@ -9,21 +9,20 @@ interface Props {
 }
 
 export default observer(function ProfileButtonBar({username}: Props) {
-    const {userStore: {selectedLanguage, languageProfileStrings: languageProfiles}} = useStore();
+    const {userStore: {selectedProfile,languageProfiles}} = useStore();
     return (
         <Menu>
             {languageProfiles.map(prof => (
                 <Menu.Item 
-                key={prof}
+                key={prof.languageProfileId}
                 >
                     <Button
                     as={NavLink}
-                    to={`/profiles/${username}/${prof}`}
-                    active={selectedLanguage === prof}
+                    to={`/profiles/${username}/${prof.language}`}
+                    active={prof === selectedProfile}
                     >
-                        {getLanguageName(prof)}
+                        {getLanguageName(prof.language)}
                     </Button>
-                  
                 </Menu.Item>
             ))
 

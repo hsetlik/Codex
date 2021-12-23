@@ -1,4 +1,3 @@
-import { AbstractTerm } from "./userTerm";
 
 export interface UserTermCreateDto {
     language: string,
@@ -61,8 +60,8 @@ export interface IProfileId {
 }
 
 export interface KnownWordsDto {
-    totalWords: number;
-    knownWords: number;
+    totalWords: number,
+    knownWords: number
 }
 
 export interface SectionQueryDto {
