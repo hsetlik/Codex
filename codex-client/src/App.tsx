@@ -13,26 +13,28 @@ import ProfilesRoute from './components/profile/ProfilesRoute';
 
 function App() {
 //const location = useLocation();
-  const {commonStore, userStore} = useStore();
-
+  const {commonStore, userStore, profileStore } = useStore();
   useEffect(() => {
     if (commonStore.token) {
       userStore.getUser().finally((() => {
+        profileStore.getProfiles();
         commonStore.setAppLoaded();
       }));
+      profileStore.getProfiles();
       commonStore.setAppLoaded();
     } else {
+      profileStore.getProfiles();
       commonStore.setAppLoaded();
     }
-  }, [commonStore, userStore]);
+  }, [commonStore, userStore, profileStore]);
 
   return (
     <Container>
       <NavBar />
       <Container style={{margin: '7em'}}>
         <Routes >
+          <Route path='/' element={<HomeRoute />} />
           <Route path='/feed/:lang' element={<FeedRoute />}/>
-          <Route path='/home' element={<HomeRoute />} />
           <Route path='/content/:contentId/:index'element={<ContentRoute />}/>
           <Route path='/profiles/:username/:lang' element={<ProfilesRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 

@@ -11,8 +11,9 @@ interface Props {
 }
 
 export default observer(function MetricView({profileId}: Props) {
-    const {dailyDataStore} = useStore();
-    const {currentMetricName, currentNumDays} = dailyDataStore;
+    const {profileStore} = useStore();
+    const {currentMetricName, currentNumDays} = profileStore;
+    console.log(`MetricView has profile id: ${profileId}`);
     return (
             <Container>
                 <Segment>

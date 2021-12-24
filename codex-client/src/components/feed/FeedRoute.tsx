@@ -16,12 +16,12 @@ export default observer(function FeedRoute(){
     }, [loadMetadata, lang])
     if (!appLoaded) {
         return (
-            <Loader />
+            <Loader active={true} />
         )
     }
     return (
         <Grid>
-            <Grid.Column width='3'>
+            <Grid.Column width='2'>
 
             </Grid.Column>
             <Grid.Column width='10'>

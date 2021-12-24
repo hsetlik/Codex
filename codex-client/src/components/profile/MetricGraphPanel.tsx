@@ -13,8 +13,8 @@ interface Props {
 }
 
 export default observer(function MetricGraphPanel({metricName, days, profileId}: Props) {
-    const {dailyDataStore} = useStore();
-    const {currentGraph, graphLoaded, loadMetricGraph} = dailyDataStore;
+    const {profileStore} = useStore();
+    const {currentGraph, graphLoaded, loadMetricGraph} = profileStore;
     const query = getGraphQuery(metricName, days, profileId!);
     useEffect(() => {
         if (!graphLoaded)

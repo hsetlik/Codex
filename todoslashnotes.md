@@ -510,6 +510,16 @@ FROM YESTERDAY:
 TODO:
 
 1. ~~GetDailyMetric endpoint & objects on client~~
-2. Create MetricGraph component and query components (i.e. MetricType and NumDays dropdowns)
+2. ~~Create MetricGraph component and query components (i.e. MetricType and NumDays dropdowns)~~
 
+=================================================================================================
+============================================== 12/24/21 =========================================
+
+FROM 12/20:
+
+2. Implement HTML tags
+2. User-created content collections
+1. Client-side phrase creation
+
+TODO: 
 =================================================================================================

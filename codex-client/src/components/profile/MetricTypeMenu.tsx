@@ -6,8 +6,8 @@ import { useStore } from "../../app/stores/store";
 
 
 export default observer(function MetricTypeMenu() {
-    const {dailyDataStore} = useStore();
-    const {currentMetricName, setCurrentMetricName} = dailyDataStore;
+    const {profileStore} = useStore();
+    const {currentMetricName, setCurrentMetricName} = profileStore;
     return (
         <Menu vertical={false} attached="top" >
             {allMetricNames.map(name => {

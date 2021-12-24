@@ -24,7 +24,7 @@ const rangeOptions: DropdownItemProps[] = [
 ]
 
 export default observer( function NumDaysDropdown() {
-     const {dailyDataStore: {setCurrentNumDays}} = useStore();
+     const {profileStore: {setCurrentNumDays}} = useStore();
     return (
         <Dropdown
         options={rangeOptions}
