@@ -20,6 +20,7 @@ export default class DailyDataStore {
             runInAction(() => {
                 this.currentGraph = newGraph;
                 this.graphLoaded = true;
+                console.log(`Graph loaded: ${this.currentGraph.metricName}`);
             }) 
         } catch (error) {
             console.log(error);

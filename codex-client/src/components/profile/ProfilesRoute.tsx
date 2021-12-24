@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Container } from "semantic-ui-react";
+import { Container, Loader } from "semantic-ui-react";
 import { useParams } from "react-router";
 import ProfileButttonBar from "./ProfileButttonBar";
 import MetricView from "../profile/MetricView";
@@ -16,7 +16,11 @@ export default observer(function ProfilesRoute() {
     return (
             <Container>
                 <ProfileButttonBar username={username!} />
-                <MetricView profileId={selectedProfile?.languageProfileId!} />
+                {(selectedProfile?.languageProfileId) ? (
+                    <MetricView profileId={selectedProfile?.languageProfileId!} />
+                ) : (
+                    <Loader active />
+                )}
             </Container>
     );
 
