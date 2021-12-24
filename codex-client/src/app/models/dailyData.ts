@@ -30,6 +30,8 @@ export interface MetricGraph {
     dataPoints: DailyDataPoint[]
 }
 
+
+
 export const getGraphQuery = (name: string, days: number, profileId: string) : MetricGraphQuery => {
     const endDate = new Date(Date.now());
     const msPerDay = 1000 * 60 * 60 * 24;

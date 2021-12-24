@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import { Container } from "semantic-ui-react";
-import { getGraphDataPoints, getGraphQuery } from "../../app/models/dailyData";
+import { getDotnetDateTime, getGraphDataPoints, getGraphQuery } from "../../app/models/dailyData";
 import { useStore } from "../../app/stores/store";
 
 interface Props {
@@ -13,15 +13,23 @@ interface Props {
 }
 
 export default observer(function MetricGraphPanel({metricName, days, profileId}: Props) {
+    console.log(`range is ${days} days`);
     const {dailyDataStore} = useStore();
     const {currentGraph, graphLoaded, loadMetricGraph} = dailyDataStore;
     const query = getGraphQuery(metricName, days, profileId!);
+    let currentStart = getDotnetDateTime(new Date(currentGraph?.start!));
+    let currentEnd = getDotnetDateTime(new Date(currentGraph?.end!));
+    console.log(`query start string is: ${query.start}`);
+    console.log(`query end string is: ${query.end}`);
+    console.log(`current start string is: ${currentStart}`);
+    console.log(`current end string is: ${currentEnd}`);
+
     useEffect(() => {
-        if (!graphLoaded){
+        if (!graphLoaded || currentGraph?.metricName !== metricName || query.start !== currentStart){
             loadMetricGraph(query);
             console.log(`Loaded Graph`);
         }
-    }, [query, loadMetricGraph, graphLoaded]);
+    }, [query, loadMetricGraph, graphLoaded, currentGraph, metricName]);
     if (!graphLoaded || currentGraph == null) {
         return (
             <div></div>
@@ -33,11 +41,13 @@ export default observer(function MetricGraphPanel({metricName, days, profileId}:
     }
     return (
         <Container>
-            <LineChart data={data}>
+            <LineChart data={data} 
+            width={window.screen.availWidth * 0.45}
+            height={window.screen.availHeight * 0.45}>
                 <Line type="monotone" dataKey="uv" stroke="#8884d8" />
                 <CartesianGrid stroke="#ccc" />
                 <XAxis dataKey="date" />
-                <YAxis />
+                <YAxis dataKey="uv"/>
             </LineChart>
         </Container>
     )

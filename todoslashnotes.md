@@ -514,3 +514,19 @@ TODO:
 3. Fix getMetricGraph being called before profiles are loaded (client)
 
 =================================================================================================
+============================================== 12/24/21 =========================================
+
+FROM 12/20:
+
+2. Implement HTML tags
+2. User-created content collections
+1. Client-side phrase creation
+2. ~~Create MetricGraph component and query components (i.e. MetricType and NumDays dropdowns)~~
+3. ~~Fix getMetricGraph being called before profiles are loaded (client)~~
+
+TODO:
+
+1. Fix date display on regraph X axis
+2. Optimize EF stuff (maybe bite bullet and move to ADO.NET?)
+
+=================================================================================================

@@ -21,6 +21,8 @@ export default class DailyDataStore {
                 this.currentGraph = newGraph;
                 this.graphLoaded = true;
                 console.log(`Graph loaded: ${this.currentGraph.metricName}`);
+                console.log(`Start string: ${this.currentGraph.start}`);
+                console.log(`End string: ${this.currentGraph.end}`);
             }) 
         } catch (error) {
             console.log(error);
