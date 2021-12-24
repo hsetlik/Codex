@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default observer(function ProfileButtonBar({username}: Props) {
-    const {userStore: {selectedProfile,languageProfiles}} = useStore();
+    const {profileStore: {selectedProfile,languageProfiles}} = useStore();
     return (
         <Menu>
             {languageProfiles.map(prof => (

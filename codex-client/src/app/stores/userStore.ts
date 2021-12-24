@@ -8,11 +8,6 @@ import { store } from './store';
 export default class UserStore{
     user: User | null = null;
 
-    profilesLoaded = false;
-
-    languageProfiles: LanguageProfileDto[] = [];
-
-    selectedProfile: LanguageProfileDto | null = null;
     constructor() {
         makeAutoObservable(this);
     }
@@ -24,20 +19,12 @@ export default class UserStore{
             console.log("Starting login");
             const user = await agent.Account.login(creds);
             console.log("User found: " + user.username);
-            const profiles = await agent.Profile.getUserProfiles();
             console.log("PROFILES FOUND");
-            console.log(profiles);
             runInAction(() => {
                 this.user = user;
                 console.log("User set");
                 console.log(`User has token ${user.token}`);
-                this.languageProfiles = profiles;
-                this.profilesLoaded = true;
                 store.commonStore.setToken(user.token);
-                const defaultProfile = this.languageProfiles.find(p => p.language === user.lastStudiedLanguage);
-                const currentProfile = (defaultProfile !== undefined) ? defaultProfile : this.languageProfiles[0];
-                this.selectedProfile = currentProfile;
-                console.log(`Selected profile has id ${this.selectedProfile.languageProfileId} and language ${this.selectedProfile.language}}`);
             } );
             console.log(user);
         } catch (error) {
@@ -56,33 +43,11 @@ export default class UserStore{
         }
     }
 
-    setSelectedLanguage = (iso: string) => {
-        console.log("Setting selected language: " + iso);
-        this.selectedProfile = this.languageProfiles.find(p => p.language === iso)!;
-        store.contentStore.loadMetadata(iso);
-        if (store.knownWordsStore.knownWords.size > 0)
-            store.knownWordsStore.clearKnownWords();
-    }
-
-    setSelectedProfile = (prof: LanguageProfileDto) => {
-        this.selectedProfile = prof;
-    }
-
     getUser = async () => {
-        this.profilesLoaded = false;
         try {
             const user = await agent.Account.current();
-            const profiles = await agent.Profile.getUserProfiles();
-            console.log(profiles);
             runInAction(()=> {
-                this.languageProfiles = profiles;
-                this.profilesLoaded = true;
                 this.user = user;
-                console.log(this.languageProfiles);
-                const defaultProfile = this.languageProfiles.find(p => p.language === user.lastStudiedLanguage);
-                const currentProfile = (defaultProfile !== undefined) ? defaultProfile : this.languageProfiles[0];
-                this.selectedProfile = currentProfile;
-                console.log(`Selected profile has id ${this.selectedProfile.languageProfileId} and language ${this.selectedProfile.language}}`);
             }); 
         } catch(error) {
             console.log(error);
@@ -123,7 +88,7 @@ export default class UserStore{
 
     refreshByValue = async (termValue: string) => {
         try {
-            let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedProfile?.language!});
+            let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: 'TODO'});
             if (store.contentStore.selectedTerm?.termValue === termValue) {
                 store.contentStore.setSelectedTerm(updatedTermValue);
             }

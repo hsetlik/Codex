@@ -10,7 +10,7 @@ interface Props {
 
 export default observer(function ProfileVocabList({lang}: Props) {
     const {profileStore} = useStore();
-    const {userTermsLoaded, currentUserTerms, loadProfile, currentLanguage} = profileStore;
+    const {userTermsLoaded, currentUserTerms, loadProfileVocab: loadProfile, currentLanguage} = profileStore;
     useEffect(() => {
         if (!userTermsLoaded || lang !== currentLanguage) {
             loadProfile(lang);

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 
 export default observer(function NavBar()
 {
-    const {userStore: {user, logout, isLoggedIn, selectedProfile}} = useStore();
+    const {userStore: {user, logout, isLoggedIn}, profileStore: {selectedProfile}} = useStore();
     let accountComponent;
     if (isLoggedIn) {
         accountComponent = (

@@ -8,7 +8,7 @@ import { useStore } from "../../app/stores/store";
 
 export default observer(function ProfilesRoute() {
     const {username, lang} = useParams();
-    const {userStore: {setSelectedLanguage, selectedProfile}} = useStore();
+    const {profileStore: {setSelectedLanguage, selectedProfile, profilesLoaded, loadProfileVocab: loadProfile, getProfiles}} = useStore();
     useEffect(() => {
         setSelectedLanguage(lang!);
         console.log(selectedProfile);
