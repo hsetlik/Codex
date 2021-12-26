@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { Container } from "semantic-ui-react";
 import { ElementAbstractTerms } from "../../../../app/models/content";
+import { classNameForElement } from "../../../../app/models/readerStyle";
 import AbstractTermComponent from "../term/AbstractTermComponent";
 
 interface Props {
@@ -11,8 +11,8 @@ interface Props {
 export default observer (function TextElement({terms}: Props) {
     //TODO: figure out how to actually make use of HTML tags
     return (
-        <Container>
+        <div className={classNameForElement(terms.tag)}>
             {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag} term={term} key={term.indexInChunk}/> ))}
-        </Container>
+        </div>
     );
 })

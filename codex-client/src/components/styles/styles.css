@@ -16,21 +16,21 @@
 
 
   /*NOTE: sometimes npm has to be restarted for style changes to take effect*/
-  .codex-reader-p {
+  .codex-term-p {
     padding: 5px !important;
     background: rgb(10, 171, 211);
     margin-top: 8px !important;
     /*font-style: italic !important;*/
   }
 
-  .codex-reader-h1 {
+  .codex-term-h1 {
     padding: 5px !important;
     background: rgb(10, 171, 211);
     margin-top: 8px !important;
     font-style: italic !important;
   }
 
-  .codex-reader-h2 {
+  .codex-term-h2 {
     padding: 10px !important;
     background: rgb(10, 171, 211);
     margin-top: 10px !important;
@@ -38,7 +38,7 @@
     font-size: x-large !important;
   }
 
-  .codex-reader-h3 {
+  .codex-term-h3 {
     padding: 8px !important;
     background: rgb(10, 171, 211);
     margin-top: 10px !important;
@@ -46,6 +46,21 @@
     font-style: italic !important;
     font-size: larger !important;
   }
+
+  .codex-element-p {
+    display: block !important;
+    padding-top: 3% !important;
+  }
+  .codex-element-h1 {
+    padding: auto; 
+  }
+  .codex-element-h2 {
+    padding: auto; 
+  }
+  .codex-element-h3 {
+    padding: auto; 
+  }
+
     .trailing-character-group {
     padding: 0px !important;
     background: white !important;
