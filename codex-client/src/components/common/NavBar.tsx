@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { Container, Menu} from 'semantic-ui-react';
+import { Container, Icon, Menu} from 'semantic-ui-react';
 import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
+import { getLanguageName } from '../../app/common/langStrings';
 
 export default observer(function NavBar()
 {
@@ -19,9 +20,12 @@ export default observer(function NavBar()
     return (
         <Menu inverted fixed='top'>
             <Container >
-                <Menu.Item as={Link} to={`feed/${selectedProfile?.language}`} name="Content" header/>
+                <Menu.Item as={Link} to={`feed/${selectedProfile?.language}`} name={`${getLanguageName(selectedProfile?.language!)}`} header/>
                 {accountComponent}
                 <Menu.Item name="Logout" onClick={logout} />
+                <Menu.Item as={Link} to='/'>
+                    <Icon name='home' />
+                </Menu.Item>
             </Container>
         </Menu>
     )

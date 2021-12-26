@@ -24,21 +24,26 @@ export default class UserStore{
             console.log("Starting login");
             const user = await agent.Account.login(creds);
             console.log("User found: " + user.username);
-            const profiles = await agent.Profile.getUserProfiles();
-            console.log("PROFILES FOUND");
-            console.log(profiles);
+           
             runInAction(() => {
                 this.user = user;
                 console.log("User set");
                 console.log(`User has token ${user.token}`);
+                
+                store.commonStore.setToken(user.token);
+
+            } );
+            const profiles = await agent.Profile.getUserProfiles();
+            console.log("PROFILES FOUND");
+            runInAction(() => {
                 this.languageProfiles = profiles;
                 this.profilesLoaded = true;
-                store.commonStore.setToken(user.token);
                 const defaultProfile = this.languageProfiles.find(p => p.language === user.lastStudiedLanguage);
                 const currentProfile = (defaultProfile !== undefined) ? defaultProfile : this.languageProfiles[0];
                 this.selectedProfile = currentProfile;
                 console.log(`Selected profile has id ${this.selectedProfile.languageProfileId} and language ${this.selectedProfile.language}}`);
-            } );
+            })
+            console.log(profiles);
             console.log(user);
         } catch (error) {
             throw error;

@@ -25,7 +25,7 @@ export default observer(function FeedRoute(){
 
             </Grid.Column>
             <Grid.Column width='10'>
-                <FeedHeader />
+                <FeedHeader lang={lang!} />
                 <Item>
                     <Item.Group divided>
                     {loadedHeaders.map(content => {

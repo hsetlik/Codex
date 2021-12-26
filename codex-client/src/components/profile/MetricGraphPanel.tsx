@@ -29,7 +29,7 @@ export default observer(function MetricGraphPanel({metricName, days, profileId}:
             loadMetricGraph(query);
             console.log(`Loaded Graph`);
         }
-    }, [query, loadMetricGraph, graphLoaded, currentGraph, metricName]);
+    }, [query, loadMetricGraph, graphLoaded, currentGraph, metricName, currentStart]);
     if (!graphLoaded || currentGraph == null) {
         return (
             <div></div>

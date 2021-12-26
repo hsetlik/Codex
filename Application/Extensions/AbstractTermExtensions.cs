@@ -27,6 +27,8 @@ namespace Application.Extensions
 
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            Console.WriteLine($"");
             // 1. Get the term
             var normValue = dto.Value.AsTermValue();
             var term = await context.Terms.FirstOrDefaultAsync(

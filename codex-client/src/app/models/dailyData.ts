@@ -57,13 +57,18 @@ export const getGraphDataPoints = (graph: MetricGraph) : GraphDataPoint[] => {
     var i = 0;
     for (let p of graph.dataPoints) {
         dataPoints.push({
-            date: p.dateTime,
+            date: monthDayString(p.dateTime),
             uv: parseInt(p.valueString),
             idx: i
         });
         i++;
     }
     return dataPoints;
+}
+
+export const monthDayString = (input: string): string => {
+    let d = new Date(input);
+    return`${d.getMonth() + 1}/${d.getDate() + 1}`;
 }
 
 export const allMetricNames = [

@@ -12,7 +12,7 @@ export default observer (function TextElement({terms}: Props) {
     //TODO: figure out how to actually make use of HTML tags
     return (
         <Container>
-            {terms.abstractTerms.map(term => ( <AbstractTermComponent term={term} key={term.indexInChunk}/> ))}
+            {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag} term={term} key={term.indexInChunk}/> ))}
         </Container>
     );
 })
