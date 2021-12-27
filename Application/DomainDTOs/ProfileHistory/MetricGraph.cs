@@ -17,6 +17,7 @@ namespace Application.DomainDTOs.ProfileHistory
         {
             var output = new List<DataPointQuery>();
             DateTime current = Start;
+            int idx = 0;
             while (current < End)
             {
                 var query = new DataPointQuery
@@ -25,8 +26,10 @@ namespace Application.DomainDTOs.ProfileHistory
                     LanguageProfileId = this.LanguageProfileId,
                     DateTime = current
                 };
+                Console.WriteLine($"{idx} is at {current}");
                 output.Add(query);
                 current = current.AddDays(intervalDays);
+                ++idx;
             }
             return output;
         }

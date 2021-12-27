@@ -28,6 +28,7 @@ namespace Application.Extensions
             userTerm.SrsIntervalDays = dto.SrsIntervalDays;
             userTerm.TimesSeen = userTerm.TimesSeen + 1;
             userTerm.UpdateTranslations(dto.Translations);
+            Console.WriteLine($"Updated userterm with ID: {userTerm.UserTermId} and value {userTerm.NormalizedTermValue}");
 
             var success = await context.SaveChangesAsync() > 0;
             if (!success) return Result<Unit>.Failure("Context could not be updated!");

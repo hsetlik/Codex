@@ -118,9 +118,9 @@ export default class UserStore{
 
     updateUserTerm = async (userTerm: UserTermDetails) => {
         try {
-            //console.log(`Term seen ${userTerm.timesSeen} times`);
-           await agent.UserTermEndpoints.updateUserTerm(userTerm);
-           await this.refreshByValue(userTerm.termValue);
+            await agent.UserTermEndpoints.updateUserTerm(userTerm);
+            await this.refreshByValue(userTerm.termValue);
+            console.log(`Term seen ${userTerm.timesSeen} times`);
         } catch (error) {
            console.log(error); 
         }
@@ -137,6 +137,11 @@ export default class UserStore{
                 for (var n = 0; n < store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms.length; ++n)
                 {
                     if (store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue === termValue) {
+                        let leading = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].leadingCharacters;
+                        let trailing = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].trailingCharacters;
+                        updatedTermValue.leadingCharacters = leading;
+                        updatedTermValue.trailingCharacters = trailing;
+                        updatedTermValue.indexInChunk = n; 
                         store.contentStore.setTermInSection(i, n, updatedTermValue);
                     }
                 }

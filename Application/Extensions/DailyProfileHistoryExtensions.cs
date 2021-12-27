@@ -17,23 +17,30 @@ namespace Application.Extensions
     {
         public static async Task<Result<DailyProfileRecord>> GetClosestRecord(this DataContext context, Guid langProfileId, DateTime time)
         {
-            var records = await context.DailyProfileRecords
-            .Where(rec => rec.LanguageProfileId == langProfileId)
-            .ToListAsync();
-            if (records == null)
-                return Result<DailyProfileRecord>.Failure($"Could not get record for profile {langProfileId} at time: {time}");
-            records = records.OrderByDescending(rec => Math.Abs((time - rec.CreatedAt).Milliseconds)).ToList();
-            return Result<DailyProfileRecord>.Success(records.First());
+            var recordOnDay = await context.DailyProfileRecords.FirstOrDefaultAsync(p => p.LanguageProfileId == langProfileId && p.CreatedAt.Date == time.Date);
+            if (recordOnDay != null)
+            {
+                //Console.WriteLine($"Record found for day {recordOnDay.CreatedAt.Month}/{recordOnDay.CreatedAt.Day}");
+                return Result<DailyProfileRecord>.Success(recordOnDay);
+            }
+            var allRecords = await context.DailyProfileRecords.Where(r => r.LanguageProfileId == langProfileId).ToListAsync();
+            if (allRecords == null)
+                return Result<DailyProfileRecord>.Failure($"No records found with profile {langProfileId}");
+            var closest = allRecords.OrderBy(r => Math.Abs(time.Millisecond - r.CreatedAt.Millisecond)).First();
+
+            return Result<DailyProfileRecord>.Success(closest);
         }
 
         public static async Task<Result<DailyDataPoint>> GetDataPoint(this DataContext context, DataPointQuery query)
         {
             if (query.MetricName == "KnownWords")
             {
+                //Console.WriteLine($"Looking for record at: {query.DateTime}");
                 var record = await context.GetClosestRecord(query.LanguageProfileId, query.DateTime);
                 if (!record.IsSuccess)
                     return Result<DailyDataPoint>.Failure($"Could not get record! Error message: {record.Error}");
                 var knownWords = record.Value.KnownWords;
+                //Console.WriteLine($"{knownWords} known on {record.Value.CreatedAt}");
                 return Result<DailyDataPoint>.Success(new KnownWordsDataPoint(query.LanguageProfileId, query.DateTime, knownWords));
             }
             else if (query.MetricName == "NumUserTerms")
@@ -57,6 +64,7 @@ namespace Application.Extensions
                 if(!result.IsSuccess)
                     return Result<MetricGraph>.Failure($"Could not load data point! Error message: {result.Error}");
                 points.Add(result.Value);
+                Console.WriteLine($"Added point at {result.Value.DateTime} with value {result.Value.ValueString}");
             }
             return Result<MetricGraph>.Success(new MetricGraph
             {
