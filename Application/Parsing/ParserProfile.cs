@@ -12,12 +12,14 @@ namespace Application.Parsing
         // The profiles w/Names
        public static ScraperProfile Wikipedia { get {return new ScraperProfile("Wikipedia");} }
        public static ScraperProfile NewsArticle { get {return new ScraperProfile("NewsArticle");} }
+       public static ScraperProfile Youtube { get {return new ScraperProfile("Youtube");} } 
 
        //Static accessor for a list of availible profiles
        public static List<ScraperProfile> Profiles { get {return new List<ScraperProfile>
        {
            ScraperProfile.Wikipedia, 
-           ScraperProfile.NewsArticle
+           ScraperProfile.NewsArticle,
+           ScraperProfile.Youtube
        }; }}
         
     }

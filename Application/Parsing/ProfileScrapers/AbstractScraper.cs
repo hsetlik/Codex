@@ -81,6 +81,10 @@ namespace Application.Parsing
             {
                 return ScraperProfile.Wikipedia;
             }
+            else if (url.Contains("youtube"))
+            {
+                return ScraperProfile.Youtube;
+            }
             else
             {
                 return ScraperProfile.NewsArticle;

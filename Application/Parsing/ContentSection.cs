@@ -28,8 +28,5 @@ namespace Application.Parsing
             }
             return full;
         }}
-       
-       
-
     }
 }
