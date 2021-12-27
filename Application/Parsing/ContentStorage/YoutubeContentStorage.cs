@@ -23,7 +23,7 @@ namespace Application.Parsing.ContentStorage
     }
     public class YoutubeContentStorage : BaseContentStorage
     {
-        public List<CaptionElement> CaptionElements { get; set; }
+        
         
     }
 }

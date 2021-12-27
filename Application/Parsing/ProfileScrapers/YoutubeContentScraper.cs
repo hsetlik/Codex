@@ -25,22 +25,22 @@ namespace Application.Parsing.ProfileScrapers
 
         public override List<ContentSection> GetAllSections()
         {
-            throw new NotImplementedException();
+            return storage.Sections;
         }
 
         public override ContentMetadataDto GetMetadata()
         {
-            throw new NotImplementedException();
+            return storage.Metadata;
         }
 
         public override int GetNumSections()
         {
-            throw new NotImplementedException();
+            return storage.Sections.Count;
         }
 
         public override ContentSection GetSection(int index)
         {
-            throw new NotImplementedException();
+            return storage.Sections[index];
         }
 
         private static string YoutubeVideoId(string url)
@@ -80,12 +80,19 @@ namespace Application.Parsing.ProfileScrapers
             };
             Console.WriteLine(storage.Metadata.ContentName);
 
-            storage.CaptionElements = new List<CaptionElement>();
+            storage.Sections = new List<ContentSection>();
 
             var trackInfo = tracks.TryGetByLanguage(storage.Metadata.Language);
             var track = await ytClient.Videos.ClosedCaptions.GetAsync(trackInfo);
             
             int idx = 0;
+            var currentSection = new ContentSection
+            {
+                ContentUrl = Url,
+                Index = 0,
+                SectionHeader = "0",
+                TextElements = new List<TextElement>()
+            };
             foreach(var caption in track.Captions)
             {
                 Console.WriteLine($"Caption is {caption.Text} at {caption.Duration}");
@@ -96,10 +103,24 @@ namespace Application.Parsing.ProfileScrapers
                     Index = idx,
                     TimeSpan = caption.Duration,
                 };
-                storage.CaptionElements.Add(element);
+                currentSection.TextElements.Add(element);
                 if (idx > captionsPerSection)
+                {
                     idx = 0;
+                    storage.Sections.Add(currentSection);
+                    currentSection = new ContentSection
+                    {
+                        ContentUrl = Url,
+                        Index = idx,
+                        SectionHeader = idx.ToString(),
+                        TextElements = new List<TextElement>()
+                    };
+                }
+                ++idx;
             }
+            if (currentSection.TextElements.Count > 0 && storage.Sections.Last() != currentSection)
+                storage.Sections.Add(currentSection);
+            storage.Metadata.NumSections = storage.Sections.Count;
         }
     }
 }
