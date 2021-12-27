@@ -530,3 +530,20 @@ TODO:
 2. Optimize EF stuff (maybe bite bullet and move to ADO.NET?)
 
 =================================================================================================
+============================================== 12/26/21 =========================================
+
+FROM 12/24:
+
+2. ~~Implement HTML tags~~
+2. User-created content collections
+1. Client-side phrase creation
+1. ~~Fix date display on regraph X axis~~
+2. Optimize EF stuff (maybe bite bullet and move to ADO.NET?)
+
+TODO:
+
+1. Fix TermDetails sticky thing
+2. Add parsing for Youtube videos (figure out subtitles, etc)
+3. Client-side content importing
+
+=================================================================================================

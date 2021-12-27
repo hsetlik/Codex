@@ -49,13 +49,16 @@
 
   .codex-element-p {
     display: block !important;
-    padding-top: 3% !important;
+    padding-top: 1.5% !important;
+    padding-bottom: 1.5% !important;
   }
   .codex-element-h1 {
-    padding: auto; 
+    display: block !important;
+    padding-top: 1.5% !important;
+    padding-bottom: 1.5% !important;
   }
   .codex-element-h2 {
-    padding: auto; 
+    padding-top: 3% !important;
   }
   .codex-element-h3 {
     padding: auto; 
@@ -86,4 +89,9 @@
     position: fixed;
     top: 0; 
     z-index: 1;
+  }
+
+  .stick-term-details {
+    position: sticky !important;
+  
   }

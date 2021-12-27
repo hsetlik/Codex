@@ -7,9 +7,17 @@ import TermDetails from "./TermDetails";
 export default observer(function AbstractTermDetails() {
     const {contentStore} = useStore();
     const {selectedTerm} = contentStore;
-    if (selectedTerm == null) {
-        return <Header content="No Term Selected" />
-    } else {
-        return <TermDetails term={selectedTerm} />
-    }
+   
+    return (
+            (selectedTerm === null) ? (
+                <Header content="No term selected" />
+                ) : (
+                <TermDetails term={selectedTerm} />
+                )
+    )
+    
+    
+    
+
+   
 });
