@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
@@ -43,6 +44,7 @@ namespace Application.DataObjectHandling.Contents
                 //Console.WriteLine($"Getting content {content.ContentUrl} took {watch.ElapsedMilliseconds} ms");
                 var terms = new List<AbstractTermDto>();
                 var words = request.TextElement.Value.Split(null).ToList();
+                words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).ToList();
                 var wordDict = new Dictionary<int, string>();
                 for(int i = 0; i < words.Count; ++i)
                 {

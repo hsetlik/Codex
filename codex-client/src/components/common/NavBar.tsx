@@ -3,6 +3,7 @@ import { Container, Icon, Menu} from 'semantic-ui-react';
 import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
 import { getLanguageName } from '../../app/common/langStrings';
+import '../styles/styles.css';
 
 export default observer(function NavBar()
 {
@@ -18,7 +19,7 @@ export default observer(function NavBar()
         )
     }
     return (
-        <Menu inverted fixed='top'>
+        <Menu inverted fixed='top' className='codex-nav-bar'>
             <Container >
                 <Menu.Item as={Link} to={`feed/${selectedProfile?.language}`} name={`${getLanguageName(selectedProfile?.language!)}`} header/>
                 {accountComponent}

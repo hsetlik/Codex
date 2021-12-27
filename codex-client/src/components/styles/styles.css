@@ -41,8 +41,6 @@
   .codex-term-h3 {
     padding: 8px !important;
     background: rgb(10, 171, 211);
-    margin-top: 10px !important;
-    margin-left: 20px !important;
     font-style: italic !important;
     font-size: larger !important;
   }
@@ -61,7 +59,9 @@
     padding-top: 3% !important;
   }
   .codex-element-h3 {
-    padding: auto; 
+    padding-top: 1.5% !important;
+    padding-bottom: 1.5% !important;
+    padding-left: 3% !important; 
   }
 
     .trailing-character-group {
@@ -94,4 +94,14 @@
   .stick-term-details {
     position: sticky !important;
   
+  }
+
+  .codex-nav-bar {
+    position: fixed !important;
+  }
+
+  .codex-term-details {
+    position: fixed !important;
+    margin-right: 10px !important;
+    
   }

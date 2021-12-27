@@ -21,9 +21,13 @@ namespace Application.Parsing.ContentStorage
             Value = caption.Text;
         }
     }
+    public class CaptionSection : ContentSection
+    {
+        public List<CaptionElement> CaptionElements { get; set; }
+    }
     public class YoutubeContentStorage : BaseContentStorage
     {
-        
+        public List<CaptionSection> CaptionSections { get; set; }
         
     }
 }

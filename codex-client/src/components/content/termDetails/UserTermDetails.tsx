@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
-import { Container, Header, List } from "semantic-ui-react";
+import { useEffect } from "react";
+import { Header, List } from "semantic-ui-react";
 import AddTranslationForm from "./AddTranslationForm";
 import RatingButtonGroup from "../termDetails/RatingButtonGroup"
 import { useStore } from "../../../app/stores/store";
@@ -15,7 +15,7 @@ export default observer(function UserTermDetails() {
         }
     }, [translationsLoaded, loadSelectedTermTranslations]);
     return (
-            <Container className="segment">
+            <div>
                 <Header as='h3' content='Translations' />
                 <List >
                     {selectedTerm!.translations.map(t => (
@@ -25,7 +25,7 @@ export default observer(function UserTermDetails() {
                 <RatingButtonGroup />
                 <Header as='h3' content='Add Translation' />
                 <AddTranslationForm term={selectedTerm!} />
-            </Container>
+            </div>
     )
 
 })

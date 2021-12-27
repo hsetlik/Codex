@@ -128,6 +128,9 @@ export default class ContentStore
                    elementGroups: []
                };
                this.sectionLoaded = true;
+               if (store.userStore.selectedProfile?.language !== content.language) {
+                   store.userStore.setSelectedLanguage(content.language);
+               }
            })
            for(var element of this.currentSection?.textElements!) {
                const elementTerms = await agent.Content.abstractTermsForElement(element);

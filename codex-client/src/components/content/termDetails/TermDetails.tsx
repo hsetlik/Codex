@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { Header, Segment } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import UserTermCreator from "./UserTermCreator";
 import UserTermDetails from "../termDetails/UserTermDetails";
@@ -18,10 +17,10 @@ export default observer(function TermDetails({term}: Props) {
             {term.hasUserTerm ? (
                 <UserTermDetails />
             ) : (
-                <Segment>
+                <div>
                     <PopTranslations term={term} />
                     <UserTermCreator term={term} />
-                </Segment>
+                </div>
             )}
         </div>
     )
