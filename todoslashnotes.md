@@ -582,9 +582,9 @@ BIG REFACTOR:
 
 1. No more 'Terms' table in database
     - Keep Term endpoints & terms DTOs bc concept is useful
-    - Add language column to UserTerm to identify
+    - ~~Add language column to UserTerm to identify~~
     - No need to do the ensureTerm thing
-    - Refactor translations to include user's native language (i.e. Spanish speakers shouldn't be seeing French translations for English words)
+    - ~~Refactor translations to include user's native language (i.e. Spanish speakers shouldn't be seeing French translations for English words)~~
 
 2. Use AutoMapper
     - No more manual mapping

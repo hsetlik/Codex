@@ -17,12 +17,7 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ContentController : CodexControllerBase
     {
-        [HttpPost("ensureContentTerms")]
-        public async Task<IActionResult> EnsureContentTerms(ContentIdDto Dto)
-        {
-            return HandleResult(await Mediator.Send(new EnsureContentTerms.Command{Dto = Dto}));
-        }
-
+        
         [HttpPost("getLanguageContents")]
         public async Task<IActionResult> GetLanguageContents(LanguageNameDto dto)
         {

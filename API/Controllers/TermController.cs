@@ -15,13 +15,8 @@ namespace API.Controllers
     {
         [Authorize]
         [HttpPost("createTerm")]
-        public async Task<IActionResult> CreateTerm(TermDto dto)
-        {
-            return HandleResult(await Mediator.Send(new TermCreate.Command
-            {TermCreateDto = dto}));
-        }
-
-          //should go to: /Term/popularTranslationsFor
+       
+        //should go to: /Term/popularTranslationsFor
         [Authorize]
         [HttpPost("popularTranslationsFor")]
         public async Task<IActionResult> PopularTranslationsFor(TermDto dto)

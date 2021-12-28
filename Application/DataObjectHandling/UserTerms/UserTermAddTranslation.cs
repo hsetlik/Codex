@@ -36,12 +36,17 @@ namespace Application.DataObjectHandling.UserTerms
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var userTerm = await _context.UserTerms
+                .Include(u => u.UserLanguageProfile)
                 .FirstOrDefaultAsync(u => u.UserTermId == request.AddTranslationDto.UserTermId);
                 if (userTerm == null) return Result<Unit>.Failure("No corresponding UserTerm found");
-                var translation = new UserTermTranslation
+                var translation = new Translation
                 {
-                    Value = request.AddTranslationDto.NewTranslation,
-                    UserTerm = userTerm
+                   TermValue = userTerm.NormalizedTermValue,
+                   TermLanguage = userTerm.Language,
+                   UserValue = request.AddTranslationDto.NewTranslation,
+                   UserLanguage =  userTerm.UserLanguageProfile.UserLanguage,
+                   UserTermId = userTerm.UserTermId,
+                   UserTerm = userTerm
                 };
                 userTerm.Translations.Add(translation);
                 var result = await _context.SaveChangesAsync() > 0;

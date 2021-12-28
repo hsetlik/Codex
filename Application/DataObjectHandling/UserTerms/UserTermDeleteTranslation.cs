@@ -36,10 +36,10 @@ namespace Application.DataObjectHandling.UserTerms
                     return Result<Unit>.Failure("Could not load userTerm");
                 if (userTerm.Translations.Count < 2)
                     return Result<Unit>.Failure("Cannot delete the UserTerm's only translation");
-                var translation = userTerm.Translations.FirstOrDefault(t => t.Value == request.Dto.Value);
+                var translation = userTerm.Translations.FirstOrDefault(t => t.UserValue == request.Dto.Value);
                 if (translation == null)
                     return Result<Unit>.Failure("Could not find matching translation");
-                _context.UserTermTranslations.Remove(translation);
+                _context.Translations.Remove(translation);
 
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)

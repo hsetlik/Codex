@@ -42,7 +42,6 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                 var output = new List<UserTermDto>();
                 var userTerms = await _context.UserTerms
                 .Include(u => u.Translations)
-                .Include(u => u.Term)
                 .Where(t => t.LanguageProfileId == profile.LanguageProfileId)
                 .ToListAsync();
                 if (userTerms == null)
@@ -50,7 +49,7 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                 foreach(var t in userTerms)
                 {
                     var newTerm = t.GetDto();
-                    newTerm.Value = t.Term.NormalizedValue;
+                    newTerm.Value = t.NormalizedTermValue;
                     Console.WriteLine($"User term value is: {newTerm.Value}");
                     output.Add(newTerm);
                 }

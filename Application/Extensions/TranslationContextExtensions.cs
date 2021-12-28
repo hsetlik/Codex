@@ -17,10 +17,9 @@ namespace Application.Extensions
         public static async Task<Result<List<TranslationResultDto>>> ListPopularTranslations(this DataContext context, TermDto term)
         {
             var userTerms = await context.UserTerms
-                .Include(t => t.Term)
                 .Include(u => u.Translations)
-                .Where(u => u.Term.NormalizedValue == term.Value.AsTermValue() &&
-                u.Term.Language == term.Language)
+                .Where(u => u.NormalizedTermValue == term.Value.AsTermValue() &&
+                u.Language == term.Language)
                 .ToListAsync();
             
                 if (userTerms == null)
@@ -33,7 +32,7 @@ namespace Application.Extensions
                 {
                     foreach(var translation in userTerm.Translations)
                     {
-                        var tValue = translation.Value;
+                        var tValue = translation.UserValue;
                         if (translationFrequencies.ContainsKey(tValue)) //increment frequency value if the translation already exists
                         {
                             translationFrequencies[tValue] = translationFrequencies[tValue] + 1;
@@ -44,7 +43,6 @@ namespace Application.Extensions
                         }
                     }
                 }
-                
                 // 4. Convert each KVP into a translation DTO and return the list
                 var output = new List<TranslationResultDto>();
                 foreach(var kvp in translationFrequencies)

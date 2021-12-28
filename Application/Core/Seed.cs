@@ -47,7 +47,7 @@ namespace Domain
             ITranslator translator)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            if (!userManager.Users.Any() && !context.Terms.Any())
+            if (!userManager.Users.Any() && !context.UserTerms.Any())
             {
                 //make some dummy users w/ whatever info
             var users = new List<CodexUser>

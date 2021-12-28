@@ -39,9 +39,8 @@ namespace Application.DataObjectHandling.UserTerms
                 if (profile == null)
                     return Result<Unit>.Failure("Language profile not found");
                 var userTerm = await _context.UserTerms
-                .Include(u => u.Term)
                 .FirstOrDefaultAsync(t => t.LanguageProfileId == profile.LanguageProfileId &&
-                t.Term.NormalizedValue == request.Dto.Value.AsTermValue());
+                t.NormalizedTermValue == request.Dto.Value.AsTermValue());
                 if (userTerm == null)
                     return Result<Unit>.Failure("No matching UserTerm found");
                 _context.UserTerms.Remove(userTerm);

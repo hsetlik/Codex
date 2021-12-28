@@ -14,9 +14,6 @@ namespace Persistence
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-
-        public DbSet<Term> Terms { get; set; }
-
         public DbSet<UserLanguageProfile> UserLanguageProfiles { get; set; }
 
         public DbSet<UserTerm> UserTerms { get; set; }
@@ -25,7 +22,7 @@ namespace Persistence
 
         public DbSet<PhraseTranslation> PhraseTranslations { get; set; }
 
-        public DbSet<UserTermTranslation> UserTermTranslations { get; set; }
+        public DbSet<Translation> Translations { get; set; }
 
         public DbSet<Content> Contents { get; set; }
 
@@ -54,10 +51,7 @@ namespace Persistence
             .WithOne(c => c.UserLanguageProfile)
             .HasForeignKey<DailyProfileHistory>(d => d.LanguageProfileId);
 
-            //configure both relationships for UserTerm
-            builder.Entity<UserTerm>()
-            .HasOne(p => p.Term)
-            .WithMany();
+
 
             builder.Entity<ContentHistory>()
             .HasOne(c => c.UserLanguageProfile)

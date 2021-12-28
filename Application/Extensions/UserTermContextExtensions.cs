@@ -9,6 +9,7 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.ProfileHistory;
 using Application.Interfaces;
 using Application.Parsing;
+using Application.Utilities;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +23,36 @@ namespace Application.Extensions
         {
             var userTerm = await context.UserTerms
             .Include(t => t.Translations)
+            .Include(u => u.UserLanguageProfile)
             .FirstOrDefaultAsync(u => u.UserTermId == dto.UserTermId);
             if (userTerm == null) return Result<Unit>.Failure("No matching user term");
             userTerm.Rating = dto.Rating;
             userTerm.SrsIntervalDays = dto.SrsIntervalDays;
             userTerm.TimesSeen = userTerm.TimesSeen + 1;
-            userTerm.UpdateTranslations(dto.Translations);
+            // first, remove any translations that are no longer in the list
+            foreach(var tran in userTerm.Translations)
+            {
+                if (!dto.Translations.Any(v => v == tran.UserValue))
+                {
+                    userTerm.Translations.Remove(tran);
+                }
+            } 
+            // now, create any new translations as necessary
+            foreach(var tran in dto.Translations)
+            {
+                if (!userTerm.Translations.Any(r => r.UserValue == tran))
+                {
+                    userTerm.Translations.Add(new Translation
+                    {
+                        TermValue = userTerm.NormalizedTermValue,
+                        TermLanguage = userTerm.Language,
+                        UserValue = tran,
+                        UserLanguage = userTerm.UserLanguageProfile.UserLanguage,
+                        UserTermId = userTerm.UserTermId,
+                        UserTerm = userTerm
+                    });
+                }
+            }            
             Console.WriteLine($"Updated userterm with ID: {userTerm.UserTermId} and value {userTerm.NormalizedTermValue}");
 
             var success = await context.SaveChangesAsync() > 0;
@@ -37,27 +62,38 @@ namespace Application.Extensions
 
         public static async Task<Result<Unit>> CreateUserTerm(this DataContext context, UserTermDto dto, string username)
         {
-            var term = await context.Terms.FirstOrDefaultAsync(u => u.Language == dto.Language && u.NormalizedValue == dto.Value);
             var userProfile = await context.UserLanguageProfiles
             .Include(u => u.User)
             .FirstOrDefaultAsync(u => u.Language == dto.Language && u.User.UserName == username);
+            string normValue = dto.Value.AsTermValue().ToUpper();
 
-            if (term == null)
-                return Result<Unit>.Failure("no term found");
             var uTerm = new UserTerm
             {
-                Term = term,
                 UserLanguageProfile = userProfile,
+                Language = userProfile.Language,
                 Rating = dto.Rating,
                 SrsIntervalDays = dto.SrsIntervalDays,
                 EaseFactor = dto.EaseFactor,
-                DateTimeDue = DateTime.Today.ToString(),
+                DateTimeDue = DateTime.Today,
                 TimesSeen = dto.TimesSeen,
-                NormalizedTermValue = term.NormalizedValue,
-                CreatedAt = DateTime.Now
+                NormalizedTermValue = normValue,
+                CreatedAt = DateTime.Now,
+                Translations = new List<Translation>()
             };
+            //now add the translations
+            foreach(var t in dto.Translations)
+            {
+                uTerm.Translations.Add(new Translation
+                {
+                    TermLanguage = uTerm.Language,
+                    TermValue = normValue,
+                    UserLanguage = userProfile.UserLanguage,
+                    UserValue = t,
+                    UserTermId = uTerm.UserTermId,
+                    UserTerm = uTerm
+                });
+            }
 
-            uTerm.Translations = uTerm.GetAsTranslations(dto.Translations);
 
             context.UserTerms.Add(uTerm);
             var success = await context.SaveChangesAsync() > 0;
@@ -74,15 +110,13 @@ namespace Application.Extensions
                 return Result<List<UserTermDetailsDto>>.Failure("User not found!");
             var profile = await context.UserLanguageProfiles
             .Include(u => u.UserTerms)
-            .ThenInclude(t => t.Term) // we need to return the term value in the response body
             .FirstOrDefaultAsync(u => u.Language == dto.Language && u.UserId == user.Id);
             if (profile == null)
                 return Result<List<UserTermDetailsDto>>.Failure("Profile not found!");
             var currentTime = DateTime.Now;
             foreach(var term in profile.UserTerms)
             {
-                var termDue = DateTime.Parse(term.DateTimeDue);
-                if (currentTime > termDue)
+                if (currentTime > term.DateTimeDue)
                 {
                     output.Add(term.GetUserTermDetailsDto());
                 }
@@ -98,7 +132,6 @@ namespace Application.Extensions
             if (profile == null)
                 return Result<List<UserTermDetailsDto>>.Failure($"Could not find profile for user {username} and language {language}");
             var matches = await context.UserTerms
-            .Include(u => u.Term)
             .Where(u => u.LanguageProfileId == profile.LanguageProfileId && u.CreatedAt.Date == date.Date)
             .ToListAsync();
 
@@ -118,19 +151,8 @@ namespace Application.Extensions
             if (profile == null)
                 return Result<Unit>.Failure($"Could not get profile for {username} with language {dto.Language}");
             Console.WriteLine($"Profile found: {profile.LanguageProfileId}");
-            var termResult = await context.CreateAndGetTerm(dto.Language, dto.TermValue);
-            if (!termResult.IsSuccess)
-                return Result<Unit>.Failure($"Could not get term!: Error message{termResult.Error}");
-            var term = termResult.Value;
-            Console.WriteLine($"Term {term.NormalizedValue} with ID {term.TermId}");
-            var termExists = await context.UserTerms.AnyAsync(u => u.LanguageProfileId == profile.LanguageProfileId && u.TermId == term.TermId);
-            if (termExists)
-            {
-                Console.WriteLine($"UserTerm for {term.NormalizedValue} already exists!");
-                return Result<Unit>.Success(Unit.Value);
-            }
-            else 
-                Console.WriteLine($"No existing term for term {term.NormalizedValue} with ID {term.TermId}");
+            string normValue = dto.TermValue.AsTermValue().ToUpper();
+            
             var r = new Random();
             var dateOffset = r.NextDouble() * dateRange;
             var createTime = DateTime.Now.AddDays(dateOffset * -1.0f);
@@ -144,14 +166,16 @@ namespace Application.Extensions
             {
                 LanguageProfileId = profile.LanguageProfileId,
                 UserLanguageProfile = profile,
-                TermId = term.TermId,
-                Term = term,
-                NormalizedTermValue = term.NormalizedValue,
+                Language = profile.Language,
+                NormalizedTermValue = normValue,
                 Translations = 
                 {
-                    new UserTermTranslation
+                    new Translation
                     {
-                        Value = dto.FirstTranslation
+                        TermValue = normValue,
+                        TermLanguage = profile.Language,
+                        UserValue = dto.FirstTranslation,
+                        UserLanguage = profile.UserLanguage
                     }
                 },
                 TimesSeen = timesSeen,
@@ -159,7 +183,7 @@ namespace Application.Extensions
                 Rating = rating,
                 SrsIntervalDays = intervalDays,
                 CreatedAt = createTime,
-                DateTimeDue = createTime.ToString()
+                DateTimeDue = createTime.AddDays(rating)
             };
 
             context.UserTerms.Add(userTerm);

@@ -36,44 +36,38 @@ namespace Application.DataObjectHandling.UserTerms
                 //Check if the UserTerm with this value already exists
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
                 var exists = await _context.UserTerms.AnyAsync(
-                    u => u.Term.NormalizedValue == request.termCreateDto.TermValue &&
+                    u => u.NormalizedTermValue == request.termCreateDto.TermValue &&
                     u.UserLanguageProfile.UserId == user.Id);
                 if (exists) return Result<Unit>.Failure("Term already exists!");
                 // 1. Get the ULP by selecting based on UserName and Language
+                string normValue = request.termCreateDto.TermValue.AsTermValue();
                 var profile = await _context.UserLanguageProfiles
                 .FirstOrDefaultAsync(
                     x => x.User.UserName == _userAccessor.GetUsername() &&
                     x.Language == request.termCreateDto.Language);
                 if (profile == null)
                     return Result<Unit>.Failure("No corresponding language profile exists!");
-                // 2. Get the term based on the value
-                var term = await _context.Terms.FirstOrDefaultAsync(x => x.NormalizedValue == request.termCreateDto.TermValue.AsTermValue());
-                // TODO: change this such that if no term exists, one is created
-                if (term == null)
-                {
-                    return Result<Unit>.Failure($"No corresponding term exists for {request.termCreateDto.TermValue}");
-                } 
-                var currentDateTime = DateTime.Now.ToString();
-
                 var userTerm = new UserTerm
                 {
                     UserLanguageProfile = profile,
-                    Term = term,
-                    NormalizedTermValue = term.NormalizedValue,
-                    Translations = 
-                    { new UserTermTranslation
+                    NormalizedTermValue = normValue,
+                    Translations = new List<Translation>
+                    { 
+                        new Translation
                         {
-                            Value = request.termCreateDto.FirstTranslation
+                            TermValue = normValue,
+                            TermLanguage = profile.Language,
+                            UserValue = request.termCreateDto.FirstTranslation,
+                            UserLanguage = profile.UserLanguage
                         }
                     },
                     TimesSeen = 0,
                     EaseFactor = 2.5f,
                     Rating = 0,
-                    DateTimeDue = currentDateTime,
+                    DateTimeDue = DateTime.Now,
                     SrsIntervalDays = 0,
                     CreatedAt = DateTime.Now
                 };
-
                 _context.UserTerms.Add(userTerm);
                 var result = await _context.SaveChangesAsync() > 0;
                 if (!result) return Result<Unit>.Failure("Could not create term");

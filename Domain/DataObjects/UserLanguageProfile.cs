@@ -14,6 +14,7 @@ namespace Domain.DataObjects
         public string UserId { get; set; } // Foreign key
         public CodexUser User { get; set; } // Navigation property so that EF can map: one User -> many UserLanguageProfile
         public string Language { get; set; }
+        public string UserLanguage { get; set; }
         //Naviagtion Property
         public ICollection<UserTerm> UserTerms { get; set; } = new List<UserTerm>(); // EF will automatically configure a one-to-many relationship
         public ICollection<Phrase> Phrases { get; set; } = new List<Phrase>();

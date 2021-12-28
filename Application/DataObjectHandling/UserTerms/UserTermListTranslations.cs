@@ -9,6 +9,7 @@ using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Domain.DataObjects;
 using Application.DomainDTOs;
+using Application.DomainDTOs.UserTerm;
 
 namespace Application.DataObjectHandling.UserTerms
 {
@@ -39,7 +40,13 @@ namespace Application.DataObjectHandling.UserTerms
                 var dtoList = new List<TranslationDto>();
                 foreach(var t in list)
                 {
-                    dtoList.Add(TranslationDto.AsDto(t));
+                    dtoList.Add(new TranslationDto
+                    {
+                        TermValue = t.TermValue,
+                        TermLanguage = t.TermLanguage,
+                        UserValue = t.UserValue,
+                        UserLanguage = t.UserLanguage
+                    });
                 }
                 return Result<List<TranslationDto>>.Success(dtoList);
             }

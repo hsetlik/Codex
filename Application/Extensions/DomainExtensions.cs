@@ -16,55 +16,6 @@ namespace Application.Extensions
 {
     public static class DomainExtensions
     {
-       public static void UpdateTranslations(this UserTerm userTerm, List<string> values)
-        {
-            foreach (var t in values)
-            {
-                bool exists = false;
-                foreach (var translation in userTerm.Translations)
-                {
-                   if (t == translation.Value)
-                   {
-                       exists = true;
-                       break;
-                   }
-                }
-                if (!exists)
-                {
-                    var translation = new UserTermTranslation
-                    {
-                        Value = t,
-                        UserTerm = userTerm
-                    };
-                    userTerm.Translations.Add(translation);
-                }
-            }
-        }
-        
-        public static List<UserTermTranslation> GetAsTranslations(this UserTerm userTerm, List<string> values)
-        {
-            var output = new List<UserTermTranslation>();
-            foreach(var value in values)
-            {
-                var translation = new UserTermTranslation
-                {
-                    Value = value,
-                    UserTerm = userTerm
-                };
-                output.Add(translation);
-            }
-            return output;
-        }
-
-        public static List<string> GetTranslationStrings(this UserTerm userTerm)
-        {
-            var output = new List<string>();
-            foreach(var t in userTerm.Translations)
-            {
-                output.Add(t.Value);
-            }
-            return output;
-        }
 
         // works something like this: https://en.wikipedia.org/wiki/SuperMemo
         public static UserTerm AnsweredWith(this UserTerm input, int answer)
@@ -92,7 +43,7 @@ namespace Application.Extensions
                 input.EaseFactor = minimumEase;
             //new due date
             var nextDueDate = DateTime.Now.AddDays((double)input.SrsIntervalDays);
-            input.DateTimeDue = nextDueDate.ToString();
+            input.DateTimeDue = nextDueDate;
             return input;
         }
 
@@ -101,7 +52,7 @@ namespace Application.Extensions
         {
              return new UserTermDetailsDto
             {
-                TermValue = userTerm.Term.NormalizedValue,
+                NormalizedTermValue = userTerm.NormalizedTermValue,
                 TimesSeen = userTerm.TimesSeen,
                 EaseFactor = userTerm.EaseFactor,
                 Rating = userTerm.Rating,
@@ -130,26 +81,19 @@ namespace Application.Extensions
             return history;
         }
 
-        public static void AppendRecord(this UserLanguageProfile profile, ContentViewRecord record)
-        {
-            //TODO
-            //profile.ContentHistory.ContentViewRecords.Add(record);
-        }
-
         public static UserTermDto GetDto(this UserTerm term)
         {
             return new UserTermDto
             {
-                Value = term.Term.NormalizedValue,
-                Language = term.Term.Language,
+                Value = term.NormalizedTermValue,
+                Language = term.Language,
                 EaseFactor = term.EaseFactor,
                 SrsIntervalDays = term.SrsIntervalDays,
                 Rating = term.Rating,
                 TimesSeen = term.TimesSeen,
                 UserTermId = term.UserTermId,
-                Translations = term.GetTranslationStrings()
+                Translations = term.Translations.Select(t => t.UserValue).ToList()
             };
-            
         }
 
 
@@ -268,7 +212,8 @@ namespace Application.Extensions
                 Language = language,
                 User = user,
                 UserId = user.Id,
-                KnownWords = 0
+                KnownWords = 0,
+                UserLanguage = user.NativeLanguage
             };
             prof.DailyProfileHistory = prof.CreateHistory();
             return prof;
