@@ -565,3 +565,16 @@ TODO:
 4. ~~Figure out how to add TimeSpan data to TextElement? - idea: expand the textElement class to include a TimeSpan member that only exists if the type == "caption"~~
 
 =================================================================================================
+============================================== 12/28/21 =========================================
+
+FROM YESTERDAY:
+
+1. Youtube player component
+2. Caption reader component (with jumping to caption functionality & active highlighting)
+3. 2-way functionality between the caption reader and the video player
+
+TODO:
+
+1. Figure out how to pass timecode information between the player and the reader and how to automatically advance the captions/sections as the video plays
+
+=================================================================================================
