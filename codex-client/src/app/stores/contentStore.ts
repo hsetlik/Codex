@@ -120,6 +120,7 @@ export default class ContentStore
            let content = await agent.Content.getContentWithId({contentId: id}); 
            let section = await agent.Parse.getSection({contentUrl: content.contentUrl, index: pIndex});
            runInAction(() => {
+               this.selectedContentMetadata = content;
                this.currentSection = section;
                this.currentSectionTerms = {
                    contentUrl: content.contentUrl,

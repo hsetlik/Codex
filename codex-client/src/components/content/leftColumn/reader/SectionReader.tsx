@@ -2,7 +2,8 @@ import { observer } from "mobx-react-lite";
 import { Container, Loader } from "semantic-ui-react";
 import { SectionAbstractTerms } from "../../../../app/models/content";
 import { useStore } from "../../../../app/stores/store";
-import TextElement from "../textElement/TextElement";
+import TextElement from "../commonReader/textElement/TextElement";
+
 
 interface Props {
     section: SectionAbstractTerms

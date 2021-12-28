@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { List } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
-import VocabWord from "../content/termDetails/VocabWord";
+import VocabWord from "../content/rightColumn/VocabWord";
 
 interface Props {
     lang: string

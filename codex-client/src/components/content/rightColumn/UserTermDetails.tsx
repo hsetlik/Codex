@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Header, List } from "semantic-ui-react";
 import AddTranslationForm from "./AddTranslationForm";
-import RatingButtonGroup from "../termDetails/RatingButtonGroup"
+import RatingButtonGroup from "./RatingButtonGroup"
 import { useStore } from "../../../app/stores/store";
 import Translation from "./Translation";
 

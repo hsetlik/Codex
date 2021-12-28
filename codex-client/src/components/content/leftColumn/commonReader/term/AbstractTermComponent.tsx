@@ -1,6 +1,6 @@
-import { AbstractTerm } from "../../../../app/models/userTerm";
+import { AbstractTerm } from "../../../../../app/models/userTerm";
 import TrailingCharacterGroup from "./TrailingCharacterGroup";
-import "../../../styles/styles.css";
+import '../../../../styles/styles.css';
 import { observer } from "mobx-react-lite";
 import LeadingCharacterGroup from "./LeadingCharacterGroup";
 import WordComponent from "./WordComponent";

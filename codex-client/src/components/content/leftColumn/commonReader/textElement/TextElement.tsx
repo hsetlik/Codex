@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { ElementAbstractTerms } from "../../../../app/models/content";
-import { classNameForElement } from "../../../../app/models/readerStyle";
+import { ElementAbstractTerms } from "../../../../../app/models/content";
+import { classNameForElement } from "../../../../../app/models/readerStyle";
 import AbstractTermComponent from "../term/AbstractTermComponent";
 
 interface Props {

@@ -3,10 +3,11 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Loader } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
-import SectionNavigator from "./reader/section/SectionNavigator";
-import SectionReader from "./reader/section/SectionReader";
-import AbstractTermDetails from "./termDetails/AbstractTermDetails";
+import SectionNavigator from "./leftColumn/reader/SectionNavigator";
+import AbstractTermDetails from "./rightColumn/AbstractTermDetails";
 import '../styles/styles.css';
+import SectionReader from "./leftColumn/reader/SectionReader";
+import LeftColumnDiv from "./leftColumn/LeftColumnDiv";
 
 export default observer(function ContentRoute() {
     const {contentId, index} = useParams();
@@ -17,26 +18,24 @@ export default observer(function ContentRoute() {
   useEffect(() => { 
     loadSectionById(contentId!, parseInt(index!));
   }, [loadSectionById, contentId, index]);
+  const url = currentSectionTerms.contentUrl;
 
     return (
         <div>
             <Grid>
-                <Grid.Column width={10}>
+                <Grid.Column width={10} key={"left"}>
                     {
                         sectionLoaded? 
                         (
-                            <div >
-                                <SectionNavigator contentId={contentId!} currentIndex={parseInt(index!)} />
-                                <SectionReader section={currentSectionTerms} />
-                            </div>
+                           <LeftColumnDiv contentId={contentId!} index={parseInt(index!)} /> 
                             
                          ) : (
                             <Loader />
                          )
                     }
                     
-                </Grid.Column>
-                <Grid.Column width={6} >
+                </Grid.Column >
+                <Grid.Column width={6} key={"right"} >
                         <div className="codex-term-details">
                             <AbstractTermDetails />
                         </div>

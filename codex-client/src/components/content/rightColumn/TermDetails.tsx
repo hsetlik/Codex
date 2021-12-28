@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Header } from "semantic-ui-react";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import UserTermCreator from "./UserTermCreator";
-import UserTermDetails from "../termDetails/UserTermDetails";
+import UserTermDetails from "./UserTermDetails";
 import PopTranslations from "./PopTranslations";
 
 interface Props {

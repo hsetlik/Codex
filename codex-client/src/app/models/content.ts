@@ -79,5 +79,19 @@ export interface SectionAbstractTerms {
     elementGroups: ElementAbstractTerms[]
 }
 
+export enum ContentType {
+    Wikipedia,
+    Article,
+    Youtube
+}
+
+export const getContentType = (url: string): ContentType => {
+    if (url.includes('wikipedia'))
+        return ContentType.Wikipedia;
+    else if (url.includes('youtube'))
+        return ContentType.Youtube;
+    else
+        return ContentType.Article;
+}
 
 

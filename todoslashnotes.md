@@ -561,8 +561,7 @@ TODO:
 
 1. Youtube player component
 2. Caption reader component (with jumping to caption functionality & active highlighting)
-3. create VideoStore to store vid metadata, list of captions w/ timestamps - (or try to extend contentStore? just add observables 
-   for a list of captionElements? just add handling for youtube content type in existing store functions)
+3. 2-way functionality between the caption reader and the video player
 4. ~~Figure out how to add TimeSpan data to TextElement? - idea: expand the textElement class to include a TimeSpan member that only exists if the type == "caption"~~
 
 =================================================================================================
