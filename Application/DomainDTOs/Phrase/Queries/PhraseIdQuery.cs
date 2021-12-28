@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs
 {
-     public class LanguageNameDto
+    public class PhraseIdQuery
     {
-        public string Language { get; set; }
+       public Guid PhraseId { get; set; } 
     }
 }

@@ -6,7 +6,7 @@ using Application.DataObjectHandling.Terms;
 
 namespace Application.DataObjectHandling.UserTerms
 {
-    public class UserTermCreateDto
+    public class UserTermCreateQuery
     {
         // User info not necessary since we have IUserAccessor
         //Use this as a key to find the appropriate UserLanguageProfile per ISO-169-1
@@ -18,7 +18,7 @@ namespace Application.DataObjectHandling.UserTerms
     }
     public static class TermConverter
     {
-        public static TermDto TermDtoFor(UserTermCreateDto userTermCreateDto)
+        public static TermDto TermDtoFor(UserTermCreateQuery userTermCreateDto)
         {
             return new TermDto
             {

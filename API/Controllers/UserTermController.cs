@@ -18,21 +18,21 @@ namespace API.Controllers
     {
         [Authorize]
         [HttpPost("createUserTerm")]
-        public async Task<IActionResult> CreateUserTerm(UserTermCreateDto dto)
+        public async Task<IActionResult> CreateUserTerm(UserTermCreateQuery dto)
         {
             return HandleResult(await Mediator.Send(new UserTermCreate.Command{termCreateDto = dto}));
         }
 
         [Authorize]
         [HttpPost("addTranslation")]
-        public async Task<IActionResult> AddTranslation(AddTranslationDto dto)
+        public async Task<IActionResult> AddTranslation(AddTranslationQuery dto)
         {
             return HandleResult(await Mediator.Send(new UserTermAddTranslation.Command{AddTranslationDto = dto}));
         }
 
         [Authorize]
         [HttpPost("getTranslations")]
-        public async Task<IActionResult> GetTranslations(UserTermIdDto dto)
+        public async Task<IActionResult> GetTranslations(UserTermIdQuery dto)
         {
             return HandleResult(await Mediator.Send(new UserTermListTranslations.Query{GetTranslationsDto = dto}));
         }

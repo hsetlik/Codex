@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.DomainDTOs.Content
+namespace Application.DomainDTOs
 {
-    public class TagValueDto
+    public class UserTermIdQuery
     {
-        public string TagValue { get; set; }
+        public Guid UserTermId { get; set; }
     }
 }

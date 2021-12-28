@@ -6,7 +6,7 @@ using Application.DataObjectHandling.Terms;
 
 namespace Application.DomainDTOs
 {
-    public class PhraseCreateDto
+    public class PhraseCreateQuery
     {
         public string Language { get; set; }
         public string Value { get; set; }

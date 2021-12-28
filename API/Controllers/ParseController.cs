@@ -13,13 +13,13 @@ namespace API.Controllers
     public class ParseController : CodexControllerBase
     {
         [HttpPost("getContentMetadata")]
-        public async Task<IActionResult> GetContentMetadata(ContentUrlDto dto)
+        public async Task<IActionResult> GetContentMetadata(ContentUrlQuery dto)
         {
             return HandleResult(await Mediator.Send(new GetContentMetadata.Query{Dto = dto}));
         }
 
         [HttpPost("getSection")]
-        public async Task<IActionResult> GetSection(SectionQueryDto dto)
+        public async Task<IActionResult> GetSection(SectionQuery dto)
         {
             return HandleResult(await Mediator.Send(new GetSection.Query{Dto = dto}));
         }        

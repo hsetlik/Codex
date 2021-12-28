@@ -16,7 +16,7 @@ namespace Application.DataObjectHandling.ContentRecords
     {
         public class Query : IRequest<Result<int>>
         {
-            public ContentUrlDto Dto { get; set; }
+            public ContentUrlQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<int>>

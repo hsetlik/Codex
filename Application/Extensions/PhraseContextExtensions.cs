@@ -14,7 +14,7 @@ namespace Application.Extensions
 {
     public static class PhraseContextExtensions
     {
-        public static async Task<Result<Unit>> CreatePhrase(this DataContext context, PhraseCreateDto dto, string username)
+        public static async Task<Result<Unit>> CreatePhrase(this DataContext context, PhraseCreateQuery dto, string username)
         {
             var profile = await context.UserLanguageProfiles
                 .Include(p => p.User)

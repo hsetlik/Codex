@@ -165,10 +165,10 @@ namespace Application.Extensions
             return input;
         }
 
-        public static async Task<List<UserTermCreateDto>> CreatorsFor(this ContentSection section, ITranslator translator, string language)
+        public static async Task<List<UserTermCreateQuery>> CreatorsFor(this ContentSection section, ITranslator translator, string language)
         {
             //Console.WriteLine($"Getting creators for {section.ContentUrl} section #{section.Index}");
-            var output = new List<UserTermCreateDto>();
+            var output = new List<UserTermCreateQuery>();
             var words = section.Body.Split(null).ToList();
             foreach(var word in words)
             {
@@ -180,7 +180,7 @@ namespace Application.Extensions
                 });
                 if (tResult.IsSuccess)
                 {
-                    output.Add(new UserTermCreateDto
+                    output.Add(new UserTermCreateQuery
                     {
                         TermValue = word,
                         Language = language,

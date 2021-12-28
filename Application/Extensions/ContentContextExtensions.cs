@@ -17,7 +17,7 @@ namespace Application.Extensions
     public static class ContentContextExtensions
     {
         //====
-        public static async Task<Result<Unit>> AddContentTag(this DataContext context, ContentTagDto dto)
+        public static async Task<Result<Unit>> AddContentTag(this DataContext context, ContentTagQuery dto)
          {
             var content = await context.Contents
             .Include(c => c.ContentTags)
@@ -39,21 +39,21 @@ namespace Application.Extensions
 
 
         //===
-        public static async Task<Result<List<ContentTagDto>>> GetContentTags(this DataContext context, Guid contentId)
+        public static async Task<Result<List<ContentTagQuery>>> GetContentTags(this DataContext context, Guid contentId)
         {
-            var output = new List<ContentTagDto>();
+            var output = new List<ContentTagQuery>();
             var tags = await context.ContentTags.Where(tag => tag.ContentId == contentId).ToListAsync();
             if (tags == null)
-                return Result<List<ContentTagDto>>.Failure("No matching tags found");
+                return Result<List<ContentTagQuery>>.Failure("No matching tags found");
             foreach(var tag in tags)
             {
-                output.Add(new ContentTagDto
+                output.Add(new ContentTagQuery
                 {
                     ContentId = contentId,
                     TagValue = tag.TagValue
                 });
             }
-            return Result<List<ContentTagDto>>.Success(output);
+            return Result<List<ContentTagQuery>>.Success(output);
         }
 
         //===

@@ -13,12 +13,12 @@ namespace Application.DataObjectHandling.Contents
 {
     public class GetContentTags
     {
-        public class Query : IRequest<Result<List<ContentTagDto>>>
+        public class Query : IRequest<Result<List<ContentTagQuery>>>
         {
-            public ContentIdDto Dto { get; set; }
+            public ContentIdQuery Dto { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<List<ContentTagDto>>>
+        public class Handler : IRequestHandler<Query, Result<List<ContentTagQuery>>>
         {
         private readonly DataContext _context;
             public Handler(DataContext context)
@@ -26,11 +26,11 @@ namespace Application.DataObjectHandling.Contents
             this._context = context;
             }
 
-            public async Task<Result<List<ContentTagDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<ContentTagQuery>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var list =  await _context.GetContentTags(request.Dto.ContentId);
                 if (!list.IsSuccess)
-                    return Result<List<ContentTagDto>>.Failure("no matching tags found");
+                    return Result<List<ContentTagQuery>>.Failure("no matching tags found");
                 return list;
             }
         }

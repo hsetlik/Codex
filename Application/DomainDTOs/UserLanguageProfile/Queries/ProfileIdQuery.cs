@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs.UserLanguageProfile
 {
-    public class KnownWordsQueryDto
+    public class ProfileIdQuery
     {
-        public Guid ContentId { get; set; }
-        public string Username { get; set; }
+        public Guid LanguageProfileId { get; set; }
     }
 }

@@ -8,7 +8,6 @@ using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
-using Application.DomainDTOs.ContentViewRecord;
 using Application.DomainDTOs.UserLanguageProfile;
 using Application.Interfaces;
 using Application.Parsing;

@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs.Content
 {
-    public class SectionQueryDto
+    public class ContentUrlQuery
     {
         public string ContentUrl { get; set; }
-        public int Index { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace Application.DataObjectHandling.Parse
     {
         public class Query : IRequest<Result<ContentSection>>
         {
-            public SectionQueryDto Dto { get; set; }
+            public SectionQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<ContentSection>>

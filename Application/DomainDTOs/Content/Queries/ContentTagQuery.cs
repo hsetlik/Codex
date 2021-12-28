@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs.Content
 {
-    public class ContentIdDto
+    public class ContentTagQuery
     {
         public Guid ContentId { get; set; }
+        public string TagValue { get; set; }
     }
 }

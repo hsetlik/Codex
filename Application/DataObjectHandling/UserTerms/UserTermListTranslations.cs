@@ -18,7 +18,7 @@ namespace Application.DataObjectHandling.UserTerms
     {
         public class Query : IRequest<Result<List<TranslationDto>>>
         {
-            public UserTermIdDto GetTranslationsDto { get; set; }
+            public UserTermIdQuery GetTranslationsDto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<TranslationDto>>>

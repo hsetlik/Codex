@@ -42,6 +42,5 @@ namespace Application.DomainDTOs.ProfileHistory
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public List<DailyDataPoint> DataPoints { get; set; } = new List<DailyDataPoint>();
-
     }
 }

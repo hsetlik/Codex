@@ -15,7 +15,7 @@ namespace API.Controllers
     {
         [Authorize]
         [HttpPost("createPhrase")]
-        public async Task<IActionResult> CreatePhrase(PhraseCreateDto dto)
+        public async Task<IActionResult> CreatePhrase(PhraseCreateQuery dto)
         {
             return HandleResult(await Mediator.Send(new CreatePhrase.Command{Dto = dto}));
         }
@@ -29,7 +29,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("deletePhrase")]
-        public async Task<IActionResult> DeletePhrase(PhraseIdDto dto)
+        public async Task<IActionResult> DeletePhrase(PhraseIdQuery dto)
         {
             return HandleResult(await Mediator.Send(new DeletePhrase.Command{Dto = dto}));
         }

@@ -18,7 +18,7 @@ namespace Application.DataObjectHandling.Parse
     {
         public class Query : IRequest<Result<ContentMetadataDto>>
         {
-            public ContentUrlDto Dto { get; set; }
+            public ContentUrlQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<ContentMetadataDto>>

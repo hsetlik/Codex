@@ -101,7 +101,7 @@ namespace API.Controllers
         //==================================================================
         [Authorize]
         [HttpPost("setLastStudiedLanguage")]
-        public async Task<ActionResult<UserDto>> SetLastStudiedLanguage(LanguageNameDto dto)
+        public async Task<ActionResult<UserDto>> SetLastStudiedLanguage(LanguageNameQuery dto)
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             if (user == null)

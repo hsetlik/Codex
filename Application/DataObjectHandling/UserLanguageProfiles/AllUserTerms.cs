@@ -18,7 +18,7 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
     {
         public class Query : IRequest<Result<List<UserTermDto>>>
         {
-            public LanguageNameDto Dto { get; set; }
+            public LanguageNameQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<UserTermDto>>>

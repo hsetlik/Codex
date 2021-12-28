@@ -16,7 +16,7 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public LanguageNameDto Dto { get; set; }
+            public LanguageNameQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

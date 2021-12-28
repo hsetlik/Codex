@@ -77,7 +77,7 @@ namespace Application.Extensions
         }
 
 
-        public static async Task<Result<Unit>> UpdateHistory(this DataContext context, ProfileIdDto dto)
+        public static async Task<Result<Unit>> UpdateHistory(this DataContext context, ProfileIdQuery dto)
         {
                 var profile = await context.UserLanguageProfiles
                     .Include(p => p.DailyProfileHistory)

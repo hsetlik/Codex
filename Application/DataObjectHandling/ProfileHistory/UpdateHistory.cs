@@ -17,7 +17,7 @@ namespace Application.DataObjectHandling.ProfileHistory
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public ProfileIdDto Dto { get; set; }
+            public ProfileIdQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

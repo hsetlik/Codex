@@ -16,7 +16,7 @@ namespace Application.DataObjectHandling.Phrase
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public PhraseCreateDto Dto { get; set; }
+            public PhraseCreateQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

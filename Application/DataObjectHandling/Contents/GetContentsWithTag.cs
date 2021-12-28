@@ -16,7 +16,7 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Command : IRequest<Result<List<ContentMetadataDto>>>
         {
-            public TagValueDto Dto { get; set; }
+            public TagValueQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<List<ContentMetadataDto>>>

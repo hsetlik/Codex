@@ -16,7 +16,7 @@ namespace Application.DataObjectHandling.UserTerms
     {
         public class Command : IRequest<Result<List<UserTermDetailsDto>>>
         {
-            public LanguageNameDto Dto { get; set; }
+            public LanguageNameQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<List<UserTermDetailsDto>>>

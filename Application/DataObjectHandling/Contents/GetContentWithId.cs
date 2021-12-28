@@ -18,7 +18,7 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Query : IRequest<Result<ContentMetadataDto>>
         {
-            public ContentIdDto Dto { get; set; }
+            public ContentIdQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<ContentMetadataDto>>

@@ -18,7 +18,7 @@ namespace Application.DataObjectHandling.UserTerms
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public UserTermCreateDto termCreateDto { get; set; }
+            public UserTermCreateQuery termCreateDto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

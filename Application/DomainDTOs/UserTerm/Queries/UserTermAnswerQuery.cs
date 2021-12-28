@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs
 {
-    public class AddTranslationDto
+    public class UserTermAnswerQuery
     {
         public Guid UserTermId { get; set; }
-        public string NewTranslation { get; set; }
+        public int Answer { get; set; }
     }
 }

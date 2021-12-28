@@ -19,14 +19,14 @@ namespace API.Controllers
     {
         
         [HttpPost("createProfile")]
-        public async Task<IActionResult> CreateProfile(LanguageNameDto profileDto)
+        public async Task<IActionResult> CreateProfile(LanguageNameQuery profileDto)
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileCreate.Command{LanguageId = profileDto.Language}));
         }
 
         [Authorize]
         [HttpPost("getDueNow")]
-        public async Task<IActionResult> GetDueNow(LanguageNameDto profileDto)
+        public async Task<IActionResult> GetDueNow(LanguageNameQuery profileDto)
         {
             return HandleResult(await Mediator.Send(new GetDueNow.Command{Dto = profileDto}));
         }
@@ -40,21 +40,21 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("getProfileDetails")]
-        public async Task<IActionResult> GetProfileDetails(ProfileIdDto dto)
+        public async Task<IActionResult> GetProfileDetails(ProfileIdQuery dto)
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileDetails.Query{Dto = dto}));
         }
 
         [Authorize]
         [HttpPost("deleteProfile")]
-        public async Task<IActionResult> DeleteProfile(LanguageNameDto dto)
+        public async Task<IActionResult> DeleteProfile(LanguageNameQuery dto)
         {
             return HandleResult(await Mediator.Send(new UserLanguageProfileDelete.Command{Dto = dto}));
         } 
 
         [Authorize]
         [HttpPost("allUserTerms")]
-        public async Task<IActionResult> AllUserTerms(LanguageNameDto dto)
+        public async Task<IActionResult> AllUserTerms(LanguageNameQuery dto)
         {
             return HandleResult(await Mediator.Send(new AllUserTerms.Query{Dto = dto}));
         }
@@ -76,7 +76,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("updateHistory")]
-        public async Task<IActionResult> UpdateHistory(ProfileIdDto dto)
+        public async Task<IActionResult> UpdateHistory(ProfileIdQuery dto)
         {
             return HandleResult(await Mediator.Send(new UpdateHistory.Command{Dto = dto}));
         }

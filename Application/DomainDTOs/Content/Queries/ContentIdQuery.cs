@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.DomainDTOs
+namespace Application.DomainDTOs.Content
 {
-    public class PhraseIdDto
+    public class ContentIdQuery
     {
-       public Guid PhraseId { get; set; } 
+        public Guid ContentId { get; set; }
     }
 }

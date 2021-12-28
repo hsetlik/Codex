@@ -16,7 +16,7 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Query : IRequest<Result<ContentSectionMetadata>>
         {
-            public SectionQueryDto Dto { get; set; }
+            public SectionQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<ContentSectionMetadata>>

@@ -17,7 +17,7 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Query : IRequest<Result<List<ContentMetadataDto>>>
         {
-            public LanguageNameDto Dto { get; set; }
+            public LanguageNameQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<ContentMetadataDto>>>

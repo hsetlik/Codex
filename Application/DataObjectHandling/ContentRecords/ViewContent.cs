@@ -18,7 +18,7 @@ namespace Application.DataObjectHandling.ContentRecords
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public SectionQueryDto Dto { get; set; }
+            public SectionQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

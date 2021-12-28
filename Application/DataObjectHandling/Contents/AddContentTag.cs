@@ -15,7 +15,7 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public ContentTagDto Dto { get; set; }
+            public ContentTagQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

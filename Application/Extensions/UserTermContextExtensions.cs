@@ -102,7 +102,7 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
         }
 
-        public static async Task<Result<List<UserTermDetailsDto>>> UserTermsDueNow(this DataContext context, LanguageNameDto dto, string username)
+        public static async Task<Result<List<UserTermDetailsDto>>> UserTermsDueNow(this DataContext context, LanguageNameQuery dto, string username)
         {
             var output = new List<UserTermDetailsDto>();
             var user = await context.Users.FirstOrDefaultAsync(u => u.UserName == username);
@@ -145,7 +145,7 @@ namespace Application.Extensions
             return Result<List<UserTermDetailsDto>>.Success(output);
         }
 
-        public static async Task<Result<Unit>> CreateDummyUserTerm(this DataContext context, UserTermCreateDto dto, string username, int dateRange=14)
+        public static async Task<Result<Unit>> CreateDummyUserTerm(this DataContext context, UserTermCreateQuery dto, string username, int dateRange=14)
         {
             var profile = await context.UserLanguageProfiles.Include(p => p.User).FirstOrDefaultAsync(p => p.User.UserName == username && p.Language == dto.Language);
             if (profile == null)
