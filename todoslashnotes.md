@@ -577,4 +577,21 @@ TODO:
 
 1. Figure out how to pass timecode information between the player and the reader and how to automatically advance the captions/sections as the video plays
 
+
+BIG REFACTOR:
+
+1. No more 'Terms' table in database
+    - Keep Term endpoints & terms DTOs bc concept is useful
+    - Add language column to UserTerm to identify
+    - No need to do the ensureTerm thing
+    - Refactor translations to include user's native language (i.e. Spanish speakers shouldn't be seeing French translations for English words)
+
+2. Use AutoMapper
+    - No more manual mapping
+    - Thin out # of DomainDTO classes & combine things
+
+3. Make sure time-intensive code is taking advantage of new schema, esp:
+    - Getting AbstractTerm
+    - Getting popular translations
+
 =================================================================================================
