@@ -63,12 +63,12 @@ namespace Application.DataObjectHandling.Contents
                 });
                 watch.Stop();
                 //Console.WriteLine($"Getting AbstractTerms for element {request.TextElement.Index}: {request.TextElement.Value} took {watch.ElapsedMilliseconds} ms");
-                var orderedTerms = terms.OrderBy(t => t.IndexInChunk).ToList();
+                terms = terms.OrderBy(t => t.IndexInChunk).ToList();
                 var output = new ElementAbstractTerms
                 {
                     Index = request.TextElement.Index,
                     Tag = request.TextElement.Tag,
-                    AbstractTerms = orderedTerms
+                    AbstractTerms = terms
                 };
                 return Result<ElementAbstractTerms>.Success(output);
             }

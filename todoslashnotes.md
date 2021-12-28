@@ -547,3 +547,21 @@ TODO:
 3. Client-side content importing
 
 =================================================================================================
+============================================== 12/27/21 =========================================
+
+FROM YESTERDAY:
+
+2. User-created content collections
+1. Client-side phrase creation
+1. ~~Fix TermDetails sticky thing~~
+2. ~~Add parsing for Youtube videos (figure out subtitles, etc)~~
+3. Client-side content importing
+
+TODO:
+
+1. Youtube player component
+2. Caption reader component (with jumping to caption functionality & active highlighting)
+3. create VideoStore to store vid metadata, list of captions w/ timestamps - (or try to extend contentStore? just add observables 
+   for a list of captionElements? just add handling for youtube content type in existing store functions)
+
+=================================================================================================
