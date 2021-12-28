@@ -6,28 +6,8 @@ using YoutubeExplode.Videos.ClosedCaptions;
 
 namespace Application.Parsing.ContentStorage
 {
-    public class CaptionElement : TextElement
-    {
-        public TimeSpan TimeSpan { get; set; }
-        public CaptionElement()
-        {
-
-        }
-        public CaptionElement(ClosedCaption caption, string contentUrl)
-        {
-            Tag = "caption";
-            ContentUrl = contentUrl;
-            TimeSpan = caption.Duration;
-            Value = caption.Text;
-        }
-    }
-    public class CaptionSection : ContentSection
-    {
-        public List<CaptionElement> CaptionElements { get; set; }
-    }
     public class YoutubeContentStorage : BaseContentStorage
     {
-        public List<CaptionSection> CaptionSections { get; set; }
         
     }
 }

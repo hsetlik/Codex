@@ -57,18 +57,18 @@ namespace Application.Parsing.ProfileScrapers
                 ApiKey = "AIzaSyD0oGjw3IM-1f8Sf9N5OO8aLiChFAbL-Y4",
             });
             var videoId = YoutubeVideoId(Url);
-            Console.WriteLine($"Video ID is: {videoId}");
-
-
             var searchRequest = ytService.Videos.List("snippet");
             searchRequest.Id = videoId;
             var searchResponse = await searchRequest.ExecuteAsync();
             var videoSnippet = searchResponse.Items.FirstOrDefault();
+            
             var ytClient = new YoutubeClient();
             var video = await ytClient.Videos.GetAsync(Url);
-            
-            Console.WriteLine($"Video has title {video.Title}, duration {video.Duration}, and uploadDate {video.UploadDate}");
+
+            var language = videoSnippet.Snippet.DefaultAudioLanguage.Substring(0, 2);
+            Console.WriteLine($"Video has title {video.Title}, duration {video.Duration}, uploadDate {video.UploadDate}, and language {language}");
             var tracks = await ytClient.Videos.ClosedCaptions.GetManifestAsync(videoId);
+            
             storage.Metadata = new ContentMetadataDto
             {
                 ContentUrl = Url,
@@ -76,29 +76,29 @@ namespace Application.Parsing.ProfileScrapers
                 AudioUrl = Url,
                 ContentType = "Youtube",
                 ContentName = video.Title,
-                Language = videoSnippet.Snippet.DefaultLanguage
+                Language = language
             };
             Console.WriteLine(storage.Metadata.ContentName);
 
-            storage.CaptionSections = new List<CaptionSection>();
             storage.Sections = new List<ContentSection>();
 
             var trackInfo = tracks.TryGetByLanguage(storage.Metadata.Language);
+            
             var track = await ytClient.Videos.ClosedCaptions.GetAsync(trackInfo);
             
             int idx = 0;
-            var currentSection = new CaptionSection
+            Console.WriteLine($"Url is: {Url}");
+            var currentSection = new ContentSection
             {
                 ContentUrl = Url,
                 Index = 0,
                 SectionHeader = "0",
-                TextElements = new List<TextElement>(),
-                CaptionElements = new List<CaptionElement>()
+                TextElements = new List<TextElement>()
             };
             foreach(var caption in track.Captions)
             {
                 Console.WriteLine($"Caption is {caption.Text} at {caption.Duration}");
-                var element = new CaptionElement
+                var element = new TextElement
                 {
                     Tag = "caption",
                     Value = caption.Text,
@@ -106,30 +106,27 @@ namespace Application.Parsing.ProfileScrapers
                     TimeSpan = caption.Duration,
                     ContentUrl = Url
                 };
-                currentSection.CaptionElements.Add(element);
+                currentSection.TextElements.Add(element);
                 if (idx > captionsPerSection)
                 {
                     idx = 0;
-                    storage.CaptionSections.Add(currentSection);
                     storage.Sections.Add(currentSection);
-                    currentSection = new CaptionSection
+                    currentSection = new ContentSection
                     {
                         ContentUrl = Url,
-                        Index = storage.CaptionSections.Count,
-                        SectionHeader = storage.CaptionSections.Count.ToString(),
-                        TextElements = new List<TextElement>(),
-                        CaptionElements = new List<CaptionElement>()
+                        Index = storage.Sections.Count,
+                        SectionHeader = storage.Sections.Count.ToString(),
+                        TextElements = new List<TextElement>()
                     };
                 }
                 ++idx;
             }
-            if (currentSection.TextElements.Count > 0 && storage.CaptionSections.Last() != currentSection)
+            if (currentSection.TextElements.Count > 0 && storage.Sections.Last() != currentSection)
             {
-                storage.CaptionSections.Add(currentSection);
                 storage.Sections.Add(currentSection);
 
             }
-            storage.Metadata.NumSections = storage.CaptionSections.Count;
+            storage.Metadata.NumSections = storage.Sections.Count;
         }
     }
 }
