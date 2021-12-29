@@ -4,7 +4,7 @@ import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
 import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
-import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, TranslationResultDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LanguageProfileDto, SectionQueryDto, TermDto, IProfileId } from "../models/dtos";
+import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, TranslationResultDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LanguageProfileDto, SectionQueryDto, TermDto, IProfileId, ContentSecondsDto } from "../models/dtos";
 import { ContentMetadata, ContentSectionMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 
@@ -105,11 +105,11 @@ const TermEndpoints = {
 const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadata[]>('/content/getLanguageContents', language),
     getKnownWordsForContent: (contentId: IContentId) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentId),
-    getSectionMetadata: (dto: SectionQueryDto) => requests.post<ContentSectionMetadata>('/content/getSectionMetadata', dto),
     abstractTermsForElement: (dto: TextElement) => requests.post<ElementAbstractTerms>('/content/abstractTermsForElement', dto),
     getContentWithId: (contentId: IContentId) => requests.post<ContentMetadata>('/content/getContentWithId', contentId),
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
-    getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl)
+    getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl),
+    getSectionAtSeconds: (dto: ContentSecondsDto) => requests.post<ContentSection>('/content/getSectionAtSeconds', dto)
 }
 
 const Parse = {

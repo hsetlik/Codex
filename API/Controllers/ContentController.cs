@@ -6,6 +6,7 @@ using Application.DataObjectHandling.ContentRecords;
 using Application.DataObjectHandling.Contents;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
+using Application.DomainDTOs.Content.Queries;
 using Application.Parsing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -109,6 +110,12 @@ namespace API.Controllers
         public async Task<IActionResult> GetSectionMetadata(SectionQuery dto)
         {
             return HandleResult(await Mediator.Send(new GetSectionMetadata.Query{Dto = dto}));
+        }
+        [Authorize]
+        [HttpPost("getSectionAtSeconds")]
+        public async Task<IActionResult> GetSectionAtSeconds(SectionAtSecondsQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new GetSectionAtSeconds.Query{Dto = dto}));
         }
     }
 }

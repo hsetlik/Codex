@@ -69,4 +69,9 @@ export interface SectionQueryDto {
     index: number
 }
 
+export interface ContentSecondsDto {
+    contentUrl: string,
+    seconds: number
+}
+
 
