@@ -7,6 +7,7 @@ using Application.Core;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.Extensions;
+using AutoMapper;
 using MediatR;
 using Persistence;
 
@@ -22,14 +23,16 @@ namespace Application.DataObjectHandling.Contents
         public class Handler : IRequestHandler<Command, Result<List<ContentMetadataDto>>>
         {
         private readonly DataContext _context;
-            public Handler(DataContext context)
+        private readonly IMapper _mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+            this._mapper = mapper;
             this._context = context;
             }
 
             public async Task<Result<List<ContentMetadataDto>>> Handle(Command request, CancellationToken cancellationToken)
             {
-                return await _context.GetContentsWithTag(request.Dto.TagValue);
+                return await _context.GetContentsWithTag(request.Dto.TagValue, _mapper);
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Application.DataObjectHandling.UserTerms
     {
         public class Command: IRequest<Result<Unit>>
         {
-            public ChildTranslationDto Dto { get; set; }
+            public ChildTranslationQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>

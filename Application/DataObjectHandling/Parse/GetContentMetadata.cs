@@ -8,6 +8,7 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.Extensions;
 using Application.Interfaces;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -25,8 +26,10 @@ namespace Application.DataObjectHandling.Parse
         {
         private readonly IParserService _parser;
         private readonly DataContext _context;
-            public Handler(IParserService parser, DataContext context)
+        private readonly IMapper _mapper;
+            public Handler(IParserService parser, DataContext context, IMapper mapper)
             {
+            this._mapper = mapper;
             this._context = context;
             this._parser = parser;
             }
@@ -36,7 +39,7 @@ namespace Application.DataObjectHandling.Parse
                 var contentEntity = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
                 if (contentEntity == null)
                     return Result<ContentMetadataDto>.Failure("Could not find matching content");
-                var output = contentEntity.GetMetadata();
+                var output = _mapper.Map<ContentMetadataDto>(contentEntity);
                 return Result<ContentMetadataDto>.Success(output);
             }
         }

@@ -69,7 +69,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("deleteTranslation")]
-        public async Task<IActionResult> DeleteTranslation(ChildTranslationDto dto)
+        public async Task<IActionResult> DeleteTranslation(ChildTranslationQuery dto)
         {
             return HandleResult(await Mediator.Send(new UserTermDeleteTranslation.Command{Dto = dto}));
         }      

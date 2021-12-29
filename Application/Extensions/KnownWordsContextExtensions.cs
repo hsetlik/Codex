@@ -9,6 +9,7 @@ using Application.DomainDTOs.UserLanguageProfile;
 using Application.Interfaces;
 using Application.Parsing;
 using Application.Utilities;
+using AutoMapper;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +22,10 @@ namespace Application.Extensions
         //KNOWN WORDS
         public static async Task<Result<KnownWordsDto>> GetKnownWords(this DataContext context, Guid contentId, string username, IParserService parser)
         {
+        
             int total = 0;
             int known = 0;
-            var metadata = await context.GetMetadataFor(username, contentId);
+            var metadata = await context.GetMetadataFor(username, contentId, MapperFactory.GetDefaultMapper());
             if (!metadata.IsSuccess)
                 return Result<KnownWordsDto>.Failure($"Could not load metadata! Error message: {metadata.Error}");
             var profile = await context.UserLanguageProfiles

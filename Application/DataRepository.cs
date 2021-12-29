@@ -31,7 +31,7 @@ namespace Application
         {
             using (var context = _factory.Invoke())
             {
-                return await context.GetContentsForLanguage(username, lang);
+                return await context.GetContentsForLanguage(username, lang, MapperFactory.GetDefaultMapper());
             }
         }
 
@@ -40,7 +40,7 @@ namespace Application
         {
            using (var context = _factory.Invoke())
             {
-                return await context.GetMetadataFor(username, contentId);
+                return await context.GetMetadataFor(username, contentId, MapperFactory.GetDefaultMapper());
             }
         }
 

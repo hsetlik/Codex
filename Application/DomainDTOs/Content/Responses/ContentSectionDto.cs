@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs.Content
 {
-    public class ContentSectionMetadata
+    public class ContentSectionDto
     {
         public string ContentUrl { get; set; }
         public string SectionHeader { get; set; }

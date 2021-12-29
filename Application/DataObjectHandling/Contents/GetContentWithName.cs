@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -22,8 +23,10 @@ namespace Application.DataObjectHandling.Contents
         public class Handler : IRequestHandler<Query, Result<ContentMetadataDto>>
         {
         private readonly DataContext _context;
-            public Handler(DataContext context)
+        private readonly IMapper _mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+            this._mapper = mapper;
             this._context = context;
             }
 
@@ -32,17 +35,7 @@ namespace Application.DataObjectHandling.Contents
                 var content =  await _context.Contents.FirstOrDefaultAsync(c => c.ContentName == request.ContentName);
                 if (content == null)
                     return Result<ContentMetadataDto>.Failure("content not loaded");
-                var output = new ContentMetadataDto
-                {
-                    ContentName = content.ContentName,
-                    ContentType = content.ContentType,
-                    Language = content.Language,
-                    VideoUrl = content.VideoUrl,
-                    AudioUrl = content.AudioUrl,
-                    ContentUrl = content.ContentUrl,
-                    ContentId = content.ContentId
-                };
-
+                var output = _mapper.Map<ContentMetadataDto>(content); 
                 return Result<ContentMetadataDto>.Success(output);
             }
         }

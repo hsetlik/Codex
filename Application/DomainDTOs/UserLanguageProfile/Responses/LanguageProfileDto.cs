@@ -10,5 +10,6 @@ namespace Application.DomainDTOs.UserLanguageProfile
         public Guid LanguageProfileId { get; set; }
         public string Language { get; set; }
         public int KnownWords { get; set; }
+        public string UserLanguage { get; set; }
     }
 }

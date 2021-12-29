@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DataObjects
 {
-    public class ChildTranslationDto
+    public class ChildTranslationQuery
     {
         public Guid UserTermId { get; set; }
         public string Value { get; set; }

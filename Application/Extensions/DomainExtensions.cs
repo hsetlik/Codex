@@ -96,23 +96,6 @@ namespace Application.Extensions
             };
         }
 
-
-        public static ContentMetadataDto GetMetadata(this Content content)
-        {
-            return new ContentMetadataDto
-            {
-                ContentUrl = content.ContentUrl,
-                ContentType = content.ContentType,
-                ContentName = content.ContentName,
-                Language = content.Language,
-                AudioUrl = content.AudioUrl,
-                VideoUrl = content.VideoUrl,
-                ContentId = content.ContentId,
-                NumSections = content.NumSections
-            };
-        }
-
-
         public static List<TermDto> TermList(this Phrase phrase)
         {
             var words = phrase.Value.Split(null).ToArray();
