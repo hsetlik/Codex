@@ -4,6 +4,7 @@ import { ContentType, getContentType } from "../../../app/models/content";
 import { useStore } from "../../../app/stores/store";
 import SectionNavigator from "./reader/SectionNavigator";
 import SectionReader from "./reader/SectionReader";
+import YoutubePlayerDiv from "./youtubePlayer/YoutubePlayerDiv";
 
 interface Props {
     contentId: string,
@@ -25,6 +26,7 @@ export default observer(function LeftColumnDiv({contentId, index}: Props) {
     } else { //TODO: youtube viewer goes here
         return (
             <div>
+                <YoutubePlayerDiv />
 
             </div>
         )

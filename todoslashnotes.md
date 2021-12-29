@@ -569,7 +569,7 @@ TODO:
 
 FROM YESTERDAY:
 
-1. Youtube player component
+1. ~~Youtube player component~~
 2. Caption reader component (with jumping to caption functionality & active highlighting)
 3. 2-way functionality between the caption reader and the video player
 
@@ -580,15 +580,15 @@ TODO:
 
 BIG REFACTOR:
 
-1. No more 'Terms' table in database
-    - Keep Term endpoints & terms DTOs bc concept is useful
+1. ~~No more 'Terms' table in database~~
+    - ~~Keep Term endpoints & terms DTOs bc concept is useful~~
     - ~~Add language column to UserTerm to identify~~
-    - No need to do the ensureTerm thing
+    - ~~No need to do the ensureTerm thing~~
     - ~~Refactor translations to include user's native language (i.e. Spanish speakers shouldn't be seeing French translations for English words)~~
 
-2. Use AutoMapper
-    - No more manual mapping
-    - Thin out # of DomainDTO classes & combine things
+2. ~~Use AutoMapper~~
+    - ~~No more manual mapping~~
+    - ~~Thin out # of DomainDTO classes & combine things~~
 
 3. Make sure time-intensive code is taking advantage of new schema, esp:
     - Getting AbstractTerm
