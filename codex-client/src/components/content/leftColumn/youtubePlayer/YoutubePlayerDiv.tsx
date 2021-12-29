@@ -5,7 +5,7 @@ import { useStore } from "../../../../app/stores/store";
 
 export default observer(function YoutubePlayerDiv() {
     const {contentStore} = useStore();
-    const {selectedContentUrl} = contentStore;
+    const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtSeconds} = contentStore;
     const handleSeek = (seconds: number) => {
 
     }
@@ -15,7 +15,11 @@ export default observer(function YoutubePlayerDiv() {
         loaded: number;
         loadedSeconds: number; 
     }) => {
-        //TODO: this needs to check what the current caption should be and update it accordingly
+        let current = elementAtSeconds(state.playedSeconds);
+        if (highlightedElement !== current) {
+            setHighlightedElement(current);
+            console.log(`${current.contentUrl} at seconds ${current.startSeconds}`);
+        }
     }
     return (
         <div>

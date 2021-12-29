@@ -1,41 +1,14 @@
 import { AbstractTerm } from "./userTerm";
 
-export interface DotnetTimeSpan {
-    days: number;
-    hours: number;
-    milliseconds: number;
-    minutes: number;
-    seconds: number;
-    ticks: number
-    totalDays: number;
-    totalHours: number;
-    totalMilliseconds: number;
-    totalMinutes: number;
-    totalSeconds: number;
-}
 
-export const defaultTimeSpan = (): DotnetTimeSpan => {
-    return {
-        days: 0,
-        hours: 0,
-    milliseconds: 0,
-    minutes: 0,
-    seconds: 0,
-    ticks: 0,
-    totalDays: 0,
-    totalHours: 0,
-    totalMilliseconds: 0,
-    totalMinutes: 0,
-    totalSeconds: 0
-    };
-}
 
 export interface TextElement {
     value: string,
     tag: string,
     index: number,
     contentUrl: string,
-    timeSpan: DotnetTimeSpan
+    startSeconds: number,
+    endSeconds: number
 }
 
 export interface ContentSection {

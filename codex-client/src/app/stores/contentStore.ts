@@ -30,12 +30,29 @@ export default class ContentStore
     } 
     highlightedElement: TextElement | null = null; // for captions
 
+    bufferSection: ContentSection | null = null;
+    bufferSectionTerms: SectionAbstractTerms = {
+        contentUrl: 'none',
+        index: 0,
+        sectionHeader: 'none',
+        elementGroups: []
+    }
+    bufferLoaded = false;  
+
     constructor() {
         makeAutoObservable(this);
     }
 
     setHighlightedElement = (element: TextElement) => {
         this.highlightedElement = element;
+    }
+
+    elementAtSeconds = (seconds: number): TextElement => {
+        for(let element of this.currentSection?.textElements!) {
+            if (element.startSeconds <= seconds && element.endSeconds > seconds)
+                return element;
+        }
+        return this.currentSection?.textElements[0]!;
     }
 
     //NOTE: this is only for updating metadata. Actual sections will not be loaded until loadSection runs
@@ -119,35 +136,80 @@ export default class ContentStore
          }
      }
 
-    loadSectionById = async (id: string, pIndex: number) => {
+    loadSectionById = async (id: string, pIndex: number, useBuffer: boolean = false) => {
         this.sectionLoaded = false;
+        //if the section we need is already in the buffer, just switch it over
+        if (this.bufferLoaded && this.bufferSection?.index === pIndex) {
+            this.currentSection = this.bufferSection;
+            this.currentSectionTerms = this.bufferSectionTerms;
+            this.sectionLoaded = true;
+            this.bufferLoaded = false;
+            this.bufferSection = null;
+            this.bufferSectionTerms = {
+                contentUrl: 'none',
+                index: 0,
+                sectionHeader: 'none',
+                elementGroups: []
+            }; 
+        } else { // if we can't take from the buffer, call API for section at pIndex first
+            this.bufferLoaded = false;
+            try {
+                let content = await agent.Content.getContentWithId({contentId: id}); 
+                let section = await agent.Parse.getSection({contentUrl: content.contentUrl, index: pIndex});
+                runInAction(() => {
+                    this.selectedContentMetadata = content;
+                    this.currentSection = section;
+                    this.currentSectionTerms = {
+                        contentUrl: content.contentUrl,
+                        index: pIndex,
+                        sectionHeader: section.sectionHeader,
+                        elementGroups: []
+                    };
+                    this.sectionLoaded = true;
+                    if (store.userStore.selectedProfile?.language !== content.language) {
+                        store.userStore.setSelectedLanguage(content.language);
+                    }
+                })
+                for(var element of this.currentSection?.textElements!) {
+                    const elementTerms = await agent.Content.abstractTermsForElement(element);
+                    runInAction(() => {
+                        this.currentSectionTerms.elementGroups.push(elementTerms);
+                    })
+                }
+                await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});
+             } catch (error) {
+                console.log(error); 
+                runInAction(() => this.sectionLoaded = true); 
+             }
+        }
+        
+        
+    }
+
+    loadBufferSectionById = async (id: string, pIndex: number) => {
+        this.bufferLoaded = false;
         try {
            let content = await agent.Content.getContentWithId({contentId: id}); 
            let section = await agent.Parse.getSection({contentUrl: content.contentUrl, index: pIndex});
            runInAction(() => {
-               this.selectedContentMetadata = content;
-               this.currentSection = section;
-               this.currentSectionTerms = {
+               this.bufferSection = section;
+               this.bufferSectionTerms = {
                    contentUrl: content.contentUrl,
                    index: pIndex,
                    sectionHeader: section.sectionHeader,
                    elementGroups: []
                };
-               this.sectionLoaded = true;
-               if (store.userStore.selectedProfile?.language !== content.language) {
-                   store.userStore.setSelectedLanguage(content.language);
-               }
+               this.bufferLoaded = true;
            })
-           for(var element of this.currentSection?.textElements!) {
+           for(var element of this.bufferSection?.textElements!) {
                const elementTerms = await agent.Content.abstractTermsForElement(element);
                runInAction(() => {
-                   this.currentSectionTerms.elementGroups.push(elementTerms);
+                   this.bufferSectionTerms.elementGroups.push(elementTerms);
                })
            }
-           await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});
         } catch (error) {
            console.log(error); 
-           runInAction(() => this.sectionLoaded = true); 
+           runInAction(() => this.bufferLoaded = true); 
         }
     }
 
