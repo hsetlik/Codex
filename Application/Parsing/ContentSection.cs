@@ -12,7 +12,8 @@ namespace Application.Parsing
         public string ContentUrl { get; set; }
         public int Index { get; set; }
         public bool HasTimeSpan { get {return Tag == "caption";}}
-        public TimeSpan TimeSpan { get; set; } = new TimeSpan(0, 0, 0);
+        public int StartSeconds { get; set; }
+        public int EndSeconds { get; set; }
     }
     //note: this can be subclassed to do more complicated stuff as needed
     public class ContentSection

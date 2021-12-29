@@ -97,15 +97,32 @@ namespace Application.Parsing.ProfileScrapers
             };
             foreach(var caption in track.Captions)
             {
-                Console.WriteLine($"Caption is {caption.Text} at {caption.Duration}");
+                Console.WriteLine($"Caption is {caption.Text} at {caption.Offset.TotalSeconds} with duration {(float)(caption.Duration.Milliseconds)/1000}");
                 var element = new TextElement
                 {
                     Tag = "caption",
                     Value = caption.Text,
                     Index = idx,
-                    TimeSpan = caption.Duration,
+                    StartSeconds = (int)caption.Offset.TotalSeconds,
+                    EndSeconds = (int)(caption.Offset.TotalSeconds + caption.Duration.Seconds),
                     ContentUrl = Url
                 };
+                //handle overlapping captions
+                if (!(storage.Sections.Count == 0 && currentSection.TextElements.Count == 0))
+                {
+                    if (currentSection.TextElements.Count < 1)
+                    {   // in this case we need to get the last section from storage
+                        var lastElement = storage.Sections.Last().TextElements.Last();
+                        if (lastElement.EndSeconds > element.StartSeconds)
+                        {
+                            storage.Sections[storage.Sections.Count - 1].TextElements[storage.Sections.Last().TextElements.Count - 1].EndSeconds = element.StartSeconds;
+                        }
+                    }
+                    else if (currentSection.TextElements.Last().EndSeconds > element.StartSeconds)
+                    {
+                        currentSection.TextElements[currentSection.TextElements.Count - 1].EndSeconds = element.StartSeconds;
+                    }
+                }
                 currentSection.TextElements.Add(element);
                 if (idx > captionsPerSection)
                 {

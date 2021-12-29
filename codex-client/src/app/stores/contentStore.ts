@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ContentSection, SectionAbstractTerms } from "../models/content";
+import { ContentMetadata, ContentSection, SectionAbstractTerms, TextElement } from "../models/content";
 import { AddTranslationDto, KnownWordsDto } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
@@ -28,9 +28,14 @@ export default class ContentStore
         sectionHeader: 'none',
         elementGroups: []
     } 
+    highlightedElement: TextElement | null = null; // for captions
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    setHighlightedElement = (element: TextElement) => {
+        this.highlightedElement = element;
     }
 
     //NOTE: this is only for updating metadata. Actual sections will not be loaded until loadSection runs
