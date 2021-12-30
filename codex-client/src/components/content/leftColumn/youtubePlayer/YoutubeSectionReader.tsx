@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { SectionAbstractTerms } from "../../../../app/models/content";
 import { useStore } from "../../../../app/stores/store";
+import CaptionElementDiv from "./CaptionElementDiv";
 
 export default observer(function YoutubeSectionReader() {
     /*TODO- this needs to: 
@@ -13,7 +13,9 @@ export default observer(function YoutubeSectionReader() {
     const {currentSectionTerms} = contentStore;
     return (
         <div>
-
+            {currentSectionTerms.elementGroups.map(cpt => (
+                <CaptionElementDiv terms={cpt} />
+            ))}
         </div>
     )
 })

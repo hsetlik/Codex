@@ -601,13 +601,29 @@ FROM YESTERDAY:
 
 1. Caption reader component (with jumping to caption functionality & active highlighting)
 2. 2-way functionality between the caption reader and the video player
-3. Figure out how to pass timecode information between the player and the reader and how to automatically advance the captions/sections as the video plays
-4. Make sure time-intensive code is taking advantage of new schema, esp:
-    - Getting AbstractTerm
-    - Getting popular translations
+3. ~~Figure out how to pass timecode information between the player and the reader and how to automatically advance the captions/sections as the video plays~~
+4. ~~Make sure time-intensive code is taking advantage of new schema, esp:~~
+    - ~~Getting AbstractTerm~~
+    - ~~Getting popular translations~~
 
 TODO:
 
-1. Endpoint to  get the section at a given timestamp (should return 400 error if not given a YouTube URL) - get a section index for a timestamp -> (contentUrl, seconds) - loadSectionByID
+1. ~~Endpoint to  get the section at a given timestamp (should return 400 error if not given a YouTube URL) - get a section index for a timestamp -> (contentUrl, seconds) - loadSectionByID~~
 2. Ensure video player pauses when waiting for the section when seeking outside the buffer
+=================================================================================================
+============================================== 12/30/21 =========================================
+
+FROM YESTERDAY:
+
+1. Caption reader component (with jumping to caption functionality & active highlighting)
+2. 2-way functionality between the caption reader and the video player
+3. Ensure video player pauses when waiting for the section when seeking outside the buffer
+
+TODO:
+
+1. Switch timecode stuff to ms rather than seconds- TOA
+2. Set up caption following:
+
+    - Step 1: make sure handleProgress() loads the correct section (add getter for current section time range in ms)
+    - Step 2: make sure handleProgress() keeps correct caption in focus (also: how to create/ handle an auto scrolling component?)
 =================================================================================================

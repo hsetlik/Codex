@@ -129,16 +129,20 @@ export default class UserStore{
     refreshByValue = async (termValue: string) => {
         try {
             let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedProfile?.language!});
-            if (store.contentStore.selectedTerm?.termValue === termValue) {
+            if (store.contentStore.selectedTerm?.termValue.toUpperCase() === termValue.toUpperCase()) {
+                let oldValue = store.contentStore.selectedTerm.termValue;
+                updatedTermValue.termValue = oldValue;
                 store.contentStore.setSelectedTerm(updatedTermValue);
             }
             for(var i = 0; i < store.contentStore.currentSectionTerms.elementGroups.length; ++i)
             {
                 for (var n = 0; n < store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms.length; ++n)
                 {
-                    if (store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue === termValue) {
+                    if (store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue.toUpperCase() === termValue.toUpperCase()) {
                         let leading = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].leadingCharacters;
                         let trailing = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].trailingCharacters;
+                        let val = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue;
+                        updatedTermValue.termValue = val;
                         updatedTermValue.leadingCharacters = leading;
                         updatedTermValue.trailingCharacters = trailing;
                         updatedTermValue.indexInChunk = n; 

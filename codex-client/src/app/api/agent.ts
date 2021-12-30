@@ -4,10 +4,15 @@ import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
 import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
-import { UserTermCreateDto, AddTranslationDto, IUserTermId, TranslationDto, IChildTranslation, TranslationResultDto, IContentId, IContentUrl, ILanguageString, KnownWordsDto, LanguageProfileDto, SectionQueryDto, TermDto, IProfileId, ContentSecondsDto } from "../models/dtos";
-import { ContentMetadata, ContentSectionMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
+import { UserTermCreateDto, AddTranslationDto,
+         IUserTermId, TranslationDto, IChildTranslation, 
+         TranslationResultDto, IContentId, 
+         IContentUrl, ILanguageString, 
+         KnownWordsDto, LanguageProfileDto, 
+         SectionQueryDto, TermDto, 
+         IProfileId, ContentSecondsDto } from "../models/dtos";
+import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
-
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
@@ -54,9 +59,8 @@ axios.interceptors.request.use(config => {
   }
 )
 
-
-//
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
+
 //object to hold generic HTTP requests
 const requests = {
     get:<T> (url: string) => axios.get<T>(url).then(responseBody),
@@ -64,7 +68,6 @@ const requests = {
     put:<T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
     del:<T> (url: string) => axios.delete<T>(url).then(responseBody)
 }
-
 
 const Account = {
     current: () => requests.get<User>('/Account'),
@@ -79,8 +82,6 @@ const Profile = {
     updateHistory: (id: IProfileId) => requests.post('profile/updateHistory', id)
 }
 
-
-
 const UserTermEndpoints = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
@@ -90,17 +91,12 @@ const UserTermEndpoints = {
     deleteTranslation: (translation: IChildTranslation) => requests.post('/userTerm/deleteTranslation', translation)
 }
 
-
-
 const TermEndpoints = {
      getAbstractTerm: (term: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', term),
      getPopularTranslations: ({value, language}: TermDto) => requests.post<TranslationResultDto[]>('/term/popularTranslationsFor', {value, language})
 }
 
 //==============================================================================================================
-
-
-
 
 const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadata[]>('/content/getLanguageContents', language),
@@ -121,6 +117,7 @@ const Translate = {
 }
 
 //====================================================================================================================
+
 const agent = {
     Account,
     Profile,
@@ -130,4 +127,5 @@ const agent = {
     Parse,
     Translate
 }
+
 export default agent;

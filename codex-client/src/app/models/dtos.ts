@@ -73,5 +73,9 @@ export interface ContentSecondsDto {
     contentUrl: string,
     seconds: number
 }
+ export interface MilisecondsRange {
+     start: number,
+     end: number
+ }
 
 

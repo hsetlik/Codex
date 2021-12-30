@@ -5,6 +5,7 @@ import { useStore } from "../../../app/stores/store";
 import SectionNavigator from "./reader/SectionNavigator";
 import SectionReader from "./reader/SectionReader";
 import YoutubePlayerDiv from "./youtubePlayer/YoutubePlayerDiv";
+import YoutubeSectionReader from "./youtubePlayer/YoutubeSectionReader";
 
 interface Props {
     contentId: string,
@@ -27,7 +28,7 @@ export default observer(function LeftColumnDiv({contentId, index}: Props) {
         return (
             <div>
                 <YoutubePlayerDiv />
-
+                <YoutubeSectionReader />
             </div>
         )
     }

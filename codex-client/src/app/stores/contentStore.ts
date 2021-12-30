@@ -136,7 +136,7 @@ export default class ContentStore
          }
      }
 
-    loadSectionById = async (id: string, pIndex: number, useBuffer: boolean = false) => {
+    loadSectionById = async (id: string, pIndex: number, useBuffer: boolean = true) => {
         this.sectionLoaded = false;
         //if the section we need is already in the buffer, just switch it over
         if (this.bufferLoaded && this.bufferSection?.index === pIndex) {
@@ -177,13 +177,15 @@ export default class ContentStore
                     })
                 }
                 await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});
+                // and load the buffer as applicable
+                if (useBuffer && pIndex + 1 < content.numSections) {
+                    await this.loadBufferSectionById(id, pIndex + 1);
+                }
              } catch (error) {
                 console.log(error); 
                 runInAction(() => this.sectionLoaded = true); 
              }
         }
-        
-        
     }
 
     loadBufferSectionById = async (id: string, pIndex: number) => {
