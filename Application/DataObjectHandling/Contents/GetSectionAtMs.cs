@@ -11,11 +11,11 @@ using MediatR;
 
 namespace Application.DataObjectHandling.Contents
 {
-    public class GetSectionAtSeconds
+    public class GetSectionAtMs
     {
         public class Query : IRequest<Result<ContentSection>>
         {
-            public SectionAtSecondsQuery Dto { get; set; }
+            public SectionAtMsQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<ContentSection>>
@@ -31,17 +31,17 @@ namespace Application.DataObjectHandling.Contents
                 var sections = await _parser.GetAllSections(request.Dto.ContentUrl);
                 if (sections == null)
                     return Result<ContentSection>.Failure($"Could not get section for ${request.Dto.ContentUrl}");
-                int seconds = request.Dto.Seconds;
+                int ms = request.Dto.Ms;
                 foreach(var section in sections)
                 {
-                    int startSeconds = section.TextElements.First().StartSeconds;
-                    int endSeconds = section.TextElements.Last().EndSeconds;
-                    if (seconds >= startSeconds && seconds < endSeconds)
+                    int startMs = section.TextElements.First().StartMs;
+                    int endMs = section.TextElements.Last().EndMs;
+                    if (ms >= startMs && ms < endMs)
                     {
                         return Result<ContentSection>.Success(section);
                     }
                 }
-                return Result<ContentSection>.Failure($"Could not load section of {request.Dto.ContentUrl} at {request.Dto.Seconds} seconds");
+                return Result<ContentSection>.Failure($"Could not load section of {request.Dto.ContentUrl} at {request.Dto.Ms} seconds");
             }
         }
     }

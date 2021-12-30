@@ -112,10 +112,10 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetSectionMetadata.Query{Dto = dto}));
         }
         [Authorize]
-        [HttpPost("getSectionAtSeconds")]
-        public async Task<IActionResult> GetSectionAtSeconds(SectionAtSecondsQuery dto)
+        [HttpPost("getSectionAtMs")]
+        public async Task<IActionResult> GetSectionAtMs(SectionAtMsQuery dto)
         {
-            return HandleResult(await Mediator.Send(new GetSectionAtSeconds.Query{Dto = dto}));
+            return HandleResult(await Mediator.Send(new GetSectionAtMs.Query{Dto = dto}));
         }
     }
 }

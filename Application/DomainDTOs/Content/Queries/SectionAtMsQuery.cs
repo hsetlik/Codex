@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Application.DomainDTOs.Content.Queries
 {
-    public class SectionAtSecondsQuery
+    public class SectionAtMsQuery
     {
         public string ContentUrl { get; set; }
-        public int Seconds { get; set; }
+        public int Ms { get; set; }
     }
 }

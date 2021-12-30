@@ -69,9 +69,9 @@ export interface SectionQueryDto {
     index: number
 }
 
-export interface ContentSecondsDto {
+export interface ContentMsDto {
     contentUrl: string,
-    seconds: number
+    ms: number
 }
  export interface MilisecondsRange {
      start: number,

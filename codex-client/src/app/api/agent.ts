@@ -10,7 +10,8 @@ import { UserTermCreateDto, AddTranslationDto,
          IContentUrl, ILanguageString, 
          KnownWordsDto, LanguageProfileDto, 
          SectionQueryDto, TermDto, 
-         IProfileId, ContentSecondsDto } from "../models/dtos";
+         IProfileId, 
+         ContentMsDto} from "../models/dtos";
 import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 
@@ -105,7 +106,7 @@ const Content = {
     getContentWithId: (contentId: IContentId) => requests.post<ContentMetadata>('/content/getContentWithId', contentId),
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
     getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl),
-    getSectionAtSeconds: (dto: ContentSecondsDto) => requests.post<ContentSection>('/content/getSectionAtSeconds', dto)
+    getSectionAtMs: (dto: ContentMsDto) => requests.post<ContentSection>('/content/getSectionAtMs', dto)
 }
 
 const Parse = {

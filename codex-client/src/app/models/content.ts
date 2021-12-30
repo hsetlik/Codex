@@ -7,8 +7,8 @@ export interface TextElement {
     tag: string,
     index: number,
     contentUrl: string,
-    startSeconds: number,
-    endSeconds: number
+    startMs: number,
+    endMs: number
 }
 
 export interface ContentSection {

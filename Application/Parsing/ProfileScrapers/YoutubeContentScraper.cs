@@ -97,14 +97,14 @@ namespace Application.Parsing.ProfileScrapers
             };
             foreach(var caption in track.Captions)
             {
-                Console.WriteLine($"Caption is {caption.Text} at {caption.Offset.TotalSeconds} with duration {(float)(caption.Duration.Milliseconds)/1000}");
+                Console.WriteLine($"Caption is {caption.Text} at {caption.Offset.TotalMilliseconds} with duration {(float)(caption.Duration.Milliseconds)} ms");
                 var element = new TextElement
                 {
                     Tag = "caption",
                     Value = caption.Text,
                     Index = idx,
-                    StartSeconds = (int)caption.Offset.TotalSeconds,
-                    EndSeconds = (int)(caption.Offset.TotalSeconds + caption.Duration.Seconds),
+                    StartMs = (int)caption.Offset.TotalMilliseconds,
+                    EndMs = (int)(caption.Offset.TotalMilliseconds + caption.Duration.TotalMilliseconds),
                     ContentUrl = Url
                 };
                 //handle overlapping captions
@@ -113,14 +113,14 @@ namespace Application.Parsing.ProfileScrapers
                     if (currentSection.TextElements.Count < 1)
                     {   // in this case we need to get the last section from storage
                         var lastElement = storage.Sections.Last().TextElements.Last();
-                        if (lastElement.EndSeconds > element.StartSeconds)
+                        if (lastElement.EndMs > element.StartMs)
                         {
-                            storage.Sections[storage.Sections.Count - 1].TextElements[storage.Sections.Last().TextElements.Count - 1].EndSeconds = element.StartSeconds;
+                            storage.Sections[storage.Sections.Count - 1].TextElements[storage.Sections.Last().TextElements.Count - 1].EndMs = element.StartMs;
                         }
                     }
-                    else if (currentSection.TextElements.Last().EndSeconds > element.StartSeconds)
+                    else if (currentSection.TextElements.Last().EndMs > element.StartMs)
                     {
-                        currentSection.TextElements[currentSection.TextElements.Count - 1].EndSeconds = element.StartSeconds;
+                        currentSection.TextElements[currentSection.TextElements.Count - 1].EndMs = element.StartMs;
                     }
                 }
                 currentSection.TextElements.Add(element);

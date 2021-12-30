@@ -47,9 +47,9 @@ export default class ContentStore
         this.highlightedElement = element;
     }
 
-    elementAtSeconds = (seconds: number): TextElement => {
+    elementAtMs = (ms: number): TextElement => {
         for(let element of this.currentSection?.textElements!) {
-            if (element.startSeconds <= seconds && element.endSeconds > seconds)
+            if (element.startMs <= ms && element.endMs > ms)
                 return element;
         }
         return this.currentSection?.textElements[0]!;

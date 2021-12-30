@@ -5,7 +5,7 @@ import { useStore } from "../../../../app/stores/store";
 
 export default observer(function YoutubePlayerDiv() {
     const {contentStore} = useStore();
-    const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtSeconds} = contentStore;
+    const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtMs} = contentStore;
     const handleSeek = (seconds: number) => {
 
     }
@@ -15,10 +15,10 @@ export default observer(function YoutubePlayerDiv() {
         loaded: number;
         loadedSeconds: number; 
     }) => {
-        let current = elementAtSeconds(state.playedSeconds);
+        let current = elementAtMs(state.playedSeconds * 1000);
         if (highlightedElement !== current) {
             setHighlightedElement(current);
-            console.log(`${current.contentUrl} at seconds ${current.startSeconds}`);
+            console.log(`${current.contentUrl} at seconds ${current.startMs / 1000}`);
         }
     }
     return (

@@ -621,7 +621,7 @@ FROM YESTERDAY:
 
 TODO:
 
-1. Switch timecode stuff to ms rather than seconds- TOA
+1. ~~Switch timecode stuff to ms rather than seconds- TOA~~
 2. Set up caption following:
 
     - Step 1: make sure handleProgress() loads the correct section (add getter for current section time range in ms)
