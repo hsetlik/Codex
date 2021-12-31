@@ -626,4 +626,7 @@ TODO:
 
     - Step 1: make sure handleProgress() loads the correct section (add getter for current section time range in ms)
     - Step 2: make sure handleProgress() keeps correct caption in focus (also: how to create/ handle an auto scrolling component?)
+3. Figure out why youtube loading is slow
+4. Word/phrase lists? ("star" feature?- just add "starred" column to UserTerm and Phrase)
+5. ~~Figure out why translations are disapperaring?~~
 =================================================================================================

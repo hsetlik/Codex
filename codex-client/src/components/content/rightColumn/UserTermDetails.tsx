@@ -18,7 +18,7 @@ export default observer(function UserTermDetails() {
             <div>
                 <Header as='h3' content='Translations' />
                 <List >
-                    {selectedTerm!.translations.map(t => (
+                    {translationsLoaded && selectedTerm!.translations.map(t => (
                        <Translation term={selectedTerm!} value={t} key={t} /> 
                     ))}
                 </List>

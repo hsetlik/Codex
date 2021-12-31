@@ -1,10 +1,23 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { ContentMetadata, ContentSection, SectionAbstractTerms, TextElement } from "../models/content";
-import { AddTranslationDto, KnownWordsDto } from "../models/dtos";
+import { AddTranslationDto, KnownWordsDto, MillisecondsRange } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
 
+export const sectionMsRange = (section: ContentSection | null): MillisecondsRange => {
+    if (section === null)
+        return {
+            start: 0,
+            end: 0
+        }
+    const startMs = section.textElements[0].startMs;
+    const endMs = section.textElements[section.textElements.length - 1].endMs;
+    return {
+        start: startMs!,
+        end: endMs!
+    }
+}
 
 
 export default class ContentStore
@@ -54,6 +67,7 @@ export default class ContentStore
         }
         return this.currentSection?.textElements[0]!;
     }
+
 
     //NOTE: this is only for updating metadata. Actual sections will not be loaded until loadSection runs
     setSelectedContent = async (url: string) => {
@@ -134,14 +148,16 @@ export default class ContentStore
             console.log("error");
             runInAction(() => this.translationsLoaded = true);
          }
-     }
+    }
 
     loadSectionById = async (id: string, pIndex: number, useBuffer: boolean = true) => {
         this.sectionLoaded = false;
         //if the section we need is already in the buffer, just switch it over
         if (this.bufferLoaded && this.bufferSection?.index === pIndex) {
+            //load buffer to current
             this.currentSection = this.bufferSection;
             this.currentSectionTerms = this.bufferSectionTerms;
+            // empty buffer
             this.sectionLoaded = true;
             this.bufferLoaded = false;
             this.bufferSection = null;
@@ -189,6 +205,7 @@ export default class ContentStore
     }
 
     loadBufferSectionById = async (id: string, pIndex: number) => {
+        console.log(`Loading buffer section ${pIndex} for content ${id}`);
         this.bufferLoaded = false;
         try {
            let content = await agent.Content.getContentWithId({contentId: id}); 
@@ -215,6 +232,43 @@ export default class ContentStore
         }
     }
 
+    loadSectionForMs = async (ms: number, contentUrl: string, useBuffer: boolean = true) => {
+        this.sectionLoaded = false;
+        this.bufferLoaded = false;
+        //Before making any new API calls, check if the buffer matches the needed timestamp
+        const bufferRange = sectionMsRange(this.bufferSection!);
+        if (ms >= bufferRange.start && ms < bufferRange.end) {
+
+        }
+        try {
+             // load the load the metadata & elements
+            const newSection = await agent.Content.getSectionAtMs({ms: ms, contentUrl: contentUrl});
+            runInAction(() => {
+               
+                this.currentSection = newSection;
+                this.currentSectionTerms = {
+                    contentUrl: contentUrl,
+                    index: newSection.index,
+                    sectionHeader: newSection.sectionHeader,
+                    elementGroups: []
+                };
+                this.sectionLoaded = true;
+           })
+            // load the element abstract terms asynchronously
+           for(let element of this.currentSection?.textElements!) {
+               const group = await agent.Content.abstractTermsForElement(element);
+               runInAction(() => this.currentSectionTerms.elementGroups.push(group));
+           }
+           // prepare the buffer
+           if (useBuffer) {
+               //TODO
+           }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     setTermInSection(elementIndex: number, termIndex: number, term: AbstractTerm) {
         term.indexInChunk = termIndex;
         this.currentSectionTerms.elementGroups[elementIndex].abstractTerms[termIndex] = term;
@@ -227,17 +281,19 @@ export default class ContentStore
     }
 
     loadSelectedTermTranslations = async () => {
+        this.translationsLoaded = false;
+        this.selectedTerm!.translations = [];
         try {
            const translations =  await agent.UserTermEndpoints.getTranslations({userTermId: this.selectedTerm?.userTermId!});
            runInAction(() => {
-               this.selectedTerm!.translations = [];
             for(const t of translations) {
-                this.selectedTerm?.translations.push(t.value);
+                this.selectedTerm?.translations.push(t.userValue);
             }
             this.translationsLoaded = true;
            });
         } catch (error) {
            console.log(error);
         }
+        console.log(`Translations loaded for: ${this.selectedTerm?.termValue}`);
     }
 }

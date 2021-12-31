@@ -28,8 +28,10 @@ export interface IUserTermId {
 }
 
 export interface TranslationDto {
-    translationId: string,
-    value: string
+    termLanguage: string,
+    termValue: string,
+    userLanguage: string,
+    userValue: string
 }
 
 export interface IChildTranslation {
@@ -73,7 +75,7 @@ export interface ContentMsDto {
     contentUrl: string,
     ms: number
 }
- export interface MilisecondsRange {
+ export interface MillisecondsRange {
      start: number,
      end: number
  }

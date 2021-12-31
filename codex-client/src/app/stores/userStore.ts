@@ -130,6 +130,7 @@ export default class UserStore{
         try {
             let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedProfile?.language!});
             if (store.contentStore.selectedTerm?.termValue.toUpperCase() === termValue.toUpperCase()) {
+                console.log(`Updating selected term with value ${termValue}`);
                 let oldValue = store.contentStore.selectedTerm.termValue;
                 updatedTermValue.termValue = oldValue;
                 store.contentStore.setSelectedTerm(updatedTermValue);
@@ -141,8 +142,8 @@ export default class UserStore{
                     if (store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue.toUpperCase() === termValue.toUpperCase()) {
                         let leading = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].leadingCharacters;
                         let trailing = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].trailingCharacters;
-                        let val = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue;
-                        updatedTermValue.termValue = val;
+                        //let val = store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms[n].termValue;
+                        //updatedTermValue.termValue = val;
                         updatedTermValue.leadingCharacters = leading;
                         updatedTermValue.trailingCharacters = trailing;
                         updatedTermValue.indexInChunk = n; 

@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default observer(function Translation({value, term}: Props) {
+    console.log(`Translation has value ${value}`);
     const {userStore: {deleteTranslation}} = useStore();
     return (
         <List.Item>

@@ -12,7 +12,7 @@ export default observer(function CaptionElementDiv({terms}: Props) {
     return (
         <Container>
             {terms.abstractTerms.map(term => (
-                <AbstractTermComponent term={term} tag={terms.tag}/>
+                <AbstractTermComponent term={term} tag={terms.tag} key={term.indexInChunk}/>
             ))
             }
         </Container>

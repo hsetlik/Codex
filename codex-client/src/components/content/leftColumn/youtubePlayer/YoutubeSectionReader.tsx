@@ -14,7 +14,7 @@ export default observer(function YoutubeSectionReader() {
     return (
         <div>
             {currentSectionTerms.elementGroups.map(cpt => (
-                <CaptionElementDiv terms={cpt} />
+                <CaptionElementDiv terms={cpt} key={cpt.index} />
             ))}
         </div>
     )
