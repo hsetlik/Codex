@@ -52,7 +52,8 @@ namespace Application.Extensions
                     Rating = userTerm.Rating,
                     Translations = userTerm.Translations.Select(r => r.UserValue).ToList(),
                     UserTermId = userTerm.UserTermId,
-                    TimesSeen = userTerm.TimesSeen
+                    TimesSeen = userTerm.TimesSeen,
+                    Starred = userTerm.Starred
                  };
              }
              else

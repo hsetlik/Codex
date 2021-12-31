@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
@@ -23,6 +24,7 @@ namespace Application.Core
             CreateMap<Translation, TranslationDto>();
             CreateMap<ContentSection, ContentSectionDto>();
             CreateMap<UserLanguageProfile, LanguageProfileDto>();
+            CreateMap<UserTerm, AbstractTermDto>();
         }
     }
 

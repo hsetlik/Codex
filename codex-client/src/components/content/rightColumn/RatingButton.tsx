@@ -14,6 +14,7 @@ export default observer (function RatingButton({ratingValue, term}: Props) {
     const rateTerm = () => {
         var userTerm = AbstractToUserTermDetails(term);
         userTerm.rating = ratingValue;
+        console.log(userTerm);
         updateUserTerm(userTerm);
         console.log(`New Rating: ${ratingValue}`);
     }

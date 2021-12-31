@@ -24,6 +24,7 @@ namespace Application.DataObjectHandling.Terms
         public List<string> Translations { get; set; }
         public Guid UserTermId { get; set; }
         public int TimesSeen { get; set; }
+        public bool Starred { get; set; }
     }
 
     

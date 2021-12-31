@@ -47,22 +47,6 @@ namespace Application.Extensions
             return input;
         }
 
-        // just save some typing
-        public static UserTermDetailsDto GetUserTermDetailsDto(this UserTerm userTerm)
-        {
-             return new UserTermDetailsDto
-            {
-                NormalizedTermValue = userTerm.NormalizedTermValue,
-                TimesSeen = userTerm.TimesSeen,
-                EaseFactor = userTerm.EaseFactor,
-                Rating = userTerm.Rating,
-                DateTimeDue = userTerm.DateTimeDue,
-                SrsIntervalDays = userTerm.SrsIntervalDays,
-                UserTermId = userTerm.UserTermId,
-                CreatedAt = userTerm.CreatedAt
-            };
-        }
-
         public static UserTerm UpdatedWith(this UserTerm userTerm, UserTermDetailsDto details)
         {
             userTerm.TimesSeen = details.TimesSeen;
@@ -72,6 +56,7 @@ namespace Application.Extensions
             userTerm.SrsIntervalDays = details.SrsIntervalDays;
             userTerm.UserTermId = details.UserTermId;
             userTerm.CreatedAt = details.CreatedAt;
+            userTerm.Starred = details.Starred;
             return userTerm;
         }
 

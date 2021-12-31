@@ -15,5 +15,6 @@ namespace Application.DataObjectHandling.UserTerms
         public float SrsIntervalDays { get; set; } 
         public Guid UserTermId { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool Starred { get; set; }
     }
 }

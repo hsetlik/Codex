@@ -78,7 +78,8 @@ namespace Application.Extensions
                 TimesSeen = dto.TimesSeen,
                 NormalizedTermValue = normValue,
                 CreatedAt = DateTime.Now,
-                Translations = new List<Translation>()
+                Translations = new List<Translation>(),
+                Starred = false
             };
             //now add the translations
             foreach(var t in dto.Translations)
@@ -93,8 +94,6 @@ namespace Application.Extensions
                     UserTerm = uTerm
                 });
             }
-
-
             context.UserTerms.Add(uTerm);
             var success = await context.SaveChangesAsync() > 0;
             if (!success)
@@ -114,11 +113,12 @@ namespace Application.Extensions
             if (profile == null)
                 return Result<List<UserTermDetailsDto>>.Failure("Profile not found!");
             var currentTime = DateTime.Now;
+            var mapper = MapperFactory.GetDefaultMapper();
             foreach(var term in profile.UserTerms)
             {
                 if (currentTime > term.DateTimeDue)
                 {
-                    output.Add(term.GetUserTermDetailsDto());
+                    output.Add(mapper.Map<UserTermDetailsDto>(term));
                 }
             };
             return Result<List<UserTermDetailsDto>>.Success(output);
@@ -138,9 +138,10 @@ namespace Application.Extensions
             if (matches == null || matches.Count < 1)
                 return Result<List<UserTermDetailsDto>>.Failure($"No matches found");
             var output = new List<UserTermDetailsDto>();
+            var mapper = MapperFactory.GetDefaultMapper();
             foreach(var match in matches)
             {
-                output.Add(match.GetUserTermDetailsDto());
+                output.Add(mapper.Map<UserTermDetailsDto>(match));
             }
             return Result<List<UserTermDetailsDto>>.Success(output);
         }
@@ -183,7 +184,8 @@ namespace Application.Extensions
                 Rating = rating,
                 SrsIntervalDays = intervalDays,
                 CreatedAt = createTime,
-                DateTimeDue = createTime.AddDays(rating)
+                DateTimeDue = createTime.AddDays(rating),
+                Starred = false
             };
 
             context.UserTerms.Add(userTerm);

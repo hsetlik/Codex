@@ -19,8 +19,10 @@ export interface UserTermDetails {
     timesSeen: number,
     rating: number,
     easeFactor: number,
-    userTermId: string
+    userTermId: string,
+    starred: boolean
 }
+
 export interface AbstractTerm {
     //common term props
     termValue: string,
@@ -35,7 +37,8 @@ export interface AbstractTerm {
     easeFactor: number,
     translations: string[],
     indexInChunk: number
-    userTermId: string
+    userTermId: string,
+    starred: boolean
 }
 
 export function AbstractToUserTermDetails(abstract: AbstractTerm) {
@@ -45,7 +48,8 @@ export function AbstractToUserTermDetails(abstract: AbstractTerm) {
         timesSeen: abstract.timesSeen,
         rating: abstract.rating,
         easeFactor: abstract.easeFactor,
-        userTermId: abstract.userTermId
+        userTermId: abstract.userTermId,
+        starred: abstract.starred
     }
     return userTerm;
 }

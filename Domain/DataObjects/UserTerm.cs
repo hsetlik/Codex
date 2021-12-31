@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace Domain.DataObjects
 {
-    //basic class to hold translations
-   
     
     public class UserTerm
     {
@@ -30,5 +28,6 @@ namespace Domain.DataObjects
         public DateTime DateTimeDue { get; set; }
         public float SrsIntervalDays { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool Starred { get; set; }
     }
 }
