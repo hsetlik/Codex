@@ -1,10 +1,12 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, ListContent } from "semantic-ui-react";
 import { getLanguageName } from "../../app/common/langStrings";
 import { LanguageProfileDto } from "../../app/models/dtos";
 import { useStore } from "../../app/stores/store";
+import LanguageFlag1x1 from "../common/LanguageFlage1x1";
+import '../styles/styles.css';
+
 
 
 
@@ -20,8 +22,11 @@ export default observer(function LanguageSelector() {
     <Dropdown value={getLanguageName(selectedProfile?.language!)} placeholder={getLanguageName(selectedProfile?.language!)} >
         <Dropdown.Menu>
             { languageProfiles.map(prof => (
-                <Dropdown.Item key={prof.languageProfileId} onClick={() => handleChange(prof)}>
-                    {getLanguageName(prof.language)}
+                <Dropdown.Item key={prof.languageProfileId} onClick={() => handleChange(prof)} >
+                    <ListContent>
+                        {getLanguageName(prof.language)}
+                        <LanguageFlag1x1 lang={prof.language} className="flag-square" />
+                    </ListContent>
                 </Dropdown.Item>
             ))
             }

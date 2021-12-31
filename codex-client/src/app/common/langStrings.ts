@@ -19,6 +19,22 @@ export const IsoLangNames: ILangName[] = [
     {iso: "ru", fullName: "Russian"}
 ]
 
+export const flagCodes: LanguageFlagCode[] = [
+    {lang: 'fr', flag: 'fr'},
+    {lang: 'en', flag: 'gb'},
+    {lang: 'ar', flag: 'sa'},
+    {lang: 'es', flag: 'es'},
+    {lang: 'de', flag: 'de'},
+    {lang: 'zh', flag: 'cn'},
+    {lang: 'hi', flag: 'in'},
+    {lang: 'bn', flag: 'in'},
+    {lang: 'ja', flag: 'jp'},
+    {lang: 'tr', flag: 'tr'},
+    {lang: 'ru', flag: 'ru'},
+]
+
+
+
 //return the full English name of a (supported) language based on its two-letter ISO 639-1 code
 export function getLanguageName(iso: string) {
     for(var lang of IsoLangNames){
@@ -36,3 +52,14 @@ export function getLanguageCode(name: string){
     }
     return "No matching ISO code";
 }
+
+export const getFlagName = (lang: string) => {
+    return flagCodes.find(i => i.lang === lang)?.flag!;
+}
+
+export interface LanguageFlagCode {
+    lang: string,
+    flag: string
+}
+
+

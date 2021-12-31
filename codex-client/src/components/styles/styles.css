@@ -105,3 +105,7 @@
     margin-right: 10px !important;
     
   }
+   .flag-square {
+     clip: auto;
+     padding: 5% !important;
+   }

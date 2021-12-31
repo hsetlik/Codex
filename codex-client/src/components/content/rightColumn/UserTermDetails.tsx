@@ -5,7 +5,6 @@ import AddTranslationForm from "./AddTranslationForm";
 import RatingButtonGroup from "./RatingButtonGroup"
 import { useStore } from "../../../app/stores/store";
 import Translation from "./Translation";
-import StarButton from "./StarButton";
 
 //NOTE: this is an observer because its props are from a store object, even though this component doesn't call useStore() itself
 export default observer(function UserTermDetails() {

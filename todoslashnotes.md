@@ -630,3 +630,22 @@ TODO:
 4. Word/phrase lists? ("star" feature?- just add "starred" column to UserTerm and Phrase)
 5. ~~Figure out why translations are disapperaring?~~
 =================================================================================================
+============================================== 12/31/21 =========================================
+
+FROM YESTERDAY:
+
+1. ~~Caption reader component (with jumping to caption functionality & active highlighting)~~
+2. 2-way functionality between the caption reader and the video player
+3. Ensure video player pauses when waiting for the section when seeking outside the buffer
+4. Set up caption following:
+
+    - Step 1: make sure handleProgress() loads the correct section (add getter for current section time range in ms)
+    - Step 2: make sure handleProgress() keeps correct caption in focus (also: how to create/ handle an auto scrolling component?)
+5. Figure out why youtube loading is slow
+6. Word/phrase lists? ~~("star" feature?- just add "starred" column to UserTerm and Phrase)~~
+
+TODO: 
+
+1.  GetStarred() endpoint
+2.  Flag icon pngs
+=================================================================================================

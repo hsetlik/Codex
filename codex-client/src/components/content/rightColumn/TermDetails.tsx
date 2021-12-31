@@ -29,5 +29,4 @@ export default observer(function TermDetails({term}: Props) {
             )}
         </div>
     )
-
 })
