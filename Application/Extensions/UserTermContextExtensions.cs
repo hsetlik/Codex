@@ -145,7 +145,16 @@ namespace Application.Extensions
             }
             return Result<List<UserTermDetailsDto>>.Success(output);
         }
-
+        public static async Task<Result<List<UserTermDetailsDto>>> GetStarred(this DataContext context, Guid langProfileId)
+        {
+            var mapper = MapperFactory.GetDefaultMapper();
+            
+            var starredTerms = await context.UserTerms.Where(u => u.LanguageProfileId == langProfileId && u.Starred).ToListAsync();
+            if (starredTerms == null)
+                return Result<List<UserTermDetailsDto>>.Failure("Could not load starred terms!");
+            var starredDtos = starredTerms.Select(u => mapper.Map<UserTermDetailsDto>(u)).ToList();
+            return Result<List<UserTermDetailsDto>>.Success(starredDtos);
+        }
         public static async Task<Result<Unit>> CreateDummyUserTerm(this DataContext context, UserTermCreateQuery dto, string username, int dateRange=14)
         {
             var profile = await context.UserLanguageProfiles.Include(p => p.User).FirstOrDefaultAsync(p => p.User.UserName == username && p.Language == dto.Language);

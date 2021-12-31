@@ -646,6 +646,6 @@ FROM YESTERDAY:
 
 TODO: 
 
-1.  GetStarred() endpoint
+1.  ~~GetStarred() endpoint~~
 2.  Flag icon pngs
 =================================================================================================

@@ -23,6 +23,7 @@ namespace Application.Extensions
                 var metadata = await parser.GetContentMetadata(url);
                 for(int i = 0; i < metadata.NumSections; ++i)
                 {
+                    //TODO: move all this to ContextFactory and do this w/ multithreading
                     var section = await parser.GetSection(url, i);
                     for(int n = 0; n < section.TextElements.Count; ++n)
                     {

@@ -6,6 +6,7 @@ using Application.DataObjectHandling;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.UserLanguageProfile;
 using Domain.DataObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,12 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new UserTermDelete.Command{Dto = dto}));
         }
 
+        [Authorize]
+        [HttpPost("getStarred")]
+        public async Task<IActionResult> GetStarred(ProfileIdQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new GetStarred.Query{Dto = dto}));
+        }
 /*
         [Authorize]
         [HttpPost("answerUserTerm")]
