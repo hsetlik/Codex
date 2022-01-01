@@ -8,7 +8,8 @@ export default observer(function YoutubePlayerDiv() {
     const {contentStore} = useStore();
     const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtMs, currentSection, loadSectionForMs} = contentStore;
     const handleSeek = (seconds: number) => {
-        
+        const ms = (seconds * 1000);
+        loadSectionForMs(ms, selectedContentUrl);
     }
     const handleProgress = (state: {
         played: number;

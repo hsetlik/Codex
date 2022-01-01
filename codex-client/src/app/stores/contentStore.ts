@@ -244,9 +244,10 @@ export default class ContentStore
                 this.sectionLoaded = true;
             })
         } else {
+            console.log(`Loading section at ${ms / 1000} seconds`);
             try {
                 // load the load the metadata & elements
-               const newSection = await agent.Content.getSectionAtMs({ms: ms, contentUrl: contentUrl});
+               const newSection = await agent.Content.getSectionAtMs({ms: Math.round(ms), contentUrl: contentUrl});
                runInAction(() => {
                   
                    this.currentSection = newSection;
@@ -263,8 +264,6 @@ export default class ContentStore
                   const group = await agent.Content.abstractTermsForElement(element);
                   runInAction(() => this.currentSectionTerms.elementGroups.push(group));
               }
-             
-   
            } catch (error) {
                console.log(error)
            }

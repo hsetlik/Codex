@@ -653,12 +653,18 @@ TODO:
 
 FROM YESTERDAY:
 
-2. 2-way functionality between the caption reader and the video player
-3. Ensure video player pauses when waiting for the section when seeking outside the buffer
-4. Set up caption following:
+1. 2-way functionality between the caption reader and the video player
+2. Ensure video player pauses when waiting for the section when seeking outside the buffer
+3. Set up caption following:
 
     - ~~Step 1: make sure handleProgress() loads the correct section (add getter for current section time range in ms)~~
     - Step 2: make sure handleProgress() keeps correct caption in focus (also: how to create/ handle an auto scrolling component?)
-5. Figure out why youtube loading is slow
+
+
+TODO: 
+
+4. Figure out why youtube loading is slow
+5. Make sure video player reloads when refreshing content page
+6. Account for video refreshing/resetting itself to beginning in handleSeek
 
 =================================================================================================
