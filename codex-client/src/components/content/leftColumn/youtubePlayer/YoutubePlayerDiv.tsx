@@ -6,9 +6,9 @@ import { useStore } from "../../../../app/stores/store";
 
 export default observer(function YoutubePlayerDiv() {
     const {contentStore} = useStore();
-    const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtMs, currentSection} = contentStore;
+    const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtMs, currentSection, loadSectionForMs} = contentStore;
     const handleSeek = (seconds: number) => {
-
+        
     }
     const handleProgress = (state: {
         played: number;
@@ -25,6 +25,8 @@ export default observer(function YoutubePlayerDiv() {
         const range = sectionMsRange(currentSection!);
         if (range.start > playedMs || range.end <= playedMs) {
            //TODO: load the correct section for playedMs- make sure to use buffer if possible and handle loading time if not 
+           console.log(`Loading section at ${playedMs} ms`);
+           loadSectionForMs(playedMs, selectedContentUrl);
         }
     }
     return (

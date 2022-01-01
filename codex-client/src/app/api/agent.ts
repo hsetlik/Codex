@@ -11,7 +11,8 @@ import { UserTermCreateDto, AddTranslationDto,
          KnownWordsDto, LanguageProfileDto, 
          SectionQueryDto, TermDto, 
          IProfileId, 
-         ContentMsDto} from "../models/dtos";
+         ContentMsDto,
+         ContentUrlDto} from "../models/dtos";
 import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 
@@ -106,11 +107,13 @@ const Content = {
     getContentWithId: (contentId: IContentId) => requests.post<ContentMetadata>('/content/getContentWithId', contentId),
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
     getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl),
-    getSectionAtMs: (dto: ContentMsDto) => requests.post<ContentSection>('/content/getSectionAtMs', dto)
+    getSectionAtMs: (dto: ContentMsDto) => requests.post<ContentSection>('/content/getSectionAtMs', dto),
+
 }
 
 const Parse = {
-    getSection: (dto: SectionQueryDto) => requests.post<ContentSection>('/parse/getSection', dto)
+    getSection: (dto: SectionQueryDto) => requests.post<ContentSection>('/parse/getSection', dto),
+    getContentMetadata: (dto: ContentUrlDto) => requests.post<ContentMetadata>('/parse/getContentMetadata', dto)
 }
 
 const Translate = {

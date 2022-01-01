@@ -80,4 +80,8 @@ export interface ContentMsDto {
      end: number
  }
 
+ export interface ContentUrlDto {
+     contentUrl: string
+ }
+
 

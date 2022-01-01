@@ -238,35 +238,49 @@ export default class ContentStore
         //Before making any new API calls, check if the buffer matches the needed timestamp
         const bufferRange = sectionMsRange(this.bufferSection!);
         if (ms >= bufferRange.start && ms < bufferRange.end) {
-
-        }
-        try {
-             // load the load the metadata & elements
-            const newSection = await agent.Content.getSectionAtMs({ms: ms, contentUrl: contentUrl});
             runInAction(() => {
-               
-                this.currentSection = newSection;
-                this.currentSectionTerms = {
-                    contentUrl: contentUrl,
-                    index: newSection.index,
-                    sectionHeader: newSection.sectionHeader,
-                    elementGroups: []
-                };
+                this.currentSection = this.bufferSection;
+                this.currentSectionTerms = this.bufferSectionTerms;
                 this.sectionLoaded = true;
-           })
-            // load the element abstract terms asynchronously
-           for(let element of this.currentSection?.textElements!) {
-               const group = await agent.Content.abstractTermsForElement(element);
-               runInAction(() => this.currentSectionTerms.elementGroups.push(group));
+            })
+        } else {
+            try {
+                // load the load the metadata & elements
+               const newSection = await agent.Content.getSectionAtMs({ms: ms, contentUrl: contentUrl});
+               runInAction(() => {
+                  
+                   this.currentSection = newSection;
+                   this.currentSectionTerms = {
+                       contentUrl: contentUrl,
+                       index: newSection.index,
+                       sectionHeader: newSection.sectionHeader,
+                       elementGroups: []
+                   };
+                   this.sectionLoaded = true;
+              })
+               // load the element abstract terms asynchronously
+              for(let element of this.currentSection?.textElements!) {
+                  const group = await agent.Content.abstractTermsForElement(element);
+                  runInAction(() => this.currentSectionTerms.elementGroups.push(group));
+              }
+             
+   
+           } catch (error) {
+               console.log(error)
            }
-           // prepare the buffer
-           if (useBuffer) {
-               //TODO
-           }
-
-        } catch (error) {
-            console.log(error)
         }
+        // load the buffer
+        if (useBuffer) {
+            try {
+                let contentId = this.selectedContentMetadata!.contentId;
+                let currentIndex = this.currentSection!.index;
+                if (currentIndex < this.selectedContentMetadata!.numSections + 1) {
+                    await this.loadBufferSectionById(contentId, currentIndex + 1);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+       }
     }
 
     setTermInSection(elementIndex: number, termIndex: number, term: AbstractTerm) {
