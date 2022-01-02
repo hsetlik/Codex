@@ -3,6 +3,7 @@ export interface User {
     displayName: string;
     token: string;
     lastStudiedLanguage: string;
+    nativeLanguage: string;
 }
 
 export interface UserFormValues {

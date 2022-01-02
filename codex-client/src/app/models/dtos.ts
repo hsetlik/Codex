@@ -19,6 +19,8 @@ export interface TranslationResultDto {
     annotation: string
 }
 
+
+
 export interface IContentId {
     contentId: string
 }
@@ -33,6 +35,16 @@ export interface TranslationDto {
     userLanguage: string,
     userValue: string
 }
+ export interface TranslatorQuery {
+     queryLanguage: string,
+     queryValue: string,
+     responseLanguage: string
+ }
+
+ export interface TranslationDto {
+     query: TranslatorQuery,
+     responseValue: string
+ }
 
 export interface IChildTranslation {
     userTermId: string,

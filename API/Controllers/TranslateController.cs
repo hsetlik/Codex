@@ -23,12 +23,6 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetTranslation.Query{Dto = dto}));
         }
 
-        [Authorize]
-        [HttpPost("getTranslations")]
-        public async Task<IActionResult> GetTranslations(TermDto dto)
-        {
-            return HandleResult(await Mediator.Send(new GetTranslations.Query{Dto = dto}));
-        }
         
     }
 }

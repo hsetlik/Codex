@@ -14,20 +14,6 @@ namespace API.Controllers
     public class TermController : CodexControllerBase
     {
         [Authorize]
-        [HttpPost("createTerm")]
-       
-        //should go to: /Term/popularTranslationsFor
-        [Authorize]
-        [HttpPost("popularTranslationsFor")]
-        public async Task<IActionResult> PopularTranslationsFor(TermDto dto)
-        {
-            return HandleResult(await Mediator.Send(new PopularTranslationsList.Query
-            {
-                Dto = dto
-            }));
-        }
-
-        [Authorize]
         [HttpPost("getAbstractTerm")]
         public async Task<IActionResult> GetAbstractTerm(TermDto dto)
         {

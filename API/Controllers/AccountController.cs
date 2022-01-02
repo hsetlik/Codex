@@ -122,7 +122,8 @@ namespace API.Controllers
                 DisplayName = user.DisplayName,
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
-                LastStudiedLanguage = user.LastStudiedLanguage
+                LastStudiedLanguage = user.LastStudiedLanguage,
+                NativeLanguage = user.NativeLanguage
             };
         }
     }

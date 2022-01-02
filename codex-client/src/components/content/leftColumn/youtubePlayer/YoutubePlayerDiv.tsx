@@ -37,8 +37,8 @@ export default observer(function YoutubePlayerDiv() {
            controls={true}
            onSeek={handleSeek}
            onProgress={handleProgress}
-           /> 
-
+           progressInterval={400}
+           />
         </div>
     )
 })

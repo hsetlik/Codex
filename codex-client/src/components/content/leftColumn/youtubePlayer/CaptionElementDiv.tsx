@@ -13,7 +13,8 @@ export default observer(function CaptionElementDiv({terms, isHighlighted}: Props
     return (
         <Container>
             {isHighlighted && (
-                <Icon name='play circle' />
+
+                <Icon name='arrow circle right' onClick={() => console.log('arrow clicked')} link  />
             )}
             {terms.abstractTerms.map(term => (
                 <AbstractTermComponent term={term} tag={terms.tag} key={term.indexInChunk}/>

@@ -12,7 +12,8 @@ import { UserTermCreateDto, AddTranslationDto,
          SectionQueryDto, TermDto, 
          IProfileId, 
          ContentMsDto,
-         ContentUrlDto} from "../models/dtos";
+         ContentUrlDto,
+         TranslatorQuery} from "../models/dtos";
 import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 
@@ -94,8 +95,7 @@ const UserTermEndpoints = {
 }
 
 const TermEndpoints = {
-     getAbstractTerm: (term: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', term),
-     getPopularTranslations: ({value, language}: TermDto) => requests.post<TranslationResultDto[]>('/term/popularTranslationsFor', {value, language})
+     getAbstractTerm: (term: TermDto) => requests.post<AbstractTerm>('/term/getAbstractTerm', term)
 }
 
 //==============================================================================================================
@@ -117,7 +117,8 @@ const Parse = {
 }
 
 const Translate = {
-    getTranslations: (dto: TermDto) => requests.post<TranslationResultDto[]>('translate/getTranslations', dto)
+    getTranslations: (dto: TermDto) => requests.post<TranslationResultDto[]>('translate/getTranslations', dto),
+    getTranslation: (query: TranslatorQuery) => requests.post<TranslationDto>('translate/getTranslation', query)
 }
 
 //====================================================================================================================

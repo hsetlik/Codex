@@ -3,15 +3,14 @@ import { Header } from "semantic-ui-react";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import UserTermCreator from "./UserTermCreator";
 import UserTermDetails from "./UserTermDetails";
-import PopTranslations from "./PopTranslations";
 import StarButton from "./StarButton";
+import ReccomendedTranslation from "./ReccomendedTranslation";
 
 interface Props {
     term: AbstractTerm
 }
 
 export default observer(function TermDetails({term}: Props) {
-   
     return (
         <div>
             {term.hasUserTerm ? (
@@ -23,7 +22,7 @@ export default observer(function TermDetails({term}: Props) {
             ) : (
                 <div>
                     <Header as='h2' content={term.termValue} />
-                    <PopTranslations term={term} />
+                    <ReccomendedTranslation term={{value: term.termValue, language: term.language}} />
                     <UserTermCreator term={term} />
                 </div>
             )}

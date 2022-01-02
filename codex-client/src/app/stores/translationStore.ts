@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { TranslationResultDto } from "../models/dtos";
+import { TranslationResultDto, TranslatorQuery } from "../models/dtos";
 import { Term } from "../models/userTerm";
 
 
@@ -9,6 +9,11 @@ export default class TranslationStore
     translationsLoaded = false;
     currentTermValue: Term = {termValue: '', language: ''}
     currentTranslations: TranslationResultDto[] = [];
+    reccomendedLoaded = false;
+    reccomendedTranslation: TranslationResultDto = {
+        value: 'null',
+        annotation: 'null'
+    }
     constructor() {
         makeAutoObservable(this);
     }
@@ -28,6 +33,27 @@ export default class TranslationStore
            runInAction(() => {
                this.translationsLoaded = true;
            })
+        }
+    }
+
+    loadReccomended = async (query: TranslatorQuery) => {
+        this.reccomendedLoaded = false;
+        try {
+            const translation = await agent.Translate.getTranslation(query);
+            runInAction(() => {
+                this.reccomendedTranslation = {
+                    value: translation.responseValue,
+                    annotation: 'null'
+                }
+                this.currentTermValue = {
+                    termValue: query.queryValue,
+                    language: query.queryLanguage
+                }
+                this.reccomendedLoaded = true;
+            } );
+        } catch (error) {
+           console.log(error);
+           runInAction(() => this.reccomendedLoaded = true);
         }
     }
 }
