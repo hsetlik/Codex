@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Header, Label, Segment } from "semantic-ui-react";
 import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
+import ContentSaveButton from "./ContentSaveButton";
 import KnownWordsLabel from "./KnownWordsLabel";
 
 interface Props{
@@ -20,6 +21,7 @@ export default observer(function ContentHeader({dto}: Props)
                     <Label >{dto.contentType}</Label>
                     <Label >Section {dto.bookmark + 1} of {dto.numSections}</Label>
                     <KnownWordsLabel contentId={dto.contentId} />
+                    <ContentSaveButton contentUrl={dto.contentUrl} />
                 </div>
                 <div style={{padding: '10px'}}>
                     <Button as={Link}

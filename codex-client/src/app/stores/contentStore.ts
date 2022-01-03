@@ -1,5 +1,4 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { ThemeProvider } from "react-bootstrap";
 import agent from "../api/agent";
 import { ContentMetadata, ContentSection, SectionAbstractTerms, TextElement } from "../models/content";
 import { AddTranslationDto, KnownWordsDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
@@ -100,6 +99,10 @@ export default class ContentStore
         }
     }
 
+    contentIsSaved = (contentUrl: string): boolean => {
+        return this.savedContents.some(c => c.contentUrl === contentUrl);
+    }
+
     prevSection = async () => {
         try {
            if (this.selectedSectionIndex  > 0) {
@@ -125,6 +128,30 @@ export default class ContentStore
         }
 
     }
+
+     toggleContentSaved = async (contentUrl: string) => {
+         if (this.contentIsSaved(contentUrl)) {
+            try {
+                await agent.Content.unsaveContent({contentUrl: contentUrl, languageProfileId: store.userStore.selectedProfile?.languageProfileId!}); 
+                runInAction(() => {
+                    // just remove it from the store, no need to make another API call
+                    this.savedContents = this.savedContents.filter(c => c.contentUrl !== contentUrl);
+                })
+            } catch (error) {
+                console.log(error);    
+            }
+         } else {
+             try {
+                await agent.Content.saveContent({contentUrl: contentUrl, languageProfileId: store.userStore.selectedProfile?.languageProfileId!});
+                await this.loadSavedContents(store.userStore.selectedProfile?.languageProfileId!);
+                
+            } catch (error) {
+                console.log(error);    
+            }
+
+         }
+
+     }
 
     loadMetadata = async (lang: string) => {
         this.headersLoaded = false;
