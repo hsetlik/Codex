@@ -22,7 +22,7 @@ namespace Application.Extensions
         public static async Task<Result<Unit>> CreateCollection(this DataContext context, CreateCollectionDto dto)
         {
             var profile = await context.UserLanguageProfiles
-                .Include(p => p.SavedCollections)
+                .Include(p => p.CreatedCollections)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(p => p.LanguageProfileId == dto.CreatorProfileId);
             if (profile == null)
@@ -33,16 +33,26 @@ namespace Application.Extensions
             
             var collection = new ContentCollection
             {
-                CreatorProfileId = dto.CreatorProfileId,
+                LanguageProfileId = dto.CreatorProfileId,
                 CreatorUsername = profile.User.UserName,
                 Language = profile.Language,
                 CollectionName = dto.CollectionName,
                 Description = dto.Description,
                 CreatedAt = DateTime.Now,
-                Contents = new List<Content>{content}
+                Entries = new List<ContentCollectionEntry>
+                {
+                    new ContentCollectionEntry 
+                    {
+                        ContentId = content.ContentId,
+                        Content = content,
+                        LanguageProfileId = dto.CreatorProfileId,
+                        UserLanguageProfile = profile,
+                        AddedAt = DateTime.Now
+                    }
+                }
             };
 
-            profile.SavedCollections.Add(collection);
+            profile.CreatedCollections.Add(collection);
 
             var success = await context.SaveChangesAsync() > 0;
             if (!success)
@@ -62,7 +72,7 @@ namespace Application.Extensions
         public static async Task<Result<Unit>> UpdateCollection(this DataContext context, ContentCollectionDto dto)
         {
             var existing = await context.ContentCollections
-                .Include(c => c.Contents)
+                .Include(c => c.Entries)
                 .FirstOrDefaultAsync(c => c.ContentCollectionId == dto.ContentCollectionId);
             if (existing == null)
                 return Result<Unit>.Failure("No existing collection!");

@@ -39,6 +39,7 @@ namespace Persistence
         public DbSet<SavedContent> SavedContents { get; set; }
 
         public DbSet<ContentCollection> ContentCollections { get; set; }
+        public DbSet<ContentCollectionEntry> ContentCollectionEntries { get; set; }
 
          protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -56,7 +57,7 @@ namespace Persistence
             .HasForeignKey<DailyProfileHistory>(d => d.LanguageProfileId);
 
             builder.Entity<UserLanguageProfile>()
-            .HasMany<ContentCollection>(c => c.SavedCollections)
+            .HasMany<ContentCollection>(c => c.CreatedCollections)
             .WithOne();
 
             builder.Entity<ContentHistory>()
@@ -97,9 +98,6 @@ namespace Persistence
             builder.Entity<DailyProfileRecord>()
             .HasOne(r => r.UserLanguageProfile)
             .WithMany();
-
-            builder.Entity<ContentCollection>()
-            .HasMany(c => c.Contents);
 
 
             builder.Entity<SavedContent>()
