@@ -127,6 +127,13 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [HttpPost("unsaveContent")]
+        public async Task<IActionResult> UnsaveContent(SaveContentQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new UnsaveContent.Command{Dto = dto}));
+        }
+
+        [Authorize]
         [HttpPost("getSavedContents")]
         public async Task<IActionResult> GetSavedContents(ProfileIdQuery dto)
         {

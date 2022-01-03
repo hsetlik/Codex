@@ -33,6 +33,21 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Could not save changes!");
             return Result<Unit>.Success(Unit.Value);
         }
+        public static async Task<Result<Unit>> UnsaveContent(this DataContext context, string contentUrl, Guid langProfileId)
+        {
+            var savedContent = await context.SavedContents
+                .FirstOrDefaultAsync(c => c.LanguageProfileId == langProfileId &&
+                c.ContentUrl == contentUrl);
+            if (savedContent == null)
+                return Result<Unit>.Failure("Mo matching saved content!");
+
+            context.SavedContents.Remove(savedContent);
+
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("Could not save changes!");
+            return Result<Unit>.Success(Unit.Value);
+        }
         //TODO GetSavedContents(languageProfileId)
         public static async Task<Result<List<SavedContentDto>>> GetSavedContents(this DataContext context, Guid langProfileId)
         {
