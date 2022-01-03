@@ -666,3 +666,18 @@ TODO:
 7. Fix translations showing up twice
 
 =================================================================================================
+============================================== 1/1/22 ===========================================
+
+FROM YESTERDAY:
+
+1. 2-way functionality between the caption reader and the video player
+2. Ensure video player pauses when waiting for the section when seeking outside the buffer
+3. Figure out why youtube loading is slow
+4. Make sure video player reloads when refreshing content page
+5. Account for video refreshing/resetting itself to beginning in handleSeek
+
+TODO:
+
+1. Add SavedContent entity
+2. Rework profile page on client side- maybe a tabbed window with statistics, saved contents, starred terms?
+=================================================================================================
