@@ -72,7 +72,6 @@ export default class ContentStore
         return this.currentSection?.textElements[0]!;
     }
 
-
     //NOTE: this is only for updating metadata. Actual sections will not be loaded until loadSection runs
     setSelectedContent = async (url: string) => {
         console.log(`Selecting Content: ${url}`);

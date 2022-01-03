@@ -1,16 +1,20 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import { createRef, useState } from "react";
 import ReactPlayer from "react-player/youtube";
+import { Container } from "semantic-ui-react";
+import { ElementAbstractTerms } from "../../../../app/models/content";
 import { sectionMsRange } from "../../../../app/stores/contentStore";
 import { useStore } from "../../../../app/stores/store";
+import CaptionElementDiv from "./CaptionElementDiv";
 
 export default observer(function YoutubePlayerDiv() {
     const {contentStore} = useStore();
-    const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtMs, currentSection, loadSectionForMs} = contentStore;
+    const {selectedContentUrl, highlightedElement, setHighlightedElement, elementAtMs, currentSection, loadSectionForMs, currentSectionTerms} = contentStore;
     const handleSeek = (seconds: number) => {
         const ms = (seconds * 1000);
         loadSectionForMs(ms, selectedContentUrl);
     }
+    const playerRef = createRef<ReactPlayer>();
     const handleProgress = (state: {
         played: number;
         playedSeconds: number;
@@ -30,6 +34,18 @@ export default observer(function YoutubePlayerDiv() {
            loadSectionForMs(playedMs, selectedContentUrl);
         }
     }
+    const [isPlaying, setIsPlaying] = useState(false);
+    const handleCaptionJump = (terms: ElementAbstractTerms) =>
+    {
+        const element = currentSection?.textElements.find(e => e.index === terms.index)!;
+        playerRef.current?.seekTo((element.startMs / 1000), "seconds");
+        if(!isPlaying) {
+            setIsPlaying(true);
+        }
+    }
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
     return (
         <div>
            <ReactPlayer 
@@ -37,8 +53,22 @@ export default observer(function YoutubePlayerDiv() {
            controls={true}
            onSeek={handleSeek}
            onProgress={handleProgress}
+           onPlay={handlePlay}
+           onPause={handlePause}
            progressInterval={400}
+           ref={playerRef}
+           playing={isPlaying}
+           light
            />
+           <Container>
+            <div>
+                {currentSectionTerms.elementGroups.map(cpt => (
+                    <CaptionElementDiv terms={cpt} key={cpt.index} isHighlighted={highlightedElement?.index === cpt.index} jumpFunction={() => {
+                        handleCaptionJump(cpt);
+                    }} />
+                ))}
+            </div>
+           </Container>
         </div>
     )
 })
