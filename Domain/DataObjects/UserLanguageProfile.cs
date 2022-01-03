@@ -21,5 +21,6 @@ namespace Domain.DataObjects
         public int KnownWords { get; set; }
         public ICollection<ContentHistory> ContentHistories { get; set; } = new List<ContentHistory>();
         public DailyProfileHistory DailyProfileHistory { get; set; } = new DailyProfileHistory();
+        public ICollection<SavedContent> SavedContents { get; set; } = new List<SavedContent>();
     }
 }

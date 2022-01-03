@@ -6,6 +6,7 @@ using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
+using Application.DomainDTOs.Content.Responses;
 using Application.DomainDTOs.UserLanguageProfile;
 using Application.DomainDTOs.UserTerm;
 using Application.Parsing;
@@ -25,6 +26,7 @@ namespace Application.Core
             CreateMap<ContentSection, ContentSectionDto>();
             CreateMap<UserLanguageProfile, LanguageProfileDto>();
             CreateMap<UserTerm, AbstractTermDto>();
+            CreateMap<SavedContent, SavedContentDto>();
         }
     }
 

@@ -7,6 +7,7 @@ using Application.DataObjectHandling.Contents;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.Content.Queries;
+using Application.DomainDTOs.UserLanguageProfile;
 using Application.Parsing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -117,5 +118,21 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetSectionAtMs.Query{Dto = dto}));
         }
+
+        [Authorize]
+        [HttpPost("saveContent")]
+        public async Task<IActionResult> SaveContent(SaveContentQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new SaveContent.Command{Dto = dto}));
+        }
+
+        [Authorize]
+        [HttpPost("getSavedContents")]
+        public async Task<IActionResult> GetSavedContents(ProfileIdQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new GetSavedContents.Query{Dto = dto}));
+        }
+
+
     }
 }

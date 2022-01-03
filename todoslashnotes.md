@@ -678,6 +678,6 @@ FROM YESTERDAY:
 
 TODO:
 
-1. Add SavedContent entity
+1. ~~Add SavedContent entity~~
 2. Rework profile page on client side- maybe a tabbed window with statistics, saved contents, starred terms?
 =================================================================================================
