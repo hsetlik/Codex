@@ -649,7 +649,7 @@ TODO:
 1.  ~~GetStarred() endpoint~~
 2.  ~~Flag icon pngs~~
 =================================================================================================
-============================================== 1/1/22 =========================================
+============================================== 1/1/22 ===========================================
 
 FROM YESTERDAY:
 
@@ -666,7 +666,7 @@ TODO:
 7. Fix translations showing up twice
 
 =================================================================================================
-============================================== 1/1/22 ===========================================
+============================================== 1/2/22 ===========================================
 
 FROM YESTERDAY:
 
@@ -679,5 +679,8 @@ FROM YESTERDAY:
 TODO:
 
 1. ~~Add SavedContent entity~~
-2. Rework profile page on client side- maybe a tabbed window with statistics, saved contents, starred terms?
+2. Rework profile page on client side- maybe a tabbed window with ~~statistics~~, ~~saved contents~~, starred terms?
+3. Make content feed more flexible, add filters for tags or types
+4. Content collections/playlists- should be able to create and view a list of collections
+5. ~~Add WordsRead and SecondsListened to DailyProfileHistory (also- figure out how to update SecondsListened)~~ OR- Have these as DailyDataPoint subclasses and compute values based on ContentViewRecords from the same day
 =================================================================================================

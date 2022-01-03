@@ -48,6 +48,25 @@ namespace Application.Extensions
                 var numUserTerms = await context.UserTerms.Where(u => u.CreatedAt.CompareTo(query.DateTime) < 1).CountAsync();
                 return Result<DailyDataPoint>.Success(new NumUserTermsDataPoint(query.LanguageProfileId, query.DateTime, numUserTerms));
             }
+            else if (query.MetricName == "WordsRead")
+            {
+                var record = await context.GetClosestRecord(query.LanguageProfileId, query.DateTime);
+                if (!record.IsSuccess)
+                    return Result<DailyDataPoint>.Failure($"Could not get record! Error message: {record.Error}");
+                var wordsRead = record.Value.WordsRead;
+                //Console.WriteLine($"{knownWords} known on {record.Value.CreatedAt}");
+                return Result<DailyDataPoint>.Success(new WordsReadDataPoint(query.LanguageProfileId, query.DateTime, wordsRead));
+
+            }
+            else if (query.MetricName == "SecondsListened")
+            {
+                var record = await context.GetClosestRecord(query.LanguageProfileId, query.DateTime);
+                if (!record.IsSuccess)
+                    return Result<DailyDataPoint>.Failure($"Could not get record! Error message: {record.Error}");
+                var secondsListened = record.Value.SecondsListened;
+                //Console.WriteLine($"{knownWords} known on {record.Value.CreatedAt}");
+                return Result<DailyDataPoint>.Success(new SecondsListenedDataPoint(query.LanguageProfileId, query.DateTime, secondsListened));
+            }
             else
             {
                 return Result<DailyDataPoint>.Failure($"Could not create data point for metric {query.MetricName}");
@@ -164,8 +183,4 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
         }
     }
-
-    
-
-    
 }
