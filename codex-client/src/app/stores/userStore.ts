@@ -65,9 +65,7 @@ export default class UserStore{
     setSelectedLanguage = (iso: string) => {
         console.log("Setting selected language: " + iso);
         this.selectedProfile = this.languageProfiles.find(p => p.language === iso)!;
-        store.contentStore.loadMetadata(iso);
-        if (this.selectedProfile !== null)
-            store.contentStore.loadSavedContents(this.selectedProfile.languageProfileId);
+        store.contentStore.loadMetadata(iso).finally(() => store.contentStore.loadSavedContents(this.selectedProfile!.languageProfileId));
         if (store.knownWordsStore.knownWords.size > 0)
             store.knownWordsStore.clearKnownWords();
     }
@@ -81,12 +79,10 @@ export default class UserStore{
         try {
             const user = await agent.Account.current();
             const profiles = await agent.Profile.getUserProfiles();
-            console.log(profiles);
             runInAction(()=> {
                 this.languageProfiles = profiles;
                 this.profilesLoaded = true;
                 this.user = user;
-                console.log(this.languageProfiles);
                 const defaultProfile = this.languageProfiles.find(p => p.language === user.lastStudiedLanguage);
                 const currentProfile = (defaultProfile !== undefined) ? defaultProfile : this.languageProfiles[0];
                 this.selectedProfile = currentProfile;

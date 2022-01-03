@@ -171,7 +171,9 @@ export default class ContentStore
     }
 
     loadSavedContents = async (languageProfileId: string) => {
+        console.log(`Loading saved contents for profile: ${languageProfileId}`);
         this.savedContentsLoaded = false;
+        this.savedContents = [];
         try {
            const contents = await agent.Content.getSavedContents({languageProfileId: languageProfileId});
            runInAction(() => {
@@ -182,6 +184,8 @@ export default class ContentStore
            console.log(error); 
            runInAction(() => this.savedContentsLoaded = true);
         }
+        console.log(`Saved Contents loaded `);
+        console.log(this.savedContents);
     }
 
     addTranslation = async (dto: AddTranslationDto) => {

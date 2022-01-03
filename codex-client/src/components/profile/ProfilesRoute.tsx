@@ -5,6 +5,7 @@ import ProfileButttonBar from "./ProfileButttonBar";
 import MetricView from "../profile/MetricView";
 import { useEffect } from "react";
 import { useStore } from "../../app/stores/store";
+import SavedContentsList from "./SavedContentsList";
 
 export default observer(function ProfilesRoute() {
     const {username, lang} = useParams();
@@ -21,6 +22,7 @@ export default observer(function ProfilesRoute() {
                 ) : (
                     <Loader active />
                 )}
+                <SavedContentsList />
             </Container>
     );
 

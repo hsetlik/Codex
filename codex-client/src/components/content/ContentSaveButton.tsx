@@ -18,6 +18,6 @@ export default observer(function ContentSaveButton({contentUrl}: Props) {
     const text = (isSaved) ? 'Unsave' : 'Save';
 
     return (
-        <Button onClick={handleClick} content={text} />
+        <Button className="label" onClick={handleClick} content={text} />
     )
 })
