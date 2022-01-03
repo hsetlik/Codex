@@ -60,4 +60,24 @@ namespace Application.DomainDTOs.ProfileHistory.DailyData
             ValueString = Convert.ToString(value);
         }
     }
+
+    public class WordsReadDataPoint : DailyDataPoint
+    {
+        public WordsReadDataPoint(Guid profileId, DateTime time, int value=0) : base(profileId, time)
+        {
+            MetricName = "WordsRead";
+            ValueTypeName = "int";
+            ValueString = Convert.ToString(value);
+        }
+    }
+
+    public class SecondsListenedDataPoint : DailyDataPoint
+    {
+        public SecondsListenedDataPoint(Guid profileId, DateTime time, int value=0) : base(profileId, time)
+        {
+            MetricName = "WordsRead";
+            ValueTypeName = "int";
+            ValueString = Convert.ToString(value);
+        }
+    }
 }

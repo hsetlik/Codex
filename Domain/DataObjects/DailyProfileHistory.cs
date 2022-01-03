@@ -17,6 +17,8 @@ namespace Domain.DataObjects
         // Columns
         public DateTime CreatedAt { get; set; }
         public int KnownWords { get; set; }
+        public int WordsRead { get; set; }
+        public int SecondsListened { get; set; }
 
     }
     public class DailyProfileHistory
