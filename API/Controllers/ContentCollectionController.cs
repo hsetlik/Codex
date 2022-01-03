@@ -17,7 +17,7 @@ namespace API.Controllers
     {
         [Authorize]
         [HttpPost("createContentCollection")]
-        public async Task<IActionResult> CreateContentCollection(ContentCollectionDto dto)
+        public async Task<IActionResult> CreateContentCollection(CreateCollectionDto dto)
         {
             return HandleResult(await Mediator.Send(new CreateContentCollection.Command{Dto = dto}));
         }

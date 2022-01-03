@@ -30,10 +30,7 @@ namespace Application.Core
             CreateMap<UserTerm, AbstractTermDto>();
             CreateMap<SavedContent, SavedContentDto>();
             CreateMap<ContentCollection, ContentCollectionDto>()
-            .ForMember( c => c.ContentMetadataDtos, d => d.MapFrom(n => n.Contents.AsMetadata()));
-
-            CreateMap<ContentCollectionDto, ContentCollection>()
-            .ForMember(d => d.Contents, c => MapperFactory.GetDefaultMapper().Map<ContentCollectionDto>(c));
+            .ForMember( c => c.CollectionContents, d => d.MapFrom(n => n.Contents.AsMetadata()));
         }
     }
 

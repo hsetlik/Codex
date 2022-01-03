@@ -10,12 +10,12 @@ namespace Domain.DataObjects
     {
         [Key]
         public Guid ContentCollectionId { get; set; }
-        public UserLanguageProfile UserLanguageProfile { get; set; }
-        public Guid LanguageProfileId { get; set; }
+        public Guid CreatorProfileId { get; set; }
+        public string CreatorUsername { get; set; }
         public string Language { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<Content> Contents { get; set; } = new List<Content>();
         public string CollectionName { get; set; }
-
+        public string Description { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs.ContentCollection.Queries;
 using Application.DomainDTOs.ContentCollection.Responses;
 using Application.Extensions;
 using MediatR;
@@ -15,7 +16,7 @@ namespace Application.DataObjectHandling.ContentCollections
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public ContentCollectionDto Dto { get; set; }
+            public CreateCollectionDto Dto { get; set; }
         }
 
 

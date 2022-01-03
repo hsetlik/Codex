@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
+using Application.DomainDTOs.ContentCollection.Queries;
 using Application.DomainDTOs.ContentCollection.Responses;
 using Domain.DataObjects;
 using MediatR;
@@ -18,32 +19,34 @@ namespace Application.Extensions
             Functions needed: 
             1-4. CRUD functions
         */
-        public static async Task<Result<Unit>> CreateCollection(this DataContext context, ContentCollectionDto dto)
+        public static async Task<Result<Unit>> CreateCollection(this DataContext context, CreateCollectionDto dto)
         {
             var profile = await context.UserLanguageProfiles
-                .Include(c => c.ContentCollections)
-                .FirstOrDefaultAsync(c => c.LanguageProfileId == dto.LanguageProfileId);
-            var mapper = MapperFactory.GetDefaultMapper();
+                .Include(p => p.SavedCollections)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.LanguageProfileId == dto.CreatorProfileId);
             if (profile == null)
-                return Result<Unit>.Failure("Profile not found");
-
-            var contents = await context.Contents.Where(c => dto.ContentMetadataDtos.Any(m => m.ContentUrl == c.ContentUrl)).ToListAsync();
-       
+                return Result<Unit>.Failure("Could not load profile!");
+            var content = await context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == dto.FirstContentUrl);
+            if (content == null)
+                return Result<Unit>.Failure($"Could not load content at {dto.FirstContentUrl}");
+            
             var collection = new ContentCollection
             {
-                UserLanguageProfile = profile,
-                LanguageProfileId = profile.LanguageProfileId,
+                CreatorProfileId = dto.CreatorProfileId,
+                CreatorUsername = profile.User.UserName,
                 Language = profile.Language,
+                CollectionName = dto.CollectionName,
+                Description = dto.Description,
                 CreatedAt = DateTime.Now,
-                Contents = contents,
-                CollectionName = dto.CollectionName
+                Contents = new List<Content>{content}
             };
 
-            context.ContentCollections.Add(collection);
+            profile.SavedCollections.Add(collection);
 
             var success = await context.SaveChangesAsync() > 0;
             if (!success)
-                return Result<Unit>.Failure("Could not save updates!");
+                return Result<Unit>.Failure("Could not save changes");
             return Result<Unit>.Success(Unit.Value);
         }
 
