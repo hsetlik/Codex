@@ -186,5 +186,17 @@ namespace Application.Extensions
             prof.DailyProfileHistory = prof.CreateHistory();
             return prof;
         }
+
+        public static ICollection<ContentMetadataDto> AsMetadata(this ICollection<Content> entities)
+        {
+            var mapper = MapperFactory.GetDefaultMapper();
+            var output = new List<ContentMetadataDto>();
+            foreach(var content in entities)
+            {
+                output.Add(mapper.Map<ContentMetadataDto>(content));
+            }
+            return output;
+
+        }
     }
 }
