@@ -1,7 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
+import { ThemeProvider } from "react-bootstrap";
 import agent from "../api/agent";
 import { ContentMetadata, ContentSection, SectionAbstractTerms, TextElement } from "../models/content";
-import { AddTranslationDto, KnownWordsDto, MillisecondsRange } from "../models/dtos";
+import { AddTranslationDto, KnownWordsDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
 
@@ -41,6 +42,7 @@ export default class ContentStore
         sectionHeader: 'none',
         elementGroups: []
     } 
+
     highlightedElement: TextElement | null = null; // for captions
 
     bufferSection: ContentSection | null = null;
@@ -51,6 +53,9 @@ export default class ContentStore
         elementGroups: []
     }
     bufferLoaded = false;  
+
+    savedContents: SavedContentDto[] = [];
+    savedContentsLoaded = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -136,6 +141,20 @@ export default class ContentStore
           runInAction(() => this.headersLoaded = true);
         }
         console.log(`Headers loaded for: ${lang}`);
+    }
+
+    loadSavedContents = async (languageProfileId: string) => {
+        this.savedContentsLoaded = false;
+        try {
+           const contents = await agent.Content.getSavedContents({languageProfileId: languageProfileId});
+           runInAction(() => {
+               this.savedContents = contents;
+               this.savedContentsLoaded = true;
+           })
+        } catch (error) {
+           console.log(error); 
+           runInAction(() => this.savedContentsLoaded = true);
+        }
     }
 
     addTranslation = async (dto: AddTranslationDto) => {

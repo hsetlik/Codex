@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
+import { SavedContentDto } from "../models/dtos";
 import { UserTerm } from "../models/userTerm";
 import { store } from "./store";
 

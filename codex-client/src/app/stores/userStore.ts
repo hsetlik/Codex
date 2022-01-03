@@ -13,6 +13,7 @@ export default class UserStore{
     languageProfiles: LanguageProfileDto[] = [];
 
     selectedProfile: LanguageProfileDto | null = null;
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -65,6 +66,8 @@ export default class UserStore{
         console.log("Setting selected language: " + iso);
         this.selectedProfile = this.languageProfiles.find(p => p.language === iso)!;
         store.contentStore.loadMetadata(iso);
+        if (this.selectedProfile !== null)
+            store.contentStore.loadSavedContents(this.selectedProfile.languageProfileId);
         if (store.knownWordsStore.knownWords.size > 0)
             store.knownWordsStore.clearKnownWords();
     }

@@ -96,4 +96,14 @@ export interface ContentMsDto {
      contentUrl: string
  }
 
+export interface SaveContentQuery {
+    contentUrl: string,
+    languageProfileId: string
+}
 
+export interface SavedContentDto {
+    savedContentId: string,
+    savedAt: string,
+    contentUrl: string,
+    languageProfileId: string
+}

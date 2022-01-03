@@ -13,7 +13,9 @@ import { UserTermCreateDto, AddTranslationDto,
          IProfileId, 
          ContentMsDto,
          ContentUrlDto,
-         TranslatorQuery} from "../models/dtos";
+         TranslatorQuery,
+         SaveContentQuery,
+         SavedContentDto} from "../models/dtos";
 import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 
@@ -108,6 +110,9 @@ const Content = {
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
     getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl),
     getSectionAtMs: (dto: ContentMsDto) => requests.post<ContentSection>('/content/getSectionAtMs', dto),
+    saveContent: (dto: SaveContentQuery) => requests.post('/content/saveContent', dto),
+    unsaveContent: (dto: SaveContentQuery) => requests.post('/content/unsaveContent', dto),
+    getSavedContents: (id: IProfileId) => requests.post<SavedContentDto[]>('content/getSavedContents', id)
 
 }
 
