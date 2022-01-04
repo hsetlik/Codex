@@ -104,12 +104,14 @@ namespace Persistence
             builder.Entity<CollectionMember>()
             .HasOne(c => c.Collection)
             .WithMany(col => col.CollectionMembers)
-            .HasForeignKey(col => col.CollectionId);
+            .HasForeignKey(col => col.CollectionId)
+            .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.Entity<CollectionMember>()
             .HasOne(c => c.Content)
             .WithMany(con => con.CollectionMembers)
-            .HasForeignKey(c => c.ContentId);
+            .HasForeignKey(c => c.ContentId)
+            .OnDelete(DeleteBehavior.ClientCascade);
 
         }
     }

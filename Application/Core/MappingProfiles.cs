@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Collection.Responses;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.Content.Responses;
-using Application.DomainDTOs.ContentCollection.Responses;
 using Application.DomainDTOs.UserLanguageProfile;
 using Application.DomainDTOs.UserTerm;
 using Application.Extensions;
@@ -29,6 +29,12 @@ namespace Application.Core
             CreateMap<UserLanguageProfile, LanguageProfileDto>();
             CreateMap<UserTerm, AbstractTermDto>();
             CreateMap<SavedContent, SavedContentDto>();
+
+            CreateMap<CollectionMember, CollectionMemberDto>()
+            .ForMember(m => m.Content, g => g.MapFrom(s => s.Content));
+        
+            CreateMap<Collection, CollectionDto>()
+            .ForMember(m => m.CollectionMembers, c => c.MapFrom(s => s.CollectionMembers));
         }
     }
 

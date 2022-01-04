@@ -28,8 +28,5 @@ namespace Application.Extensions
             };
             return uTerm;
         }
-
-        
-
     }
 }
