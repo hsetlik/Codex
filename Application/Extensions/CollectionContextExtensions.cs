@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs.Collection.Queries;
 using Application.DomainDTOs.Collection.Responses;
+using AutoMapper;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ namespace Application.Extensions
                 Language = profile.Language,
                 CollectionName = query.CollectionName,
                 Description = query.Description,
-                CollectionMembers = new List<CollectionContent>
+                CollectionContents = new List<CollectionContent>
                 {
                     new CollectionContent
                     {
@@ -105,7 +106,7 @@ namespace Application.Extensions
             var mapper = MapperFactory.GetDefaultMapper();
 
             var collection = await context.Collections
-                .Include(c => c.CollectionMembers)
+                .Include(c => c.CollectionContents)
                 .ThenInclude(m => m.Content)
                 .FirstOrDefaultAsync(c => c.CollectionId == query.CollectionId);
             if (collection == null)
@@ -113,6 +114,45 @@ namespace Application.Extensions
             return Result<CollectionDto>.Success(mapper.Map<CollectionDto>(collection));
         }
 
-        
+        public static async Task<Result<Unit>> UpdateCollection(this DataContext context, CollectionDto collectionDto)
+        {
+            var existing = await context.Collections
+                .Include(c => c.CollectionContents)
+                .ThenInclude(cm => cm.Content)
+                .FirstOrDefaultAsync(c => c.CollectionId == collectionDto.CollectionId);
+            existing.IsPrivate = collectionDto.IsPrivate;
+            existing.Language = collectionDto.Language;
+            existing.CollectionName = collectionDto.CollectionName;
+            existing.Description = collectionDto.Description;
+
+
+            // create new CollectionContents
+            foreach(var contentDto in collectionDto.Contents)
+            {
+                if (!existing.CollectionContents.Any(cc => cc.ContentId == contentDto.ContentId))
+                {
+                    var content = await context.Contents.FindAsync(contentDto.ContentId);
+                     
+                    existing.CollectionContents.Add(new CollectionContent
+                    {
+                        CollectionId = collectionDto.CollectionId,
+                        ContentId = content.ContentId,
+                        Content = content
+                    });
+                }
+            }
+            // remove deleted CollectionContents
+            foreach(var cc in existing.CollectionContents)
+            {
+                if (!collectionDto.Contents.Any(c => c.ContentId == cc.ContentId))
+                {
+                    existing.CollectionContents.Remove(cc);
+                }
+            }
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("Could not save changes");
+            return Result<Unit>.Success(Unit.Value);
+        }
     }
 }

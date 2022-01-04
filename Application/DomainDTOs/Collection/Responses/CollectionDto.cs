@@ -18,6 +18,6 @@ namespace Application.DomainDTOs.Collection.Responses
         public string Language { get; set; }
         public string CollectionName { get; set; }
         public string Description { get; set; }
-        public List<CollectionMemberDto> CollectionMembers { get; set; }
+        public List<ContentMetadataDto> Contents { get; set; }
     }
 }

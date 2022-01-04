@@ -23,6 +23,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Content, ContentMetadataDto>();
+
             CreateMap<UserTerm, UserTermDetailsDto>();
             CreateMap<Translation, TranslationDto>();
             CreateMap<ContentSection, ContentSectionDto>();
@@ -30,11 +31,10 @@ namespace Application.Core
             CreateMap<UserTerm, AbstractTermDto>();
             CreateMap<SavedContent, SavedContentDto>();
 
-            CreateMap<CollectionContent, CollectionMemberDto>()
-            .ForMember(m => m.Content, g => g.MapFrom(s => s.Content));
-        
             CreateMap<Collection, CollectionDto>()
-            .ForMember(m => m.CollectionMembers, c => c.MapFrom(s => s.CollectionMembers));
+            .ForMember(m => m.Contents, c => c.MapFrom(s => s.CollectionContents.Select(cc => cc.Content).ToList()))
+            .ReverseMap();
+            
         }
     }
 

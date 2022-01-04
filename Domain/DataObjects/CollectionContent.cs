@@ -10,7 +10,6 @@ namespace Domain.DataObjects
     {
         //Nav properties / foreign keys
         public Guid CollectionId { get; set; }
-        public Collection Collection { get; set; }
 
         public Guid ContentId { get; set; }
         public Content Content { get; set; }
