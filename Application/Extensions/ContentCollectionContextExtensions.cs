@@ -58,6 +58,15 @@ namespace Application.Extensions
             var success = await context.SaveChangesAsync() > 0;
             if (!success)
                 return Result<Unit>.Failure("Could not save changes");
+
+             var saveSuccess = await context.SaveCollection(new SaveCollectionQuery
+            {
+                ContentCollectionId = collection.ContentCollectionId,
+                LanguageProfileId = collection.LanguageProfileId
+            });
+
+            if (!saveSuccess.IsSuccess)
+                return Result<Unit>.Failure("Could not save collection!");
             return Result<Unit>.Success(Unit.Value);
         }
 
@@ -104,7 +113,6 @@ namespace Application.Extensions
                         });
                         if(!addResult.IsSuccess)
                             return Result<Unit>.Failure($"Failed to add result! Error message: {addResult.Error}");
-
                     }
                 }
             }
@@ -130,9 +138,11 @@ namespace Application.Extensions
 
         public static async Task<Result<Unit>> DeleteCollection(this DataContext context, Guid collectionId)
         {
+            Console.WriteLine($"Preparing to delete collection with ID: {collectionId}");
             var existing = await context.ContentCollections.FirstOrDefaultAsync(c => c.ContentCollectionId == collectionId);
             if (existing == null)
                 return Result<Unit>.Failure("No existing Collection!");
+            Console.WriteLine($"Existing collection loaded with name {existing.CollectionName}");
             context.ContentCollections.Remove(existing);
             var success = await context.SaveChangesAsync() > 0;
             if (!success)

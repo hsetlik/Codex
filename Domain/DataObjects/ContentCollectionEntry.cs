@@ -17,5 +17,7 @@ namespace Domain.DataObjects
 
         public Guid ContentId { get; set; }
         public Content Content { get; set; }
+        public Guid ContentCollectionId { get; set; }
+        public ContentCollection ContentCollection { get; set; }
     }
 }

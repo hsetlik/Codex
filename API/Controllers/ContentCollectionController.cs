@@ -40,6 +40,7 @@ namespace API.Controllers
         [HttpPost("deleteContentCollection")]
         public async Task<IActionResult> DeleteContentCollection(CollectionIdQuery dto)
         {
+            Console.WriteLine($"Delete controller called for: {dto.ContentCollectionId}");
             return HandleResult(await Mediator.Send(new DeleteContentCollection.Command{Dto = dto}));
         }
     }

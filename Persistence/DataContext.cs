@@ -106,12 +106,19 @@ namespace Persistence
             builder.Entity<ContentCollection>()
             .HasOne(c => c.UserLanguageProfile)
             .WithMany(p => p.CreatedCollections)
-            .HasForeignKey(c => c.LanguageProfileId);
+            .HasForeignKey(c => c.LanguageProfileId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.Entity<ContentCollectionEntry>()
+            .HasOne(c => c.ContentCollection)
+            .WithMany(l => l.Entries)
+            .HasForeignKey(c => c.ContentCollectionId);
 
             builder.Entity<ContentCollectionEntry>()
             .HasOne(e => e.UserLanguageProfile)
             .WithMany()
             .HasForeignKey(e => e.LanguageProfileId);
+         
 
             builder.Entity<ContentCollectionEntry>()
             .HasOne(e => e.Content)
@@ -119,14 +126,14 @@ namespace Persistence
             .HasForeignKey(e => e.ContentId);
 
             builder.Entity<SavedContentCollection>()
-            .HasOne(c => c.ContentCollection)
-            .WithMany()
-            .HasForeignKey(c => c.ContentCollectionId);
-
-            builder.Entity<SavedContentCollection>()
             .HasOne(s => s.UserLanguageProfile)
             .WithMany(p => p.SavedCollections)
             .HasForeignKey(s => s.LanguageProfileId);
+
+            builder.Entity<SavedContentCollection>()
+            .HasOne(s => s.ContentCollection)
+            .WithMany()
+            .HasForeignKey(s => s.ContentCollectionId);
 
         }
     }
