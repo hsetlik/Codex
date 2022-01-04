@@ -21,5 +21,6 @@ namespace Domain.DataObjects
         public string CollectionName { get; set; }
         public string Description { get; set; }
         public ICollection<CollectionContent> CollectionMembers { get; set; }
+        public ICollection<SavedCollection> SavedCollections { get; set; }
     }
 }

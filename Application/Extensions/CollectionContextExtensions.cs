@@ -11,7 +11,7 @@ using Persistence;
 
 namespace Application.Extensions
 {
-    public static class CollectionExtensions
+    public static class CollectionContextExtensions
     {
         public static async Task<Result<Unit>> CreateCollection(this DataContext context, CreateCollectionQuery query)
         {
@@ -45,6 +45,15 @@ namespace Application.Extensions
             var success = await context.SaveChangesAsync() > 0;
             if (!success)
                 return Result<Unit>.Failure("Could not save changes");
+            // now save this collection to the profile
+            var saveResult = await context.SaveCollection(new SavedCollectionQuery
+            {
+                CollectionId = collection.CollectionId,
+                LanguageProfileId = profile.LanguageProfileId
+            });
+
+            if (!saveResult.IsSuccess)
+                return Result<Unit>.Failure($"Could not save collection! Error message: {saveResult.Error}");
             return Result<Unit>.Success(Unit.Value);
         }
 
@@ -60,6 +69,35 @@ namespace Application.Extensions
 
             return Result<Unit>.Success(Unit.Value);
         }
+
+        public static async Task<Result<Unit>> SaveCollection(this DataContext context, SavedCollectionQuery query)
+        {
+            var collection = await context.Collections.FindAsync(query.CollectionId);
+            if (collection == null)
+                return Result<Unit>.Failure($"No collection with ID {query.CollectionId}");
+            var profile = await context.UserLanguageProfiles
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.LanguageProfileId == query.LanguageProfileId);
+            if (profile == null)
+                return Result<Unit>.Failure($"No profile found with ID {query.LanguageProfileId}");
+            bool isOwner = collection.CreatorUserName == profile.User.UserName;
+
+            var savedCollection = new SavedCollection
+            {
+                CollectionId = collection.CollectionId,
+                Collection = collection,
+                LanguageProfileId = profile.LanguageProfileId,
+                UserLanguageProfile = profile,
+                IsOwner = isOwner,
+                SavedAt = DateTime.Now
+            };
+
+            context.SavedCollections.Add(savedCollection);
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("Could not save changes");
+            return Result<Unit>.Success(Unit.Value);
+        } 
 
 
         
