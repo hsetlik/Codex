@@ -9,7 +9,7 @@ namespace Domain.DataObjects
     public class ContentCollectionEntry
     {
         [Key]
-        public Guid SavedContentCollectionId { get; set; }
+        public Guid ContentCollectionEntryId { get; set; }
         public DateTime AddedAt { get; set; }
 
         public Guid LanguageProfileId { get; set; }

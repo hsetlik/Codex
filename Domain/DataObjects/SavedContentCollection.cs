@@ -16,5 +16,6 @@ namespace Domain.DataObjects
 
         public Guid ContentCollectionId { get; set; }
         public ContentCollection ContentCollection { get; set; }
+        public DateTime SavedAt { get; set; }
     }
 }

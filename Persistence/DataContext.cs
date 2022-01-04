@@ -39,7 +39,10 @@ namespace Persistence
         public DbSet<SavedContent> SavedContents { get; set; }
 
         public DbSet<ContentCollection> ContentCollections { get; set; }
+
         public DbSet<ContentCollectionEntry> ContentCollectionEntries { get; set; }
+
+        public DbSet<SavedContentCollection> SavedContentCollections { get; set; }
 
          protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -55,10 +58,6 @@ namespace Persistence
             .HasOne(u => u.DailyProfileHistory)
             .WithOne(c => c.UserLanguageProfile)
             .HasForeignKey<DailyProfileHistory>(d => d.LanguageProfileId);
-
-            builder.Entity<UserLanguageProfile>()
-            .HasMany<ContentCollection>(c => c.CreatedCollections)
-            .WithOne();
 
             builder.Entity<ContentHistory>()
             .HasOne(c => c.UserLanguageProfile)
@@ -99,12 +98,36 @@ namespace Persistence
             .HasOne(r => r.UserLanguageProfile)
             .WithMany();
 
-
             builder.Entity<SavedContent>()
             .HasOne(s => s.UserLanguageProfile)
             .WithMany(p => p.SavedContents)
             .HasForeignKey(s => s.LanguageProfileId);
-            
+
+            builder.Entity<ContentCollection>()
+            .HasOne(c => c.UserLanguageProfile)
+            .WithMany(p => p.CreatedCollections)
+            .HasForeignKey(c => c.LanguageProfileId);
+
+            builder.Entity<ContentCollectionEntry>()
+            .HasOne(e => e.UserLanguageProfile)
+            .WithMany()
+            .HasForeignKey(e => e.LanguageProfileId);
+
+            builder.Entity<ContentCollectionEntry>()
+            .HasOne(e => e.Content)
+            .WithMany()
+            .HasForeignKey(e => e.ContentId);
+
+            builder.Entity<SavedContentCollection>()
+            .HasOne(c => c.ContentCollection)
+            .WithMany()
+            .HasForeignKey(c => c.ContentCollectionId);
+
+            builder.Entity<SavedContentCollection>()
+            .HasOne(s => s.UserLanguageProfile)
+            .WithMany(p => p.SavedCollections)
+            .HasForeignKey(s => s.LanguageProfileId);
+
         }
     }
 }
