@@ -29,11 +29,6 @@ namespace Application.Core
             CreateMap<UserLanguageProfile, LanguageProfileDto>();
             CreateMap<UserTerm, AbstractTermDto>();
             CreateMap<SavedContent, SavedContentDto>();
-            CreateMap<ContentCollectionEntry, ContentCollectionEntryDto>()
-            .ForMember(c => c.ContentMetadataDto, r => r.MapFrom(s => s.Content));
-            CreateMap<ContentCollection, ContentCollectionDto>()
-            .ForMember(c => c.CollectionContents, r => r.MapFrom(s => s.Entries.Select(e => e.Content)));
-            CreateMap<ContentCollectionDto, ContentCollection>();
         }
     }
 

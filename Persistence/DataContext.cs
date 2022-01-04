@@ -38,12 +38,6 @@ namespace Persistence
 
         public DbSet<SavedContent> SavedContents { get; set; }
 
-        public DbSet<ContentCollection> ContentCollections { get; set; }
-
-        public DbSet<ContentCollectionEntry> ContentCollectionEntries { get; set; }
-
-        public DbSet<SavedContentCollection> SavedContentCollections { get; set; }
-
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -102,39 +96,6 @@ namespace Persistence
             .HasOne(s => s.UserLanguageProfile)
             .WithMany(p => p.SavedContents)
             .HasForeignKey(s => s.LanguageProfileId);
-
-            builder.Entity<ContentCollection>()
-            .HasOne(c => c.UserLanguageProfile)
-            .WithMany(p => p.CreatedCollections)
-            .HasForeignKey(c => c.LanguageProfileId)
-            .OnDelete(DeleteBehavior.ClientCascade);
-
-            builder.Entity<ContentCollectionEntry>()
-            .HasOne(c => c.ContentCollection)
-            .WithMany(l => l.Entries)
-            .HasForeignKey(c => c.ContentCollectionId);
-
-            builder.Entity<ContentCollectionEntry>()
-            .HasOne(e => e.UserLanguageProfile)
-            .WithMany()
-            .HasForeignKey(e => e.LanguageProfileId);
-         
-
-            builder.Entity<ContentCollectionEntry>()
-            .HasOne(e => e.Content)
-            .WithMany()
-            .HasForeignKey(e => e.ContentId);
-
-            builder.Entity<SavedContentCollection>()
-            .HasOne(s => s.UserLanguageProfile)
-            .WithMany(p => p.SavedCollections)
-            .HasForeignKey(s => s.LanguageProfileId);
-
-            builder.Entity<SavedContentCollection>()
-            .HasOne(s => s.ContentCollection)
-            .WithMany()
-            .HasForeignKey(s => s.ContentCollectionId);
-
         }
     }
 }

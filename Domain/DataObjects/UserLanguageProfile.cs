@@ -22,7 +22,5 @@ namespace Domain.DataObjects
         public ICollection<ContentHistory> ContentHistories { get; set; } = new List<ContentHistory>();
         public DailyProfileHistory DailyProfileHistory { get; set; } = new DailyProfileHistory();
         public ICollection<SavedContent> SavedContents { get; set; } = new List<SavedContent>();
-        public ICollection<ContentCollection> CreatedCollections { get; set; }
-        public ICollection<SavedContentCollection> SavedCollections { get; set; }
     }
 }
