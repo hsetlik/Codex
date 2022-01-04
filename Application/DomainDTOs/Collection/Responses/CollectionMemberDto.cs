@@ -7,7 +7,6 @@ namespace Application.DomainDTOs.Collection.Responses
 {
     public class CollectionMemberDto
     {
-        public Guid CollectionMemberId { get; set; }
         //Nav properties / foreign keys
         public Guid CollectionId { get; set; }
 

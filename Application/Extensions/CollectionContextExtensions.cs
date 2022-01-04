@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs.Collection.Queries;
+using Application.DomainDTOs.Collection.Responses;
 using Domain.DataObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -99,6 +100,18 @@ namespace Application.Extensions
             return Result<Unit>.Success(Unit.Value);
         } 
 
+        public static async Task<Result<CollectionDto>> GetCollection(this DataContext context, CollectionIdQuery query)
+        {
+            var mapper = MapperFactory.GetDefaultMapper();
+
+            var collection = await context.Collections
+                .Include(c => c.CollectionMembers)
+                .ThenInclude(m => m.Content)
+                .FirstOrDefaultAsync(c => c.CollectionId == query.CollectionId);
+            if (collection == null)
+                return Result<CollectionDto>.Failure($"Could not find collection with ID {query.CollectionId}");
+            return Result<CollectionDto>.Success(mapper.Map<CollectionDto>(collection));
+        }
 
         
     }
