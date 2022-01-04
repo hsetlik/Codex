@@ -38,6 +38,10 @@ namespace Persistence
 
         public DbSet<SavedContent> SavedContents { get; set; }
 
+        public DbSet<Collection> Collections { get; set; }
+
+        public DbSet<CollectionMember> CollectionMembers { get; set; }
+
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -96,6 +100,17 @@ namespace Persistence
             .HasOne(s => s.UserLanguageProfile)
             .WithMany(p => p.SavedContents)
             .HasForeignKey(s => s.LanguageProfileId);
+
+            builder.Entity<CollectionMember>()
+            .HasOne(c => c.Collection)
+            .WithMany(col => col.CollectionMembers)
+            .HasForeignKey(col => col.CollectionId);
+
+            builder.Entity<CollectionMember>()
+            .HasOne(c => c.Content)
+            .WithMany(con => con.CollectionMembers)
+            .HasForeignKey(c => c.ContentId);
+
         }
     }
 }
