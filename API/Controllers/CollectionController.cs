@@ -17,6 +17,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new CreateCollection.Command{Dto = dto}));
         }
-        
+
+        [HttpPost("deleteCollection")]
+        public async Task<IActionResult> DeleteCollection(CollectionIdQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new DeleteCollection.Command{Dto = dto}));
+        }
     }
 }

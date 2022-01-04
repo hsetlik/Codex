@@ -32,9 +32,9 @@ namespace Application.Extensions
                 Language = profile.Language,
                 CollectionName = query.CollectionName,
                 Description = query.Description,
-                CollectionMembers = new List<CollectionMember>
+                CollectionMembers = new List<CollectionContent>
                 {
-                    new CollectionMember
+                    new CollectionContent
                     {
                         Content = firstContent,
                         ContentId = firstContent.ContentId
@@ -47,6 +47,21 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Could not save changes");
             return Result<Unit>.Success(Unit.Value);
         }
+
+        public static async Task<Result<Unit>> DeleteCollection(this DataContext context, CollectionIdQuery query)
+        {
+            var existing = await context.Collections.FirstOrDefaultAsync(c => c.CollectionId == query.CollectionId);
+            if (existing == null)
+                return Result<Unit>.Failure($"No collection with ID {query.CollectionId}");
+            context.Collections.Remove(existing);
+            var success = await context.SaveChangesAsync() > 0;
+            if (!success)
+                return Result<Unit>.Failure("could not save changes");
+
+            return Result<Unit>.Success(Unit.Value);
+        }
+
+
         
     }
 }

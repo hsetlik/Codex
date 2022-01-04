@@ -20,6 +20,6 @@ namespace Domain.DataObjects
         public string Language { get; set; }
         public string CollectionName { get; set; }
         public string Description { get; set; }
-        public ICollection<CollectionMember> CollectionMembers { get; set; }
+        public ICollection<CollectionContent> CollectionMembers { get; set; }
     }
 }

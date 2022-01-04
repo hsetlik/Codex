@@ -19,6 +19,6 @@ namespace Domain.DataObjects
         public string DateAdded { get; set; }
         public List<ContentTag> ContentTags { get; set; }
         public int NumSections { get; set; }
-        public ICollection<CollectionMember> CollectionMembers { get; set; }
+        public ICollection<CollectionContent> CollectionContents { get; set; }
     }
 }

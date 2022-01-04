@@ -40,7 +40,7 @@ namespace Persistence
 
         public DbSet<Collection> Collections { get; set; }
 
-        public DbSet<CollectionMember> CollectionMembers { get; set; }
+        public DbSet<CollectionContent> CollectionMembers { get; set; }
 
          protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -101,17 +101,8 @@ namespace Persistence
             .WithMany(p => p.SavedContents)
             .HasForeignKey(s => s.LanguageProfileId);
 
-            builder.Entity<CollectionMember>()
-            .HasOne(c => c.Collection)
-            .WithMany(col => col.CollectionMembers)
-            .HasForeignKey(col => col.CollectionId)
-            .OnDelete(DeleteBehavior.ClientCascade);
-
-            builder.Entity<CollectionMember>()
-            .HasOne(c => c.Content)
-            .WithMany(con => con.CollectionMembers)
-            .HasForeignKey(c => c.ContentId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+            builder.Entity<CollectionContent>()
+            .HasKey(cc => new {cc.CollectionId, cc.ContentId});           
 
         }
     }

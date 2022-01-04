@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.DataObjects
 {
-    public class CollectionMember
+    public class CollectionContent
     {
-        [Key]
-        public Guid CollectionMemberId { get; set; }
         //Nav properties / foreign keys
         public Guid CollectionId { get; set; }
         public Collection Collection { get; set; }

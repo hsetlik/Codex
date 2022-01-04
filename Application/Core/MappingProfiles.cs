@@ -30,7 +30,7 @@ namespace Application.Core
             CreateMap<UserTerm, AbstractTermDto>();
             CreateMap<SavedContent, SavedContentDto>();
 
-            CreateMap<CollectionMember, CollectionMemberDto>()
+            CreateMap<CollectionContent, CollectionMemberDto>()
             .ForMember(m => m.Content, g => g.MapFrom(s => s.Content));
         
             CreateMap<Collection, CollectionDto>()
