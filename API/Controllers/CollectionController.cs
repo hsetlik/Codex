@@ -1,0 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Application.DataObjectHandling.Collections;
+using Application.DomainDTOs.Collection.Queries;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CollectionController : CodexControllerBase
+    {
+        [HttpPost("createCollection")]
+        public async Task<IActionResult> CreateCollection(CreateCollectionQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new CreateCollection.Command{Dto = dto}));
+        }
+        
+    }
+}
