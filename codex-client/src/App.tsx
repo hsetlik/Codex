@@ -10,6 +10,7 @@ import HomeRoute from './components/common/HomeRoute';
 import RegisterForm from './components/account/RegisterForm';
 import ContentRoute from './components/content/ContentRoute';
 import ProfilesRoute from './components/profile/ProfilesRoute';
+import CollectionsRoute from './components/collection/CollectionsRoute';
 
 function App() {
 //const location = useLocation();
@@ -37,6 +38,7 @@ function App() {
           <Route path='/profiles/:username/:lang' element={<ProfilesRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 
           <Route path='account/register' element={<RegisterForm />} /> 
+          <Route path='/collections/:lang' element={<CollectionsRoute />} />
         </Routes>
       </Container>
    </Container>

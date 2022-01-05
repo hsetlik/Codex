@@ -2,16 +2,17 @@ import { Link } from 'react-router-dom';
 import { Container, Icon, Menu} from 'semantic-ui-react';
 import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
-import { getLanguageName } from '../../app/common/langStrings';
 import '../styles/styles.css';
+import LanguageSelector from '../account/LanguageSelector';
 
 export default observer(function NavBar()
 {
     const {userStore: {user, logout, isLoggedIn, selectedProfile}} = useStore();
+    const lang = selectedProfile?.language!; 
     let accountComponent;
     if (isLoggedIn) {
         accountComponent = (
-            <Menu.Item as={Link} to={`/profiles/${user?.username}/${selectedProfile?.language}`} name={user?.displayName} />
+            <Menu.Item as={Link} to={`/profiles/${user?.username}/${lang}`} name={user?.displayName} style={{'position': ''}} />
         )
     } else {
         accountComponent = (
@@ -21,12 +22,17 @@ export default observer(function NavBar()
     return (
         <Menu inverted fixed='top' className='codex-nav-bar'>
             <Container >
-                <Menu.Item as={Link} to={`feed/${selectedProfile?.language}`} name={`${getLanguageName(selectedProfile?.language!)}`} header/>
-                {accountComponent}
-                <Menu.Item name="Logout" onClick={logout} />
-                <Menu.Item as={Link} to='/'>
+                <Menu.Item as={Link} to={`feed/${lang}`}>
                     <Icon name='home' />
                 </Menu.Item>
+                <Menu.Item>
+                    <LanguageSelector />
+                </Menu.Item>
+                <Menu.Item as={Link} to={`/collections/${lang}`}>
+                    Browse
+                </Menu.Item>
+                {accountComponent}
+                <Menu.Item name="Logout" onClick={logout} />
             </Container>
         </Menu>
     )

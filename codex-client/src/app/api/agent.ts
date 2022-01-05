@@ -89,7 +89,7 @@ const Profile = {
     updateHistory: (id: IProfileId) => requests.post('profile/updateHistory', id)
 }
 
-const UserTermEndpoints = {
+const UserTermAgent = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
     getUserTerm : (dto: Term) => requests.post<UserTerm>('/userTerm/getUserTerm', dto),
@@ -117,12 +117,12 @@ const Content = {
     getSavedContents: (id: IProfileId) => requests.post<SavedContentDto[]>('content/getSavedContents', id)
 }
 
-const Collection = {
+const CollectionAgent = {
     createCollection: (query: CreateCollectionQuery) => requests.post('/collection/createCollection', query),
     deleteCollection: (query: ICollectionId) => requests.post('collection/deleteCollection', query),
     getCollection: (query: ICollectionId) => requests.post<Collection>('collection/getCollection', query),
     updateCollection: (dto: Collection) => requests.post('collection/updateCollection', dto),
-    collectionsForLanguage: (query: CollectionsForLanguageQuery) => requests.post('collection/collectionsForLanguage', query)
+    collectionsForLanguage: (query: CollectionsForLanguageQuery) => requests.post<Collection[]>('collection/collectionsForLanguage', query)
 }
 
 const Parse = {
@@ -141,11 +141,11 @@ const agent = {
     Account,
     Profile,
     Content,
-    UserTermEndpoints,
+    UserTermEndpoints: UserTermAgent,
     TermEndpoints,
     Parse,
     Translate,
-    Collection
+    CollectionAgent
 }
 
 export default agent;

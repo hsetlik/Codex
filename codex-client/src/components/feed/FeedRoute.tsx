@@ -1,19 +1,22 @@
-import { Grid, Item, Loader } from "semantic-ui-react";
+import { Grid, Header, Item, Loader } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import ContentHeader from "../content/ContentHeader";
 import { observer } from "mobx-react-lite";
-import FeedHeader from "./FeedHeader";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { getLanguageName } from "../../app/common/langStrings";
 
 export default observer(function FeedRoute(){
     const {lang} = useParams();
-    var {contentStore, commonStore} = useStore();
+    var {contentStore, commonStore, collectionStore} = useStore();
     const {loadedContents: loadedHeaders, loadMetadata } = contentStore;
+    const {currentCollectionsLanguage, loadCollectionsForLanguage} = collectionStore;
     const {appLoaded} = commonStore;
     useEffect(() => {
         loadMetadata(lang!);
-    }, [loadMetadata, lang])
+        if (lang !== currentCollectionsLanguage)
+            loadCollectionsForLanguage(lang!);
+    }, [loadMetadata, lang, currentCollectionsLanguage, loadCollectionsForLanguage])
     if (!appLoaded) {
         return (
             <Loader />
@@ -25,7 +28,7 @@ export default observer(function FeedRoute(){
 
             </Grid.Column>
             <Grid.Column width='10'>
-                <FeedHeader lang={lang!} />
+            <Header as='h2' content={getLanguageName(lang!)} />
                 <Item>
                     <Item.Group divided>
                     {loadedHeaders.map(content => {

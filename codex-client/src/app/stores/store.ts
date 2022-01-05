@@ -7,6 +7,7 @@ import ProfileStore from "./profileStore";
 import TranslationStore from "./translationStore";
 import KnownWordStore from "./knownWordsStore";
 import DailyDataStore from "./dailyDataStore";
+import CollectionStore from "./collectionStore";
 
 interface Store {
   commonStore: CommonStore,
@@ -16,7 +17,8 @@ interface Store {
   profileStore: ProfileStore,
   translationStore: TranslationStore,
   knownWordsStore: KnownWordStore,
-  dailyDataStore: DailyDataStore
+  dailyDataStore: DailyDataStore,
+  collectionStore: CollectionStore
 }
 export const store: Store = {
     commonStore: new CommonStore(),
@@ -26,7 +28,8 @@ export const store: Store = {
     profileStore: new ProfileStore(),
     translationStore: new TranslationStore(),
     knownWordsStore: new KnownWordStore(),
-    dailyDataStore: new DailyDataStore()
+    dailyDataStore: new DailyDataStore(),
+    collectionStore: new CollectionStore()
 }
 
 export const storeContext = createContext(store);

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Header, Label, Segment } from "semantic-ui-react";
 import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
+import AddToCollection from "../common/AddToCollection";
 import ContentSaveButton from "./ContentSaveButton";
 import KnownWordsLabel from "./KnownWordsLabel";
 
@@ -30,6 +31,7 @@ export default observer(function ContentHeader({dto}: Props)
                     onClick={() => contentStore.setSelectedContent(dto.contentUrl)}>
                         View
                     </Button>
+                    <AddToCollection content={dto} />
                 </div>
             </Segment>
     )

@@ -4,7 +4,7 @@ import { Dropdown, ListContent } from "semantic-ui-react";
 import { getLanguageName } from "../../app/common/langStrings";
 import { LanguageProfileDto } from "../../app/models/dtos";
 import { useStore } from "../../app/stores/store";
-import LanguageFlag1x1 from "../common/LanguageFlage1x1";
+import LanguageFlag1x1 from "../common/LanguageFlag1x1";
 import '../styles/styles.css';
 
 

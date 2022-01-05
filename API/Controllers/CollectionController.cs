@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.DataObjectHandling.Collections;
 using Application.DomainDTOs.Collection.Queries;
 using Application.DomainDTOs.Collection.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -42,9 +43,6 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new CollectionsForLanguage.Query{Dto = dto}));
         }
-
-
-
 
  
     }
