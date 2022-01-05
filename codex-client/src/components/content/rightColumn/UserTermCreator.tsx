@@ -5,7 +5,7 @@ import { Header, Button, Label } from "semantic-ui-react";
 import { UserTermCreateDto } from "../../../app/models/dtos";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
-import MyTextInput from "../../formComponents/MyTextInput";
+import CodexTextInput from "../../formComponents/CodexTextInput";
 interface Props {
     term: AbstractTerm
 }
@@ -37,7 +37,7 @@ export default observer(function UserTermCreator({term}: Props) {
                 {({handleSubmit, isSubmitting, errors}) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
                         <Header as='h2' content='Create term: ' />
-                        <MyTextInput name='firstTranslation' placeholder='First Translation' />
+                        <CodexTextInput name='firstTranslation' placeholder='First Translation' />
                         <ErrorMessage name='error' render={() => (
                             <Label style={{marginBottom: 10}}  basic color='red' content={errors.error}/> )}
                         />

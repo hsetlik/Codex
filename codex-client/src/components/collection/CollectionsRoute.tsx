@@ -1,25 +1,26 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { getCollectionsArray } from "../../app/models/collection";
 import { useStore } from "../../app/stores/store";
 import CollectionHeader from "./CollectionHeader";
 
 
 export default observer(function CollectionsRoute() {
     const {lang} = useParams();
-    const {collectionStore: {collectionsLoaded, currentCollections, currentCollectionsLanguage: currentCorrectionsLanguage, loadCollectionsForLanguage}} = useStore();
+    const {collectionStore: {collectionsLoaded, currentCollections, currentCollectionsLanguage, loadCollectionsForLanguage}} = useStore();
     useEffect(() => {
-        if (lang !== currentCorrectionsLanguage || !collectionsLoaded) {
+        if (lang !== currentCollectionsLanguage || !collectionsLoaded) {
             loadCollectionsForLanguage(lang!);
         }
-    }, [lang, collectionsLoaded, currentCorrectionsLanguage, loadCollectionsForLanguage])
+    }, [lang, collectionsLoaded, currentCollectionsLanguage, loadCollectionsForLanguage]);
+    const collectionsArray = getCollectionsArray(currentCollections);
     return (
         <div>
-            {currentCollections.map(cln => (
-                <CollectionHeader collection={cln} key={cln.collectionId} />
-            ))}
-
+            { collectionsArray.map(col => (
+                <CollectionHeader collection={col} key={col.collectionId} />
+            ))
+            }
         </div>
     )
 })

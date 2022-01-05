@@ -1,6 +1,6 @@
 import { ErrorMessage, Form, Formik, } from "formik";
 import { Button, Header, Label } from "semantic-ui-react";
-import MyTextInput from "../formComponents/MyTextInput"; 
+import CodexTextInput from "../formComponents/CodexTextInput"; 
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router";
@@ -19,8 +19,8 @@ export default observer(function LoginForm() {
             {({handleSubmit, isSubmitting, errors}) => (
                 <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
                     <Header as='h2' content='Login' color='teal' textAlign='center' />
-                    <MyTextInput name='email' placeholder='Email' />
-                    <MyTextInput name='password' placeholder='Password' type='password' />
+                    <CodexTextInput name='email' placeholder='Email' />
+                    <CodexTextInput name='password' placeholder='Password' type='password' />
                     <ErrorMessage name='error' render={() => (
                         <Label style={{marginBottom: 10}}  basic color='red' content={errors.error}/> )}
                     />

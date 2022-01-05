@@ -1,27 +1,42 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Dropdown } from "semantic-ui-react";
+import { useState } from "react";
+import { Dropdown, Label, ListContent } from "semantic-ui-react";
+import { getCollectionsArray } from "../../app/models/collection";
 import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
+import CollectionCreateForm from "../collection/CollectionCreateForm";
 
 interface Props {content: ContentMetadata}
 
 export default observer( function AddToCollection({content}: Props) {
-    const {collectionStore} = useStore();
+    const {collectionStore, userStore: {user}} = useStore();
     const {currentCollections, addToCollection} = collectionStore;
+    const [creatingNew, setCreatingNew] = useState(false);
+    //TODO: logic to make sure that only accessible collections are available
     const handleChange = (collectionId: string) => {
         addToCollection(collectionId, content);
     }
+    const createClick = () => {
+        setCreatingNew(!(creatingNew!));
+    }
+    var collectionsArray = getCollectionsArray(currentCollections);
+    collectionsArray = collectionsArray.filter(cl => cl.creatorUsername === user?.username);
     return (
         <Dropdown value='Add to Collection' className='button' text="Add to Collection">
-            <Dropdown.Menu>
-                {currentCollections.map(col => (
-                    <Dropdown.Item 
-                    key={col.collectionId}
-                    onClick={() => handleChange(col.collectionId)}
-                    >
-                        {col.collectionName}
-                    </Dropdown.Item>
+           <Dropdown.Menu>
+                {creatingNew && (
+                    <CollectionCreateForm contentUrl={content.contentUrl} key='createForm' />
+                )}
+                {!(creatingNew) && collectionsArray.map(col => (
+                    <>
+                        <Dropdown.Item key={col.collectionId} onClick={() => handleChange(col.collectionId)} >
+                           <ListContent>{col.collectionName}</ListContent>
+                        </Dropdown.Item>
+                        <Dropdown.Item key="createNew" onClick={createClick}>
+                            <ListContent>New Collection</ListContent>
+                        </Dropdown.Item>
+                    </>
                 ))}
             </Dropdown.Menu>
         </Dropdown>

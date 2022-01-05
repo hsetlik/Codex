@@ -25,3 +25,11 @@ export interface CollectionsForLanguageQuery {
     language: string,
     enforceVisibility: boolean
 }
+
+export const getCollectionsArray = (map: Map<string, Collection>): Collection[] => {
+    let out: Collection[] = [];
+    map.forEach((value: Collection, key: string) => {
+        out.push(value);
+    })
+    return out;
+}

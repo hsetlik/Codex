@@ -1,12 +1,12 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Collection } from "../models/collection";
+import { Collection, CreateCollectionQuery } from "../models/collection";
 import { ContentMetadata } from "../models/content";
 
 export default class CollectionStore {
 
     collectionsLoaded = false;
-    currentCollections: Collection[] = [];
+    currentCollections: Map<string, Collection> = new Map();
     currentCollectionsLanguage = 'none';
     constructor() {
         makeAutoObservable(this);
@@ -14,12 +14,15 @@ export default class CollectionStore {
 
     loadCollectionsForLanguage = async (lang: string) => {
         this.collectionsLoaded = false;
+        this.currentCollections.clear();
         try {
            const newCollections = await agent.CollectionAgent.collectionsForLanguage({language: lang, enforceVisibility: false});
            runInAction(() => {
                this.currentCollectionsLanguage = lang;
-               this.currentCollections = newCollections;
                this.collectionsLoaded = true;
+               for(let col of newCollections) {
+                   this.currentCollections.set(col.collectionId, col);
+               }
            })
         } catch (error) {
             runInAction(() => this.collectionsLoaded = true);
@@ -28,7 +31,7 @@ export default class CollectionStore {
     }
 
     addToCollection = async (collectionId: string, content: ContentMetadata) => {
-        let coll = this.currentCollections.find(c => c.collectionId === collectionId)!;
+        let coll = this.currentCollections.get(collectionId)!;
         coll.contents.push(content);
         try {
             await agent.CollectionAgent.updateCollection(coll);
@@ -37,4 +40,24 @@ export default class CollectionStore {
         }
     }
 
+    removeFromCollection = async (collectionId: string, content: ContentMetadata) => {
+        const coll = this.currentCollections.get(collectionId)!;
+        coll.contents = coll.contents.filter(c => c.contentId !== content.contentId);
+        try {
+            await agent.CollectionAgent.updateCollection(coll);
+            runInAction(() => this.currentCollections.set(collectionId, coll))
+        } catch (error) {
+           console.log(error); 
+        }
+    }
+
+    createCollection = async (query: CreateCollectionQuery) => {
+        try {
+            await agent.CollectionAgent.createCollection(query);
+            runInAction(() => this.loadCollectionsForLanguage(this.currentCollectionsLanguage)) 
+        } catch (error) {
+            console.log(error); 
+            runInAction(() => this.loadCollectionsForLanguage(this.currentCollectionsLanguage)) 
+        }
+    }
 }
