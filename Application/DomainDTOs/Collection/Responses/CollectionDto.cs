@@ -11,7 +11,7 @@ namespace Application.DomainDTOs.Collection.Responses
 
         // note: this isn't a nav property per se, just a reference to the creator
         public Guid CreatorLanguageProfileId { get; set; }
-        public string CreatorUserName { get; set; }
+        public string CreatorUsername { get; set; }
         //Columns
         public bool IsPrivate { get; set; }
         public DateTime CreatedAt { get; set; }

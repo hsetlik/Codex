@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.DomainDTOs;
 using Application.DomainDTOs.Collection.Queries;
 using Application.DomainDTOs.Collection.Responses;
+using Application.Interfaces;
 using AutoMapper;
 using Domain.DataObjects;
 using MediatR;
@@ -124,8 +126,6 @@ namespace Application.Extensions
             existing.Language = collectionDto.Language;
             existing.CollectionName = collectionDto.CollectionName;
             existing.Description = collectionDto.Description;
-
-
             // create new CollectionContents
             foreach(var contentDto in collectionDto.Contents)
             {
@@ -153,6 +153,30 @@ namespace Application.Extensions
             if (!success)
                 return Result<Unit>.Failure("Could not save changes");
             return Result<Unit>.Success(Unit.Value);
+        }
+
+        public static async Task<Result<List<CollectionDto>>> CollectionsForLanguage(this DataContext context, CollectionsForLanguageQuery query, IUserAccessor accessor)
+        {
+            Console.WriteLine($"Looking for collections with language: {query.Language}");
+            var mapper = MapperFactory.GetDefaultMapper();
+            var matches = await context.Collections
+                .Include(c => c.CollectionContents)
+                .ThenInclude(c => c.Content)
+                .Where(r => r.Language == query.Language)
+                .Select(c => mapper.Map<CollectionDto>(c))
+                .ToListAsync();
+            if (matches == null)
+                return Result<List<CollectionDto>>.Failure("no matching collections!");
+            foreach(var match in matches)
+            {
+                Console.WriteLine($"Match is: {match.CollectionName}");
+            }
+            if (query.EnforceVisibility)
+            {
+                matches = matches.Where(m => m.CreatorUsername == accessor.GetUsername() || (!m.IsPrivate)).ToList();
+            } 
+            return Result<List<CollectionDto>>.Success(matches); 
+
         }
     }
 }

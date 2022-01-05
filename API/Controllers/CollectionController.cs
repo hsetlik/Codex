@@ -36,6 +36,16 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UpdateCollection.Command{Dto = dto}));
         }
+
+        [HttpPost("collectionsForLanguage")]
+        public async Task<IActionResult> CollectionsForLanguage(CollectionsForLanguageQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new CollectionsForLanguage.Query{Dto = dto}));
+        }
+
+
+
+
  
     }
 }

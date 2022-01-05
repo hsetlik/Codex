@@ -15,9 +15,11 @@ import { UserTermCreateDto, AddTranslationDto,
          ContentUrlDto,
          TranslatorQuery,
          SaveContentQuery,
-         SavedContentDto} from "../models/dtos";
+         SavedContentDto,
+         ICollectionId} from "../models/dtos";
 import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
+import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
@@ -113,7 +115,14 @@ const Content = {
     saveContent: (dto: SaveContentQuery) => requests.post('/content/saveContent', dto),
     unsaveContent: (dto: SaveContentQuery) => requests.post('/content/unsaveContent', dto),
     getSavedContents: (id: IProfileId) => requests.post<SavedContentDto[]>('content/getSavedContents', id)
+}
 
+const Collection = {
+    createCollection: (query: CreateCollectionQuery) => requests.post('/collection/createCollection', query),
+    deleteCollection: (query: ICollectionId) => requests.post('collection/deleteCollection', query),
+    getCollection: (query: ICollectionId) => requests.post<Collection>('collection/getCollection', query),
+    updateCollection: (dto: Collection) => requests.post('collection/updateCollection', dto),
+    collectionsForLanguage: (query: CollectionsForLanguageQuery) => requests.post('collection/collectionsForLanguage', query)
 }
 
 const Parse = {
@@ -135,7 +144,8 @@ const agent = {
     UserTermEndpoints,
     TermEndpoints,
     Parse,
-    Translate
+    Translate,
+    Collection
 }
 
 export default agent;

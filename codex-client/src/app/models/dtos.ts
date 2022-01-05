@@ -19,6 +19,9 @@ export interface TranslationResultDto {
     annotation: string
 }
 
+export interface ICollectionId {
+    collectionId: string
+}
 
 
 export interface IContentId {
