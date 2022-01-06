@@ -41,13 +41,18 @@ namespace Persistence
         public DbSet<Collection> Collections { get; set; }
 
         public DbSet<CollectionContent> CollectionContents { get; set; }
+
         public DbSet<SavedCollection> SavedCollections { get; set; }
+
+        public DbSet<ProfileFollowing> ProfileFollowings { get; set; }
+
+        public DbSet<ProfileFollower> ProfileFollowers { get; set; }
 
          protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            //Set up the foreign keys for the UserLanguageProfile table
+            // UserLanguageProfile
             builder.Entity<UserLanguageProfile>()
             .HasOne(u => u.User)
             .WithMany(p => p.UserLanguageProfiles)
@@ -58,26 +63,31 @@ namespace Persistence
             .WithOne(c => c.UserLanguageProfile)
             .HasForeignKey<DailyProfileHistory>(d => d.LanguageProfileId);
 
+            //ContentHistory
             builder.Entity<ContentHistory>()
             .HasOne(c => c.UserLanguageProfile)
             .WithMany(c => c.ContentHistories)
             .HasForeignKey(k => k.LanguageProfileId);
 
+            //UserTerm
             builder.Entity<UserTerm>()
             .HasOne(u => u.UserLanguageProfile)
             .WithMany(u => u.UserTerms)
             .HasForeignKey(p => p.LanguageProfileId);
 
+            //contentTag
             builder.Entity<ContentTag>()
             .HasOne(u => u.Content)
             .WithMany(c => c.ContentTags)
             .HasForeignKey(u => u.ContentId);
 
+            //ContentViewRecord
             builder.Entity<ContentViewRecord>()
             .HasOne(d => d.ContentHistory)
             .WithMany(h => h.ContentViewRecords)
             .HasForeignKey(h => h.ContentHistoryId);
 
+            //Phrase
             builder.Entity<Phrase>()
             .HasOne(p => p.UserLanguageProfile)
             .WithMany(p => p.Phrases)
@@ -88,6 +98,7 @@ namespace Persistence
             .WithMany(p => p.Translations)
             .HasForeignKey(i => i.PhraseId);
 
+            // DailyProfileRecord
             builder.Entity<DailyProfileRecord>()
             .HasOne(r => r.DailyProfileHistory)
             .WithMany(h => h.DailyProfileRecords)
@@ -97,16 +108,29 @@ namespace Persistence
             .HasOne(r => r.UserLanguageProfile)
             .WithMany();
 
+            //Saved
             builder.Entity<SavedContent>()
             .HasOne(s => s.UserLanguageProfile)
             .WithMany(p => p.SavedContents)
             .HasForeignKey(s => s.LanguageProfileId);
+            
+            builder.Entity<SavedCollection>()
+            .HasKey(sc => new {sc.CollectionId, sc.LanguageProfileId});
 
+            //CollectionContent
             builder.Entity<CollectionContent>()
             .HasKey(cc => new {cc.CollectionId, cc.ContentId});           
 
-            builder.Entity<SavedCollection>()
-            .HasKey(sc => new {sc.CollectionId, sc.LanguageProfileId});
+            //follower/following
+            builder.Entity<ProfileFollower>()
+            .HasOne(f => f.UserLanguageProfile)
+            .WithMany(p => p.Followers)
+            .HasForeignKey(k => k.LanguageProfileId);
+
+            builder.Entity<ProfileFollowing>()
+            .HasOne(f => f.UserLanguageProfile)
+            .WithMany(p => p.Followings)
+            .HasForeignKey(f => f.LanguageProfileId);
         }
     }
 }
