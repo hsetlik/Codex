@@ -14,12 +14,12 @@ namespace Application.DataObjectHandling.Phrase
 {
     public class GetPhraseDetails
     {
-        public class Query : IRequest<Result<PhraseDetailsDto>>
+        public class Query : IRequest<Result<PhraseDto>>
         {
             public PhraseQuery Dto { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<PhraseDetailsDto>>
+        public class Handler : IRequestHandler<Query, Result<PhraseDto>>
         {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
@@ -29,7 +29,7 @@ namespace Application.DataObjectHandling.Phrase
             this._context = context;
             }
 
-            public async Task<Result<PhraseDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PhraseDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.GetDetails(request.Dto, _userAccessor.GetUsername());
             }

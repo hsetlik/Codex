@@ -64,18 +64,18 @@ namespace Application.Extensions
             
         }
 
-        public static async Task<Result<PhraseDetailsDto>> GetDetails(this DataContext context, PhraseQuery query, string username)
+        public static async Task<Result<PhraseDto>> GetDetails(this DataContext context, PhraseQuery query, string username)
         {
             var profile = await context.UserLanguageProfiles.Include(p => p.User).FirstOrDefaultAsync(p => p.Language == query.Language && p.User.UserName == username);
             if (profile == null)
-                return Result<PhraseDetailsDto>.Failure($"Could not find profile in language {query.Language} for user {username}");
+                return Result<PhraseDto>.Failure($"Could not find profile in language {query.Language} for user {username}");
             string value = query.Value.AsPhraseValue();
             var phrase = await context.Phrases
                 .Include(p => p.Translations)
                 .FirstOrDefaultAsync(p => p.LanguageProfileId == profile.LanguageProfileId && p.Value == value);
             if (phrase == null)
-                return Result<PhraseDetailsDto>.Failure($"Could not find phrase {value} for user {username}");
-            return Result<PhraseDetailsDto>.Success(new PhraseDetailsDto(phrase));
+                return Result<PhraseDto>.Failure($"Could not find phrase {value} for user {username}");
+            return Result<PhraseDto>.Success(new PhraseDto(phrase));
 
         }
         

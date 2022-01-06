@@ -6,7 +6,7 @@ using Domain.DataObjects;
 
 namespace Application.DomainDTOs
 {
-    public class PhraseDetailsDto
+    public class PhraseDto
     {
         public Guid PhraseId { get; set; }
         public Guid LanguageProfileId { get; set; }
@@ -19,11 +19,11 @@ namespace Application.DomainDTOs
         public string DateTimeDue { get; set; }
         public float SrsIntervalDays { get; set; }
         public DateTime CreatedAt { get; set; }
-        public PhraseDetailsDto()
+        public PhraseDto()
         {
 
         }
-        public PhraseDetailsDto(Phrase phrase)
+        public PhraseDto(Phrase phrase)
         {
             this.PhraseId = phrase.PhraseId;
             this.LanguageProfileId = phrase.LanguageProfileId;

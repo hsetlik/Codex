@@ -96,7 +96,7 @@ namespace Application.Extensions
             return output;
         }
 
-        public static Phrase UpdatedWith(this Phrase input, PhraseDetailsDto details)
+        public static Phrase UpdatedWith(this Phrase input, PhraseDto details)
         {
             input.Value = details.Value;
             input.TimesSeen = details.TimesSeen;

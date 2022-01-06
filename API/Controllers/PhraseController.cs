@@ -36,7 +36,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("updatePhrase")]
-        public async Task<IActionResult> UpdatePhrase(PhraseDetailsDto dto)
+        public async Task<IActionResult> UpdatePhrase(PhraseDto dto)
         {
             return HandleResult(await Mediator.Send(new UpdatePhrase.Command{Dto = dto}));
         }
