@@ -1,0 +1,101 @@
+
+  /*NOTE: sometimes npm has to be restarted for style changes to take effect*/
+  .codex-term-p {
+    padding: 0.25em !important;
+    margin: 0.2em !important;
+    border-style: none !important;
+    /*font-style: italic !important;*/
+  }
+
+  .codex-term-h1 {
+    padding: 5px !important;
+    background: rgb(10, 171, 211);
+    margin-top: 8px !important;
+    font-style: italic !important;
+  }
+
+  .codex-term-h2 {
+    padding: 10px !important;
+    background: rgb(10, 171, 211);
+    margin-top: 10px !important;
+    font-style: italic !important;
+    font-size: x-large !important;
+  }
+
+  .codex-term-h3 {
+    padding: 8px !important;
+    background: rgb(10, 171, 211);
+    font-style: italic !important;
+    font-size: larger !important;
+  }
+
+  /*selected term styles. just add a border*/
+  .codex-term-p-h {
+    padding: 0.25em !important;
+    margin: 0.2em !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: rgb(97, 91, 91)!important;
+  }
+
+  .codex-term-h1-h {
+    padding: 5px !important;
+    background: rgb(10, 171, 211);
+    margin-top: 8px !important;
+    font-style: italic !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: rgb(97, 91, 91)!important;
+  }
+
+  .codex-term-h2-h {
+    padding: 10px !important;
+    background: rgb(10, 171, 211);
+    margin-top: 10px !important;
+    font-style: italic !important;
+    font-size: x-large !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: rgb(97, 91, 91)!important;
+  }
+
+  .codex-term-h3-h {
+    padding: 8px !important;
+    background: rgb(10, 171, 211);
+    font-style: italic !important;
+    font-size: larger !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: rgb(97, 91, 91)!important;
+  }
+  .codex-element-p {
+    display: block !important;
+    padding-top: 1.5% !important;
+    padding-bottom: 1.5% !important;
+  }
+  .codex-element-h1 {
+    display: block !important;
+    padding-top: 1.5% !important;
+    padding-bottom: 1.5% !important;
+  }
+  .codex-element-h2 {
+    padding-top: 3% !important;
+  }
+  .codex-element-h3 {
+    padding-top: 1.5% !important;
+    padding-bottom: 1.5% !important;
+    padding-left: 3% !important; 
+  }
+
+    .trailing-character-group {
+    padding: 0px !important;
+    background: white !important;
+    text-align: left !important;
+    margin-right: 6px !important;
+    margin-left: 0px !important;
+  }
+
+  .leading-character-group {
+    padding: 0px !important;
+    background: white !important;
+    text-align: left !important;
+    margin-right: 6px !important;
+    margin-left: 0px !important;
+  }
+

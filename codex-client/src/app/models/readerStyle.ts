@@ -4,7 +4,8 @@ export interface TermStyle {
 
 }
 
-export const classNameForTerm = (tag: string) : string => {
+
+const classNamePrefix = (tag: string) : string => {
     switch (tag) {
         case "p":
             return "codex-term-p";
@@ -17,6 +18,11 @@ export const classNameForTerm = (tag: string) : string => {
         default:
             return "codex-term-p";
     }
+}
+
+
+export const classNameForTerm = (tag: string, selected?: boolean) : string => {
+    return (selected!) ? classNamePrefix(tag) + '-h' : classNamePrefix(tag);
 }
 
 

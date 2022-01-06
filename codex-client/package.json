@@ -12,6 +12,7 @@
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@types/react-router-dom": "^5.3.2",
+    "@types/styled-components": "^5.1.19",
     "axios": "^0.24.0",
     "country-flag-icons": "^1.4.19",
     "formik": "^2.2.9",
@@ -24,6 +25,7 @@
     "recharts": "^2.1.8",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.4",
+    "styled-components": "^5.3.3",
     "use-async-effect": "^2.2.3",
     "web-vitals": "^2.1.2",
     "yup": "^0.32.11"
