@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { useState } from "react";
-import { Dropdown, Label, ListContent } from "semantic-ui-react";
+import { Dropdown, ListContent } from "semantic-ui-react";
 import { getCollectionsArray } from "../../app/models/collection";
 import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
@@ -30,11 +29,11 @@ export default observer( function AddToCollection({content}: Props) {
                 )}
                 {!(creatingNew) && collectionsArray.map(col => (
                     <>
-                        <Dropdown.Item key={col.collectionId} onClick={() => handleChange(col.collectionId)} >
-                           <ListContent>{col.collectionName}</ListContent>
+                        <Dropdown.Item key={content.contentId + col.collectionId} onClick={() => handleChange(col.collectionId)} >
+                           <ListContent key={col.collectionId}>{col.collectionName}</ListContent>
                         </Dropdown.Item>
                         <Dropdown.Item key="createNew" onClick={createClick}>
-                            <ListContent>New Collection</ListContent>
+                            <ListContent key={col.collectionId}>New Collection</ListContent>
                         </Dropdown.Item>
                     </>
                 ))}
