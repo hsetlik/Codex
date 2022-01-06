@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { Button, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { Collection } from "../../app/models/collection";
 import { useStore } from "../../app/stores/store";
 import "../styles/collection.css";
@@ -32,7 +32,7 @@ export default observer(function CollectionHeader({ collection }: Props) {
                     <Icon className="collection-subhead" name={(expanded)? 'minus circle' : 'add circle'} link onClick={handleClick}/>
                 </div>
                 {expanded && collection.contents.map(c => (
-                    <CollectionContent content={c} isOwned={isOwned} collectionId={collection.collectionId} />
+                    <CollectionContent key={c.contentId} content={c} isOwned={isOwned} collectionId={collection.collectionId} />
                 ))}
             </div>
         </div>

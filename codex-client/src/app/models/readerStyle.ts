@@ -39,10 +39,3 @@ export const classNameForElement = (tag: string): string => {
 
 
 
-
-export const getStyle = (tag: string): TermStyle => {
-
-    return {
-
-    }
-}

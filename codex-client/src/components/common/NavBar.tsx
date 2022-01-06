@@ -3,7 +3,7 @@ import { Container, Icon, Menu} from 'semantic-ui-react';
 import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
 import '../styles/styles.css';
-import LanguageSelector from '../account/LanguageSelector';
+import LanguageSelector from '../account/ProfileSelector';
 
 export default observer(function NavBar()
 {

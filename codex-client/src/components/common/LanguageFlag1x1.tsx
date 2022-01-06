@@ -1,5 +1,4 @@
 import Flags from 'country-flag-icons/react/1x1';
-import { List } from "semantic-ui-react";
 
 
 
@@ -77,9 +76,9 @@ interface Props {
 
 export default function LanguageFlag1x1({lang, className}: Props) {
     return (
-            <List.Item floated='right'>
-                {getFlagComponent(lang, className!)}
-            </List.Item>
+        <>
+        {getFlagComponent(lang, className || 'div')}
+        </>
     )
 }
 
