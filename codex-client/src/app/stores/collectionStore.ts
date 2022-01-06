@@ -60,4 +60,15 @@ export default class CollectionStore {
             runInAction(() => this.loadCollectionsForLanguage(this.currentCollectionsLanguage)) 
         }
     }
+
+    deleteCollection = async (collectionId: string) => {
+        this.currentCollections.delete(collectionId);
+        try {
+           await agent.CollectionAgent.deleteCollection({collectionId: collectionId});
+           runInAction(() => this.loadCollectionsForLanguage(this.currentCollectionsLanguage)) 
+        } catch (error) {
+            console.log(error);
+           runInAction(() => this.loadCollectionsForLanguage(this.currentCollectionsLanguage)) 
+        }
+    }
 }

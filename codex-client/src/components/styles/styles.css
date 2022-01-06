@@ -109,3 +109,7 @@
      clip: auto;
      padding: 5% !important;
    }
+
+  .codex-text-input {
+    padding-top: 2% !important;
+  }

@@ -1,0 +1,25 @@
+
+  .collection-container {
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-color: gray;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .collection-header {
+    color: black;
+    padding: 0.35em;
+    order: 0;
+  }
+
+  .collection-subhead {
+    color: gray;
+    font-variant: small-caps;
+    padding: 0.35em;
+  }
+
+  .p-description {
+      color: slategray;
+      margin-left: 1em;
+  }

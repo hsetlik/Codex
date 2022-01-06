@@ -1,8 +1,11 @@
-import { withFormik, FormikProps, Form, Field, FormikErrors } from 'formik';
+import { withFormik, FormikProps, Form, FormikErrors } from 'formik';
 import { observer } from "mobx-react-lite";
-import { Button } from "semantic-ui-react";
+import { Button, Label } from "semantic-ui-react";
 import { CreateCollectionQuery } from "../../app/models/collection";
 import { useStore } from "../../app/stores/store";
+import CodexTextInput from '../formComponents/CodexTextInput';
+import { Form as FormComp} from "semantic-ui-react";
+import "../styles/styles.css";
 
 
 interface FormValues {
@@ -21,12 +24,12 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     const {touched, errors, isSubmitting} = props;
     return (
       <Form>
-          <Field type='text' name='collectionName' />
-          {touched.collectionName && errors.collectionName && <div>{errors.collectionName}</div>}
-          <Field type='text' name='description' />
+          <CodexTextInput type='text' name='collectionName' className='codex-text-input' />
+          {touched.collectionName && errors.collectionName && <Label>{errors.collectionName}</Label>}
+          <CodexTextInput type='text' name='description' className='codex-text-input' />
           {touched.description && errors.description && <div>{errors.description}</div>}
-          <Field type='checkbox' name='isPrivate' />
-          <Button type='submit' disabled={isSubmitting} />
+          <FormComp.Checkbox type='checkbox' name='isPrivate' label="Private"  />
+          <Button type='submit' disabled={isSubmitting} content='Create' />
       </Form>
     );
   };

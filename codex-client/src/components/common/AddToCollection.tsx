@@ -1,43 +1,66 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { Dropdown, ListContent } from "semantic-ui-react";
-import { getCollectionsArray } from "../../app/models/collection";
+import { Button, Popup, PopupContent, List, Icon, ListContent } from "semantic-ui-react";
+import { Collection } from "../../app/models/collection";
 import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
 import CollectionCreateForm from "../collection/CollectionCreateForm";
 
 interface Props {content: ContentMetadata}
 
-export default observer( function AddToCollection({content}: Props) {
-    const {collectionStore, userStore: {user}} = useStore();
-    const {currentCollections, addToCollection} = collectionStore;
+export default observer(function AddToCollection({content}: Props) {
+    const {collectionStore, userStore} = useStore();
+    const {currentCollections, addToCollection, removeFromCollection} = collectionStore;
+    const username = userStore.user?.username || 'null';
     const [creatingNew, setCreatingNew] = useState(false);
-    //TODO: logic to make sure that only accessible collections are available
-    const handleChange = (collectionId: string) => {
-        addToCollection(collectionId, content);
+    const collectionArray = (): Collection[] => {
+        let output: Collection[] = [];
+        currentCollections.forEach((value: Collection, key: string) => {
+            if (value.creatorUsername === username) {
+                output.push(value);
+            }
+        })
+        return output;
     }
-    const createClick = () => {
-        setCreatingNew(!(creatingNew!));
+    const containsContent = (collectionId: string, content: ContentMetadata): boolean => {
+        return currentCollections.get(collectionId)!.contents.some(c => c.contentId === content.contentId);
     }
-    var collectionsArray = getCollectionsArray(currentCollections);
-    collectionsArray = collectionsArray.filter(cl => cl.creatorUsername === user?.username);
-    return (
-        <Dropdown value='Add to Collection' className='button' text="Add to Collection">
-           <Dropdown.Menu>
-                {creatingNew && (
-                    <CollectionCreateForm contentUrl={content.contentUrl} key='createForm' />
-                )}
-                {!(creatingNew) && collectionsArray.map(col => (
-                    <>
-                        <Dropdown.Item key={content.contentId + col.collectionId} onClick={() => handleChange(col.collectionId)} >
-                           <ListContent key={col.collectionId}>{col.collectionName}</ListContent>
-                        </Dropdown.Item>
-                        <Dropdown.Item key="createNew" onClick={createClick}>
-                            <ListContent key={col.collectionId}>New Collection</ListContent>
-                        </Dropdown.Item>
-                    </>
+
+    const handleCreateClick = () => {
+        setCreatingNew(!(creatingNew));
+    }
+
+ return (
+    <Popup
+        openOnTriggerClick={true}
+        openOnTriggerMouseEnter={false}
+        closeOnTriggerMouseLeave={false}
+        trigger={
+            <Button content='Add to Collection' />
+        }
+    >
+        <PopupContent>
+            <List>
+                {!creatingNew && collectionArray().map(col => (
+                    <List.Item key={col.collectionId} >
+                        {containsContent(col.collectionId, content) ? (
+                            <Icon name='minus circle' color='red' link onClick={() => removeFromCollection(col.collectionId, content)} />
+
+                        ) : (
+                            <Icon name='add circle' color='green' link onClick={() => addToCollection(col.collectionId, content)} />
+                        )}
+                        <ListContent>{col.collectionName}</ListContent>
+                    </List.Item>
                 ))}
-            </Dropdown.Menu>
-        </Dropdown>
-    )
+                {creatingNew && (
+                    <CollectionCreateForm contentUrl={content.contentUrl} />
+                )}
+                <List.Item key='toggleCreateMode' className="label" >
+                    <Icon name='add square' color="blue" link onClick={handleCreateClick} />
+                    <ListContent >Create new collection</ListContent>
+                </List.Item>
+            </List>
+        </PopupContent>
+    </Popup>
+ )
 })

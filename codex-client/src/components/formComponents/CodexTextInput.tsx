@@ -3,10 +3,11 @@ import React from "react";
 import { Form, Label } from "semantic-ui-react";
 
 interface Props {
-    placeholder: string;
+    placeholder?: string;
     name: string;
     label?: string;
     type?: string;
+    className?: string;
 }
 
 export default function CodexTextInput(props: Props) {

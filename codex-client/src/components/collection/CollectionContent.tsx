@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
+import "../styles/collection.css";
+import "../styles/flex.css";
 
 interface Props {
     content: ContentMetadata,
@@ -19,10 +21,10 @@ export default observer(function CollectionContent({content, collectionId, isOwn
     }
 
     return(
-        <Segment>
-            <Header as={Link} to={contentPath} content={content.contentName} />
+        <Segment className="hflex-space-between">
+            <Header as={Link} to={contentPath} content={content.contentName}  />
             { isOwned && (
-                <Button basic floated='right' onClick={handleRemove} >Remove</Button>
+                <Button basic onClick={handleRemove} >Remove</Button>
             )}
         </Segment>
     )

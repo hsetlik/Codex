@@ -1,0 +1,20 @@
+.hflex-headers {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    align-content: stretch;
+    width: 80%;
+}
+
+.hflex-basic {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.hflex-space-between {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+}
