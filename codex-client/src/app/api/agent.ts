@@ -20,7 +20,7 @@ import { UserTermCreateDto, AddTranslationDto,
 import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
-import { Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
+import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
@@ -138,7 +138,8 @@ const Translate = {
 
 const PhraseAgent = {
     createPhrase: (query: PhraseCreateQuery) => requests.post('phrase/createPhrase', query),
-    getPhrase: (query: PhraseQuery) => requests.post<Phrase>('phrase/getPhraseDetails', query)
+    getPhrase: (query: PhraseQuery) => requests.post<Phrase>('phrase/getPhraseDetails', query),
+    getAbstractPhrase: (query: PhraseQuery) => requests.post<AbstractPhrase>('phrase/getAbstractPhrase', query)
 }
 
 //====================================================================================================================
@@ -151,7 +152,8 @@ const agent = {
     TermEndpoints,
     Parse,
     Translate,
-    CollectionAgent
+    CollectionAgent,
+    PhraseAgent
 }
 
 export default agent;

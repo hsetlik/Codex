@@ -24,3 +24,11 @@ export interface PhraseQuery {
     value: string
 }
 
+export interface AbstractPhrase {
+    hasPhrase: boolean,
+    value: string,
+    language: string,
+    reccomendedTranslation: string,
+    phrase: Phrase
+}
+

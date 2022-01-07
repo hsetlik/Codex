@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { ContentMetadata, ContentSection, ElementAbstractTerms, SectionAbstractTerms, TextElement } from "../models/content";
 import { AddTranslationDto, KnownWordsDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
-import { PhraseCreateQuery } from "../models/phrase";
+import { AbstractPhrase, PhraseCreateQuery } from "../models/phrase";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
 
@@ -47,6 +47,7 @@ export default class ContentStore
     //phrase mode stuff
     phraseMode = false;
     phraseTerms: AbstractTerm[] = [];
+    currentAbstractPhrase: AbstractPhrase | null = null;
     
     //highlightedElement
     highlightedElement: TextElement | null = null; // for captions
@@ -174,7 +175,6 @@ export default class ContentStore
              try {
                 await agent.Content.saveContent({contentUrl: contentUrl, languageProfileId: store.userStore.selectedProfile?.languageProfileId!});
                 await this.loadSavedContents(store.userStore.selectedProfile?.languageProfileId!);
-                
             } catch (error) {
                 console.log(error);    
             }
@@ -388,11 +388,35 @@ export default class ContentStore
         console.log(`Translations loaded for: ${this.selectedTerm?.termValue}`);
     }
 
+    // Phrase related stuff
+
     createPhrase = async (query: PhraseCreateQuery) => {
         try {
-            
+            await agent.PhraseAgent.createPhrase(query);
+            const newPhrase = await agent.PhraseAgent.getAbstractPhrase({value: query.value, language: query.language});
+            runInAction(() => this.currentAbstractPhrase = newPhrase);
         } catch (error) {
-            
+            console.log(error);
+        }
+    }
+
+    updateAbstractPhrase = async () => {
+        let currentPhraseValue = '';
+        for(let i = 0; i < this.phraseTerms.length; ++i) {
+            const term = this.phraseTerms[i];
+            if (i > 0 && term.leadingCharacters.length > 0)
+                currentPhraseValue += term.leadingCharacters;
+            currentPhraseValue += term.termValue;
+            if (term.trailingCharacters.length > 0)
+                currentPhraseValue += term.trailingCharacters;
+            if (i !== this.phraseTerms.length - 1)
+                currentPhraseValue += ' ';
+        }
+        try {
+            const newPhrase = await agent.PhraseAgent.getAbstractPhrase({value: currentPhraseValue, language: store.userStore.selectedProfile?.language || 'en'});
+            runInAction(() => this.currentAbstractPhrase = newPhrase);
+        } catch (error) {
+           console.log(error);
         }
     }
 }
