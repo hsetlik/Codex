@@ -13,7 +13,7 @@ interface Props {
 
 export default observer(function UserTermCreator({term}: Props) {
     const {userStore, contentStore} = useStore();
-    const {selectedTerm, setSelectedTerm} = contentStore;
+    const {selectedTerm, selectTerm: setSelectedTerm} = contentStore;
     useEffect(() => {
         if (selectedTerm?.termValue !== term.termValue) {
             setSelectedTerm(term);

@@ -336,9 +336,14 @@ export default class ContentStore
         this.currentSectionTerms.elementGroups[elementIndex].abstractTerms[termIndex] = term;
     }
 
-    setSelectedTerm = (term: AbstractTerm) => {
+    selectTerm = (term: AbstractTerm, shiftDown?: boolean) => {
         this.termTranslationsLoaded = false;
         console.log(`Selecting term ${term.termValue} with language ${term.language} and index ${term.indexInChunk}`);
+        if (this.selectedTerm !== null && shiftDown) {
+            store.phraseStore.updatePhrase(this.selectedTerm, term);
+        } else if (!shiftDown && store.phraseStore.phraseMode) {
+            store.phraseStore.exitPhraseMode();
+        }
         this.selectedTerm = term;
     }
 

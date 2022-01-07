@@ -5,6 +5,9 @@ import { useStore } from "../../../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { getColorForTerm } from "../../../../../app/utilities/colorUtility";
 import { classNameForTerm } from "../../../../../app/models/readerStyle";
+import { useKeyPressed } from "../../../../../app/common/useKeypress";
+
+
 
 
 interface Props {
@@ -13,21 +16,21 @@ interface Props {
 }
 
 export default observer(function WordComponent({term, tag}: Props) {
-    const {contentStore} = useStore();
-    const {setSelectedTerm, selectedTerm} = contentStore;
+    const {contentStore, phraseStore} = useStore();
+    const {selectTerm, selectedTerm} = contentStore;
+    const {currentSelectedTerms} = phraseStore;
     const termColor = getColorForTerm(term);
-    const className = classNameForTerm(tag, selectedTerm === term);
-    if (term.hasUserTerm) {
-        return (
-            <Button className={className} onClick={() => setSelectedTerm(term)} style={{background: termColor}}>
-                {term.termValue}
-            </Button>
-        )
-    } else {
-        return (
-            <Button className={className} onClick={() => setSelectedTerm(term)} style={{background: termColor}} >
+    const className = classNameForTerm(tag, currentSelectedTerms.some(t => t === term) || selectedTerm === term);
+    const shiftPressed = useKeyPressed((e) => {
+        return e.shiftKey;
+    });
+    return (
+            <Button 
+            className={className} 
+            onClick={() => selectTerm(term, shiftPressed)}
+            style={{background: termColor}}>
                     {term.termValue}
             </Button>
-        )
-    }
+    )
+    
 });
