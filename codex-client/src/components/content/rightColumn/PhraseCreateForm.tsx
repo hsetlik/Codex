@@ -1,17 +1,10 @@
-import { Form, Formik, FormikProps } from "formik";
+import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { PhraseCreateQuery } from "../../../app/models/phrase";
-import {Button, Form as SForm, Header} from 'semantic-ui-react';
+import {Button, Header} from 'semantic-ui-react';
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 import CodexTextInput from "../../formComponents/CodexTextInput";
 
-
-
-interface FormValues {
-    firstTranslation: string,
-}
 
 const getPhraseValue = (terms: AbstractTerm[]): string => {
     let output = '';

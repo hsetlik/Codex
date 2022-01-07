@@ -82,6 +82,8 @@ export default class ContentStore
                 let startIndex = Math.min(this.selectedTerm.indexInChunk, term.indexInChunk);
                 let endIndex = Math.max(this.selectedTerm.indexInChunk, term.indexInChunk);
                 this.phraseMode = true;
+                if (endIndex + 1 < elem.abstractTerms.length)
+                    endIndex = endIndex + 1;
                 this.phraseTerms = elem.abstractTerms.slice(startIndex, endIndex);
                 this.updateAbstractPhrase();
             }
@@ -413,6 +415,7 @@ export default class ContentStore
             if (i !== this.phraseTerms.length - 1)
                 currentPhraseValue += ' ';
         }
+        console.log(`Updated Phrase vlaue is: ${currentPhraseValue}`);
         try {
             const newPhrase = await agent.PhraseAgent.getAbstractPhrase({value: currentPhraseValue, language: store.userStore.selectedProfile?.language || 'en'});
             runInAction(() => this.currentAbstractPhrase = newPhrase);
