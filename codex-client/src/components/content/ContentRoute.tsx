@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Loader } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
-import AbstractTermDetails from "./rightColumn/AbstractTermDetails";
+import AbstractTermDetails from "./rightColumn/SelectionDetails";
 import '../styles/styles.css';
 import LeftColumnDiv from "./leftColumn/LeftColumnDiv";
 

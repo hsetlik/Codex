@@ -139,7 +139,8 @@ const Translate = {
 const PhraseAgent = {
     createPhrase: (query: PhraseCreateQuery) => requests.post('phrase/createPhrase', query),
     getPhrase: (query: PhraseQuery) => requests.post<Phrase>('phrase/getPhraseDetails', query),
-    getAbstractPhrase: (query: PhraseQuery) => requests.post<AbstractPhrase>('phrase/getAbstractPhrase', query)
+    getAbstractPhrase: (query: PhraseQuery) => requests.post<AbstractPhrase>('phrase/getAbstractPhrase', query),
+    updatePhrase: (phrase: Phrase) => requests.post('phrase/updatePhrase', phrase)
 }
 
 //====================================================================================================================

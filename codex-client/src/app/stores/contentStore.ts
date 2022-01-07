@@ -83,6 +83,7 @@ export default class ContentStore
                 let endIndex = Math.max(this.selectedTerm.indexInChunk, term.indexInChunk);
                 this.phraseMode = true;
                 this.phraseTerms = elem.abstractTerms.slice(startIndex, endIndex);
+                this.updateAbstractPhrase();
             }
         } else {
             if (this.phraseMode) { console.log('exiting phrase mode')}
@@ -404,10 +405,10 @@ export default class ContentStore
         let currentPhraseValue = '';
         for(let i = 0; i < this.phraseTerms.length; ++i) {
             const term = this.phraseTerms[i];
-            if (i > 0 && term.leadingCharacters.length > 0)
+            if (i > 0 && term.leadingCharacters !== 'none')
                 currentPhraseValue += term.leadingCharacters;
             currentPhraseValue += term.termValue;
-            if (term.trailingCharacters.length > 0)
+            if (term.trailingCharacters !== 'none')
                 currentPhraseValue += term.trailingCharacters;
             if (i !== this.phraseTerms.length - 1)
                 currentPhraseValue += ' ';
