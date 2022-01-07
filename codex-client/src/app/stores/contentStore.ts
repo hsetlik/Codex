@@ -28,7 +28,7 @@ export default class ContentStore
     knownWordsLoaded = false;
     contentKnownWords: Map<string, KnownWordsDto> = new Map();
     selectedTerm: AbstractTerm | null = null;
-    translationsLoaded = false;
+    termTranslationsLoaded = false;
 
     // selected content
     selectedContentMetadata: ContentMetadata | null = null;
@@ -69,7 +69,7 @@ export default class ContentStore
     }
 
     selectTerm = (term: AbstractTerm, shiftDown?: boolean) => {
-        this.translationsLoaded = false;
+        this.termTranslationsLoaded = false;
         if (shiftDown) {
             console.log('shift is down!');
         }
@@ -218,14 +218,14 @@ export default class ContentStore
     }
 
     addTranslation = async (dto: AddTranslationDto) => {
-         this.translationsLoaded = false;
+         this.termTranslationsLoaded = false;
          try {
             await agent.UserTermEndpoints.addTranslation(dto);
             await this.loadSelectedTermTranslations();
-            runInAction(() => this.translationsLoaded = true);
+            runInAction(() => this.termTranslationsLoaded = true);
          } catch (error) {
             console.log("error");
-            runInAction(() => this.translationsLoaded = true);
+            runInAction(() => this.termTranslationsLoaded = true);
          }
     }
 
@@ -370,11 +370,8 @@ export default class ContentStore
         return this.currentSectionTerms.elementGroups.find(g => g.abstractTerms.some(t => t === term))!;
     }
 
-
-   
-
     loadSelectedTermTranslations = async () => {
-        this.translationsLoaded = false;
+        this.termTranslationsLoaded = false;
         this.selectedTerm!.translations = [];
         try {
            const translations =  await agent.UserTermEndpoints.getTranslations({userTermId: this.selectedTerm?.userTermId!});
@@ -382,7 +379,7 @@ export default class ContentStore
             for(const t of translations) {
                 this.selectedTerm?.translations.push(t.userValue);
             }
-            this.translationsLoaded = true;
+            this.termTranslationsLoaded = true;
            });
         } catch (error) {
            console.log(error);

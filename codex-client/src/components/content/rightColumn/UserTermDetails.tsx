@@ -8,7 +8,7 @@ import Translation from "./Translation";
 
 //NOTE: this is an observer because its props are from a store object, even though this component doesn't call useStore() itself
 export default observer(function UserTermDetails() {
-    const {contentStore: {selectedTerm, translationsLoaded, loadSelectedTermTranslations}} = useStore();
+    const {contentStore: {selectedTerm, termTranslationsLoaded: translationsLoaded, loadSelectedTermTranslations}} = useStore();
     useEffect(() => {
         if (!translationsLoaded) {
             loadSelectedTermTranslations();
