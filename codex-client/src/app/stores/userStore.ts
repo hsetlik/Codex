@@ -132,7 +132,7 @@ export default class UserStore{
                 console.log(`Updating selected term with value ${termValue}`);
                 let oldValue = store.contentStore.selectedTerm.termValue;
                 updatedTermValue.termValue = oldValue;
-                store.contentStore.setSelectedTerm(updatedTermValue);
+                store.contentStore.selectTerm(updatedTermValue);
             }
             for(var i = 0; i < store.contentStore.currentSectionTerms.elementGroups.length; ++i)
             {

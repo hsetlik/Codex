@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ContentSection, SectionAbstractTerms, TextElement } from "../models/content";
+import { ContentMetadata, ContentSection, ElementAbstractTerms, SectionAbstractTerms, TextElement } from "../models/content";
 import { AddTranslationDto, KnownWordsDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
@@ -22,7 +22,7 @@ export const sectionMsRange = (section: ContentSection | null): MillisecondsRang
 
 export default class ContentStore
 {
-
+    //content headers
     headersLoaded = false;
     loadedContents: ContentMetadata[] = [];
     knownWordsLoaded = false;
@@ -30,6 +30,7 @@ export default class ContentStore
     selectedTerm: AbstractTerm | null = null;
     translationsLoaded = false;
 
+    // selected content
     selectedContentMetadata: ContentMetadata | null = null;
     selectedContentUrl: string = "none";
     selectedSectionIndex = 0;
@@ -40,10 +41,16 @@ export default class ContentStore
         index: 0,
         sectionHeader: 'none',
         elementGroups: []
-    } 
-
+    }
+    
+    //phrase mode stuff
+    phraseMode = false;
+    phraseTerms: AbstractTerm[] = [];
+    
+    //highlightedElement
     highlightedElement: TextElement | null = null; // for captions
 
+    // buffer section
     bufferSection: ContentSection | null = null;
     bufferSectionTerms: SectionAbstractTerms = {
         contentUrl: 'none',
@@ -53,11 +60,34 @@ export default class ContentStore
     }
     bufferLoaded = false;  
 
+    //saved content
     savedContents: SavedContentDto[] = [];
     savedContentsLoaded = false;
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    selectTerm = (term: AbstractTerm, shiftDown?: boolean) => {
+        this.translationsLoaded = false;
+        if (shiftDown) {
+            console.log('shift is down!');
+        }
+        if (shiftDown && this.selectedTerm !== null) {
+            let elem = this.getParentElement(this.selectedTerm);
+            if (elem === this.getParentElement(term)) {
+                console.log('entered phrase mode');
+                let startIndex = Math.min(this.selectedTerm.indexInChunk, term.indexInChunk);
+                let endIndex = Math.max(this.selectedTerm.indexInChunk, term.indexInChunk);
+                this.phraseMode = true;
+                this.phraseTerms = elem.abstractTerms.slice(startIndex, endIndex);
+            }
+        } else {
+            if (this.phraseMode) { console.log('exiting phrase mode')}
+            this.phraseMode = false;
+            this.phraseTerms = [];
+        }
+        this.selectedTerm = term;
     }
 
     setHighlightedElement = (element: TextElement) => {
@@ -336,11 +366,12 @@ export default class ContentStore
         this.currentSectionTerms.elementGroups[elementIndex].abstractTerms[termIndex] = term;
     }
 
-    setSelectedTerm = (term: AbstractTerm) => {
-        this.translationsLoaded = false;
-        console.log(`Selecting term ${term.termValue} with language ${term.language} and index ${term.indexInChunk}`);
-        this.selectedTerm = term;
+    getParentElement = (term: AbstractTerm): ElementAbstractTerms=> {
+        return this.currentSectionTerms.elementGroups.find(g => g.abstractTerms.some(t => t === term))!;
     }
+
+
+   
 
     loadSelectedTermTranslations = async () => {
         this.translationsLoaded = false;
