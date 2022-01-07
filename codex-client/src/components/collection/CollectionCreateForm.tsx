@@ -24,12 +24,14 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     const {touched, errors, isSubmitting} = props;
     return (
       <Form>
-          <CodexTextInput type='text' name='collectionName' className='codex-text-input' />
-          {touched.collectionName && errors.collectionName && <Label>{errors.collectionName}</Label>}
-          <CodexTextInput type='text' name='description' className='codex-text-input' />
-          {touched.description && errors.description && <div>{errors.description}</div>}
-          <FormComp.Checkbox type='checkbox' name='isPrivate' label="Private"  />
-          <Button type='submit' disabled={isSubmitting} content='Create' />
+          <FormComp>
+            <CodexTextInput type='text' name='collectionName' className='codex-text-input' />
+            {touched.collectionName && errors.collectionName && <Label>{errors.collectionName}</Label>}
+            <CodexTextInput type='text' name='description' className='codex-text-input' />
+            {touched.description && errors.description && <div>{errors.description}</div>}
+            <FormComp.Checkbox type='checkbox' name='isPrivate' label="Private"  />
+            <Button type='submit' disabled={isSubmitting} content='Create' />
+          </FormComp>
       </Form>
     );
   };

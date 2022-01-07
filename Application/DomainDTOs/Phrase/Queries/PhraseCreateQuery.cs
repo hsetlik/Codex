@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.Terms;
 
-namespace Application.DomainDTOs
+namespace Application.DomainDTOs.Phrase
 {
     public class PhraseCreateQuery
     {

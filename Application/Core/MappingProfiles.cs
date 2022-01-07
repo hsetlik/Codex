@@ -8,6 +8,7 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.Collection.Responses;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.Content.Responses;
+using Application.DomainDTOs.Phrase;
 using Application.DomainDTOs.UserLanguageProfile;
 using Application.DomainDTOs.UserTerm;
 using Application.Extensions;
@@ -34,6 +35,9 @@ namespace Application.Core
             CreateMap<Collection, CollectionDto>()
             .ForMember(m => m.Contents, c => c.MapFrom(s => s.CollectionContents.Select(cc => cc.Content).ToList()))
             .ReverseMap();
+
+            CreateMap<Phrase, PhraseDto>()
+            .ForMember(p => p.Translations, c => c.MapFrom(r => r.Translations.Select(t => t.Value)));
             
         }
     }

@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Phrase;
+using Application.DomainDTOs.Phrase.Responses;
+using Application.DomainDTOs.Translator;
+using Application.Interfaces;
 using Application.Utilities;
 using Domain.DataObjects;
 using MediatR;
@@ -64,7 +68,7 @@ namespace Application.Extensions
             
         }
 
-        public static async Task<Result<PhraseDto>> GetDetails(this DataContext context, PhraseQuery query, string username)
+        public static async Task<Result<PhraseDto>> GetPhraseDetails(this DataContext context, PhraseQuery query, string username)
         {
             var profile = await context.UserLanguageProfiles.Include(p => p.User).FirstOrDefaultAsync(p => p.Language == query.Language && p.User.UserName == username);
             if (profile == null)
@@ -75,8 +79,51 @@ namespace Application.Extensions
                 .FirstOrDefaultAsync(p => p.LanguageProfileId == profile.LanguageProfileId && p.Value == value);
             if (phrase == null)
                 return Result<PhraseDto>.Failure($"Could not find phrase {value} for user {username}");
-            return Result<PhraseDto>.Success(new PhraseDto(phrase));
+            var mapper = MapperFactory.GetDefaultMapper();
+            return Result<PhraseDto>.Success(mapper.Map<PhraseDto>(phrase));
 
+        }
+
+        public static async Task<Result<AbstractPhraseDto>> GetAbstractPhrase(
+            this DataContext context, 
+            PhraseQuery query, 
+            ITranslator translator, 
+            IUserAccessor userAccessor)
+        {
+            var existing = await context.GetPhraseDetails(query, userAccessor.GetUsername());
+            if (existing.IsSuccess)
+            {
+                return Result<AbstractPhraseDto>.Success(new AbstractPhraseDto
+                {
+                    Phrase = existing.Value,
+                    HasPhrase = true,
+                    Value = query.Value,
+                    Language = query.Language,
+                    ReccomendedTranslation = "not applicable"
+                });
+            }
+
+            var user = await context.Users.FirstOrDefaultAsync(u => u.UserName == userAccessor.GetUsername());
+            if (user == null)
+                return Result<AbstractPhraseDto>.Failure($"Could not find user with username {userAccessor.GetUsername()}");
+
+            var tQuery = new TranslatorQuery
+            {
+                ResponseLanguage = user.NativeLanguage,
+                QueryLanguage = query.Language,
+                QueryValue = query.Value
+            };
+            var tResult = await translator.GetTranslation(tQuery);
+            if (!tResult.IsSuccess)
+                return Result<AbstractPhraseDto>.Failure($"Could not get translation! Error message: {tResult.Error}");
+            return Result<AbstractPhraseDto>.Success( new AbstractPhraseDto
+            {
+                HasPhrase = false,
+                Value = query.Value,
+                Language = query.Language,
+                ReccomendedTranslation = tResult.Value.ResponseValue,
+                Phrase = null
+            });
         }
         
     }

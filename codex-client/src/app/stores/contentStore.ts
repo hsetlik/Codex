@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { ContentMetadata, ContentSection, ElementAbstractTerms, SectionAbstractTerms, TextElement } from "../models/content";
 import { AddTranslationDto, KnownWordsDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
+import { PhraseCreateQuery } from "../models/phrase";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
 
@@ -385,5 +386,13 @@ export default class ContentStore
            console.log(error);
         }
         console.log(`Translations loaded for: ${this.selectedTerm?.termValue}`);
+    }
+
+    createPhrase = async (query: PhraseCreateQuery) => {
+        try {
+            
+        } catch (error) {
+            
+        }
     }
 }

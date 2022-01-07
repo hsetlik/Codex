@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.DomainDTOs
+namespace Application.DomainDTOs.Phrase
 {
     public class PhraseQuery
     {

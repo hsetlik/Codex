@@ -19,3 +19,8 @@ export interface Phrase {
     createdAt: string
 }
 
+export interface PhraseQuery {
+    language: string,
+    value: string
+}
+

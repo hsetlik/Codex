@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
-using Application.DomainDTOs;
+using Application.DomainDTOs.Phrase;
 using Application.Extensions;
 using MediatR;
 using Persistence;

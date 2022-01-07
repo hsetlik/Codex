@@ -20,6 +20,7 @@ import { UserTermCreateDto, AddTranslationDto,
 import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
+import { Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
@@ -118,7 +119,7 @@ const Content = {
 }
 
 const CollectionAgent = {
-    createCollection: (query: CreateCollectionQuery) => requests.post('/collection/createCollection', query),
+    createCollection: (query: CreateCollectionQuery) => requests.post('collection/createCollection', query),
     deleteCollection: (query: ICollectionId) => requests.post('collection/deleteCollection', query),
     getCollection: (query: ICollectionId) => requests.post<Collection>('collection/getCollection', query),
     updateCollection: (dto: Collection) => requests.post('collection/updateCollection', dto),
@@ -133,6 +134,11 @@ const Parse = {
 const Translate = {
     getTranslations: (dto: TermDto) => requests.post<TranslationResultDto[]>('translate/getTranslations', dto),
     getTranslation: (query: TranslatorQuery) => requests.post<TranslationDto>('translate/getTranslation', query)
+}
+
+const PhraseAgent = {
+    createPhrase: (query: PhraseCreateQuery) => requests.post('phrase/createPhrase', query),
+    getPhrase: (query: PhraseQuery) => requests.post<Phrase>('phrase/getPhraseDetails', query)
 }
 
 //====================================================================================================================

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.DataObjects;
 
-namespace Application.DomainDTOs
+namespace Application.DomainDTOs.Phrase
 {
     public class PhraseDto
     {
@@ -19,27 +19,5 @@ namespace Application.DomainDTOs
         public string DateTimeDue { get; set; }
         public float SrsIntervalDays { get; set; }
         public DateTime CreatedAt { get; set; }
-        public PhraseDto()
-        {
-
-        }
-        public PhraseDto(Phrase phrase)
-        {
-            this.PhraseId = phrase.PhraseId;
-            this.LanguageProfileId = phrase.LanguageProfileId;
-            this.Language = phrase.UserLanguageProfile.Language;
-            this.Value = phrase.Value;
-            this.TimesSeen = phrase.TimesSeen;
-            this.EaseFactor = phrase.EaseFactor;
-            this.Rating = phrase.Rating;
-            this.DateTimeDue = phrase.DateTimeDue;
-            this.CreatedAt = phrase.CreatedAt;
-            this.Translations = new List<string>();
-
-            foreach(var translation in phrase.Translations)
-            {
-                this.Translations.Add(translation.Value);
-            }
-        }
     }
 }

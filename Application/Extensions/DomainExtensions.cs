@@ -6,6 +6,7 @@ using Application.Core;
 using Application.DataObjectHandling.Terms;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Phrase;
 using Application.Interfaces;
 using Application.Parsing;
 using Application.Utilities;
