@@ -17,7 +17,7 @@ import { UserTermCreateDto, AddTranslationDto,
          SaveContentQuery,
          SavedContentDto,
          ICollectionId} from "../models/dtos";
-import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement, ContentTag } from "../models/content";
+import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement, ContentTag, TagQuery } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
 import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
@@ -116,7 +116,8 @@ const Content = {
     saveContent: (dto: SaveContentQuery) => requests.post('/content/saveContent', dto),
     unsaveContent: (dto: SaveContentQuery) => requests.post('/content/unsaveContent', dto),
     getSavedContents: (id: IProfileId) => requests.post<SavedContentDto[]>('content/getSavedContents', id),
-    addContentTag: (dto: ContentTag) => requests.post('content/addContentTag', dto)
+    addContentTag: (dto: ContentTag) => requests.post('content/addContentTag', dto),
+    getContentsWithTag: (dto: TagQuery) => requests.post<ContentMetadata[]>('content/getContentsWithTag', dto)
 }
 
 const CollectionAgent = {

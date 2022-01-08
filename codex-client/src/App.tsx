@@ -11,6 +11,7 @@ import RegisterForm from './components/account/RegisterForm';
 import ContentRoute from './components/content/ContentRoute';
 import ProfilesRoute from './components/profile/ProfilesRoute';
 import CollectionsRoute from './components/collection/CollectionsRoute';
+import TagRoute from './components/feed/TagRoute';
 
 function App() {
 //const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
           <Route path='account/login' element={<LoginForm />} /> 
           <Route path='account/register' element={<RegisterForm />} /> 
           <Route path='/collections/:lang' element={<CollectionsRoute />} />
+          <Route path='tags/:tag' element={<TagRoute />} />
         </Routes>
       </Container>
    </Container>

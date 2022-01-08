@@ -64,6 +64,12 @@ export interface ContentTag {
     tagValue: string,
     tagLanguage: string
 }
+export interface TagQuery {
+    contentLanguage: string,
+    tagValue: string,
+    tagLanguage: string
+}
+
 
 export const getContentType = (url: string): ContentType => {
     if (url.includes('wikipedia'))

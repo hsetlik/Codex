@@ -21,9 +21,9 @@ export default observer(function AddTagForm({content, closePopup}: Props) {
     const [currentText, setCurrentText] = useState('');
     return (
         <div>
-            <Header content='New Tag:' />
-            <Input onChange={(e, d) => setCurrentText(d.value)} />
-            <Button content='Add' onClick={() => handleAdd(currentText)} />
+            <Header content='New Tag:' as='h3' />
+            <Input onChange={(e, d) => setCurrentText(d.value)} style={{'margin-top': 10, 'margin-bottom': 10}} />
+            <Button size='mini' content='Add' onClick={() => handleAdd(currentText)} />
         </div>
     )
 })

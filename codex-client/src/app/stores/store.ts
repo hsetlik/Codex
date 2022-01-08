@@ -9,6 +9,7 @@ import KnownWordStore from "./knownWordsStore";
 import DailyDataStore from "./dailyDataStore";
 import CollectionStore from "./collectionStore";
 import PhraseStore from "./phraseStore";
+import TagStore from "./tagStore";
 
 interface Store {
   commonStore: CommonStore,
@@ -20,7 +21,8 @@ interface Store {
   knownWordsStore: KnownWordStore,
   dailyDataStore: DailyDataStore,
   collectionStore: CollectionStore,
-  phraseStore: PhraseStore
+  phraseStore: PhraseStore,
+  tagStore: TagStore
 }
 export const store: Store = {
     commonStore: new CommonStore(),
@@ -32,7 +34,8 @@ export const store: Store = {
     knownWordsStore: new KnownWordStore(),
     dailyDataStore: new DailyDataStore(),
     collectionStore: new CollectionStore(),
-    phraseStore: new PhraseStore()
+    phraseStore: new PhraseStore(),
+    tagStore: new TagStore()
 }
 
 export const storeContext = createContext(store);

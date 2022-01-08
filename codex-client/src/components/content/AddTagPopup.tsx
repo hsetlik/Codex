@@ -15,7 +15,6 @@ export default function AddTagPopup({content}: Props) {
     return (
         <Popup
         openOnTriggerClick={true}
-        closeOnTriggerBlur={true}
         openOnTriggerMouseEnter={false}
         closeOnTriggerMouseLeave={false}
         closeOnDocumentClick={true}
