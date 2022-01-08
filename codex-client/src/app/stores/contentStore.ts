@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ContentSection, ElementAbstractTerms, SectionAbstractTerms, TextElement } from "../models/content";
+import { ContentMetadata, ContentSection, ContentTag, ElementAbstractTerms, SectionAbstractTerms, TextElement } from "../models/content";
 import { AddTranslationDto, KnownWordsDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
 import { AbstractPhrase, PhraseCreateQuery } from "../models/phrase";
 import { AbstractTerm } from "../models/userTerm";
@@ -424,6 +424,24 @@ export default class ContentStore
             runInAction(() => this.currentAbstractPhrase = newPhrase);
         } catch (error) {
            console.log(error);
+        }
+    }
+
+    addContentTag = async (tag: ContentTag) => {
+        console.log(`Adding Tag: ${tag.tagValue}, ${tag.tagLanguage}, ${tag.contentId}`);
+        try {
+           await agent.Content.addContentTag(tag);
+           runInAction(() => {
+               let existing = this.loadedContents.find(c => c.contentId === tag.contentId);
+               if (existing) {
+                   if (!existing.contentTags){
+                    existing.contentTags = [];
+                   }
+                existing.contentTags.push(tag.tagValue);
+               }
+           })
+        } catch (error) {
+           console.log(error); 
         }
     }
 }

@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Header } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import AbstractPhraseDetails from "./AbstractPhraseDetails";
-import TermDetails from "./AbstractTermDetails";
+import TermDetails from "./TermDetails";
 
 
 export default observer(function SelectionDetails() {

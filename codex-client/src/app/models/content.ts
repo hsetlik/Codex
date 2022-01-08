@@ -59,6 +59,12 @@ export enum ContentType {
     Youtube
 }
 
+export interface ContentTag {
+    contentId: string,
+    tagValue: string,
+    tagLanguage: string
+}
+
 export const getContentType = (url: string): ContentType => {
     if (url.includes('wikipedia'))
         return ContentType.Wikipedia;

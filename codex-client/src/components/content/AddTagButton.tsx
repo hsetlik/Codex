@@ -1,5 +1,4 @@
 import React from "react";
-import { Label } from "semantic-ui-react";
 import '../styles/content.css';
 import styled from 'styled-components';
 
@@ -21,9 +20,19 @@ const AddLabel = styled.label`
     }
 `;
 
-export default function AddTagButton() {
+interface Props {
+    onClick?: () => void;
+}
 
+export default function AddTagButton({onClick}: Props) {
+   
+    if (onClick) {
+        return (
+            <AddLabel onClick={onClick} >Add Tag +</AddLabel>
+        )
+    }
     return (
-        <AddLabel >Add Tag +</AddLabel>
+        <AddLabel>Add Tag +</AddLabel>
     )
+    
 }

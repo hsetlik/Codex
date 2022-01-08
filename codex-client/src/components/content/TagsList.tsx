@@ -4,7 +4,7 @@ import { ContentMetadata } from "../../app/models/content";
 import '../styles/flex.css';
 import '../styles/content.css';
 import { Label } from "semantic-ui-react";
-import AddTagButton from "./AddTagButton";
+import AddTagPopup from "./AddTagPopup";
 
 interface Props {content: ContentMetadata}
 export default observer(function TagsList({content}: Props) {
@@ -23,7 +23,7 @@ export default observer(function TagsList({content}: Props) {
             {content.contentTags.map(tag => (
                 <Label content={tag} className="tag-button" key={tag} />
             ))}
-            <AddTagButton />
+            <AddTagPopup content={content} />
         </div>
     )
 })

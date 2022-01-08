@@ -66,12 +66,11 @@ namespace Application.Extensions
                 && t.Content.Language == tag.ContentLanguage).ToListAsync();
             if (cTags == null)
                 return Result<List<ContentMetadataDto>>.Failure("Could not find matching tags");
-            var dict = new Dictionary<string, ContentMetadataDto>();
+            var list = new List<ContentMetadataDto>();
             foreach(var content in cTags)
             {
-                dict[content.TagValue] = mapper.Map<ContentMetadataDto>(content.Content);
+                list.Add(mapper.Map<ContentMetadataDto>(content.Content));
             }
-            var list = dict.Values.ToList();
             return Result<List<ContentMetadataDto>>.Success(list);
         }
 
