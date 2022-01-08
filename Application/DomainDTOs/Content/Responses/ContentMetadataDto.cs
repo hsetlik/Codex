@@ -16,5 +16,6 @@ namespace Application.DomainDTOs
             public string Language { get; set; }
             public int Bookmark { get; set; }
             public int NumSections { get; set; }
+            public List<string> ContentTags { get; set; }
         }
 }

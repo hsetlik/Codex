@@ -80,10 +80,8 @@ export default class ContentStore
             if (elem === this.getParentElement(term)) {
                 console.log('entered phrase mode');
                 let startIndex = Math.min(this.selectedTerm.indexInChunk, term.indexInChunk);
-                let endIndex = Math.max(this.selectedTerm.indexInChunk, term.indexInChunk);
+                let endIndex = Math.max(this.selectedTerm.indexInChunk, term.indexInChunk) + 1;
                 this.phraseMode = true;
-                if (endIndex + 1 < elem.abstractTerms.length)
-                    endIndex = endIndex + 1;
                 this.phraseTerms = elem.abstractTerms.slice(startIndex, endIndex);
                 this.updateAbstractPhrase();
             }
@@ -112,6 +110,10 @@ export default class ContentStore
         console.log(`Selecting Content: ${url}`);
         try {
            runInAction(() => {
+               this.selectedTerm = null;
+               this.currentSection = null;
+               this.phraseTerms = [];
+               this.phraseMode = false;
                this.selectedContentUrl = url;
                this.selectedSectionIndex = 0;
                let newMetadata = this.loadedContents.find(v => v.contentUrl === url);

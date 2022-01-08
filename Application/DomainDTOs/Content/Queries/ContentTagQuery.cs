@@ -9,5 +9,6 @@ namespace Application.DomainDTOs.Content
     {
         public Guid ContentId { get; set; }
         public string TagValue { get; set; }
+        public string TagLanguage { get; set; }
     }
 }

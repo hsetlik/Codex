@@ -29,7 +29,8 @@ export interface ContentMetadata {
     dateAdded: string,
     language: string,
     bookmark: number,
-    numSections: number
+    numSections: number,
+    contentTags?: string[]
 }
 
 export interface ContentSectionMetadata {

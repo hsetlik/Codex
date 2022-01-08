@@ -23,7 +23,8 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<Content, ContentMetadataDto>();
+            CreateMap<Content, ContentMetadataDto>()
+            .ForMember(c => c.ContentTags, src => src.MapFrom(m => m.ContentTags.Select(t => t.TagValue)));
 
             CreateMap<UserTerm, UserTermDetailsDto>();
             CreateMap<Translation, TranslationDto>();

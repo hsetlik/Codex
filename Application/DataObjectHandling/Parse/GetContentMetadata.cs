@@ -36,7 +36,7 @@ namespace Application.DataObjectHandling.Parse
 
             public async Task<Result<ContentMetadataDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var contentEntity = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
+                var contentEntity = await _context.Contents.Include(c => c.ContentTags).FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
                 if (contentEntity == null)
                     return Result<ContentMetadataDto>.Failure("Could not find matching content");
                 var output = _mapper.Map<ContentMetadataDto>(contentEntity);

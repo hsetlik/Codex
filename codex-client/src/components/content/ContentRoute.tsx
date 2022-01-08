@@ -27,7 +27,7 @@ export default observer(function ContentRoute() {
                         (
                            <LeftColumnDiv contentId={contentId!} index={parseInt(index!)} /> 
                         ) : (
-                            <Loader />
+                            <Loader active={!sectionLoaded} />
                         )
                     }
                 </Grid.Column >

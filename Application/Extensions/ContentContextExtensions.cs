@@ -28,7 +28,8 @@ namespace Application.Extensions
             {
                 Content = content,
                 ContentId = content.ContentId,
-                TagValue = dto.TagValue
+                TagValue = dto.TagValue,
+                TagLanguage = dto.TagLanguage
             };
             content.ContentTags.Add(tag);
             var success = await context.SaveChangesAsync() > 0;

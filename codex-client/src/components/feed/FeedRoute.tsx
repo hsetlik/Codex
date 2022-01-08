@@ -19,7 +19,7 @@ export default observer(function FeedRoute(){
     }, [loadMetadata, lang, currentCollectionsLanguage, loadCollectionsForLanguage])
     if (!appLoaded) {
         return (
-            <Loader />
+            <Loader active={true} />
         )
     }
     return (

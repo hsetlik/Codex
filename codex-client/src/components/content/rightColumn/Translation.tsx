@@ -18,8 +18,6 @@ export default observer(function Translation({value, term}: Props) {
                 <Button floated='right' icon='close' size='mini' 
                 onClick={() => deleteTranslation({value: value, userTermId: term.userTermId})}
                 disabled={term.translations.length < 2} />
-            </List.Content>
-            <List.Content>
                 <List.Header as='h3' >{value}</List.Header>
             </List.Content>
         </List.Item>
