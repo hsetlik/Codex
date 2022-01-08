@@ -6,6 +6,7 @@ import { useStore } from "../../app/stores/store";
 import AddToCollection from "../common/AddToCollection";
 import ContentSaveButton from "./ContentSaveButton";
 import KnownWordsLabel from "./KnownWordsLabel";
+import TagsList from "./TagsList";
 
 interface Props{
     dto: ContentMetadata
@@ -24,6 +25,7 @@ export default observer(function ContentHeader({dto}: Props)
                     <KnownWordsLabel contentId={dto.contentId} />
                     <ContentSaveButton contentUrl={dto.contentUrl} />
                 </div>
+                <TagsList content={dto} />
                 <div style={{padding: '10px'}}>
                     <Button as={Link}
                     color='twitter' 

@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpPost("addContentTag")]
-        public async Task<IActionResult> AddContentTag(ContentTagQuery dto)
+        public async Task<IActionResult> AddContentTag(ContentTagDto dto)
         {
             return HandleResult(await Mediator.Send(new AddContentTag.Command{Dto = dto}));
         }
@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
         [HttpPost("getContentsWithTag")]
-        public async Task<IActionResult> GetContentsWithTag(TagValueQuery dto)
+        public async Task<IActionResult> GetContentsWithTag(ContentTagQuery dto)
         {
             return HandleResult(await Mediator.Send(new GetContentsWithTag.Command{Dto = dto}));
         }

@@ -193,7 +193,7 @@ export default class ContentStore
         this.loadedContents = [];
         console.log(`Loading Headers for: ${lang}`);
         try {
-            var headers = await agent.Content.getLanguageContents({language: lang} );
+            const headers = await agent.Content.getLanguageContents({language: lang});
             runInAction(() => {
                 this.loadedContents = headers;
                 this.headersLoaded = true;
@@ -256,6 +256,7 @@ export default class ContentStore
             this.bufferLoaded = false;
             try {
                 let content = await agent.Content.getContentWithId({contentId: id}); 
+                
                 let section = await agent.Parse.getSection({contentUrl: content.contentUrl, index: pIndex});
                 runInAction(() => {
                     this.selectedContentMetadata = content;

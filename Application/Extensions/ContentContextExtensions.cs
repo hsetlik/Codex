@@ -17,7 +17,7 @@ namespace Application.Extensions
     public static class ContentContextExtensions
     {
         //====
-        public static async Task<Result<Unit>> AddContentTag(this DataContext context, ContentTagQuery dto)
+        public static async Task<Result<Unit>> AddContentTag(this DataContext context, ContentTagDto dto)
          {
             var content = await context.Contents
             .Include(c => c.ContentTags)
@@ -40,36 +40,36 @@ namespace Application.Extensions
 
 
         //===
-        public static async Task<Result<List<ContentTagQuery>>> GetContentTags(this DataContext context, Guid contentId)
+        public static async Task<Result<List<ContentTagDto>>> GetContentTags(this DataContext context, Guid contentId)
         {
-            var output = new List<ContentTagQuery>();
+            var output = new List<ContentTagDto>();
             var tags = await context.ContentTags.Where(tag => tag.ContentId == contentId).ToListAsync();
             if (tags == null)
-                return Result<List<ContentTagQuery>>.Failure("No matching tags found");
+                return Result<List<ContentTagDto>>.Failure("No matching tags found");
             foreach(var tag in tags)
             {
-                output.Add(new ContentTagQuery
+                output.Add(new ContentTagDto
                 {
                     ContentId = contentId,
                     TagValue = tag.TagValue
                 });
             }
-            return Result<List<ContentTagQuery>>.Success(output);
+            return Result<List<ContentTagDto>>.Success(output);
         }
 
         //===
-        public static async Task<Result<List<ContentMetadataDto>>> GetContentsWithTag(this DataContext context, string tagValue, IMapper mapper)
+        public static async Task<Result<List<ContentMetadataDto>>> GetContentsWithTag(this DataContext context, ContentTagQuery tag, IMapper mapper)
         {
-            var contents = await context.ContentTags
-            .Include(u => u.Content)
-            .Where(u => u.TagValue == tagValue)
-            .ToListAsync();
-            if (contents == null)
+            var cTags = await context.ContentTags.Include(t => t.Content)
+                .Where(t => t.TagLanguage == tag.TagLanguage
+                && t.TagValue == tag.TagValue
+                && t.Content.Language == tag.ContentLanguage).ToListAsync();
+            if (cTags == null)
                 return Result<List<ContentMetadataDto>>.Failure("Could not find matching tags");
             var dict = new Dictionary<string, ContentMetadataDto>();
-            foreach(var tag in contents)
+            foreach(var content in cTags)
             {
-                dict[tag.TagValue] = mapper.Map<ContentMetadataDto>(tag.Content);
+                dict[content.TagValue] = mapper.Map<ContentMetadataDto>(content.Content);
             }
             var list = dict.Values.ToList();
             return Result<List<ContentMetadataDto>>.Success(list);
@@ -126,7 +126,9 @@ namespace Application.Extensions
 
         public static async Task<Result<List<ContentMetadataDto>>> GetContentsForLanguage(this DataContext context, string username, string lang, IMapper mapper)
         {
-            var langUrls = await context.Contents.Where(c => c.Language == lang).ToListAsync();
+            var langUrls = await context.Contents
+                .Include(c => c.ContentTags)
+                .Where(c => c.Language == lang).ToListAsync();
             if (langUrls == null)
                 return Result<List<ContentMetadataDto>>.Failure($"Could not load contents for language: {lang}");
             var output = new List<ContentMetadataDto>();

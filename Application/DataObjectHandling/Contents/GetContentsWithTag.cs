@@ -17,7 +17,7 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Command : IRequest<Result<List<ContentMetadataDto>>>
         {
-            public TagValueQuery Dto { get; set; }
+            public ContentTagQuery Dto { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<List<ContentMetadataDto>>>
@@ -32,7 +32,7 @@ namespace Application.DataObjectHandling.Contents
 
             public async Task<Result<List<ContentMetadataDto>>> Handle(Command request, CancellationToken cancellationToken)
             {
-                return await _context.GetContentsWithTag(request.Dto.TagValue, _mapper);
+                return await _context.GetContentsWithTag(request.Dto, _mapper);
             }
         }
     }
