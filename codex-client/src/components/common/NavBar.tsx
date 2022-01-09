@@ -4,6 +4,7 @@ import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
 import '../styles/styles.css';
 import LanguageSelector from '../account/ProfileSelector';
+import FlagLabel from './FlagLabel';
 
 export default observer(function NavBar()
 {
@@ -25,6 +26,7 @@ export default observer(function NavBar()
                 <Menu.Item as={Link} to={`feed/${lang}`}>
                     <Icon name='home' />
                 </Menu.Item>
+                <FlagLabel />
                 <Menu.Item>
                     <LanguageSelector />
                 </Menu.Item>

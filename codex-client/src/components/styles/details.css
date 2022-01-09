@@ -1,0 +1,11 @@
+.details-div {
+    border-radius: 1em;
+    padding: 1em;
+    box-shadow: 0.325em 0.125em 1em 0.025em;
+}
+
+.suggestion-button {
+    border-radius: 0.5em !important;
+    margin: 0.25em !important;
+}
+

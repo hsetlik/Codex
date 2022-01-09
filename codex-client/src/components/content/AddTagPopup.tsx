@@ -19,7 +19,6 @@ export default function AddTagPopup({content}: Props) {
         closeOnTriggerMouseLeave={false}
         closeOnDocumentClick={true}
         ref={ref}
-        
         trigger={
             <AddTagButton />
         }

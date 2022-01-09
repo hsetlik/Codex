@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useEffect } from "react";
-import { Button, Segment } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import { TermDto, TranslationResultDto, TranslatorQuery } from "../../../app/models/dtos";
 import { useStore } from "../../../app/stores/store";
+import '../../styles/details.css';
 
 interface Props {
     term: TermDto
@@ -39,8 +40,11 @@ export default observer(function RecommendedTranslation({term}: Props) {
     }
 
     return (
-        <Segment>
-            <Button as='h4' content={reccomendedTranslation.value} key={reccomendedTranslation.value} onClick={() => createWithTranslation(reccomendedTranslation)} />
-        </Segment>
+            <Button as='h4'
+            className="suggestion-button" 
+            content={reccomendedTranslation.value} 
+            key={reccomendedTranslation.value} 
+            onClick={() => createWithTranslation(reccomendedTranslation)}
+             />
     )
 })

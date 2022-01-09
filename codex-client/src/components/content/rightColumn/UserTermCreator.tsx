@@ -1,7 +1,7 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { Header, Button, Label } from "semantic-ui-react";
+import { Button, Label } from "semantic-ui-react";
 import { UserTermCreateDto } from "../../../app/models/dtos";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
@@ -36,7 +36,6 @@ export default observer(function UserTermCreator({term}: Props) {
             >
                 {({handleSubmit, isSubmitting, errors}) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                        <Header as='h2' content='Create term: ' />
                         <CodexTextInput name='firstTranslation' placeholder='First Translation' />
                         <ErrorMessage name='error' render={() => (
                             <Label style={{marginBottom: 10}}  basic color='red' content={errors.error}/> )}
