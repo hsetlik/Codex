@@ -29,7 +29,7 @@ export default observer(function ContentHeader({dto}: Props)
                 <div style={{padding: '10px'}}>
                     <Button as={Link}
                     color='twitter' 
-                    to={`../content/${dto.contentId}/${dto.bookmark}`} 
+                    to={`../viewer/${dto.contentId}/`} 
                     onClick={() => contentStore.setSelectedContent(dto.contentUrl)}>
                         View
                     </Button>

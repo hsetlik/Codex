@@ -28,7 +28,7 @@ namespace Application.Parsing
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 await scraper.PrepareAsync();
                 watch.Stop();
-                //Console.WriteLine($"Scraper preparation for {url} took {watch.ElapsedMilliseconds} ms");
+                Console.WriteLine($"Scraper preparation for {url} took {watch.ElapsedMilliseconds} ms");
             }
         }
             public async Task<ContentSection> GetSection(string contentUrl, int index)
@@ -55,6 +55,13 @@ namespace Application.Parsing
         {
             await EnsureLoaded(url);
             return scraper;
+        }
+
+        public async Task<string> GetRawHtml(string url)
+        {
+            Console.WriteLine($"Getting html for: {url}");
+            await EnsureLoaded(url);
+            return scraper.GetHtmlString();
         }
     }
 }

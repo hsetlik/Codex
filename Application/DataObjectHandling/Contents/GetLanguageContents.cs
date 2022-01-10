@@ -7,8 +7,8 @@ using Application.Core;
 using Application.DomainDTOs;
 using Application.Extensions;
 using Application.Interfaces;
+using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.DataObjectHandling.Contents
@@ -24,17 +24,17 @@ namespace Application.DataObjectHandling.Contents
         {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly IDataRepository _factory;
-            public Handler(DataContext context, IUserAccessor userAccessor, IDataRepository factory)
+        private readonly IMapper _mapper;
+            public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper  )
             {
-            this._factory = factory;
+            this._mapper = mapper;
             this._userAccessor = userAccessor;
             this._context = context;
             }
 
             public async Task<Result<List<ContentMetadataDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var output = await _factory.GetContentsForLanguage(_userAccessor.GetUsername(), request.Dto.Language);
+                var output = await _context.GetContentsForLanguage(_userAccessor.GetUsername(), request.Dto.Language, _mapper);
                 if (!output.IsSuccess)
                     return Result<List<ContentMetadataDto>>.Failure($"Failed to get language contents! Error Message: {output.Error}");
                 return Result<List<ContentMetadataDto>>.Success(output.Value);

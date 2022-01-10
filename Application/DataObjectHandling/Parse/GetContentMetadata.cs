@@ -24,14 +24,12 @@ namespace Application.DataObjectHandling.Parse
 
         public class Handler : IRequestHandler<Query, Result<ContentMetadataDto>>
         {
-        private readonly IParserService _parser;
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-            public Handler(IParserService parser, DataContext context, IMapper mapper)
+            public Handler(DataContext context, IMapper mapper)
             {
             this._mapper = mapper;
             this._context = context;
-            this._parser = parser;
             }
 
             public async Task<Result<ContentMetadataDto>> Handle(Query request, CancellationToken cancellationToken)

@@ -105,7 +105,7 @@ namespace Domain
                     ContentType = metadata.ContentType,
                     ContentName = metadata.ContentName,
                     Language = metadata.Language,
-                    DateAdded = DateTime.Now.ToString(),
+                    CreatedAt = DateTime.Now,
                     ContentTags = new List<ContentTag>(),
                     NumSections = metadata.NumSections
                 });

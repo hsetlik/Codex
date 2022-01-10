@@ -16,7 +16,7 @@ namespace Domain.DataObjects
         public string ContentType { get; set; }
         public string ContentName { get; set; }
         public string Language { get; set; }
-        public string DateAdded { get; set; }
+        public DateTime CreatedAt { get; set; }
         public List<ContentTag> ContentTags { get; set; }
         public int NumSections { get; set; }
         public ICollection<CollectionContent> CollectionContents { get; set; }

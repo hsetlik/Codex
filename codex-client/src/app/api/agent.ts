@@ -117,7 +117,8 @@ const Content = {
     unsaveContent: (dto: SaveContentQuery) => requests.post('/content/unsaveContent', dto),
     getSavedContents: (id: IProfileId) => requests.post<SavedContentDto[]>('content/getSavedContents', id),
     addContentTag: (dto: ContentTag) => requests.post('content/addContentTag', dto),
-    getContentsWithTag: (dto: TagQuery) => requests.post<ContentMetadata[]>('content/getContentsWithTag', dto)
+    getContentsWithTag: (dto: TagQuery) => requests.post<ContentMetadata[]>('content/getContentsWithTag', dto),
+    getContentPageHtml: (contentUrl: string) => requests.get<string>(contentUrl)
 }
 
 const CollectionAgent = {

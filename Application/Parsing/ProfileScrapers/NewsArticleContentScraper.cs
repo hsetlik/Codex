@@ -28,6 +28,11 @@ namespace Application.Parsing.ProfileScrapers
             return storage.Sections;
         }
 
+        public override string GetHtmlString()
+        {
+            return storage.RawPageHtml;
+        }
+
         public override ContentMetadataDto GetMetadata()
         {
             return storage.Metadata;
@@ -48,6 +53,7 @@ namespace Application.Parsing.ProfileScrapers
             //  get the HTML
             var downloader = new HttpDownloader(this.Url, null, null);
             var pageText = await Task.Run(() => downloader.GetPage()); 
+            storage.RawPageHtml = pageText;
             var document = new HtmlDocument();
             document.LoadHtml(pageText);
             var root = document.DocumentNode;

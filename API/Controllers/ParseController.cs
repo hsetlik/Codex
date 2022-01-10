@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DataObjectHandling.Contents;
 using Application.DataObjectHandling.Parse;
 using Application.DomainDTOs.Content;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +24,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetSection.Query{Dto = dto}));
         }        
+
+        [HttpGet("getRawHtml/{id}")]
+        public async Task<IActionResult> GetRawHtml(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new GetContentHtml.Query{Dto = new ContentIdQuery{ContentId = id}}));
+        } 
     }
 }

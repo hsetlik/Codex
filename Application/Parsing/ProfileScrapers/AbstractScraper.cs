@@ -24,7 +24,6 @@ namespace Application.Parsing
         {
             this.Url = url;
         }
-
         protected async Task LoadHtml()
         {
             var web = new HtmlWeb();
@@ -37,6 +36,7 @@ namespace Application.Parsing
         public abstract int GetNumSections();
         public abstract ContentSection GetSection(int index);
         public abstract List<ContentSection> GetAllSections();
+        public abstract string GetHtmlString();
 
         public List<List<string>> GetWordLists(int size = 50, int maximum = 1000)
         {

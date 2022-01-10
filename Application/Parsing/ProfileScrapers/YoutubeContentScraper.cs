@@ -145,5 +145,10 @@ namespace Application.Parsing.ProfileScrapers
             }
             storage.Metadata.NumSections = storage.Sections.Count;
         }
+
+        public override string GetHtmlString()
+        {
+            return "youtube page: no raw html available";
+        }
     }
 }

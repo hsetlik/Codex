@@ -59,6 +59,7 @@ namespace Application.Parsing.ProfileScrapers
 
             //grab the HTML
             var root = page.Html;
+            storage.RawPageHtml = root.InnerHtml;
             // TODO 
             var contentName = root.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
             var lang = root.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
@@ -121,6 +122,11 @@ namespace Application.Parsing.ProfileScrapers
         public override List<ContentSection> GetAllSections()
         {
             return storage.Sections;
+        }
+
+        public override string GetHtmlString()
+        {
+            return storage.RawPageHtml;
         }
     }
 }

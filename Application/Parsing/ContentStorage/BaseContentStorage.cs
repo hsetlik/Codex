@@ -10,5 +10,6 @@ namespace Application.Parsing.ContentStorage
     {
         public ContentMetadataDto Metadata { get; set; }
         public List<ContentSection> Sections { get; set; }
+        public string RawPageHtml { get; set; }
     }
 }

@@ -39,7 +39,6 @@ namespace Application.DataObjectHandling.Contents
                 var metadata = await _parser.GetContentMetadata(request.Dto.ContentUrl);
                 if (metadata == null)
                     return Result<Unit>.Failure("Could not create metadata");
-                var date = DateTime.Now.ToString();
                 var content = new Content
                 {
                     ContentUrl = metadata.ContentUrl,
@@ -47,7 +46,7 @@ namespace Application.DataObjectHandling.Contents
                     ContentType = metadata.ContentType,
                     VideoUrl = metadata.VideoUrl,
                     Language = metadata.Language,
-                    DateAdded = date,
+                    CreatedAt = DateTime.Now,
                     ContentTags = new List<ContentTag>(),
                     NumSections = metadata.NumSections
                 };
