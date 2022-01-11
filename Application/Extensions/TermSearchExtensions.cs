@@ -27,7 +27,7 @@ namespace Application.Extensions
                     var section = await parser.GetSection(url, i);
                     for(int n = 0; n < section.TextElements.Count; ++n)
                     {
-                        if (section.TextElements[n].Value.ToUpper().Contains(normValue))
+                        if (section.TextElements[n].ElementText.ToUpper().Contains(normValue))
                         {
                             return Result<TermSearchResult>.Success(new TermSearchResult
                             {

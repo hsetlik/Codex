@@ -3,12 +3,12 @@ import { AbstractTerm } from "./userTerm";
 
 
 export interface TextElement {
-    value: string,
+    elementText: string,
     tag: string,
-    index: number,
     contentUrl: string,
-    startMs: number,
-    endMs: number
+    index?: number,
+    startMs?: number,
+    endMs?: number
 }
 
 export interface ContentSection {
@@ -41,9 +41,14 @@ export interface ContentSectionMetadata {
 }
 
 export interface ElementAbstractTerms {
-    index: number,
+    elementText: string,
     tag: string,
     abstractTerms: AbstractTerm[]
+}
+
+export interface AbstractTermSet {
+    fullValue: string,
+    terms: AbstractTerm[]
 }
 
 export interface SectionAbstractTerms {

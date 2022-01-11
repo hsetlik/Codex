@@ -20,7 +20,7 @@ export default observer (function SectionReader({section}: Props){
     }
     return (
         <Container>
-            {section.elementGroups.map(group => (<TextElement terms={group} key={group.index}/>)) }
+            {section.elementGroups.map(group => (<TextElement terms={group} key={group.elementText}/>)) }
         </Container>
     )
 })

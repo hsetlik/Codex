@@ -99,7 +99,7 @@ export default class ContentStore
 
     elementAtMs = (ms: number): TextElement => {
         for(let element of this.currentSection?.textElements!) {
-            if (element.startMs <= ms && element.endMs > ms)
+            if ((element.startMs || 0) <= ms && (element.endMs || 0) > ms)
                 return element;
         }
         return this.currentSection?.textElements[0]!;

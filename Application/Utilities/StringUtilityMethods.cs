@@ -34,7 +34,7 @@ namespace Application.Utilities
             return StrippedOfMatches(input, expression).WithoutSquareBrackets();
         }
         
-        private static string WithoutSquareBrackets(this string input)
+        public static string WithoutSquareBrackets(this string input)
         {
             const string expression = @"\[([\s\S])+\]";
             return StrippedOfMatches(input, expression);

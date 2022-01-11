@@ -53,7 +53,7 @@ namespace Application.Parsing.ProfileScrapers
             //  get the HTML
             var downloader = new HttpDownloader(this.Url, null, null);
             var pageText = await Task.Run(() => downloader.GetPage()); 
-            storage.RawPageHtml = pageText;
+            
             var document = new HtmlDocument();
             document.LoadHtml(pageText);
             var root = document.DocumentNode;
@@ -64,6 +64,7 @@ namespace Application.Parsing.ProfileScrapers
             if (lang == "language not found")
             {
                 var htmlNode = root.CssSelect("html").FirstOrDefault();
+                storage.RawPageHtml = htmlNode.InnerHtml;
                 if (htmlNode != null)
                 {
                     lang = htmlNode.GetAttributeValue("lang", "language not found");
@@ -76,13 +77,13 @@ namespace Application.Parsing.ProfileScrapers
             uNodes.AddRange(root.CssSelect("h1").ToList());
             uNodes.AddRange(root.CssSelect("h2").ToList());
             var nodes = uNodes.OrderBy(n => n.Line).ToList();
-            var elements = new List<TextElement>();
+            var elements = new List<VideoCaptionElement>();
             for(int i = 0; i < nodes.Count; ++i)
             {
-                var element = new TextElement
+                var element = new VideoCaptionElement
                 {
                     Tag = nodes[i].Name,
-                    Value = nodes[i].InnerText,
+                    ElementText = nodes[i].InnerText,
                     ContentUrl = this.Url,
                     Index = i
                 };
@@ -107,13 +108,13 @@ namespace Application.Parsing.ProfileScrapers
                 ContentUrl = Url,
                 Index = sections.Count,
                 SectionHeader = headline,
-                TextElements = new List<TextElement>()
+                TextElements = new List<VideoCaptionElement>()
             };
             foreach(var element in elements)
             {
                 if ((element.Tag == "h1" || element.Tag == "h2") && currentSection.TextElements.Count < 1)
                 {
-                    currentSection.SectionHeader = element.Value;
+                    currentSection.SectionHeader = element.ElementText;
                 }
                 currentSection.TextElements.Add(element);
                 if (currentSection.Body.Split(null).Count() > 300)
@@ -124,7 +125,7 @@ namespace Application.Parsing.ProfileScrapers
                         ContentUrl = Url,
                         Index = sections.Count,
                         SectionHeader = headline,
-                        TextElements = new List<TextElement>()
+                        TextElements = new List<VideoCaptionElement>()
                     };
                 }
             }

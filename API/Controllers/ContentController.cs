@@ -100,7 +100,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("abstractTermsForElement")]
-        public async Task<IActionResult> AbstractTermsForElement(TextElement dto)
+        public async Task<IActionResult> AbstractTermsForElement(VideoCaptionElement dto)
         {
             return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{TextElement = dto}));
         }

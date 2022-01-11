@@ -36,7 +36,7 @@ namespace Application.DataObjectHandling.Parse
             {
                 var contentEntity = await _context.Contents.Include(c => c.ContentTags).FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
                 if (contentEntity == null)
-                    return Result<ContentMetadataDto>.Failure("Could not find matching content");
+                    return Result<ContentMetadataDto>.Failure($"Could not find matching content for url: {request.Dto.ContentUrl}");
                 var output = _mapper.Map<ContentMetadataDto>(contentEntity);
                 return Result<ContentMetadataDto>.Success(output);
             }

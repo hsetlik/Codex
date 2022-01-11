@@ -8,7 +8,7 @@ namespace Application.DomainDTOs.Content
 {
     public class ElementAbstractTerms
     {
-        public int Index { get; set; }
+        public string ElementText { get; set; }
         public string Tag { get; set; }
         public List<AbstractTermDto> AbstractTerms { get; set; }
     }

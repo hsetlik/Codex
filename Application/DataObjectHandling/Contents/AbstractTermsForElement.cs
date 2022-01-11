@@ -43,7 +43,7 @@ namespace Application.DataObjectHandling.Contents
                 watch.Stop();
                 //Console.WriteLine($"Getting content {content.ContentUrl} took {watch.ElapsedMilliseconds} ms");
                 var terms = new List<AbstractTermDto>();
-                var words = request.TextElement.Value.Split(null).ToList();
+                var words = request.TextElement.ElementText.Split(null).ToList();
                 words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).ToList();
                 var wordDict = new Dictionary<int, string>();
                 for(int i = 0; i < words.Count; ++i)
@@ -64,9 +64,10 @@ namespace Application.DataObjectHandling.Contents
                 watch.Stop();
                 //Console.WriteLine($"Getting AbstractTerms for element {request.TextElement.Index}: {request.TextElement.Value} took {watch.ElapsedMilliseconds} ms");
                 terms = terms.OrderBy(t => t.IndexInChunk).ToList();
+                var vElement = request.TextElement as VideoCaptionElement;
                 var output = new ElementAbstractTerms
                 {
-                    Index = request.TextElement.Index,
+                    ElementText = request.TextElement.ElementText,
                     Tag = request.TextElement.Tag,
                     AbstractTerms = terms
                 };

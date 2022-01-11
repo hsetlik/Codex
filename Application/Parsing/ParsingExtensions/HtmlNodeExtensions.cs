@@ -8,11 +8,11 @@ namespace Application.Parsing.ParsingExtensions
 {
     public static class HtmlNodeExtensions
     {
-        public static TextElement AsTextElement(this HtmlNode node)
+        public static VideoCaptionElement AsTextElement(this HtmlNode node)
         {
-            return new TextElement
+            return new VideoCaptionElement
             {
-                Value = node.InnerText,
+                ElementText = node.InnerText,
                 Tag = node.Name
             };
         }

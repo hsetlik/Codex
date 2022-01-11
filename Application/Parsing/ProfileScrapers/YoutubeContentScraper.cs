@@ -93,15 +93,15 @@ namespace Application.Parsing.ProfileScrapers
                 ContentUrl = Url,
                 Index = 0,
                 SectionHeader = "0",
-                TextElements = new List<TextElement>()
+                TextElements = new List<VideoCaptionElement>()
             };
             foreach(var caption in track.Captions)
             {
                 Console.WriteLine($"Caption is {caption.Text} at {caption.Offset.TotalMilliseconds} with duration {(float)(caption.Duration.Milliseconds)} ms");
-                var element = new TextElement
+                var element = new VideoCaptionElement
                 {
                     Tag = "caption",
-                    Value = caption.Text,
+                    ElementText = caption.Text,
                     Index = idx,
                     StartMs = (int)caption.Offset.TotalMilliseconds,
                     EndMs = (int)(caption.Offset.TotalMilliseconds + caption.Duration.TotalMilliseconds),
@@ -133,7 +133,7 @@ namespace Application.Parsing.ProfileScrapers
                         ContentUrl = Url,
                         Index = storage.Sections.Count,
                         SectionHeader = storage.Sections.Count.ToString(),
-                        TextElements = new List<TextElement>()
+                        TextElements = new List<VideoCaptionElement>()
                     };
                 }
                 ++idx;

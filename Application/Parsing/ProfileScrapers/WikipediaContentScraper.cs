@@ -11,7 +11,6 @@ using HtmlAgilityPack;
 using ScrapySharp.Extensions;
 using ScrapySharp.Network;
 
-
 namespace Application.Parsing.ProfileScrapers
 {
    //Wikipedia
@@ -39,28 +38,16 @@ namespace Application.Parsing.ProfileScrapers
             return storage.Sections[index];
         }
 
-        private struct WikiSectionHeader
-        {
-            public HtmlNode Node { get; set; }
-            public string Name { get; set; }
-
-            public WikiSectionHeader(HtmlNode _node, string _name)
-            {
-                this.Node = _node;
-                this.Name = _name;
-            }
-        }
-
         public override async Task PrepareAsync()
         {
             // load the web page
             var sBrower = new ScrapingBrowser();
             var page = await sBrower.NavigateToPageAsync(new Uri(this.Url));
-
+            var rawHtml = page.Html.InnerHtml;
             //grab the HTML
             var root = page.Html;
-            storage.RawPageHtml = root.InnerHtml;
-            // TODO 
+            //get the full node inside the <html> tag
+            var htmlNode = root.CssSelect("body").FirstOrDefault();
             var contentName = root.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
             var lang = root.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
 
@@ -76,6 +63,7 @@ namespace Application.Parsing.ProfileScrapers
             };
             // 2. grab the main body node
             var mainBody = root.Descendants().FirstOrDefault(n => n.HasClass("mw-parser-output"));
+            
             // 3. Collect all the relevant nodes and ensure they're in DOM order
             var bodyNodes = new List<HtmlNode>();
             bodyNodes.AddRange(mainBody.CssSelect("p"));
@@ -90,7 +78,7 @@ namespace Application.Parsing.ProfileScrapers
                 ContentUrl = Url,
                 Index = storage.Sections.Count,
                 SectionHeader = contentName,
-                TextElements = new List<TextElement>()
+                TextElements = new List<VideoCaptionElement>()
             };
             foreach (var node in bodyNodesOrdered)
             {
@@ -104,18 +92,19 @@ namespace Application.Parsing.ProfileScrapers
                         ContentUrl = Url,
                         Index = storage.Sections.Count,
                         SectionHeader = inner,
-                        TextElements = new List<TextElement>()
+                        TextElements = new List<VideoCaptionElement>()
                     };
                 }
-                currentSection.TextElements.Add(new TextElement
+                currentSection.TextElements.Add(new VideoCaptionElement
                 {
-                    Value = inner,
+                    ElementText = inner,
                     Tag = node.Name,
                     ContentUrl = Url,
                     Index = currentSection.TextElements.Count
                 });
             }          
             storage.Metadata.NumSections = storage.Sections.Count;
+            storage.RawPageHtml = htmlNode.InnerHtml;
             contentsLoaded = true;
         }
 

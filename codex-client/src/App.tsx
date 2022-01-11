@@ -30,7 +30,7 @@ function App() {
   }, [commonStore, userStore]);
 
   return (
-    <Container>
+    <div>
       <NavBar />
       <Container style={{margin: '7em'}}>
         <Routes >
@@ -45,7 +45,7 @@ function App() {
           <Route path='viewer/:contentId' element={<ContentFrame />} />
         </Routes>
       </Container>
-   </Container>
+   </div>
   );
 }
 

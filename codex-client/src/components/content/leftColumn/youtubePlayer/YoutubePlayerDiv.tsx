@@ -25,7 +25,7 @@ export default observer(function YoutubePlayerDiv() {
         let current = elementAtMs(playedMs);
         if (highlightedElement !== current) {
             setHighlightedElement(current);
-            console.log(`${current.contentUrl} at seconds ${current.startMs / 1000}`);
+            console.log(`${current.contentUrl} at seconds ${current.startMs || 0 / 1000}`);
         }
         const range = sectionMsRange(currentSection!);
         if (range.start > playedMs || range.end <= playedMs) {
@@ -37,8 +37,8 @@ export default observer(function YoutubePlayerDiv() {
     const [isPlaying, setIsPlaying] = useState(false);
     const handleCaptionJump = (terms: ElementAbstractTerms) =>
     {
-        const element = currentSection?.textElements.find(e => e.index === terms.index)!;
-        playerRef.current?.seekTo((element.startMs / 1000), "seconds");
+        const element = currentSection?.textElements.find(e => e.elementText === terms.elementText)!;
+        playerRef.current?.seekTo((element.startMs || 0 / 1000), "seconds");
         if(!isPlaying) {
             setIsPlaying(true);
         }
@@ -63,7 +63,7 @@ export default observer(function YoutubePlayerDiv() {
            <Container>
             <div>
                 {currentSectionTerms.elementGroups.map(cpt => (
-                    <CaptionElementDiv terms={cpt} key={cpt.index} isHighlighted={highlightedElement?.index === cpt.index} jumpFunction={() => {
+                    <CaptionElementDiv terms={cpt} key={cpt.elementText} isHighlighted={highlightedElement?.elementText === cpt.elementText} jumpFunction={() => {
                         handleCaptionJump(cpt);
                     }} />
                 ))}

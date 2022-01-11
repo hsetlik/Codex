@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 
 namespace Application.Parsing
 {
-    public class TextElement
+    public class TextElement 
     {
         public string Tag { get; set; }
-        public string Value { get; set; }
+        public string ElementText { get; set; }
         public string ContentUrl { get; set; }
+    }
+    public class VideoCaptionElement : TextElement
+    {
         public int Index { get; set; }
         public bool HasTimeSpan { get {return Tag == "caption";}}
         public int StartMs { get; set; }
@@ -21,13 +24,13 @@ namespace Application.Parsing
         public string ContentUrl { get; set; }
         public int Index { get; set; }
         public string SectionHeader { get; set; }
-        public List<TextElement> TextElements { get; set; } = new List<TextElement>();
+        public List<VideoCaptionElement> TextElements { get; set; } = new List<VideoCaptionElement>();
         public string Body {get 
         {
             string full = "";
             foreach(var e in TextElements)
             {
-                full += e.Value + ' ';
+                full += e.ElementText + ' ';
             }
             return full;
         }}

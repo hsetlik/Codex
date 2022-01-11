@@ -131,7 +131,8 @@ const CollectionAgent = {
 
 const Parse = {
     getSection: (dto: SectionQueryDto) => requests.post<ContentSection>('/parse/getSection', dto),
-    getContentMetadata: (dto: ContentUrlDto) => requests.post<ContentMetadata>('/parse/getContentMetadata', dto)
+    getContentMetadata: (dto: ContentUrlDto) => requests.post<ContentMetadata>('/parse/getContentMetadata', dto),
+    getRawHtml: (contentId: string) => requests.get<string>(`/parse/getRawHtml/${contentId}`)
 }
 
 const Translate = {
