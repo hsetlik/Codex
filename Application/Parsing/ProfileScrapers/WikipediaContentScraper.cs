@@ -47,9 +47,10 @@ namespace Application.Parsing.ProfileScrapers
             //grab the HTML
             var root = page.Html;
             //get the full node inside the <html> tag
-            var htmlNode = root.CssSelect("body").FirstOrDefault();
+            var bodyNode = root.CssSelect("body").FirstOrDefault();
             var contentName = root.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
             var lang = root.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
+             var hNode = root.OwnerDocument.DocumentNode.SelectSingleNode("//html");
 
             // 1. get the metadata
             storage.Metadata = new ContentMetadataDto
@@ -104,7 +105,7 @@ namespace Application.Parsing.ProfileScrapers
                 });
             }          
             storage.Metadata.NumSections = storage.Sections.Count;
-            storage.RawPageHtml = htmlNode.InnerHtml;
+            storage.RawPageHtml = mainBody.InnerHtml;
             contentsLoaded = true;
         }
 

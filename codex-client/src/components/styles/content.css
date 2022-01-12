@@ -115,3 +115,10 @@
     background-color: rgb(122, 121, 121) !important;
     cursor: pointer !important;
   }
+
+  .content-label {
+    padding: 0.5em;
+    margin: 0.25em !important;
+    color: black !important;
+    background-color: gray;
+  }

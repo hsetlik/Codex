@@ -35,7 +35,7 @@ export default observer(function ContentFrame() {
     }
     return (
         <div className="content-frame" >
-            {parse(currentHtml) }
+            {parser(currentHtml) }
         </div>
     )
 

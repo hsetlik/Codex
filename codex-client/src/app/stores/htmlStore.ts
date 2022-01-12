@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { ContentMetadata, ElementAbstractTerms } from "../models/content";
-import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
 
 export default class HtmlStore {
