@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.DataObjectHandling.Terms;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Content.Responses;
 using Application.Parsing;
 
 namespace Application.Interfaces
@@ -15,6 +16,7 @@ namespace Application.Interfaces
         Task<List<ContentSection>> GetAllSections(string contentUrl);
         Task<AbstractScraper> GetScraper(string url);
         Task<string> GetRawHtml(string url);
+        Task<ContentPageHtml> GetHtml(string url);
 
     }
 }

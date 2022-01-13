@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.DataObjectHandling.Terms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
+using Application.DomainDTOs.Content.Responses;
 using Application.Interfaces;
 
 namespace Application.Parsing
@@ -62,6 +63,17 @@ namespace Application.Parsing
             Console.WriteLine($"Getting html for: {url}");
             await EnsureLoaded(url);
             return scraper.GetHtmlString();
+        }
+
+        public async Task<ContentPageHtml> GetHtml(string url)
+        {
+            await EnsureLoaded(url);
+            return new ContentPageHtml
+            {
+                ContentUrl = url,
+                Html = scraper.GetHtmlString(),
+                Stylesheets = new List<StylesheetFile>()
+            };
         }
     }
 }

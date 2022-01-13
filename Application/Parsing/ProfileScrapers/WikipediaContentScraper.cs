@@ -43,9 +43,24 @@ namespace Application.Parsing.ProfileScrapers
             // load the web page
             var sBrower = new ScrapingBrowser();
             var page = await sBrower.NavigateToPageAsync(new Uri(this.Url));
-            var rawHtml = page.Html.InnerHtml;
+          
             //grab the HTML
             var root = page.Html;
+            //grab the head node
+            var head = root.CssSelect("head").FirstOrDefault();
+            //get the stylesheets
+            var stylesheets = root.Descendants().Where(d => d.Attributes.Any(a => a.Value == "stylesheet")).ToList();
+            foreach(var sheet in stylesheets)
+            {
+
+                var urlPrefix = Url.Substring(0, Url.IndexOf(@"wiki/") - 1);
+                var rel = sheet.GetAttributeValue("href");
+                var sheetUrl = urlPrefix + rel;
+                Console.WriteLine($"Stylesheet URL is:{sheetUrl}");
+                var stylesheetPage = await sBrower.NavigateToPageAsync(new Uri(sheetUrl));
+                var pageContent = stylesheetPage.Content;
+                Console.WriteLine($"Page Content is: {pageContent.Substring(0, 100)}");
+            }
             //get the full node inside the <html> tag
             var htmlNode = root.CssSelect("body").FirstOrDefault();
             var contentName = root.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;

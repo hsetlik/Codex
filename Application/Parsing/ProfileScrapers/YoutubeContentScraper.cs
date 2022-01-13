@@ -85,7 +85,6 @@ namespace Application.Parsing.ProfileScrapers
             var trackInfo = tracks.TryGetByLanguage(storage.Metadata.Language);
             
             var track = await ytClient.Videos.ClosedCaptions.GetAsync(trackInfo);
-            
             int idx = 0;
             Console.WriteLine($"Url is: {Url}");
             var currentSection = new ContentSection
