@@ -83,6 +83,7 @@ namespace Application.Parsing.ProfileScrapers
             foreach (var node in bodyNodesOrdered)
             {
                 // if we've hit a header, then the last node was the end of the previous section
+                node.SetAttributeValue("codex_replacable", "true");
                 string inner = node.InnerText.StripWikiAnnotations();
                 if (node.Name == "h1" || node.Name == "h2") 
                 {
@@ -104,7 +105,7 @@ namespace Application.Parsing.ProfileScrapers
                 });
             }          
             storage.Metadata.NumSections = storage.Sections.Count;
-            storage.RawPageHtml = htmlNode.InnerHtml;
+            storage.RawPageHtml = mainBody.OuterHtml;
             contentsLoaded = true;
         }
 

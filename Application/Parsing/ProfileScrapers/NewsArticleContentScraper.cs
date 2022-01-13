@@ -59,12 +59,13 @@ namespace Application.Parsing.ProfileScrapers
             var root = document.DocumentNode;
             var headlineNode = root.CssSelect("h1").FirstOrDefault();
             string headline = (headlineNode == null) ? "headline not found" : headlineNode.InnerText;
-            // create a list of nodes, just grab anything inside relevant HTML tags
+            var htmlNode = root.CssSelect("html").FirstOrDefault();
+            var bodyNode = root.CssSelect("body").FirstOrDefault();
+            storage.RawPageHtml = bodyNode.InnerHtml;           // create a list of nodes, just grab anything inside relevant HTML tags
             var lang = root.GetAttributeValue("lang", "language not found");
             if (lang == "language not found")
             {
-                var htmlNode = root.CssSelect("html").FirstOrDefault();
-                storage.RawPageHtml = htmlNode.InnerHtml;
+
                 if (htmlNode != null)
                 {
                     lang = htmlNode.GetAttributeValue("lang", "language not found");

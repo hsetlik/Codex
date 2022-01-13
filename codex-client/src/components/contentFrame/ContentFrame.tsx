@@ -24,6 +24,9 @@ export default observer(function ContentFrame() {
                 if(node instanceof Element && node.attributes) {
                     if(node.attribs.class === "mw-editsection")
                         return <div></div>
+                    if (node.attribs.codex_replacable) {
+                        
+                    }
                 }
             }
     });
@@ -35,7 +38,7 @@ export default observer(function ContentFrame() {
     }
     return (
         <div className="content-frame" >
-            {parse(currentHtml) }
+            {parser(currentHtml) }
         </div>
     )
 
