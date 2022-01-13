@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
-using Application.DomainDTOs.Content;
+using Application.DomainDTOs.Content.Responses;
 using Application.Interfaces;
 using MediatR;
 using Persistence;
@@ -13,30 +13,30 @@ namespace Application.DataObjectHandling.Contents
 {
     public class GetContentHtml
     {
-        public class Query : IRequest<Result<string>>
+        public class Query : IRequest<Result<ContentPageHtml>>
         {
-            public ContentIdQuery Dto { get; set; }
+            public Guid ContentId { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<string>>
+        public class Handler : IRequestHandler<Query, Result<ContentPageHtml>>
         {
-        private readonly IParserService _parser;
         private readonly DataContext _context;
-            public Handler(IParserService parser, DataContext context)
+        private readonly IParserService _parser;
+            public Handler(DataContext context, IParserService parser)
             {
-            this._context = context;
             this._parser = parser;
+            this._context = context;
             }
 
-            public async Task<Result<string>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<ContentPageHtml>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var content = await _context.Contents.FindAsync(request.Dto.ContentId); 
+                var content = await _context.Contents.FindAsync(request.ContentId);
                 if (content == null)
-                    return Result<string>.Failure($"Could not get content with ID: {request.Dto.ContentId}");
-                var html = await _parser.GetRawHtml(content.ContentUrl);
-                if (html == "no valid html")
-                    return Result<string>.Failure($"Could not get HTML at URL: {content.ContentUrl}");
-                return Result<string>.Success(html);
+                    return Result<ContentPageHtml>.Failure($"No content found with ID: {request.ContentId}");
+                var page = await _parser.GetHtml(content.ContentUrl);
+                if (page == null)
+                    return Result<ContentPageHtml>.Failure($"No page found at URL: {content.ContentUrl}");
+                return Result<ContentPageHtml>.Success(page);
             }
         }
     }

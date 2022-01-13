@@ -25,16 +25,11 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetSection.Query{Dto = dto}));
         }        
 
-        [HttpGet("getRawHtml/{id}")]
+        [HttpGet("getHtml/{id}")]
         public async Task<IActionResult> GetRawHtml(Guid id)
         {
-            return HandleResult(await Mediator.Send(new GetContentHtml.Query{Dto = new ContentIdQuery{ContentId = id}}));
+            return HandleResult(await Mediator.Send(new GetContentHtml.Query{ContentId = id}));
         } 
 
-        [HttpGet("getPageHtml/{id}")]
-        public async Task<IActionResult> GetPageHtml(Guid id)
-        {
-            return HandleResult(await Mediator.Send(new GetPageHtml.Query{ContentId = id}));
-        } 
     }
 }

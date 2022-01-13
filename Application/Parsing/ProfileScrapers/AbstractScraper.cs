@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Content.Responses;
 using HtmlAgilityPack;
 using MediatR;
 
@@ -36,7 +37,7 @@ namespace Application.Parsing
         public abstract int GetNumSections();
         public abstract ContentSection GetSection(int index);
         public abstract List<ContentSection> GetAllSections();
-        public abstract string GetHtmlString();
+        public abstract ContentPageHtml GetPageHtml();
 
         public List<List<string>> GetWordLists(int size = 50, int maximum = 1000)
         {

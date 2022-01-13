@@ -57,23 +57,10 @@ namespace Application.Parsing
             await EnsureLoaded(url);
             return scraper;
         }
-
-        public async Task<string> GetRawHtml(string url)
-        {
-            Console.WriteLine($"Getting html for: {url}");
-            await EnsureLoaded(url);
-            return scraper.GetHtmlString();
-        }
-
         public async Task<ContentPageHtml> GetHtml(string url)
         {
             await EnsureLoaded(url);
-            return new ContentPageHtml
-            {
-                ContentUrl = url,
-                Html = scraper.GetHtmlString(),
-                Stylesheets = new List<StylesheetFile>()
-            };
+            return scraper.GetPageHtml();
         }
     }
 }

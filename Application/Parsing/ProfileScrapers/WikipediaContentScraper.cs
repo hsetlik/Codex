@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Content.Responses;
 using Application.Extensions;
 using Application.Parsing.ContentStorage;
 using Application.Utilities;
@@ -43,12 +44,16 @@ namespace Application.Parsing.ProfileScrapers
             // load the web page
             var sBrower = new ScrapingBrowser();
             var page = await sBrower.NavigateToPageAsync(new Uri(this.Url));
-          
             //grab the HTML
             var root = page.Html;
             //grab the head node
+            // get the style node?
+            var styleNode = root.Descendants("style").FirstOrDefault();
+
+          
             var head = root.CssSelect("head").FirstOrDefault();
             //get the stylesheets
+            storage.StylesheetUrls = new List<string>();
             var stylesheets = root.Descendants().Where(d => d.Attributes.Any(a => a.Value == "stylesheet")).ToList();
             foreach(var sheet in stylesheets)
             {
@@ -56,10 +61,8 @@ namespace Application.Parsing.ProfileScrapers
                 var urlPrefix = Url.Substring(0, Url.IndexOf(@"wiki/") - 1);
                 var rel = sheet.GetAttributeValue("href");
                 var sheetUrl = urlPrefix + rel;
-                Console.WriteLine($"Stylesheet URL is:{sheetUrl}");
-                var stylesheetPage = await sBrower.NavigateToPageAsync(new Uri(sheetUrl));
-                var pageContent = stylesheetPage.Content;
-                Console.WriteLine($"Page Content is: {pageContent.Substring(0, 100)}");
+                storage.StylesheetUrls.Add(sheetUrl);
+                Console.WriteLine($"Stylesheet URL is: {sheetUrl}");
             }
             //get the full node inside the <html> tag
             var htmlNode = root.CssSelect("body").FirstOrDefault();
@@ -120,6 +123,7 @@ namespace Application.Parsing.ProfileScrapers
                 });
             }          
             storage.Metadata.NumSections = storage.Sections.Count;
+            mainBody.AppendChild(styleNode);
             storage.RawPageHtml = mainBody.OuterHtml;
             contentsLoaded = true;
         }
@@ -129,9 +133,9 @@ namespace Application.Parsing.ProfileScrapers
             return storage.Sections;
         }
 
-        public override string GetHtmlString()
+        public override ContentPageHtml GetPageHtml()
         {
-            return storage.RawPageHtml;
+            return storage.ContentPageHtml;
         }
     }
 }

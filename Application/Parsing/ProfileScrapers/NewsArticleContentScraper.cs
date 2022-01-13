@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Content.Responses;
 using Application.Parsing.ContentStorage;
 using Application.Parsing.ParsingExtensions;
 using HtmlAgilityPack;
@@ -27,11 +28,7 @@ namespace Application.Parsing.ProfileScrapers
         {
             return storage.Sections;
         }
-
-        public override string GetHtmlString()
-        {
-            return storage.RawPageHtml;
-        }
+        
 
         public override ContentMetadataDto GetMetadata()
         {
@@ -41,6 +38,11 @@ namespace Application.Parsing.ProfileScrapers
         public override int GetNumSections()
         {
             return storage.Sections.Count;
+        }
+
+        public override ContentPageHtml GetPageHtml()
+        {
+            return storage.ContentPageHtml;
         }
 
         public override ContentSection GetSection(int index)

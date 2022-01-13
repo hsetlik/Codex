@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Application.DomainDTOs;
+using Application.DomainDTOs.Content.Responses;
 using Application.Parsing.ContentStorage;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
@@ -145,9 +146,9 @@ namespace Application.Parsing.ProfileScrapers
             storage.Metadata.NumSections = storage.Sections.Count;
         }
 
-        public override string GetHtmlString()
+        public override ContentPageHtml GetPageHtml()
         {
-            return "youtube page: no raw html available";
+            throw new NotImplementedException();
         }
     }
 }
