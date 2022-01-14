@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace Application.Parsing
 {
@@ -10,9 +11,40 @@ namespace Application.Parsing
         public string Tag { get; set; }
         public string ElementText { get; set; }
         public string ContentUrl { get; set; }
+        public Dictionary<string, string> Attributes { get; set; }
+
+        public TextElement()
+        {
+
+        }
+        public TextElement(HtmlNode node, string contentUrl)
+        {
+            this.ContentUrl = contentUrl;
+            this.Tag = node.NodeType.ToString();
+            this.ElementText = node.InnerText;
+            this.Attributes = new Dictionary<string, string>();
+            if (node.HasAttributes)
+            {
+                foreach(var att in node.Attributes)
+                {
+                    this.Attributes[att.Name] = att.Value;
+                }
+            }
+        }
     }
     public class VideoCaptionElement : TextElement
     {
+        public VideoCaptionElement()
+        {
+        }
+        public VideoCaptionElement(TextElement element)
+        {
+        }
+
+        public VideoCaptionElement(HtmlNode node, string contentUrl) : base(node, contentUrl)
+        {
+        }
+
         public int Index { get; set; }
         public bool HasTimeSpan { get {return Tag == "caption";}}
         public int StartMs { get; set; }
@@ -24,7 +56,7 @@ namespace Application.Parsing
         public string ContentUrl { get; set; }
         public int Index { get; set; }
         public string SectionHeader { get; set; }
-        public List<VideoCaptionElement> TextElements { get; set; } = new List<VideoCaptionElement>();
+        public List<TextElement> TextElements { get; set; } = new List<TextElement>();
         public string Body {get 
         {
             string full = "";

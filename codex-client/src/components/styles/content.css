@@ -66,8 +66,7 @@
   }
   .codex-element-p {
     display: block !important;
-    padding-top: 1.5% !important;
-    padding-bottom: 1.5% !important;
+    margin: 1em !important;
   }
   .codex-element-h1 {
     display: block !important;

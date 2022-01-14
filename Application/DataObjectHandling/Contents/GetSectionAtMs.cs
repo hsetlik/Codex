@@ -7,6 +7,7 @@ using Application.Core;
 using Application.DomainDTOs.Content.Queries;
 using Application.Interfaces;
 using Application.Parsing;
+using Application.Parsing.ContentStorage;
 using MediatR;
 
 namespace Application.DataObjectHandling.Contents
@@ -34,11 +35,15 @@ namespace Application.DataObjectHandling.Contents
                 int ms = request.Dto.Ms;
                 foreach(var section in sections)
                 {
-                    int startMs = section.TextElements.First().StartMs;
-                    int endMs = section.TextElements.Last().EndMs;
-                    if (ms >= startMs && ms < endMs)
+                    if (section.GetType() == typeof(YoutubeSection))
                     {
-                        return Result<ContentSection>.Success(section);
+                        var ytSection = section as YoutubeSection;
+                        int startMs = ytSection.TextElements.First().StartMs;
+                        int endMs = ytSection.TextElements.Last().EndMs;
+                        if (ms >= startMs && ms < endMs)
+                        {
+                            return Result<ContentSection>.Success(section);
+                        }
                     }
                 }
                 return Result<ContentSection>.Failure($"Could not load section of {request.Dto.ContentUrl} at {request.Dto.Ms} seconds");

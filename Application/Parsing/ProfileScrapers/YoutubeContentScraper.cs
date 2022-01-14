@@ -26,7 +26,7 @@ namespace Application.Parsing.ProfileScrapers
 
         public override List<ContentSection> GetAllSections()
         {
-            return storage.Sections;
+            return storage.Sections.Select(s => (ContentSection)s).ToList();
         }
 
         public override ContentMetadataDto GetMetadata()
@@ -81,14 +81,14 @@ namespace Application.Parsing.ProfileScrapers
             };
             Console.WriteLine(storage.Metadata.ContentName);
 
-            storage.Sections = new List<ContentSection>();
+            storage.Sections = new List<YoutubeSection>();
 
             var trackInfo = tracks.TryGetByLanguage(storage.Metadata.Language);
             
             var track = await ytClient.Videos.ClosedCaptions.GetAsync(trackInfo);
             int idx = 0;
             Console.WriteLine($"Url is: {Url}");
-            var currentSection = new ContentSection
+            var currentSection = new YoutubeSection
             {
                 ContentUrl = Url,
                 Index = 0,
@@ -128,7 +128,7 @@ namespace Application.Parsing.ProfileScrapers
                 {
                     idx = 0;
                     storage.Sections.Add(currentSection);
-                    currentSection = new ContentSection
+                    currentSection = new YoutubeSection
                     {
                         ContentUrl = Url,
                         Index = storage.Sections.Count,

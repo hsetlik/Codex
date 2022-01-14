@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { Element } from 'domhandler/lib/node';
 import '../styles/content-frame.css';
 import { Loader } from "semantic-ui-react";
-
+import CodexNode from "./CodexNode";
 
 
 export default observer(function ContentFrame() {
@@ -18,14 +18,16 @@ export default observer(function ContentFrame() {
             loadPage(contentId!);
         }
     }, [ loadPage, htmlLoaded, contentId, currentPageContent]);
+    var nodeIdx = 0;
     const parser = (input: string) => {
         return parse(input, {
             replace: (node: DOMNode) => { 
                 if(node instanceof Element && node.attributes) {
+                    ++nodeIdx;
                     if(node.attribs.class === "mw-editsection")
                         return <div></div>
-                    if (node.attribs.codex_replacable) {
-                        
+                    if (node.attribs.codex_replacable === 'true' && node.children.some(c => c.type === 'text')) {
+                        return <CodexNode sourceNode={node} key={`elementNode${nodeIdx}`} />
                     }
                 }
             }

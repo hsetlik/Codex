@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ContentPageHtml, ElementAbstractTerms } from "../models/content";
+import { ContentMetadata, ContentPageHtml, ElementAbstractTerms, TextElement } from "../models/content";
 import { store } from "./store";
 
 export default class HtmlStore {
@@ -31,6 +31,17 @@ export default class HtmlStore {
            runInAction(() => this.htmlLoaded = true);
            console.log(error); 
         }
+    }
 
+    loadElementTerms = async (element: TextElement) => {
+        try {
+            const newTerms = await agent.Content.abstractTermsForElement(element);
+            runInAction(() => {
+                this.currentElementsMap.set(element.elementText, newTerms);
+            })
+            
+        } catch (error) {
+           console.log(error);
+        }
     }
 }

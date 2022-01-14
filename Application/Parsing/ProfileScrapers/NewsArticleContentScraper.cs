@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
@@ -59,6 +60,15 @@ namespace Application.Parsing.ProfileScrapers
             var document = new HtmlDocument();
             document.LoadHtml(pageText);
             var root = document.DocumentNode;
+            storage.StylesheetUrls = new List<string>();
+            var stylesheets = root.Descendants().Where(d => d.Attributes.Any(a => a.Value == "stylesheet")).ToList();
+            foreach(var sheet in stylesheets)
+            {
+                var rel = sheet.GetAttributeValue("href", "no href");
+                
+                storage.StylesheetUrls.Add(rel);
+                Console.WriteLine($"Stylesheet URL is: {storage.StylesheetUrls.Last()}");
+            }
             var headlineNode = root.CssSelect("h1").FirstOrDefault();
             string headline = (headlineNode == null) ? "headline not found" : headlineNode.InnerText;
             var htmlNode = root.CssSelect("html").FirstOrDefault();
@@ -102,40 +112,8 @@ namespace Application.Parsing.ProfileScrapers
                 Bookmark = 0,
                 VideoUrl = "none",
                 AudioUrl = "none",
-                NumSections = 0
+                NumSections = 1
             };
-            var sections = new List<ContentSection>();
-            // now to parse the elements into sections
-            var currentSection = new ContentSection
-            {
-                ContentUrl = Url,
-                Index = sections.Count,
-                SectionHeader = headline,
-                TextElements = new List<VideoCaptionElement>()
-            };
-            foreach(var element in elements)
-            {
-                if ((element.Tag == "h1" || element.Tag == "h2") && currentSection.TextElements.Count < 1)
-                {
-                    currentSection.SectionHeader = element.ElementText;
-                }
-                currentSection.TextElements.Add(element);
-                if (currentSection.Body.Split(null).Count() > 300)
-                {
-                    sections.Add(currentSection);
-                    currentSection = new ContentSection
-                    {
-                        ContentUrl = Url,
-                        Index = sections.Count,
-                        SectionHeader = headline,
-                        TextElements = new List<VideoCaptionElement>()
-                    };
-                }
-            }
-
-            storage.Elements = elements;
-            storage.Sections = sections;
-            storage.Metadata.NumSections = sections.Count;
             contentsLoaded = true;
         }
     }

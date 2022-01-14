@@ -39,6 +39,15 @@ namespace Application.Parsing.ProfileScrapers
         {
             return storage.Sections[index];
         }
+        
+        public static string[] TextElementParentTypes =
+        {
+            "p",
+            "h1",
+            "h2",
+            "h3"
+           
+        };
 
         public override async Task PrepareAsync()
         {
@@ -56,7 +65,6 @@ namespace Application.Parsing.ProfileScrapers
             var stylesheets = root.Descendants().Where(d => d.Attributes.Any(a => a.Value == "stylesheet")).ToList();
             foreach(var sheet in stylesheets)
             {
-
                 var urlPrefix = Url.Substring(0, Url.IndexOf(@"wiki/") - 1);
                 var rel = sheet.GetAttributeValue("href");
                 rel = Regex.Replace(rel, @"amp;", "");
@@ -68,14 +76,11 @@ namespace Application.Parsing.ProfileScrapers
             var htmlNode = root.CssSelect("body").FirstOrDefault();
             var contentName = root.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
             var lang = root.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
-
-
             /* 
 
             Bad URL:  https://ru.wikipedia.org/w/load.php?lang=ru&amp;modules=ext.cite.styles%7Cext.flaggedRevs.basic%2Cicons%7Cext.kartographer.style%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cmediawiki.widgets.styles%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui.styles.indicators%7Cskins.vector.styles.legacy%7Cwikibase.client.init&amp;only=styles&amp;skin=vector
             Good URL: https://ru.wikipedia.org/w/load.php?lang=ru&modules=ext.cite.styles%7Cext.flaggedRevs.basic%2Cicons%7Cext.kartographer.style%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cmediawiki.widgets.styles%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui.styles.indicators%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector    
             */
-
             // 1. get the metadata
             storage.Metadata = new ContentMetadataDto
             {
@@ -84,52 +89,19 @@ namespace Application.Parsing.ProfileScrapers
                 ContentType = "Wikipedia",
                 Language = lang,
                 AudioUrl = "none",
-                VideoUrl = "none"
+                VideoUrl = "none",
+                NumSections = 1
             };
-            // 2. grab the main body node
-            var mainBody = root.Descendants().FirstOrDefault(n => n.HasClass("mw-parser-output"));
-            
-            // 3. Collect all the relevant nodes and ensure they're in DOM order
-            var bodyNodes = new List<HtmlNode>();
-            bodyNodes.AddRange(mainBody.CssSelect("p"));
-            bodyNodes.AddRange(mainBody.CssSelect("h2").Where(n => n.CssSelect("span.mw-headline").Any()));
-            bodyNodes.AddRange(mainBody.CssSelect("h3").Where(n => n.CssSelect("span.mw-headline").Any()));
-            var bodyNodesOrdered = bodyNodes.OrderBy(n => n.Line).ToList();
-            
-            //4. create the intro section
-            storage.Sections = new List<ContentSection>();
-            var currentSection = new ContentSection
+            foreach(string name in TextElementParentTypes)
             {
-                ContentUrl = Url,
-                Index = storage.Sections.Count,
-                SectionHeader = contentName,
-                TextElements = new List<VideoCaptionElement>()
-            };
-            foreach (var node in bodyNodesOrdered)
-            {
-                // if we've hit a header, then the last node was the end of the previous section
-                node.SetAttributeValue("codex_replacable", "true");
-                string inner = node.InnerText.StripWikiAnnotations();
-                if (node.Name == "h1" || node.Name == "h2") 
+                var nodes = htmlNode.CssSelect(name).ToList();
+                foreach(var node in nodes)
                 {
-                    storage.Sections.Add(currentSection);
-                    currentSection = new ContentSection
-                    {
-                        ContentUrl = Url,
-                        Index = storage.Sections.Count,
-                        SectionHeader = inner,
-                        TextElements = new List<VideoCaptionElement>()
-                    };
+                    node.SetAttributeValue("codex_replacable", "true");
                 }
-                currentSection.TextElements.Add(new VideoCaptionElement
-                {
-                    ElementText = inner,
-                    Tag = node.Name,
-                    ContentUrl = Url,
-                    Index = currentSection.TextElements.Count
-                });
-            }          
-            storage.Metadata.NumSections = storage.Sections.Count;
+            }
+
+
             storage.RawPageHtml = htmlNode.InnerHtml;
             contentsLoaded = true;
         }
