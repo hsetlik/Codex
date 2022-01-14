@@ -75,6 +75,12 @@ export interface TagQuery {
     tagLanguage: string
 }
 
+export interface ContentPageHtml {
+    contentUrl: string,
+    html: string,
+    stylesheetUrls: string[]
+}
+
 
 export const getContentType = (url: string): ContentType => {
     if (url.includes('wikipedia'))

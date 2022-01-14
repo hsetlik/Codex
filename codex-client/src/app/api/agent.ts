@@ -17,7 +17,7 @@ import { UserTermCreateDto, AddTranslationDto,
          SaveContentQuery,
          SavedContentDto,
          ICollectionId} from "../models/dtos";
-import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement, ContentTag, TagQuery } from "../models/content";
+import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement, ContentTag, TagQuery, ContentPageHtml } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
 import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
@@ -132,7 +132,7 @@ const CollectionAgent = {
 const Parse = {
     getSection: (dto: SectionQueryDto) => requests.post<ContentSection>('/parse/getSection', dto),
     getContentMetadata: (dto: ContentUrlDto) => requests.post<ContentMetadata>('/parse/getContentMetadata', dto),
-    getRawHtml: (contentId: string) => requests.get<string>(`/parse/getRawHtml/${contentId}`)
+    getHtml: (contentId: string) => requests.get<ContentPageHtml>(`/parse/getHtml/${contentId}`)
 }
 
 const Translate = {

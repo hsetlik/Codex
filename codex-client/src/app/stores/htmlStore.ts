@@ -1,12 +1,11 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ElementAbstractTerms } from "../models/content";
+import { ContentMetadata, ContentPageHtml, ElementAbstractTerms } from "../models/content";
 import { store } from "./store";
 
 export default class HtmlStore {
     htmlLoaded = false;
-    currentHtml = '';
-    currentUrl = '';
+    currentPageHtml: ContentPageHtml | null = null;
     currentPageContent: ContentMetadata | null = null;
     currentElementsMap = new Map<string, ElementAbstractTerms | null>();
     constructor() {
@@ -19,12 +18,11 @@ export default class HtmlStore {
             console.log(`Loading page with ID: ${contentId}`);
             const content = await agent.Content.getContentWithId({contentId: contentId});
             console.log(`Found content with ID: ${content.contentId} and URL ${content.contentId}`);
-            const pageString = await agent.Parse.getRawHtml(contentId);
+            const contentPage = await agent.Parse.getHtml(contentId);
             runInAction(() => {
-                this.htmlLoaded = true;
-                this.currentHtml = pageString;
-                this.currentUrl = content.contentUrl;
+                this.currentPageHtml = contentPage;
                 this.currentPageContent = content;
+                this.htmlLoaded = true;
                 if (store.userStore.selectedProfile?.language !== content.language) {
                     store.userStore.setSelectedLanguage(content.language);
                 }

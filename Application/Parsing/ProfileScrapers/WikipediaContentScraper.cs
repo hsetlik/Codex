@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
@@ -48,9 +49,7 @@ namespace Application.Parsing.ProfileScrapers
             var root = page.Html;
             //grab the head node
             // get the style node?
-            var styleNode = root.Descendants("style").FirstOrDefault();
-
-          
+            var styleNodes = root.Descendants("style").ToList();
             var head = root.CssSelect("head").FirstOrDefault();
             //get the stylesheets
             storage.StylesheetUrls = new List<string>();
@@ -60,6 +59,7 @@ namespace Application.Parsing.ProfileScrapers
 
                 var urlPrefix = Url.Substring(0, Url.IndexOf(@"wiki/") - 1);
                 var rel = sheet.GetAttributeValue("href");
+                rel = Regex.Replace(rel, @"amp;", "");
                 var sheetUrl = urlPrefix + rel;
                 storage.StylesheetUrls.Add(sheetUrl);
                 Console.WriteLine($"Stylesheet URL is: {sheetUrl}");
@@ -68,6 +68,13 @@ namespace Application.Parsing.ProfileScrapers
             var htmlNode = root.CssSelect("body").FirstOrDefault();
             var contentName = root.OwnerDocument.DocumentNode.SelectSingleNode("//html/head/title").InnerText;
             var lang = root.OwnerDocument.DocumentNode.SelectSingleNode("//html").GetAttributeValue<string>("lang", "not found");
+
+
+            /* 
+
+            Bad URL:  https://ru.wikipedia.org/w/load.php?lang=ru&amp;modules=ext.cite.styles%7Cext.flaggedRevs.basic%2Cicons%7Cext.kartographer.style%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cmediawiki.widgets.styles%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui.styles.indicators%7Cskins.vector.styles.legacy%7Cwikibase.client.init&amp;only=styles&amp;skin=vector
+            Good URL: https://ru.wikipedia.org/w/load.php?lang=ru&modules=ext.cite.styles%7Cext.flaggedRevs.basic%2Cicons%7Cext.kartographer.style%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cmediawiki.widgets.styles%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui.styles.indicators%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector    
+            */
 
             // 1. get the metadata
             storage.Metadata = new ContentMetadataDto
@@ -123,8 +130,7 @@ namespace Application.Parsing.ProfileScrapers
                 });
             }          
             storage.Metadata.NumSections = storage.Sections.Count;
-            mainBody.AppendChild(styleNode);
-            storage.RawPageHtml = mainBody.OuterHtml;
+            storage.RawPageHtml = htmlNode.InnerHtml;
             contentsLoaded = true;
         }
 

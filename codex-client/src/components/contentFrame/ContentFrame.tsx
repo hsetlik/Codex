@@ -12,7 +12,7 @@ import { Loader } from "semantic-ui-react";
 
 export default observer(function ContentFrame() {
     const {contentId} = useParams();
-    const {htmlStore: {loadPage, currentHtml, htmlLoaded, currentPageContent}} = useStore();
+    const {htmlStore: {loadPage, currentPageHtml, htmlLoaded, currentPageContent}} = useStore();
     useEffect(() => {
         if (!htmlLoaded || currentPageContent === null || currentPageContent.contentId !== contentId) {
             loadPage(contentId!);
@@ -31,14 +31,17 @@ export default observer(function ContentFrame() {
             }
     });
     }
-    if (currentHtml.length < 1 || !htmlLoaded) {
+    if (currentPageHtml === null || !htmlLoaded) {
         return (
             <Loader active/>
         )
     }
     return (
         <div className="content-frame" >
-            {parser(currentHtml) }
+            {currentPageHtml.stylesheetUrls.map(url => (
+                <link rel='stylesheet' href={url} typeof="text/css" key={url} />
+            ))}
+            {parser(currentPageHtml.html)}
         </div>
     )
 
