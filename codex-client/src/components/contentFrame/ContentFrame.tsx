@@ -18,7 +18,7 @@ export default observer(function ContentFrame() {
             loadPage(contentId!);
         }
     }, [ loadPage, htmlLoaded, contentId, currentPageContent]);
-    var nodeIdx = 0;
+    var nodeIdx = 1;
     const parser = (input: string) => {
         return parse(input, {
             replace: (node: DOMNode) => { 

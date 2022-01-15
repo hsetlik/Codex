@@ -4,7 +4,7 @@
     padding: 0.25em !important;
     margin: 0.2em !important;
     border-style: none !important;
-    /*font-style: italic !important;*/
+    font-size: 0.65em !important;
   }
 
   .codex-term-h1 {
@@ -65,8 +65,15 @@
     border-bottom-color: rgb(97, 91, 91)!important;
   }
   .codex-element-p {
-    display: block !important;
+    display: flex !important;
     margin: 1em !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+  .codex-element-div {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
   }
   .codex-element-h1 {
     display: block !important;

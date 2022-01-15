@@ -6,6 +6,7 @@ import { useStore } from "../../app/stores/store";
 import TextElement from "../content/leftColumn/commonReader/textElement/TextElement";
 import '../styles/content.css';
 import { Loader } from "semantic-ui-react";
+import { ElementType } from "htmlparser2";
 
 
 interface NodeProps {
@@ -13,13 +14,24 @@ interface NodeProps {
     className?: string
 }
 
+const fullInnerText = (node: DOMNode & Element): string => {
+    var text = '';
+    for(let child of node.children) {
+        if (child.type === ElementType.Text)
+            text += (child as Text).data;
+        else if(child instanceof Element) {
+            text += fullInnerText(child);
+        }
+    }
+    return text;
+}
+
 export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     // return an empty div if this isn't a valid element
+    let text = fullInnerText(sourceNode as Element);
     const {htmlStore: {currentElementsMap, loadElementTerms, currentPageContent}} = useStore();
-    let child = (sourceNode as Element).children[0] as Text;
-    let text = child.data;
     useEffect(() => {
-        if (!currentElementsMap.has(text) && sourceNode instanceof Element && text) {
+        if (!currentElementsMap.has(text) && sourceNode instanceof Element && text.length > 1) {
             loadElementTerms({elementText: text, tag: sourceNode.tagName, contentUrl: currentPageContent?.contentUrl || 'null'})
 
         }
@@ -32,14 +44,13 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
             </div>
         )
     }
-   
     switch (sourceNode.tagName) {
-        case 'p':
+        case 'p' || 'b':
             
             return (
-                <p className={className || 'codex-element-p'} {...sourceNode.attributes}>
+                <div className={className || 'codex-element-p'} {...sourceNode.attributes}>
                    <TextElement terms={currentElementsMap.get(text)!} />
-                </p>
+                </div>
             );
         case 'h1':
             return (
@@ -61,17 +72,22 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
             )
         case 'a':
             return (
-                <span className={className || ''}>
+                <div className={className || 'codex-element-div'} {...sourceNode.attribs}>
                     <TextElement terms={currentElementsMap.get(text)!} />
-                </span>
+                </div>
+            )
+        case 'div':
+            return (
+                <div className={className || 'codex-element-div'}>
+                    <TextElement terms={currentElementsMap.get(text)!} />
+                </div>
             )
         default:
             console.log(`Node with tag ${sourceNode.tagName} not rendered!`);
-            break;
+            return (
+                <div className={className || 'codex-element-div'}>
+                    <TextElement terms={currentElementsMap.get(text)!} />
+                </div>
+            )
     }
-    return (
-        <>
-
-        </>
-    )
 })

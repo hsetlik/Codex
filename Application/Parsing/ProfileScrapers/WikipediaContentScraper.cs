@@ -45,8 +45,7 @@ namespace Application.Parsing.ProfileScrapers
             "p",
             "h1",
             "h2",
-            "h3"
-           
+            "h3",
         };
 
         public override async Task PrepareAsync()
