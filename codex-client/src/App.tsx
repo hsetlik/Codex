@@ -12,7 +12,7 @@ import ContentRoute from './components/content/ContentRoute';
 import ProfilesRoute from './components/profile/ProfilesRoute';
 import CollectionsRoute from './components/collection/CollectionsRoute';
 import TagRoute from './components/feed/TagRoute';
-import ContentFrame from './components/contentFrame/ContentFrame';
+import ViewerRoute from './components/contentFrame/ViewerRoute';
 
 function App() {
 //const location = useLocation();
@@ -42,7 +42,7 @@ function App() {
           <Route path='account/register' element={<RegisterForm />} /> 
           <Route path='/collections/:lang' element={<CollectionsRoute />} />
           <Route path='tags/:tag' element={<TagRoute />} />
-          <Route path='viewer/:contentId' element={<ContentFrame />} />
+          <Route path='viewer/:contentId' element={<ViewerRoute />} />
         </Routes>
       </Container>
    </div>

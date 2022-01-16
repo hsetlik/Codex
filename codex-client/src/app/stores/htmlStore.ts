@@ -39,7 +39,6 @@ export default class HtmlStore {
             runInAction(() => {
                 this.currentElementsMap.set(element.elementText, newTerms);
             })
-            
         } catch (error) {
            console.log(error);
         }

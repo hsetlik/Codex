@@ -4,9 +4,16 @@
     padding: 0.25em !important;
     margin: 0.2em !important;
     border-style: none !important;
-    font-size: 0.65em !important;
   }
-
+.codex-term-p-t {
+    padding-left: 0.15em !important;
+    padding-right: 0.05em !important;
+    padding-top: 0.85em !important;
+    padding-bottom: 0.01em !important;
+    border-style: none !important;
+    background-color: white !important;
+    align-self: flex-start !important;
+  }
   .codex-term-h1 {
     padding: 5px !important;
     background: rgb(10, 171, 211);
@@ -88,7 +95,17 @@
     padding-bottom: 1.5% !important;
     padding-left: 3% !important; 
   }
-
+  
+  .codex-element-span {
+    padding-left: 3% !important; 
+    margin: 1em !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+  .codex-element-li {
+    margin-bottom: 1.5% !important;
+    margin-left: 3% !important; 
+  }
     .trailing-character-group {
     padding: 0px !important;
     background: white !important;
@@ -120,4 +137,8 @@
     color: rgb(241, 240, 240) !important;
     background-color: rgb(122, 121, 121) !important;
     cursor: pointer !important;
+  }
+
+  .viewer-element {
+    margin: 1em !important;
   }

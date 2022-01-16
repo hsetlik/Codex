@@ -13,16 +13,16 @@ interface Props {
 
 export default observer(function AbstractTermDetails({term}: Props) {
     return (
-        <div >
+        <div  >
             {term.hasUserTerm ? (
-                <div className="details-div">
+                <div>
                     <StarButton />
-                    <Header as='h2' content={term.termValue}  />
+                    <Header as='h2' content={term.termValue} className="details-h2"  />
                     <UserTermDetails />
                 </div>
             ) : (
-                <div className="details-div">
-                    <Header as='h2' content={term.termValue} />
+                <div >
+                    <Header as='h2' content={term.termValue} className="details-h2"/>
                     <Header as='h3' sub content='Create new term:' />
                     <ReccomendedTranslation term={{value: term.termValue, language: term.language}} />
                     <UserTermCreator term={term} />

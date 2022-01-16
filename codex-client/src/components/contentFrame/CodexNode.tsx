@@ -25,7 +25,6 @@ const fullInnerText = (node: DOMNode & Element): string => {
     }
     return text;
 }
-
 export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     // return an empty div if this isn't a valid element
     let text = fullInnerText(sourceNode as Element);
@@ -36,57 +35,68 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
 
         }
     }, [ currentElementsMap, loadElementTerms, text, currentPageContent, sourceNode])
-  
-    if (!(sourceNode instanceof Element) || !currentElementsMap.has(text)) {
-        return (
-            <div>
-                <Loader active={true} />
-            </div>
-        )
+    if (!(sourceNode instanceof Element)) {
+        return (<></>);
     }
+    const contentNode = (sourceNode instanceof Element && currentElementsMap.has(text)) ? 
+    (<TextElement terms={currentElementsMap.get(text)!} />) : 
+    (<Loader active={true} />); 
+    
     switch (sourceNode.tagName) {
         case 'p' || 'b':
             
             return (
                 <div className={className || 'codex-element-p'} {...sourceNode.attributes}>
-                   <TextElement terms={currentElementsMap.get(text)!} />
+                    {contentNode}
                 </div>
             );
         case 'h1':
             return (
                 <h1 className={className || 'codex-element-h1'}>
-                    <TextElement terms={currentElementsMap.get(text)!} />
+                    {contentNode}
                 </h1>
             )
         case 'h2':
             return (
                 <h2 className={className || 'codex-element-h2'}>
-                    <TextElement terms={currentElementsMap.get(text)!} />
+                    {contentNode}
                 </h2>
             )
         case 'h3':
             return (
                 <h3 className={className || 'codex-element-h3'}>
-                    <TextElement terms={currentElementsMap.get(text)!} />
+                    {contentNode}
                 </h3>
             )
         case 'a':
             return (
-                <div className={className || 'codex-element-div'} {...sourceNode.attribs}>
-                    <TextElement terms={currentElementsMap.get(text)!} />
+                <div className={className || 'codex-element-div'} >
+                    {contentNode}
                 </div>
             )
         case 'div':
             return (
                 <div className={className || 'codex-element-div'}>
-                    <TextElement terms={currentElementsMap.get(text)!} />
+                    {contentNode}
                 </div>
+            )
+        case 'span':
+            return (
+                <span className={className || 'codex-element-span'}>
+                    {contentNode}
+                </span>
+            )
+        case 'li':
+            return (
+                <span className={className || 'codex-element-span'}>
+                    {contentNode}
+                </span>
             )
         default:
             console.log(`Node with tag ${sourceNode.tagName} not rendered!`);
             return (
                 <div className={className || 'codex-element-div'}>
-                    <TextElement terms={currentElementsMap.get(text)!} />
+                    {contentNode}
                 </div>
             )
     }

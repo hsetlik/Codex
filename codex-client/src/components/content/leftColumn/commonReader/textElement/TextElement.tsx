@@ -11,7 +11,7 @@ interface Props {
 export default observer (function TextElement({terms}: Props) {
     return (
         <>
-            {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag} term={term} key={term.indexInChunk}/> ))}
+            {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag} term={term} key={term.indexInChunk + 1}/> ))}
         </>
     );
 })

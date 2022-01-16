@@ -46,6 +46,8 @@ namespace Application.Parsing.ProfileScrapers
             "h1",
             "h2",
             "h3",
+            "span",
+            "li"
         };
 
         public override async Task PrepareAsync()
@@ -99,9 +101,8 @@ namespace Application.Parsing.ProfileScrapers
                     node.SetAttributeValue("codex_replacable", "true");
                 }
             }
-
-
-            storage.RawPageHtml = htmlNode.InnerHtml;
+            var wikiBodyNode = root.CssSelect("div.mw-body").FirstOrDefault();
+            storage.RawPageHtml = wikiBodyNode.InnerHtml;
             contentsLoaded = true;
         }
 

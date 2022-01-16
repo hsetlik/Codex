@@ -1,7 +1,10 @@
 .details-div {
-    border-radius: 1em;
     padding: 1em;
-    box-shadow: 0.325em 0.125em 1em 0.025em;
+    margin: 0.5em;
+}
+
+.details-h2 {
+    padding: 0.25em;
 }
 
 .suggestion-button {
