@@ -28,7 +28,7 @@ export default observer(function ContentFrame({contentId}: Props) {
                     ++nodeIdx;
                     if(node.attribs.class === "mw-editsection")
                         return <div></div>
-                    if (node.attribs.codex_replacable === 'true' && node.children.some(c => c.type === 'text')) {
+                    if (node.attribs.codex_replacable === 'true' ) {
                         return <CodexNode sourceNode={node} key={`elementNode${nodeIdx}`} />
                     }
                     if (node.name === 'body') {

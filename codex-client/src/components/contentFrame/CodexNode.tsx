@@ -26,15 +26,14 @@ const fullInnerText = (node: DOMNode & Element): string => {
     return text;
 }
 export default observer(function CodexNode({sourceNode, className}: NodeProps) {
-    const {ref, inView} = useInView({threshold: 0.2});
+    const {ref, inView} = useInView({threshold: 0.1});
     // return an empty div if this isn't a valid element
     let text = fullInnerText(sourceNode as Element);
     const {htmlStore: {currentElementsMap, loadElementTerms, currentPageContent}} = useStore();
     useEffect(() => {
         if (!currentElementsMap.has(text) && sourceNode instanceof Element && text.length > 1 && inView) {
             loadElementTerms({elementText: text, tag: sourceNode.tagName, contentUrl: currentPageContent?.contentUrl || 'null'})
-
-        }
+        } 
     }, [ currentElementsMap, loadElementTerms, text, currentPageContent, sourceNode, inView])
     if (!(sourceNode instanceof Element)) {
         return (<></>);
@@ -89,9 +88,21 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
             )
         case 'li':
             return (
-                <span className={className || 'codex-element-span'}ref={ref}>
+                <li className={className || 'codex-element-span'}ref={ref}>
                     {contentNode}
-                </span>
+                </li>
+            )
+        case 'td':
+            return (
+                <td className={className || 'codex-element-span'}ref={ref}>
+                    {contentNode}
+                </td>
+            )
+        case 'th':
+            return (
+                <th className={className || 'codex-element-span'}ref={ref}>
+                    {contentNode}
+                </th>
             )
         default:
             console.log(`Node with tag ${sourceNode.tagName} not rendered!`);

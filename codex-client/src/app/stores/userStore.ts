@@ -135,6 +135,7 @@ export default class UserStore{
                 updatedTermValue.termValue = oldValue;
                 store.contentStore.selectTerm(updatedTermValue);
             }
+            store.htmlStore.refreshTerm({...updatedTermValue});
             for(var i = 0; i < store.contentStore.currentSectionTerms.elementGroups.length; ++i)
             {
                 for (var n = 0; n < store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms.length; ++n)

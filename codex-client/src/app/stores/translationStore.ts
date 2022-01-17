@@ -17,6 +17,12 @@ export default class TranslationStore
     constructor() {
         makeAutoObservable(this);
     }
+     clear = () => {
+         this.reccomendedTranslation = {
+             value: 'null',
+             annotation: 'null'
+         }
+     }
 
     prepareForTerm = async (input: Term) => {
         this.translationsLoaded = false;
@@ -38,6 +44,7 @@ export default class TranslationStore
 
     loadReccomended = async (query: TranslatorQuery) => {
         this.reccomendedLoaded = false;
+        this.clear();
         try {
             const translation = await agent.Translate.getTranslation(query);
             runInAction(() => {

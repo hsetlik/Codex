@@ -15,6 +15,9 @@ export default class HtmlStore {
 
     loadPage = async (contentId: string) => {
         this.htmlLoaded = false;
+        this.currentElementsMap = new Map();
+        this.currentPageHtml = null;
+        this.currentPageContent = null;
         try {
             console.log(`Loading page with ID: ${contentId}`);
             const content = await agent.Content.getContentWithId({contentId: contentId});
@@ -35,9 +38,11 @@ export default class HtmlStore {
     }
 
     refreshTerm = (newTerm: UserTermDetails) => {
+        console.log(`Refreshing all terms with`)
        for(let element of this.currentElementsMap.values()) {
             for (let t of element!.abstractTerms) {
                 if (newTerm.termValue.toUpperCase() === t.termValue.toUpperCase()) {
+                    t.hasUserTerm = true;
                     t.rating = newTerm.rating;
                     t.starred = newTerm.starred;
                     t.easeFactor = newTerm.easeFactor;
@@ -62,4 +67,5 @@ export default class HtmlStore {
            console.log(error);
         }
     }
+
 }
