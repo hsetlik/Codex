@@ -1,0 +1,18 @@
+.word-component {
+    display: inline-flex;
+    border-style: none;
+    padding: 0.18em 0.18em;
+    border-radius: 0.25em;
+    align-content: center;
+    margin: 0.25em 0.15em;
+}
+
+.word-span {
+    align-self: center;
+    vertical-align: middle;
+}
+
+.character-group {
+    align-self: center;
+    vertical-align: middle;
+}

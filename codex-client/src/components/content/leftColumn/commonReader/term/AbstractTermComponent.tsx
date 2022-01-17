@@ -15,7 +15,7 @@ export default observer(function  AbstractTermComponent({term, tag}: Props) {
             {term.leadingCharacters !== 'none' &&
                 <LeadingCharacterGroup term={term} />
             }
-            <WordComponent term={term} tag={tag} />
+            <WordComponent term={term} />
             {term.trailingCharacters !== 'none' &&
                 <TrailingCharacterGroup term={term} />
             }
