@@ -8,6 +8,7 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.Content.Queries;
 using Application.DomainDTOs.UserLanguageProfile;
+using Application.DomainDTOs.UserTerm.Queries;
 using Application.Parsing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -100,9 +101,9 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("abstractTermsForElement")]
-        public async Task<IActionResult> AbstractTermsForElement(TextElement dto)
+        public async Task<IActionResult> AbstractTermsForElement(ElementAbstractTermsQuery dto)
         {
-            return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{TextElement = dto}));
+            return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{Dto = dto}));
         }
 
 

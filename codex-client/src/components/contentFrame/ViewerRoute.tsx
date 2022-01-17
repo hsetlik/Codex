@@ -16,8 +16,10 @@ export default function ViewerRoute() {
                 <Col xs={9}>
                     <ContentFrame contentId={safeId} />
                 </Col>
-                <Col xs={3} >
-                    <SelectionDetails />
+                <Col xs={3}>
+                    <span style={{position: "fixed"}}>
+                        <SelectionDetails  />
+                    </span>
                 </Col>
             </Row>
         </Container>

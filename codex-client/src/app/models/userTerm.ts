@@ -54,5 +54,3 @@ export function AbstractToUserTermDetails(abstract: AbstractTerm) {
     return userTerm;
 }
 
-
-

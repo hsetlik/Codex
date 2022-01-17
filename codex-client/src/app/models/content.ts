@@ -11,6 +11,13 @@ export interface TextElement {
     endMs?: number
 }
 
+export interface ElementAbstractTermsQuery {
+    elementText: string,
+    tag: string,
+    contentUrl: string,
+    language: string
+}
+
 export interface ContentSection {
     contentUrl: string,
     index: number,

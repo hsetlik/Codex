@@ -4,6 +4,7 @@
     padding: 0.25em !important;
     margin: 0.2em !important;
     border-style: none !important;
+    align-self: flex-start !important;
   }
 .codex-term-p-t {
     padding-left: 0.15em !important;

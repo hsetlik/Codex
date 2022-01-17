@@ -17,7 +17,7 @@ import { UserTermCreateDto, AddTranslationDto,
          SaveContentQuery,
          SavedContentDto,
          ICollectionId} from "../models/dtos";
-import { ContentMetadata, ElementAbstractTerms, ContentSection, TextElement, ContentTag, TagQuery, ContentPageHtml } from "../models/content";
+import { ContentMetadata, ElementAbstractTerms, ContentSection, ContentTag, TagQuery, ContentPageHtml, ElementAbstractTermsQuery } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
 import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
@@ -108,7 +108,7 @@ const TermEndpoints = {
 const Content = {
     getLanguageContents: (language: ILanguageString) => requests.post<ContentMetadata[]>('/content/getLanguageContents', language),
     getKnownWordsForContent: (contentId: IContentId) => requests.post<KnownWordsDto>('/content/getKnownWordsForContent', contentId),
-    abstractTermsForElement: (dto: TextElement) => requests.post<ElementAbstractTerms>('/content/abstractTermsForElement', dto),
+    abstractTermsForElement: (dto: ElementAbstractTermsQuery) => requests.post<ElementAbstractTerms>('/content/abstractTermsForElement', dto),
     getContentWithId: (contentId: IContentId) => requests.post<ContentMetadata>('/content/getContentWithId', contentId),
     viewContent: (dto: SectionQueryDto) => requests.post('/content/viewContent', dto),
     getBookmark: (contentUrl: IContentUrl) => requests.post<number>('/content/getBookmark', contentUrl),

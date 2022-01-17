@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useStore } from "../../app/stores/store";
 import TextElement from "../content/leftColumn/commonReader/textElement/TextElement";
 import '../styles/content.css';
-import { Loader } from "semantic-ui-react";
 import { ElementType } from "htmlparser2";
 
 
@@ -40,7 +39,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     }
     const contentNode = (sourceNode instanceof Element && currentElementsMap.has(text)) ? 
     (<TextElement terms={currentElementsMap.get(text)!} />) : 
-    (<Loader active={true} />); 
+    (<></>); 
     
     switch (sourceNode.tagName) {
         case 'p' || 'b':

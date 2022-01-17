@@ -116,6 +116,7 @@ export default class UserStore{
     }
 
     updateUserTerm = async (userTerm: UserTermDetails) => {
+        store.htmlStore.refreshTerm(userTerm);
         try {
             await agent.UserTermEndpoints.updateUserTerm(userTerm);
             await this.refreshByValue(userTerm.termValue);

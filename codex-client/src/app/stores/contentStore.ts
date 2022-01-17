@@ -273,7 +273,12 @@ export default class ContentStore
                     }
                 })
                 for(var element of this.currentSection?.textElements!) {
-                    const elementTerms = await agent.Content.abstractTermsForElement(element);
+                    const elementTerms = await agent.Content.abstractTermsForElement({
+                        elementText: element.elementText,
+                        contentUrl: element.contentUrl,
+                        tag: element.tag,
+                        language: this.selectedContentMetadata!.language
+                    });
                     runInAction(() => {
                         this.currentSectionTerms.elementGroups.push(elementTerms);
                     })
@@ -307,7 +312,12 @@ export default class ContentStore
                this.bufferLoaded = true;
            })
            for(var element of this.bufferSection?.textElements!) {
-               const elementTerms = await agent.Content.abstractTermsForElement(element);
+               const elementTerms = await agent.Content.abstractTermsForElement({
+                        elementText: element.elementText,
+                        contentUrl: element.contentUrl,
+                        tag: element.tag,
+                        language: this.selectedContentMetadata!.language
+                    });
                runInAction(() => {
                    this.bufferSectionTerms.elementGroups.push(elementTerms);
                })
@@ -347,7 +357,12 @@ export default class ContentStore
               })
                // load the element abstract terms asynchronously
               for(let element of this.currentSection?.textElements!) {
-                  const group = await agent.Content.abstractTermsForElement(element);
+                  const group = await agent.Content.abstractTermsForElement({
+                        elementText: element.elementText,
+                        contentUrl: element.contentUrl,
+                        tag: element.tag,
+                        language: this.selectedContentMetadata!.language
+                    });
                   runInAction(() => this.currentSectionTerms.elementGroups.push(group));
               }
            } catch (error) {
