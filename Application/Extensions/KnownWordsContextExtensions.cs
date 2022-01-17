@@ -36,7 +36,6 @@ namespace Application.Extensions
             var watch = System.Diagnostics.Stopwatch.StartNew();
             var sections = await parser.GetAllSections(metadata.Value.ContentUrl);
             watch.Stop();
-            //Console.WriteLine($"Getting sections from parser took {watch.ElapsedMilliseconds} ms");
             watch.Restart();
             //var tasks = new List<Task<Result<KnownWordsDto>>>();
             foreach(var section in sections)
@@ -51,7 +50,7 @@ namespace Application.Extensions
             }
             watch.Stop();
             float perTerm = (float)watch.ElapsedMilliseconds / (float)total;
-            //Console.WriteLine($"Checked {total} terms in {watch.ElapsedMilliseconds} ms ({perTerm} ms/term on average)");
+            //Line($"Checked {total} terms in {watch.ElapsedMilliseconds} ms ({perTerm} ms/term on average)");
             return Result<KnownWordsDto>.Success(new KnownWordsDto
             {
                 KnownWords = known,
@@ -63,7 +62,6 @@ namespace Application.Extensions
         {
             var terms = section.Body.Split(null);
             int known = 0;
-            //Console.WriteLine($"\nChecking {terms.Length} terms in section {section.SectionHeader} on thread {Thread.CurrentThread.ManagedThreadId} \n");
             var watch = System.Diagnostics.Stopwatch.StartNew();
             foreach(var term in terms)
             {
@@ -71,7 +69,6 @@ namespace Application.Extensions
                     known += 1;
             }
             watch.Stop();
-            //Console.WriteLine($"Term queries for section {section.SectionHeader} took {watch.ElapsedMilliseconds} ms");
         
             return Result<KnownWordsDto>.Success(new KnownWordsDto
             {

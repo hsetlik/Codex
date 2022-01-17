@@ -28,7 +28,6 @@ namespace Application.Parsing
         protected async Task LoadHtml()
         {
             var web = new HtmlWeb();
-            Console.WriteLine($"Loading HTML for: {Url}");
             loadedHtml =  await web.LoadFromWebAsync(Url);
         }
         
@@ -77,7 +76,6 @@ namespace Application.Parsing
         
         public static ScraperProfile ProfileFor(string url)
         {
-            Console.WriteLine($"Getting scraper for content: {url}");
             if (url.Contains("wikipedia"))
             {
                 return ScraperProfile.Wikipedia;

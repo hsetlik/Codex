@@ -71,7 +71,6 @@ namespace Application.Parsing.ProfileScrapers
                 rel = Regex.Replace(rel, @"amp;", "");
                 var sheetUrl = urlPrefix + rel;
                 storage.StylesheetUrls.Add(sheetUrl);
-                Console.WriteLine($"Stylesheet URL is: {sheetUrl}");
             }
             //get the full node inside the <html> tag
             var htmlNode = root.CssSelect("body").FirstOrDefault();

@@ -29,19 +29,16 @@ namespace Application.Parsing
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 await scraper.PrepareAsync();
                 watch.Stop();
-                Console.WriteLine($"Scraper preparation for {url} took {watch.ElapsedMilliseconds} ms");
             }
         }
             public async Task<ContentSection> GetSection(string contentUrl, int index)
         {
-           Console.WriteLine($"Getting section {index} of content: {contentUrl}"); 
            await EnsureLoaded(contentUrl);
            return scraper.GetSection(index);
         }
 
         public async Task<ContentMetadataDto> GetContentMetadata(string url)
         {
-            Console.WriteLine($"Metadata requested for {url}");
             await EnsureLoaded(url);
             return scraper.GetMetadata();
         }

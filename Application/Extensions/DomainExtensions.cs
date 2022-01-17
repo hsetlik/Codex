@@ -136,7 +136,6 @@ namespace Application.Extensions
 
         public static async Task<List<UserTermCreateQuery>> CreatorsFor(this ContentSection section, ITranslator translator, string language)
         {
-            //Console.WriteLine($"Getting creators for {section.ContentUrl} section #{section.Index}");
             var output = new List<UserTermCreateQuery>();
             var words = section.Body.Split(null).ToList();
             foreach(var word in words)
@@ -155,7 +154,6 @@ namespace Application.Extensions
                         Language = language,
                         FirstTranslation = tResult.Value.ResponseValue
                     });
-                    //Console.WriteLine($"Word is: {word} with translation {tResult.Value.ResponseValue}");
                 }
             }
             return output;

@@ -45,7 +45,6 @@ namespace Application.DataObjectHandling.UserTerms
                 }
                 userTerm = userTerm.UpdatedWith(request.Dto);
                 var success = await _context.SaveChangesAsync() > 0;
-                Console.WriteLine($"UserTerm {userTerm.UserTermId} has starred value: {userTerm.Starred}");
                 if (!success)
                     return Result<Unit>.Failure($"Could not save Changes! {userTerm.UserTermId} {userTerm.Starred}");
                 // 

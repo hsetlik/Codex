@@ -67,7 +67,6 @@ namespace Application.Parsing.ProfileScrapers
                 var rel = sheet.GetAttributeValue("href", "no href");
                 
                 storage.StylesheetUrls.Add(rel);
-                Console.WriteLine($"Stylesheet URL is: {storage.StylesheetUrls.Last()}");
             }
             var headlineNode = root.CssSelect("h1").FirstOrDefault();
             string headline = (headlineNode == null) ? "headline not found" : headlineNode.InnerText;

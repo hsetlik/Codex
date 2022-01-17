@@ -157,7 +157,6 @@ namespace Application.Extensions
 
         public static async Task<Result<List<CollectionDto>>> CollectionsForLanguage(this DataContext context, CollectionsForLanguageQuery query, IUserAccessor accessor)
         {
-            Console.WriteLine($"Looking for collections with language: {query.Language}");
             var mapper = MapperFactory.GetDefaultMapper();
             var matches = await context.Collections
                 .Include(c => c.CollectionContents)
@@ -167,10 +166,6 @@ namespace Application.Extensions
                 .ToListAsync();
             if (matches == null)
                 return Result<List<CollectionDto>>.Failure("no matching collections!");
-            foreach(var match in matches)
-            {
-                Console.WriteLine($"Match is: {match.CollectionName}");
-            }
             if (query.EnforceVisibility)
             {
                 matches = matches.Where(m => m.CreatorUsername == accessor.GetUsername() || (!m.IsPrivate)).ToList();

@@ -50,7 +50,6 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                 {
                     var newTerm = t.GetDto();
                     newTerm.Value = t.NormalizedTermValue;
-                    Console.WriteLine($"User term value is: {newTerm.Value}");
                     output.Add(newTerm);
                 }
                 return Result<List<UserTermDto>>.Success(output);

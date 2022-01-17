@@ -26,7 +26,6 @@ namespace Application.DomainDTOs.ProfileHistory
                     LanguageProfileId = this.LanguageProfileId,
                     DateTime = current
                 };
-                Console.WriteLine($"{idx} is at {current}");
                 output.Add(query);
                 current = current.AddDays(intervalDays);
                 ++idx;

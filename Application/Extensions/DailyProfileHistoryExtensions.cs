@@ -20,7 +20,6 @@ namespace Application.Extensions
             var recordOnDay = await context.DailyProfileRecords.FirstOrDefaultAsync(p => p.LanguageProfileId == langProfileId && p.CreatedAt.Date == time.Date);
             if (recordOnDay != null)
             {
-                //Console.WriteLine($"Record found for day {recordOnDay.CreatedAt.Month}/{recordOnDay.CreatedAt.Day}");
                 return Result<DailyProfileRecord>.Success(recordOnDay);
             }
             var allRecords = await context.DailyProfileRecords.Where(r => r.LanguageProfileId == langProfileId).ToListAsync();
@@ -35,12 +34,10 @@ namespace Application.Extensions
         {
             if (query.MetricName == "KnownWords")
             {
-                //Console.WriteLine($"Looking for record at: {query.DateTime}");
                 var record = await context.GetClosestRecord(query.LanguageProfileId, query.DateTime);
                 if (!record.IsSuccess)
                     return Result<DailyDataPoint>.Failure($"Could not get record! Error message: {record.Error}");
                 var knownWords = record.Value.KnownWords;
-                //Console.WriteLine($"{knownWords} known on {record.Value.CreatedAt}");
                 return Result<DailyDataPoint>.Success(new KnownWordsDataPoint(query.LanguageProfileId, query.DateTime, knownWords));
             }
             else if (query.MetricName == "NumUserTerms")
@@ -54,7 +51,6 @@ namespace Application.Extensions
                 if (!record.IsSuccess)
                     return Result<DailyDataPoint>.Failure($"Could not get record! Error message: {record.Error}");
                 var wordsRead = record.Value.WordsRead;
-                //Console.WriteLine($"{knownWords} known on {record.Value.CreatedAt}");
                 return Result<DailyDataPoint>.Success(new WordsReadDataPoint(query.LanguageProfileId, query.DateTime, wordsRead));
 
             }
@@ -64,7 +60,6 @@ namespace Application.Extensions
                 if (!record.IsSuccess)
                     return Result<DailyDataPoint>.Failure($"Could not get record! Error message: {record.Error}");
                 var secondsListened = record.Value.SecondsListened;
-                //Console.WriteLine($"{knownWords} known on {record.Value.CreatedAt}");
                 return Result<DailyDataPoint>.Success(new SecondsListenedDataPoint(query.LanguageProfileId, query.DateTime, secondsListened));
             }
             else
@@ -83,7 +78,6 @@ namespace Application.Extensions
                 if(!result.IsSuccess)
                     return Result<MetricGraph>.Failure($"Could not load data point! Error message: {result.Error}");
                 points.Add(result.Value);
-                Console.WriteLine($"Added point at {result.Value.DateTime} with value {result.Value.ValueString}");
             }
             return Result<MetricGraph>.Success(new MetricGraph
             {

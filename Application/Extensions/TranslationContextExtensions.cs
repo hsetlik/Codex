@@ -17,14 +17,12 @@ namespace Application.Extensions
     {
             public static async Task<Result<TranslatorResponse>> GetTopTranslation(this DataContext context, TranslatorQuery query)
             {
-                Console.WriteLine($"Looking for exisitng translation with value {query.QueryValue} for language {query.ResponseLanguage}");
                 var matching = await context.Translations
                     .Where(t => t.TermLanguage == query.QueryLanguage && 
                     t.TermValue == query.QueryValue.ToUpper() && 
                     t.UserLanguage == query.ResponseLanguage).ToListAsync();
                 if (matching == null || matching.Count < 1)
                 {
-                    Console.WriteLine("No exisitng translation found!");
                     return Result<TranslatorResponse>.Failure("No matching translations");
 
                 }
@@ -42,7 +40,6 @@ namespace Application.Extensions
                     Query = query,
                     ResponseValue = tList[0].Key
                 };
-                Console.WriteLine("Used existing translation!");
                 return Result<TranslatorResponse>.Success(output);
             }
     }

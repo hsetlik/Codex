@@ -35,7 +35,6 @@ namespace Application.DataObjectHandling.Contents
                 var existingContent = await _context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
                 if (existingContent != null)
                     return Result<Unit>.Failure("Content at this URL is already in database");
-                Console.WriteLine($"Content not found for URL {request.Dto.ContentUrl}. Attempting to create...");
                 var metadata = await _parser.GetContentMetadata(request.Dto.ContentUrl);
                 if (metadata == null)
                     return Result<Unit>.Failure("Could not create metadata");

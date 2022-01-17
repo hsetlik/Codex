@@ -67,7 +67,6 @@ namespace Application.Parsing.ProfileScrapers
             var video = await ytClient.Videos.GetAsync(Url);
 
             var language = videoSnippet.Snippet.DefaultAudioLanguage.Substring(0, 2);
-            Console.WriteLine($"Video has title {video.Title}, duration {video.Duration}, uploadDate {video.UploadDate}, and language {language}");
             var tracks = await ytClient.Videos.ClosedCaptions.GetManifestAsync(videoId);
             
             storage.Metadata = new ContentMetadataDto
@@ -79,7 +78,6 @@ namespace Application.Parsing.ProfileScrapers
                 ContentName = video.Title,
                 Language = language
             };
-            Console.WriteLine(storage.Metadata.ContentName);
 
             storage.Sections = new List<YoutubeSection>();
 
@@ -87,7 +85,6 @@ namespace Application.Parsing.ProfileScrapers
             
             var track = await ytClient.Videos.ClosedCaptions.GetAsync(trackInfo);
             int idx = 0;
-            Console.WriteLine($"Url is: {Url}");
             var currentSection = new YoutubeSection
             {
                 ContentUrl = Url,
@@ -97,7 +94,6 @@ namespace Application.Parsing.ProfileScrapers
             };
             foreach(var caption in track.Captions)
             {
-                Console.WriteLine($"Caption is {caption.Text} at {caption.Offset.TotalMilliseconds} with duration {(float)(caption.Duration.Milliseconds)} ms");
                 var element = new VideoCaptionElement
                 {
                     Tag = "caption",

@@ -53,8 +53,6 @@ namespace Application.Extensions
                     });
                 }
             }            
-            Console.WriteLine($"Updated userterm with ID: {userTerm.UserTermId} and value {userTerm.NormalizedTermValue}");
-
             var success = await context.SaveChangesAsync() > 0;
             if (!success) return Result<Unit>.Failure("Context could not be updated!");
             return Result<Unit>.Success(Unit.Value);
@@ -160,7 +158,6 @@ namespace Application.Extensions
             var profile = await context.UserLanguageProfiles.Include(p => p.User).FirstOrDefaultAsync(p => p.User.UserName == username && p.Language == dto.Language);
             if (profile == null)
                 return Result<Unit>.Failure($"Could not get profile for {username} with language {dto.Language}");
-            Console.WriteLine($"Profile found: {profile.LanguageProfileId}");
             string normValue = dto.TermValue.AsTermValue().ToUpper();
             
             var r = new Random();
@@ -202,7 +199,6 @@ namespace Application.Extensions
             var success = await context.SaveChangesAsync() > 0;
             if (!success)
                 return Result<Unit>.Failure("Could not create userTerm!");
-            Console.WriteLine($"Created userTerm for {dto.TermValue} and user {username}");
             var updateResult = await context.AddRecord(new DomainDTOs.UserLanguageProfile.LanguageProfileDto
             {
                 Language = dto.Language,
@@ -211,7 +207,6 @@ namespace Application.Extensions
             }, createTime);
             if (!updateResult.IsSuccess)
                 return Result<Unit>.Failure($"Could not update history! Error message: {updateResult.Error}");
-            Console.WriteLine($"Updated history for {dto.TermValue} and user {username}");
             return Result<Unit>.Success(Unit.Value);
         }
     }

@@ -111,7 +111,6 @@ namespace Domain
                 });
             }
             await context.SaveChangesAsync();
-            Console.WriteLine("Added all contents");
             var timeString = new List<string>();
             foreach(var lang in langs)
             {
@@ -123,20 +122,12 @@ namespace Domain
                 var creators = await section.CreatorsFor(translator, content.Language);
                 foreach (var creator in creators)
                 {
-                    Console.WriteLine($"Creator has value {creator.TermValue} and language {creator.Language}");
                     var termResult = await context.CreateDummyUserTerm(creator, user.UserName);
                 }
 
                 lWatch.Stop();
-                Console.WriteLine($"Creating UserTerms for section {section.SectionHeader} took {lWatch.Elapsed} or {lWatch.ElapsedMilliseconds} ms");
-                timeString.Add($"Creating UserTerms for section {section.SectionHeader} took {lWatch.Elapsed} or {lWatch.ElapsedMilliseconds} ms");
             }
             watch.Stop();
-            foreach(var str in timeString)
-            {
-                Console.WriteLine(str);
-            }
-            Console.WriteLine($"Seeding Database took {watch.Elapsed.ToString()} or {watch.ElapsedMilliseconds} ms");
             }
         }
     }

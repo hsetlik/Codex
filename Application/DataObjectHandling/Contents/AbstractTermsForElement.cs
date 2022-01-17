@@ -43,7 +43,6 @@ namespace Application.DataObjectHandling.Contents
 
             public async Task<Result<ElementAbstractTerms>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var watch = System.Diagnostics.Stopwatch.StartNew();
 
                 var terms = new List<AbstractTermDto>();
                 string text = request.Dto.ElementText.WithoutSquareBrackets();
@@ -56,7 +55,6 @@ namespace Application.DataObjectHandling.Contents
                 }
                 var taskMap = new TaskMap();
 
-                watch.Restart();
                 Parallel.ForEach(wordDict, word => 
                 {
                     taskMap.TermTasks[word.Key] = _factory.GetAbstractTerm(new TermDto{Value = word.Value, Language = request.Dto.Language}, _userAccessor.GetUsername());
@@ -70,8 +68,6 @@ namespace Application.DataObjectHandling.Contents
                         terms.Add(term.Value);
                     }
                 }
-                watch.Stop();
-                //Console.WriteLine($"Getting AbstractTerms for element {request.TextElement.Index}: {request.TextElement.Value} took {watch.ElapsedMilliseconds} ms");
                 terms = terms.OrderBy(t => t.IndexInChunk).ToList();
                 var output = new ElementAbstractTerms
                     {
