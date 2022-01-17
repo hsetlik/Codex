@@ -1,10 +1,8 @@
-
   /*NOTE: sometimes npm has to be restarted for style changes to take effect*/
   .codex-term-p {
     padding: 0.25em !important;
     margin: 0.2em !important;
     border-style: none !important;
-    align-self: flex-start !important;
   }
 .codex-term-p-t {
     padding-left: 0.15em !important;
@@ -23,7 +21,8 @@
   }
 
   .codex-term-h2 {
-    padding: 10px !important;
+    padding: 0.25em !important;
+    margin: 0.25em !important;
     background: rgb(10, 171, 211);
     margin-top: 10px !important;
     font-style: italic !important;
@@ -43,6 +42,7 @@
     margin: 0.2em !important;
     border-bottom-style: solid !important;
     border-bottom-color: rgb(97, 91, 91)!important;
+    border-bottom-width: 0.15em !important;
   }
 
   .codex-term-h1-h {
@@ -72,6 +72,7 @@
     border-bottom-style: solid !important;
     border-bottom-color: rgb(97, 91, 91)!important;
   }
+  /* containers */
   .codex-element-p {
     display: flex !important;
     margin: 1em !important;
@@ -109,7 +110,7 @@
   }
     .trailing-character-group {
     padding: 0px !important;
-    background: white !important;
+    background: transparent !important;
     text-align: left !important;
     margin-right: 6px !important;
     margin-left: 0px !important;
@@ -117,7 +118,7 @@
 
   .leading-character-group {
     padding: 0px !important;
-    background: white !important;
+    background: transparent !important;
     text-align: left !important;
     margin-right: 6px !important;
     margin-left: 0px !important;

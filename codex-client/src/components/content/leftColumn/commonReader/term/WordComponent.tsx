@@ -1,4 +1,3 @@
-import { Button } from "semantic-ui-react";
 import { AbstractTerm } from "../../../../../app/models/userTerm";
 import '../../../../styles/content.css';
 import { useStore } from "../../../../../app/stores/store";
@@ -6,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import { getColorForTerm } from "../../../../../app/utilities/colorUtility";
 import { classNameForTerm } from "../../../../../app/models/readerStyle";
 import { useKeyPressed } from "../../../../../app/common/useKeyPressed";
+import { Label } from "semantic-ui-react";
 
 
 interface Props {
@@ -22,9 +22,9 @@ export default observer(function WordComponent({term, tag}: Props) {
         return e.shiftKey;
     })
     return (
-        <Button className={className} onClick={() => selectTerm(term, shiftDown)} style={{background: termColor}}>
+        <Label as='button' className={className} onClick={() => selectTerm(term, shiftDown)} style={{background: termColor}}>
             {term.termValue}
-        </Button>
+        </Label>
     )
   
 });
