@@ -29,6 +29,9 @@ export interface ContentSection {
 export interface ContentMetadata {
     contentId: string,
     contentUrl: string,
+    description?: string,
+    creatorUsername?: string,
+    languageProfileId?: string,
     videoUrl: string,
     audioUrl: string,
     contentType: string,

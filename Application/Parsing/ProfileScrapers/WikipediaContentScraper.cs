@@ -16,9 +16,9 @@ using ScrapySharp.Network;
 namespace Application.Parsing.ProfileScrapers
 {
    //Wikipedia
-
     public class WikipediaContentScraper : AbstractScraper
     {
+        private List<TextElement> textElements = new List<TextElement>();
         public static class ContentElementTags
         {
             public static string[] Tags =
@@ -53,9 +53,15 @@ namespace Application.Parsing.ProfileScrapers
 
         public override ContentSection GetSection(int index)
         {
-            return storage.Sections[index];
+            return new ContentSection
+            {
+                ContentUrl = storage.Metadata.ContentUrl,
+                Index = index,
+                SectionHeader = storage.Metadata.ContentUrl,
+                TextElements = textElements
+            };
         }
-               public override async Task PrepareAsync()
+        public override async Task PrepareAsync()
         {
             // load the web page
             var sBrower = new ScrapingBrowser();
@@ -100,6 +106,14 @@ namespace Application.Parsing.ProfileScrapers
                 var nodes = htmlNode.CssSelect(name).ToList();
                 foreach(var node in nodes)
                 {
+                    var bodyString = node.InnerText.StripWikiAnnotations().WithoutSquareBrackets();
+                    var element = new TextElement
+                    {
+                        Tag = node.Name,
+                        ElementText = bodyString,
+                        ContentUrl = this.Url
+                    };
+                    this.textElements.Add(element);
                     node.SetAttributeValue("codex_replacable", "true");
                 }
             }

@@ -91,12 +91,17 @@ namespace Domain
             {
                 var profile = users[i].CreateProfileFor(langs[i]);
                 users[i].UserLanguageProfiles.Add(profile);
+                Console.WriteLine($"Creating user {users[i].UserName} with profile language {langs[i]}");
                 await userManager.CreateAsync(users[i], "Pa$$w0rd");
             }
             //add contents to Db
-            foreach(var url in WikiUrls.Urls)
+            for(int i = 0; i < WikiUrls.Urls.Count; ++i)
             {
+                string url = WikiUrls.Urls[i];
+                Console.WriteLine($"Seeding content with URL: {url}");
                 var metadata = await parser.GetContentMetadata(url);
+                var user = users.First(u => u.UserLanguageProfiles.Any(p => p.Language == metadata.Language));
+                var profile = user.UserLanguageProfiles.First(p => p.Language == metadata.Language);
                 context.Contents.Add(new Content
                 {
                     ContentId = metadata.ContentId,
@@ -107,27 +112,39 @@ namespace Domain
                     Language = metadata.Language,
                     CreatedAt = DateTime.Now,
                     ContentTags = new List<ContentTag>(),
-                    NumSections = metadata.NumSections
+                    NumSections = metadata.NumSections,
+                    Description = $"Dummy description number {i}",
+                    CreatorUsername = user.UserName,
+                    UserLanguageProfile = profile,
+                    LanguageProfileId = profile.LanguageProfileId
                 });
             }
             await context.SaveChangesAsync();
             var timeString = new List<string>();
             foreach(var lang in langs)
             {
+                Console.WriteLine($"Creating terms for language: {lang}");
                 var lWatch = System.Diagnostics.Stopwatch.StartNew();
                 var user = await context.Users.Include(u => u.UserLanguageProfiles)
                  .FirstOrDefaultAsync(u => u.UserLanguageProfiles.Any(p => p.Language == lang));
                 var content = await context.Contents.FirstOrDefaultAsync(c => c.Language == lang);
-                var section = await parser.GetSection(content.ContentUrl, 1);
+                var section = await parser.GetSection(content.ContentUrl, 0);
+                Console.WriteLine($"Section is: {section.Body}");
+                while(section.Body.Length > 2000) 
+                {
+                    section.TextElements = section.TextElements.Take(section.TextElements.Count - 1).ToList();
+                }
                 var creators = await section.CreatorsFor(translator, content.Language);
                 foreach (var creator in creators)
                 {
+                    Console.WriteLine($"Creating term for: {creator.TermValue}");
                     var termResult = await context.CreateDummyUserTerm(creator, user.UserName);
                 }
-
                 lWatch.Stop();
+                Console.WriteLine($"Creating terms for {lang} took {lWatch.ElapsedMilliseconds} ms");
             }
             watch.Stop();
+            Console.WriteLine($"Seeding Databse took {watch.ElapsedMilliseconds} ms");
             }
         }
     }

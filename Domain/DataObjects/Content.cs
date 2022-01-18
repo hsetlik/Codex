@@ -10,6 +10,10 @@ namespace Domain.DataObjects
     {
         [Key]
         public Guid ContentId { get; set; }
+        public Guid LanguageProfileId { get; set; }
+        public UserLanguageProfile UserLanguageProfile { get; set; } 
+        public string Description { get; set; }
+        public string CreatorUsername { get; set; }
         public string ContentUrl { get; set; }
         public string VideoUrl { get; set; }
         public string AudioUrl { get; set; }
@@ -17,8 +21,8 @@ namespace Domain.DataObjects
         public string ContentName { get; set; }
         public string Language { get; set; }
         public DateTime CreatedAt { get; set; }
-        public List<ContentTag> ContentTags { get; set; }
+        public List<ContentTag> ContentTags { get; set; } = new List<ContentTag>();
         public int NumSections { get; set; }
-        public ICollection<CollectionContent> CollectionContents { get; set; }
+        public ICollection<CollectionContent> CollectionContents { get; set; } = new List<CollectionContent>();
     }
 }

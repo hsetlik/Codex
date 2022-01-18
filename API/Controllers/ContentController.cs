@@ -46,7 +46,7 @@ namespace API.Controllers
 
 
         [HttpPost("importContent")]
-        public async Task<IActionResult> ImportContent(ContentUrlQuery dto)
+        public async Task<IActionResult> ImportContent(CreateContentQuery dto)
         {
             return HandleResult(await Mediator.Send(new ImportContent.Query{Dto = dto}));
         }

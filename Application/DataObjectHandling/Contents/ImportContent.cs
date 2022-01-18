@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs.Content;
+using Application.DomainDTOs.Content.Queries;
 using Application.Interfaces;
 using Domain.DataObjects;
 using MediatR;
@@ -17,15 +18,18 @@ namespace Application.DataObjectHandling.Contents
     {
         public class Query : IRequest<Result<Unit>>
         {
-            public ContentUrlQuery Dto { get; set; }
+            public CreateContentQuery Dto { get; set; }
+           
         }
 
         public class Handler : IRequestHandler<Query, Result<Unit>>
         {
         private readonly IParserService _parser;
         private readonly DataContext _context;
-            public Handler(DataContext context, IParserService parser)
+        private readonly IUserAccessor _user;
+            public Handler(DataContext context, IParserService parser, IUserAccessor user)
             {
+            this._user = user;
             this._context = context;
             this._parser = parser;
             }
@@ -38,6 +42,12 @@ namespace Application.DataObjectHandling.Contents
                 var metadata = await _parser.GetContentMetadata(request.Dto.ContentUrl);
                 if (metadata == null)
                     return Result<Unit>.Failure("Could not create metadata");
+                var profile = await _context.UserLanguageProfiles
+                    .Include(p => p.User)
+                    .FirstOrDefaultAsync(p => p.Language == metadata.Language && p.User.UserName == _user.GetUsername());
+                if (profile == null)
+                    return Result<Unit>.Failure($"User {_user.GetUsername()} has no profile for {metadata.Language}");
+                
                 var content = new Content
                 {
                     ContentUrl = metadata.ContentUrl,
@@ -46,9 +56,19 @@ namespace Application.DataObjectHandling.Contents
                     VideoUrl = metadata.VideoUrl,
                     Language = metadata.Language,
                     CreatedAt = DateTime.Now,
-                    ContentTags = new List<ContentTag>(),
-                    NumSections = metadata.NumSections
+                    NumSections = metadata.NumSections,
+                    CreatorUsername = _user.GetUsername(),
+                    UserLanguageProfile = profile,
+                    LanguageProfileId = profile.LanguageProfileId,
+                    Description = request.Dto.Description
                 };
+                content.ContentTags = request.Dto.Tags.Select(t => new ContentTag
+                    {
+                        Content = content,
+                        ContentId = content.ContentId,
+                        TagValue = t,
+                        TagLanguage = profile.UserLanguage
+                    }).ToList();
                 _context.Contents.Add(content);
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)
