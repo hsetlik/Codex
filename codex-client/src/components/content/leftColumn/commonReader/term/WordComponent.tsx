@@ -30,7 +30,8 @@ export default observer(function WordComponent({term, style}: Props) {
         background: termColor
     };
     const mergedStyle: React.CSSProperties = {...addedStyle, ...style};
-
+    if (term.termValue.length < 1)
+        return (<span></span>)
     return (
         <button className={'word-component'} onClick={() => selectTerm(term, shiftDown)} style={mergedStyle} >
            {term.termValue}
