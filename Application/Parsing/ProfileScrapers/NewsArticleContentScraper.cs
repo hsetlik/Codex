@@ -64,9 +64,10 @@ namespace Application.Parsing.ProfileScrapers
             storage.StylesheetUrls = new List<string>();
             var stylesheets = root.Descendants().Where(d => d.Attributes.Any(a => a.Value == "stylesheet")).ToList();
             var urlRoot = new Uri(Url).DnsSafeHost;
-            var rootStart = urlRoot.Substring(0, 8);
-            Console.WriteLine($"Root Begins with: {rootStart}");
-            if (!(rootStart == @"http://" && rootStart == @"https://"))
+            var rootLong = urlRoot.Substring(0, 8);
+            var rootShort = urlRoot.Substring(0, 7);
+            Console.WriteLine($"Root Begins with: {rootLong}");
+            if (!(rootShort == @"http://" || rootLong == @"https://"))
             {
                 string shorter = Url.Substring(0, 7);
                 string longer = Url.Substring(0, 8);

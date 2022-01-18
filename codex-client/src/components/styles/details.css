@@ -8,7 +8,14 @@
     padding: 0.25em;
     color:white !important;
 }
-
+.rating-button {
+    color:white !important;
+    padding: 0.5em;
+    flex-grow: 1; 
+    border-style: none;
+    background-color: rgb(110, 110, 110);
+    margin: 0.25em;
+}
 .suggestion-button {
     border-radius: 0.5em !important;
     margin: 0.25em !important;

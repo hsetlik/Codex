@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "semantic-ui-react";
 import { AbstractTerm, AbstractToUserTermDetails } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
+import '../../styles/details.css';
 
 interface Props {
     ratingValue: number,
@@ -19,8 +20,8 @@ export default observer (function RatingButton({ratingValue, term}: Props) {
         console.log(`New Rating: ${ratingValue}`);
     }
     return (
-        <Button basic onClick={rateTerm} active={ratingValue === term.rating} style={{}}>
+        <button onClick={rateTerm} className='rating-button'>
             {ratingValue}
-        </Button>
+        </button>
     )
 })
