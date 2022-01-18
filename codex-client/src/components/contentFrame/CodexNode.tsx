@@ -38,6 +38,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     if (!(sourceNode instanceof Element)) {
         return (<></>);
     }
+    const mergedAttributes = {...sourceNode.attribs, ...sourceNode.attributes};
    const contentNode = (sourceNode instanceof Element && currentElementsMap.has(text)) ? 
     (<TextElement terms={currentElementsMap.get(text)!} />) : 
     (<>{text}</>); 
@@ -46,68 +47,68 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
         case 'p' || 'b':
             
             return (
-                <div className={className || 'codex-element-p'} {...sourceNode.attribs} ref={ref}>
+                <div className={className || 'codex-element-p'} {...mergedAttributes} ref={ref}>
                     {contentNode}
                 </div>
             );
         case 'h1':
             return (
-                <h1 className={className || 'codex-element-h1'}ref={ref} {...sourceNode.attribs}>
+                <h1 className={className || 'codex-element-h1'}ref={ref} {...mergedAttributes}>
                     {contentNode}
                 </h1>
             )
         case 'h2':
             return (
-                <h2 className={className || 'codex-element-h2'}ref={ref} {...sourceNode.attribs}>
+                <h2 className={className || 'codex-element-h2'}ref={ref} {...mergedAttributes}>
                     {contentNode}
                 </h2>
             )
         case 'h3':
             return (
-                <h3 className={className || 'codex-element-h3'}ref={ref}{...sourceNode.attribs}>
+                <h3 className={className || 'codex-element-h3'}ref={ref}{...mergedAttributes}>
                     {contentNode}
                 </h3>
             )
         case 'a':
             return (
-                <div className={className || 'codex-element-div'} ref={ref}{...sourceNode.attribs}>
+                <div className={className || 'codex-element-div'} ref={ref}{...mergedAttributes}>
                     {contentNode}
                 </div>
             )
         case 'div':
             return (
-                <div className={className || 'codex-element-div'}ref={ref}{...sourceNode.attribs}>
+                <div className={className || 'codex-element-div'}ref={ref}{...mergedAttributes}>
                     {contentNode}
                 </div>
             )
         case 'span':
             return (
-                <span className={className || 'codex-element-span'}ref={ref}{...sourceNode.attribs}>
+                <span className={className || 'codex-element-span'}ref={ref}{...mergedAttributes}>
                     {contentNode}
                 </span>
             )
         case 'li':
             return (
-                <li className={className || 'codex-element-li'}ref={ref}{...sourceNode.attribs}>
+                <li className={className || 'codex-element-li'}ref={ref}{...mergedAttributes}>
                     {contentNode}
                 </li>
             )
         case 'td':
             return (
-                <td className={className || 'codex-element-span'}ref={ref}{...sourceNode.attribs}>
+                <td className={className || 'codex-element-span'}ref={ref}>
                     {contentNode}
                 </td>
             )
         case 'th':
             return (
-                <th className={className || 'codex-element-span'}ref={ref}{...sourceNode.attribs}>
+                <th className={className || 'codex-element-span'}ref={ref}>
                     {contentNode}
                 </th>
             )
         default:
             console.log(`Node with tag ${sourceNode.tagName} not rendered!`);
             return (
-                <div className={className || 'codex-element-div'}ref={ref}{...sourceNode.attribs}>
+                <div className={className || 'codex-element-div'}ref={ref}>
                     {contentNode}
                 </div>
             )

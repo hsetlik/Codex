@@ -19,6 +19,22 @@ namespace Application.Parsing.ProfileScrapers
 
     public class WikipediaContentScraper : AbstractScraper
     {
+        public static class ContentElementTags
+        {
+            public static string[] Tags =
+            {
+                "p",
+                "h1",
+                "h2",
+                "h3",
+                "span",
+                "li",
+                "td",
+                "th"
+            };
+
+
+        }
         private WikiContentStorage storage;
         public WikipediaContentScraper(string url) : base(url)
         {
@@ -39,20 +55,7 @@ namespace Application.Parsing.ProfileScrapers
         {
             return storage.Sections[index];
         }
-        
-        public static string[] TextElementParentTypes =
-        {
-            "p",
-            "h1",
-            "h2",
-            "h3",
-            "span",
-            "li",
-            "td",
-            "th"
-        };
-
-        public override async Task PrepareAsync()
+               public override async Task PrepareAsync()
         {
             // load the web page
             var sBrower = new ScrapingBrowser();
@@ -92,7 +95,7 @@ namespace Application.Parsing.ProfileScrapers
                 VideoUrl = "none",
                 NumSections = 1
             };
-            foreach(string name in TextElementParentTypes)
+            foreach(string name in ContentElementTags.Tags)
             {
                 var nodes = htmlNode.CssSelect(name).ToList();
                 foreach(var node in nodes)

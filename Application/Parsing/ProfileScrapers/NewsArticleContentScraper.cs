@@ -12,6 +12,7 @@ using HtmlAgilityPack;
 using MediatR;
 using ScrapySharp.Extensions;
 using ScrapySharp.Network;
+using static Application.Parsing.ProfileScrapers.WikipediaContentScraper;
 
 namespace Application.Parsing.ProfileScrapers
 {
@@ -56,23 +57,34 @@ namespace Application.Parsing.ProfileScrapers
             //  get the HTML
             var downloader = new HttpDownloader(this.Url, null, null);
             var pageText = await Task.Run(() => downloader.GetPage()); 
-            
+            Console.WriteLine($"Content URL is : {this.Url}");
             var document = new HtmlDocument();
             document.LoadHtml(pageText);
             var root = document.DocumentNode;
             storage.StylesheetUrls = new List<string>();
             var stylesheets = root.Descendants().Where(d => d.Attributes.Any(a => a.Value == "stylesheet")).ToList();
+            var urlRoot = new Uri(Url).DnsSafeHost;
+            var rootStart = urlRoot.Substring(0, 8);
+            Console.WriteLine($"Root Begins with: {rootStart}");
+            if (!(rootStart == @"http://" && rootStart == @"https://"))
+            {
+                string shorter = Url.Substring(0, 7);
+                string longer = Url.Substring(0, 8);
+                string prefix = (shorter == @"http://") ? shorter : longer;
+                urlRoot = prefix + urlRoot;
+            }
             foreach(var sheet in stylesheets)
             {
                 var rel = sheet.GetAttributeValue("href", "no href");
-                
-                storage.StylesheetUrls.Add(rel);
+                rel = Regex.Replace(rel, @"amp;", "");
+                Console.WriteLine($"Stylesheet URL: {urlRoot+ rel}");
+                storage.StylesheetUrls.Add(urlRoot + rel);
             }
             var headlineNode = root.CssSelect("h1").FirstOrDefault();
             string headline = (headlineNode == null) ? "headline not found" : headlineNode.InnerText;
             var htmlNode = root.CssSelect("html").FirstOrDefault();
             var bodyNode = root.CssSelect("body").FirstOrDefault();
-            storage.RawPageHtml = bodyNode.InnerHtml;           // create a list of nodes, just grab anything inside relevant HTML tags
+            // create a list of nodes, just grab anything inside relevant HTML tags
             var lang = root.GetAttributeValue("lang", "language not found");
             if (lang == "language not found")
             {
@@ -83,25 +95,14 @@ namespace Application.Parsing.ProfileScrapers
                 }
             }
             var uNodes = new List<HtmlNode>();
-            uNodes.Add(headlineNode);
-            uNodes.AddRange(root.CssSelect("p").ToList());
-            uNodes.AddRange(root.CssSelect("span").ToList());
-            uNodes.AddRange(root.CssSelect("h1").ToList());
-            uNodes.AddRange(root.CssSelect("h2").ToList());
-            var nodes = uNodes.OrderBy(n => n.Line).ToList();
-            var elements = new List<VideoCaptionElement>();
-            for(int i = 0; i < nodes.Count; ++i)
+            foreach(var tag in ContentElementTags.Tags)
             {
-                var element = new VideoCaptionElement
-                {
-                    Tag = nodes[i].Name,
-                    ElementText = nodes[i].InnerText,
-                    ContentUrl = this.Url,
-                    Index = i
-                };
-                elements.Add(element);
+                uNodes.AddRange(root.CssSelect(tag));
             }
-            
+            foreach(var n in uNodes)
+            {
+                n.SetAttributeValue("codex_replacable", "true");
+            }
             storage.Metadata = new ContentMetadataDto
             {
                 ContentUrl = this.Url,
@@ -113,6 +114,7 @@ namespace Application.Parsing.ProfileScrapers
                 AudioUrl = "none",
                 NumSections = 1
             };
+            storage.RawPageHtml = bodyNode.InnerHtml;
             contentsLoaded = true;
         }
     }
