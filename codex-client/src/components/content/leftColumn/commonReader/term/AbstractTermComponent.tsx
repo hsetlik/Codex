@@ -6,16 +6,17 @@ import WordComponent from "./WordComponent";
 
 interface Props {
     term: AbstractTerm,
-    tag: string
+    tag: string,
+    style?: React.CSSProperties
 }
 
-export default observer(function  AbstractTermComponent({term, tag}: Props) {
+export default observer(function  AbstractTermComponent({term, style}: Props) {
         return (
         <>
             {term.leadingCharacters !== 'none' &&
                 <LeadingCharacterGroup term={term} />
             }
-            <WordComponent term={term} />
+            <WordComponent term={term} style={style} />
             {term.trailingCharacters !== 'none' &&
                 <TrailingCharacterGroup term={term} />
             }

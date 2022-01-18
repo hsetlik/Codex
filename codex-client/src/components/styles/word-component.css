@@ -15,4 +15,5 @@
 .character-group {
     align-self: center;
     vertical-align: middle;
+    display: inline;
 }

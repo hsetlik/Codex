@@ -4,14 +4,15 @@ import AbstractTermComponent from "../term/AbstractTermComponent";
 
 interface Props {
     terms: ElementAbstractTerms;
+    style?: React.CSSProperties;
   
 }
 
 
-export default observer (function TextElement({terms}: Props) {
+export default observer (function TextElement({terms, style}: Props) {
     return (
         <>
-            {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag} term={term} key={term.indexInChunk + 1}/> ))}
+            {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag} term={term} key={term.indexInChunk + 1} style={style}/> ))}
         </>
     );
 })

@@ -33,7 +33,7 @@ export default observer(function WordComponent({term, style}: Props) {
 
     return (
         <button className={'word-component'} onClick={() => selectTerm(term, shiftDown)} style={mergedStyle} >
-           <span>{term.termValue}</span>
+           {term.termValue}
         </button>
     )
   

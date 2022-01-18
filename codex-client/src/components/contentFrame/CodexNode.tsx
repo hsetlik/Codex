@@ -40,7 +40,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     }
    const contentNode = (sourceNode instanceof Element && currentElementsMap.has(text)) ? 
     (<TextElement terms={currentElementsMap.get(text)!} />) : 
-    (<></>); 
+    (<>{text}</>); 
     
     switch (sourceNode.tagName) {
         case 'p' || 'b':
@@ -88,7 +88,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
             )
         case 'li':
             return (
-                <li className={className || 'codex-element-span'}ref={ref}>
+                <li className={className || 'codex-element-li'}ref={ref}>
                     {contentNode}
                 </li>
             )

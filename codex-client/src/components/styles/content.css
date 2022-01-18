@@ -65,7 +65,7 @@
     flex-wrap: wrap !important;
   }
   .codex-element-h1 {
-    display: block !important;
+    display: flex !important;
     padding-top: 1.5% !important;
     padding-bottom: 1.5% !important;
   }
@@ -85,6 +85,7 @@
     flex-wrap: wrap !important;
   }
   .codex-element-li {
+    display: block !important;
     margin-bottom: 1.5% !important;
     margin-left: 3% !important; 
   }
