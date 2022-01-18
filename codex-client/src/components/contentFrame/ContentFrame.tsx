@@ -31,9 +31,7 @@ export default observer(function ContentFrame({contentId}: Props) {
                     if (node.attribs.codex_replacable === 'true' ) {
                         return <CodexNode sourceNode={node} key={`elementNode${nodeIdx}`} />
                     }
-                    if (node.name === 'body') {
-                        return <div>{node}</div>
-                    }
+                    
                 }
             }
     });

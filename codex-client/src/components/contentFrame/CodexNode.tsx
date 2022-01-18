@@ -46,68 +46,68 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
         case 'p' || 'b':
             
             return (
-                <div className={className || 'codex-element-p'} {...sourceNode.attributes} ref={ref}>
+                <div className={className || 'codex-element-p'} {...sourceNode.attribs} ref={ref}>
                     {contentNode}
                 </div>
             );
         case 'h1':
             return (
-                <h1 className={className || 'codex-element-h1'}ref={ref}>
+                <h1 className={className || 'codex-element-h1'}ref={ref} {...sourceNode.attribs}>
                     {contentNode}
                 </h1>
             )
         case 'h2':
             return (
-                <h2 className={className || 'codex-element-h2'}ref={ref}>
+                <h2 className={className || 'codex-element-h2'}ref={ref} {...sourceNode.attribs}>
                     {contentNode}
                 </h2>
             )
         case 'h3':
             return (
-                <h3 className={className || 'codex-element-h3'}ref={ref}>
+                <h3 className={className || 'codex-element-h3'}ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </h3>
             )
         case 'a':
             return (
-                <div className={className || 'codex-element-div'} ref={ref}>
+                <div className={className || 'codex-element-div'} ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </div>
             )
         case 'div':
             return (
-                <div className={className || 'codex-element-div'}ref={ref}>
+                <div className={className || 'codex-element-div'}ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </div>
             )
         case 'span':
             return (
-                <span className={className || 'codex-element-span'}ref={ref}>
+                <span className={className || 'codex-element-span'}ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </span>
             )
         case 'li':
             return (
-                <li className={className || 'codex-element-li'}ref={ref}>
+                <li className={className || 'codex-element-li'}ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </li>
             )
         case 'td':
             return (
-                <td className={className || 'codex-element-span'}ref={ref}>
+                <td className={className || 'codex-element-span'}ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </td>
             )
         case 'th':
             return (
-                <th className={className || 'codex-element-span'}ref={ref}>
+                <th className={className || 'codex-element-span'}ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </th>
             )
         default:
             console.log(`Node with tag ${sourceNode.tagName} not rendered!`);
             return (
-                <div className={className || 'codex-element-div'}ref={ref}>
+                <div className={className || 'codex-element-div'}ref={ref}{...sourceNode.attribs}>
                     {contentNode}
                 </div>
             )
