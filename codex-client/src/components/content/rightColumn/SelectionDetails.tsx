@@ -3,14 +3,15 @@ import { Header } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import AbstractPhraseDetails from "./AbstractPhraseDetails";
 import TermDetails from "./TermDetails";
+import '../../styles/content-frame.css';
 
 
 export default observer(function SelectionDetails() {
     const {contentStore} = useStore();
-    const {selectedTerm, phraseMode} = contentStore;
-   
+    const {selectedTerm, phraseMode} = contentStore; 
     return (
-            (selectedTerm === null) ? (
+        <div className="details-container">
+            {(selectedTerm === null) ? (
                 <Header content="No term selected" />
                 ) : (
                     (phraseMode) ? (
@@ -18,7 +19,9 @@ export default observer(function SelectionDetails() {
                     ) : (
                         <TermDetails term={selectedTerm} />
                     )
-                )
+                )}
+        </div>
+            
     )
     
     

@@ -23,7 +23,7 @@ export default observer(function AbstractTermDetails({term}: Props) {
             ) : (
                 <div >
                     <Header as='h2' content={term.termValue} className="details-h2"/>
-                    <Header as='h3' sub content='Create new term:' />
+                    <Header as='h3' sub content='Create new term:' className="details-h2" />
                     <ReccomendedTranslation term={{value: term.termValue, language: term.language}} />
                     <UserTermCreator term={term} />
                 </div>

@@ -89,7 +89,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
             )
         case 'li':
             return (
-                <li className={className || 'codex-element-li'}ref={ref}{...mergedAttributes}>
+                <li className={className || 'codex-element-li'}ref={ref}{...sourceNode.attributes}>
                     {contentNode}
                 </li>
             )
