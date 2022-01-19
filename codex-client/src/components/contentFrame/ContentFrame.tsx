@@ -43,7 +43,7 @@ export default observer(function ContentFrame({contentId}: Props) {
     }
     return (
         <Container>
-             <div className="content-frame" >
+            <div className="content-frame" >
             {currentPageHtml.stylesheetUrls.map(url => (
                 <link rel='stylesheet' href={url} typeof="text/css" key={url} />
             ))}

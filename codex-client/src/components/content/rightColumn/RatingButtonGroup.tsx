@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Button } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import RatingButton from "./RatingButton";
 import '../../styles/flex.css';

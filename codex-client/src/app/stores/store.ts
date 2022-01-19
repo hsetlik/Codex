@@ -11,6 +11,7 @@ import CollectionStore from "./collectionStore";
 import PhraseStore from "./phraseStore";
 import TagStore from "./tagStore";
 import HtmlStore from "./htmlStore";
+import FeedStore from "./feedStore";
 
 interface Store {
   commonStore: CommonStore,
@@ -24,7 +25,8 @@ interface Store {
   collectionStore: CollectionStore,
   phraseStore: PhraseStore,
   tagStore: TagStore,
-  htmlStore: HtmlStore
+  htmlStore: HtmlStore,
+  feedStore: FeedStore
 }
 export const store: Store = {
     commonStore: new CommonStore(),
@@ -38,7 +40,8 @@ export const store: Store = {
     collectionStore: new CollectionStore(),
     phraseStore: new PhraseStore(),
     tagStore: new TagStore(),
-    htmlStore: new HtmlStore()
+    htmlStore: new HtmlStore(),
+    feedStore: new FeedStore()
 }
 
 export const storeContext = createContext(store);

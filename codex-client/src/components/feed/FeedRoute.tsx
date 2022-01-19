@@ -1,47 +1,47 @@
-import { Grid, Header, Item, Loader } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
-import ContentHeader from "../content/ContentHeader";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { getLanguageName } from "../../app/common/langStrings";
+import { Container, Row } from "react-bootstrap";
+import ContentColumn from "./ContentColumn";
+import '../styles/feed.css';
 
 export default observer(function FeedRoute(){
     const {lang} = useParams();
-    var {contentStore, commonStore, collectionStore} = useStore();
-    const {loadedContents: loadedHeaders, loadMetadata } = contentStore;
-    const {currentCollectionsLanguage, loadCollectionsForLanguage} = collectionStore;
-    const {appLoaded} = commonStore;
+    const language = lang || 'null';
+    const {feedStore, userStore: {selectedProfile, setSelectedLanguage}} = useStore();
+    const {feedLoaded, currentFeed, loadFeed} = feedStore;
     useEffect(() => {
-        loadMetadata(lang!);
-        if (lang !== currentCollectionsLanguage)
-            loadCollectionsForLanguage(lang!);
-    }, [loadMetadata, lang, currentCollectionsLanguage, loadCollectionsForLanguage])
-    if (!appLoaded) {
+        if (selectedProfile?.language !== language) {
+            setSelectedLanguage(language);
+        } else if (!feedLoaded || currentFeed?.languageProfileId !== selectedProfile.languageProfileId) {
+            loadFeed(selectedProfile.languageProfileId);
+        }
+    }, [
+        language, 
+        selectedProfile, 
+        setSelectedLanguage,
+        feedLoaded,
+        loadFeed,
+        currentFeed]);
+    
+    if (!feedLoaded || currentFeed === null) {
         return (
-            <Loader active={true} />
+            <Container>
+            </Container>
         )
     }
+    
     return (
-        <Grid>
-            <Grid.Column width='3'>
-
-            </Grid.Column>
-            <Grid.Column width='10'>
-            <Header as='h2' content={getLanguageName(lang!)} />
-                <Item>
-                    <Item.Group divided>
-                    {loadedHeaders.map(content => {
-                        return <ContentHeader dto={content} key={content.contentUrl}/>
-                        })
-                    }
-                    </Item.Group>
-                </Item>
-            </Grid.Column>
-            <Grid.Column width='3'>
-                
-            </Grid.Column>
-            
-       </Grid>
+        <Container fluid className='feed-container'>
+            { currentFeed.rows.map(row => (
+                <Row className='feed-row'>
+                    {row.contents.map(con => (
+                        <ContentColumn content={con} />
+                    ))}
+                </Row>
+            ))
+            }
+        </Container>
     )
 })
