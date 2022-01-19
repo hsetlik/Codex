@@ -23,6 +23,7 @@ export default class HtmlStore {
             const content = await agent.Content.getContentWithId({contentId: contentId});
             console.log(`Found content with ID: ${content.contentId} and URL ${content.contentId}`);
             const contentPage = await agent.Parse.getHtml(contentId);
+            await agent.Content.viewContent({contentUrl: content.contentUrl, index: 0});
             runInAction(() => {
                 this.currentPageHtml = contentPage;
                 this.currentPageContent = content;

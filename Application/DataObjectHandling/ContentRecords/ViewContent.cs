@@ -44,12 +44,13 @@ namespace Application.DataObjectHandling.ContentRecords
                     return Result<Unit>.Failure($"Could not get view history. Error message: {historyResult.Error}");
                 }
                     
+                /*
                 //check for an existing ViewRecord and remove it if it exists
                 var existingViewRecord = await _context.ContentViewRecords.FirstOrDefaultAsync(v => v.ContentHistoryId == history.ContentHistoryId &&
                 v.AccessedOn.Date == newViewTime.Date);
                 if (existingViewRecord != null)
                     _context.ContentViewRecords.Remove(existingViewRecord);
-
+                */
                 var rec = new ContentViewRecord
                 {
                     ContentUrl = request.Dto.ContentUrl,
