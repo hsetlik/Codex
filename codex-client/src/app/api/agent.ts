@@ -21,6 +21,7 @@ import { ContentMetadata, ElementAbstractTerms, ContentSection, ContentTag, TagQ
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
 import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
+import { Feed, FeedQuery } from "../models/feed";
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
 
@@ -88,6 +89,10 @@ const Profile = {
     allUserTerms: (lang: ILanguageString) => requests.post<UserTerm[]>('profile/allUserTerms', lang),
     getMetricGraph: (query: MetricGraphQuery) => requests.post<MetricGraph>('/profile/getMetricGraph', query),
     updateHistory: (id: IProfileId) => requests.post('profile/updateHistory', id)
+}
+
+const FeedAgent = {
+    getFeed: (dto: FeedQuery) => requests.post<Feed>('feed/getFeed', dto)
 }
 
 const UserTermAgent = {
@@ -158,7 +163,8 @@ const agent = {
     Parse,
     Translate,
     CollectionAgent,
-    PhraseAgent
+    PhraseAgent,
+    FeedAgent
 }
 
 export default agent;
