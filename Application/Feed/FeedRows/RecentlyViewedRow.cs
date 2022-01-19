@@ -8,15 +8,15 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Feed.FeedRows
+namespace Application.FeedObjects.FeedRows
 {
-    public class RecentlyViewedRow : AbstractFeedRow
+    public class RecentlyViewedRow : FeedRowGenerator
     {
         public RecentlyViewedRow(Guid id) : base(id)
         {
         }
 
-        public override async Task<Result<List<ContentMetadataDto>>> GetContents(DataContext context, int max, IMapper mapper)
+        public override async Task<Result<List<ContentMetadataDto>>> GetContentList(DataContext context, int max, IMapper mapper)
         {
             var profile = await context.UserLanguageProfiles
                 .Include(p => p.ContentHistories)

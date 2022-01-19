@@ -30,7 +30,8 @@ namespace Application.Parsing.ProfileScrapers
                 "span",
                 "li",
                 "td",
-                "th"
+                "th",
+                "small"
             };
 
 

@@ -8,15 +8,15 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Feed.FeedRows
+namespace Application.FeedObjects.FeedRows
 {
-    public class MostViewedRow : AbstractFeedRow
+    public class MostViewedRow : FeedRowGenerator
     {
         public MostViewedRow(Guid id) : base(id)
         {
         }
 
-        public override async Task<Result<List<ContentMetadataDto>>> GetContents(DataContext context, int max, IMapper mapper)
+        public override async Task<Result<List<ContentMetadataDto>>> GetContentList(DataContext context, int max, IMapper mapper)
         {
             var profile = await context.UserLanguageProfiles.FirstOrDefaultAsync(p => p.LanguageProfileId == languageProfileId);
             if (profile == null)
@@ -34,9 +34,16 @@ namespace Application.Feed.FeedRows
                 else
                     urlFrequencyTable[url] = 1;
             }
-            var mostViewed = urlFrequencyTable.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).Take(max).ToList();
-            
-            throw new NotImplementedException();
+            var mostViewedUrls = urlFrequencyTable.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).Take(max).ToList();
+            var output = new List<ContentMetadataDto>();
+            foreach(var url in mostViewedUrls)
+            {
+                var content = await context.Contents.Include(c => c.ContentTags).FirstOrDefaultAsync(c => c.ContentUrl == url);
+                if (content == null)
+                    return Result<List<ContentMetadataDto>>.Failure($"Could not load content with URL: {url}");
+                output.Add(mapper.Map<ContentMetadataDto>(content));
+            }
+            return Result<List<ContentMetadataDto>>.Success(output);
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace Application.Feed
+namespace Application.FeedObjects
 {
     public enum FeedType
     {

@@ -11,5 +11,6 @@ namespace Application.DomainDTOs.UserLanguageProfile
         public string Language { get; set; }
         public int KnownWords { get; set; }
         public string UserLanguage { get; set; }
+        public string Username { get; set; }
     }
 }

@@ -8,15 +8,15 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Feed.FeedRows
+namespace Application.FeedObjects.FeedRows
 {
-    public class NewestRow : AbstractFeedRow
+    public class NewestRow : FeedRowGenerator
     {
         public NewestRow(Guid id) : base(id)
         {
         }
 
-        public override async Task<Result<List<ContentMetadataDto>>> GetContents(DataContext context, int max, IMapper mapper)
+        public override async Task<Result<List<ContentMetadataDto>>> GetContentList(DataContext context, int max, IMapper mapper)
         {
             var profile = await context.UserLanguageProfiles.FirstOrDefaultAsync(c => c.LanguageProfileId == languageProfileId);
             if (profile == null)

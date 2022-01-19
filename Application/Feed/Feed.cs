@@ -7,15 +7,16 @@ using Application.DomainDTOs;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Feed
+namespace Application.FeedObjects
 {
+    public class FeedRow
+    {
+        public string FeedType { get; set; }
+        public List<ContentMetadataDto> Contents { get; set; } = new List<ContentMetadataDto>();
+    }
     public class Feed
     {
-        private Guid _profileId;
-        public Feed(Guid profileId)
-        {
-            _profileId = profileId;
-        }
-        
+        public Guid LanguageProfileId { get; set; }
+        public List<FeedRow> Rows { get; set; } = new List<FeedRow>();
     }
 }

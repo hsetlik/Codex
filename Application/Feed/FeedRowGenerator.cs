@@ -4,26 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.DomainDTOs;
-using Application.Feed.FeedRows;
+using Application.FeedObjects.FeedRows;
 using AutoMapper;
 using Persistence;
 
-namespace Application.Feed
+namespace Application.FeedObjects
 {
-    public abstract class AbstractFeedRow
+    public abstract class FeedRowGenerator
     {
         public Guid LanguageProfileId { get {return languageProfileId;} }
         protected Guid languageProfileId;
-        public AbstractFeedRow(Guid id)
+        public FeedRowGenerator(Guid id)
         {
             languageProfileId = id;
         }
-        public abstract Task<Result<List<ContentMetadataDto>>> GetContents(DataContext context, int max, IMapper mapper);
+        public abstract Task<Result<List<ContentMetadataDto>>> GetContentList(DataContext context, int max, IMapper mapper);
     }
 
     public static class RowFactory
     {
-        public static AbstractFeedRow RowFor(FeedType type, Guid profileId, int max=5)
+        public static FeedRowGenerator RowFor(FeedType type, Guid profileId, int max=5)
         {
             switch (type)
             {

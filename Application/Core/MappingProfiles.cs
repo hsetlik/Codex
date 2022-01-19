@@ -29,7 +29,8 @@ namespace Application.Core
             CreateMap<UserTerm, UserTermDetailsDto>();
             CreateMap<Translation, TranslationDto>();
             CreateMap<ContentSection, ContentSectionDto>();
-            CreateMap<UserLanguageProfile, LanguageProfileDto>();
+            CreateMap<UserLanguageProfile, LanguageProfileDto>()
+            .ForMember(c => c.Username, r => r.MapFrom(p => p.User.UserName));
             CreateMap<UserTerm, AbstractTermDto>();
             CreateMap<SavedContent, SavedContentDto>();
 
