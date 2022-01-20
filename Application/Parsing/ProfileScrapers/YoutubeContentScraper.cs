@@ -97,11 +97,7 @@ namespace Application.Parsing.ProfileScrapers
             {
                 var element = new VideoCaptionElement
                 {
-                    Tag = "caption",
-                    ElementText = caption.Text,
-                    StartMs = (int)caption.Offset.TotalMilliseconds,
-                    EndMs = (int)(caption.Offset.TotalMilliseconds + caption.Duration.TotalMilliseconds),
-                    ContentUrl = Url
+
                 };
                 //handle overlapping captions
                 if (!(storage.Sections.Count == 0 && currentSection.TextElements.Count == 0))

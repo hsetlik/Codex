@@ -32,16 +32,14 @@ namespace Application.Parsing
             }
         }
     }
-    public class VideoCaptionElement : TextElement
+    public class VideoCaptionElement
     {
         public VideoCaptionElement()
         {
         }
-        public VideoCaptionElement(TextElement element)
-        {
-        }
 
-        public bool HasTimeSpan { get {return Tag == "caption";}}
+        public string CaptionText { get; set; }
+
         public int StartMs { get; set; }
         public int EndMs { get; set; }
     }

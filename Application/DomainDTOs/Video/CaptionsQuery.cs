@@ -7,9 +7,10 @@ namespace Application.DomainDTOs.Video
 {
     public class CaptionsQuery
     {
+        public string VideoId { get; set; }
         public int FromMs { get; set; }
         public int NumCaptions { get; set; }
-        public string ContentUrl { get; set; }
+        public string Language { get; set; }
     }
 
 }

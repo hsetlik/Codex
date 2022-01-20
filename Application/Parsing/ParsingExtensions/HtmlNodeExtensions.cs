@@ -13,8 +13,7 @@ namespace Application.Parsing.ParsingExtensions
         {
             return new VideoCaptionElement
             {
-                ElementText = node.InnerText,
-                Tag = node.Name
+                
             };
         }
 
