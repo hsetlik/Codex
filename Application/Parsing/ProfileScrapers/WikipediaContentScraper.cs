@@ -99,7 +99,7 @@ namespace Application.Parsing.ProfileScrapers
                 ContentType = "Wikipedia",
                 Language = lang,
                 AudioUrl = "none",
-                VideoUrl = "none",
+                VideoId = "none",
                 NumSections = 1
             };
             foreach(string name in ContentElementTags.Tags)

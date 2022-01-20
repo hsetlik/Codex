@@ -15,7 +15,7 @@ namespace Domain.DataObjects
         public string Description { get; set; }
         public string CreatorUsername { get; set; }
         public string ContentUrl { get; set; }
-        public string VideoUrl { get; set; }
+        public string VideoId { get; set; }
         public string AudioUrl { get; set; }
         public string ContentType { get; set; }
         public string ContentName { get; set; }

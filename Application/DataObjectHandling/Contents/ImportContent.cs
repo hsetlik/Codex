@@ -53,7 +53,7 @@ namespace Application.DataObjectHandling.Contents
                     ContentUrl = metadata.ContentUrl,
                     ContentName = metadata.ContentName,
                     ContentType = metadata.ContentType,
-                    VideoUrl = metadata.VideoUrl,
+                    VideoId = metadata.VideoId,
                     Language = metadata.Language,
                     CreatedAt = DateTime.Now,
                     NumSections = metadata.NumSections,

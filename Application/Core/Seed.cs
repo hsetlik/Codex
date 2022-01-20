@@ -106,7 +106,7 @@ namespace Domain
                 {
                     ContentId = metadata.ContentId,
                     ContentUrl = metadata.ContentUrl,
-                    VideoUrl = metadata.VideoUrl,
+                    VideoId = metadata.VideoId,
                     ContentType = metadata.ContentType,
                     ContentName = metadata.ContentName,
                     Language = metadata.Language,

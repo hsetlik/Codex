@@ -111,7 +111,7 @@ namespace Application.Parsing.ProfileScrapers
                 ContentType = "Article",
                 Language = lang,
                 Bookmark = 0,
-                VideoUrl = "none",
+                VideoId = "none",
                 AudioUrl = "none",
                 NumSections = 1
             };
