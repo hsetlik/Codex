@@ -19,6 +19,8 @@ export default class VideoStore {
     bufferCaptionsLoaded = false;
     bufferCaptions: VideoCaptionElement[] = [];
     bufferTerms: Map<string, ElementAbstractTerms> = new Map();
+
+    highlightedCaption: VideoCaptionElement | null = null;
     
 
     constructor(){
@@ -26,6 +28,7 @@ export default class VideoStore {
     }
 
     loadForMs = async (ms: number) => {
+        this.highlightedCaption = this.currentCaptions.find(c => c.startMs < ms && ms <= c.endMs) || null;
         if (msInRangeGroup(ms, this.currentCaptions[0], this.currentCaptions[this.currentCaptions.length - 1])) {
             // nothing to do if ms is still in range of the current caption group
             return;

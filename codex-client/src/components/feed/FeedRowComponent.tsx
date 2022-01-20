@@ -10,8 +10,8 @@ export default function FeedRowComponent({row}: Props) {
     return (
         <Row>
             {row.contents.length > 0 && row.contents.map(con =>( 
-                <Col>
-                    <ContentColumn content={con} />
+                <Col >
+                    <ContentColumn content={con} key={con.contentId} />
                 </Col>
             ))}
         </Row>

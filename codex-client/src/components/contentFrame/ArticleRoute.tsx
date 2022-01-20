@@ -5,7 +5,7 @@ import ContentFrame from "./ContentFrame";
 import '../styles/content.css';
 import SelectionDetails from "../content/rightColumn/SelectionDetails";
 
-export default function ViewerRoute() {
+export default function ArticleRoute() {
     const {contentId} = useParams();
     const safeId = contentId || 'null';  
 
