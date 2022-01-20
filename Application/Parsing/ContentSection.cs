@@ -11,7 +11,7 @@ namespace Application.Parsing
         public string Tag { get; set; }
         public string ElementText { get; set; }
         public string ContentUrl { get; set; }
-        public Dictionary<string, string> Attributes { get; set; }
+        public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
         public TextElement()
         {
@@ -41,11 +41,6 @@ namespace Application.Parsing
         {
         }
 
-        public VideoCaptionElement(HtmlNode node, string contentUrl) : base(node, contentUrl)
-        {
-        }
-
-        public int Index { get; set; }
         public bool HasTimeSpan { get {return Tag == "caption";}}
         public int StartMs { get; set; }
         public int EndMs { get; set; }

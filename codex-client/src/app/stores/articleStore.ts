@@ -4,7 +4,7 @@ import { ContentMetadata, ContentPageHtml, ElementAbstractTerms, TextElement } f
 import { UserTermDetails } from "../models/userTerm";
 import { store } from "./store";
 
-export default class HtmlStore {
+export default class ArticleStore {
     htmlLoaded = false;
     currentPageHtml: ContentPageHtml | null = null;
     currentPageContent: ContentMetadata | null = null;

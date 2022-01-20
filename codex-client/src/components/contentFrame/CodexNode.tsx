@@ -29,7 +29,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     const {ref, inView} = useInView({threshold: 0.1});
     // return an empty div if this isn't a valid element
     let text = fullInnerText(sourceNode as Element);
-    const {htmlStore: {currentElementsMap, loadElementTerms, currentPageContent}} = useStore();
+    const {articleStore: {currentElementsMap, loadElementTerms, currentPageContent}} = useStore();
     useEffect(() => {
         if (!currentElementsMap.has(text) && sourceNode instanceof Element && text.length > 1 && inView) {
             loadElementTerms({elementText: text, tag: sourceNode.tagName, contentUrl: currentPageContent?.contentUrl || 'null'})

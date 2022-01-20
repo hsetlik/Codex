@@ -62,6 +62,7 @@ namespace Application.Parsing.ProfileScrapers
             searchRequest.Id = videoId;
             var searchResponse = await searchRequest.ExecuteAsync();
             var videoSnippet = searchResponse.Items.FirstOrDefault();
+
             
             var ytClient = new YoutubeClient();
             var video = await ytClient.Videos.GetAsync(Url);
@@ -98,7 +99,6 @@ namespace Application.Parsing.ProfileScrapers
                 {
                     Tag = "caption",
                     ElementText = caption.Text,
-                    Index = idx,
                     StartMs = (int)caption.Offset.TotalMilliseconds,
                     EndMs = (int)(caption.Offset.TotalMilliseconds + caption.Duration.TotalMilliseconds),
                     ContentUrl = Url

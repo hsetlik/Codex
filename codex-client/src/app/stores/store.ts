@@ -10,7 +10,7 @@ import DailyDataStore from "./dailyDataStore";
 import CollectionStore from "./collectionStore";
 import PhraseStore from "./phraseStore";
 import TagStore from "./tagStore";
-import HtmlStore from "./htmlStore";
+import ArticleStore from "./articleStore";
 import FeedStore from "./feedStore";
 
 interface Store {
@@ -25,7 +25,7 @@ interface Store {
   collectionStore: CollectionStore,
   phraseStore: PhraseStore,
   tagStore: TagStore,
-  htmlStore: HtmlStore,
+  articleStore: ArticleStore,
   feedStore: FeedStore
 }
 export const store: Store = {
@@ -40,7 +40,7 @@ export const store: Store = {
     collectionStore: new CollectionStore(),
     phraseStore: new PhraseStore(),
     tagStore: new TagStore(),
-    htmlStore: new HtmlStore(),
+    articleStore: new ArticleStore(),
     feedStore: new FeedStore()
 }
 

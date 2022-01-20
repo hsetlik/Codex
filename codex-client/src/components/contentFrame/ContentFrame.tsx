@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default observer(function ContentFrame({contentId}: Props) {
-    const {htmlStore: {loadPage, currentPageHtml, htmlLoaded, currentPageContent}} = useStore();
+    const {articleStore: {loadPage, currentPageHtml, htmlLoaded, currentPageContent}} = useStore();
     useEffect(() => {
         if (!htmlLoaded || currentPageContent === null || currentPageContent.contentId !== contentId) {
             loadPage(contentId!);
