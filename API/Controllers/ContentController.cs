@@ -105,13 +105,15 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new AbstractTermsForElement.Query{Dto = dto}));
         }
 
-
+        //TODO: get rid of this
         [Authorize]
         [HttpPost("getSectionMetadata")]
         public async Task<IActionResult> GetSectionMetadata(SectionQuery dto)
         {
             return HandleResult(await Mediator.Send(new GetSectionMetadata.Query{Dto = dto}));
         }
+
+        // also get rid of this
         [Authorize]
         [HttpPost("getSectionAtMs")]
         public async Task<IActionResult> GetSectionAtMs(SectionAtMsQuery dto)

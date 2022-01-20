@@ -27,6 +27,7 @@ export default observer(function YoutubePlayerDiv() {
             setHighlightedElement(current);
             console.log(`${current.contentUrl} at seconds ${current.startMs || 0 / 1000}`);
         }
+        
         const range = sectionMsRange(currentSection!);
         if (range.start > playedMs || range.end <= playedMs) {
            //TODO: load the correct section for playedMs- make sure to use buffer if possible and handle loading time if not 

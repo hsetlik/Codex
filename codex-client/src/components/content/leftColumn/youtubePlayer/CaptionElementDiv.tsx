@@ -17,7 +17,7 @@ export default observer(function CaptionElementDiv({terms, isHighlighted, jumpFu
                 <Icon name='arrow circle right'   />
             )}
             {terms.abstractTerms.map(term => (
-                <AbstractTermComponent term={term} tag={terms.tag} key={term.indexInChunk}/>
+                <AbstractTermComponent term={term} tag={terms.tag || 'span'} key={term.indexInChunk}/>
             ))
             }
             <Icon onClick={jumpFunction} name='play'  link/>

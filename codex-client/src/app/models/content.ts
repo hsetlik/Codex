@@ -11,6 +11,19 @@ export interface TextElement {
     endMs?: number
 }
 
+export interface VideoCaptionElement {
+    captionText: string,
+    startMs: number,
+    endMs: number,
+}
+
+export interface CaptionsQuery {
+    videoId: string,
+    language: string,
+    fromMs: number,
+    numCaptions: number
+}
+
 export interface ElementAbstractTermsQuery {
     elementText: string,
     tag: string,
@@ -32,7 +45,7 @@ export interface ContentMetadata {
     description?: string,
     creatorUsername?: string,
     languageProfileId?: string,
-    videoUrl: string,
+    videoId: string,
     audioUrl: string,
     contentType: string,
     contentName: string,
@@ -52,15 +65,9 @@ export interface ContentSectionMetadata {
 
 export interface ElementAbstractTerms {
     elementText: string,
-    tag: string,
-    abstractTerms: AbstractTerm[]
+    tag?: string,
+    abstractTerms: AbstractTerm[],
 }
-
-export interface AbstractTermSet {
-    fullValue: string,
-    terms: AbstractTerm[]
-}
-
 export interface SectionAbstractTerms {
     contentUrl: string,
     index: number,

@@ -17,7 +17,7 @@ import { UserTermCreateDto, AddTranslationDto,
          SaveContentQuery,
          SavedContentDto,
          ICollectionId} from "../models/dtos";
-import { ContentMetadata, ElementAbstractTerms, ContentSection, ContentTag, TagQuery, ContentPageHtml, ElementAbstractTermsQuery } from "../models/content";
+import { ContentMetadata, ElementAbstractTerms, ContentSection, ContentTag, TagQuery, ContentPageHtml, ElementAbstractTermsQuery, CaptionsQuery, VideoCaptionElement } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
 import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
@@ -95,6 +95,10 @@ const FeedAgent = {
     getFeed: (dto: FeedQuery) => requests.post<Feed>('feed/getFeed', dto)
 }
 
+const CaptionAgent = {
+    getCaptions: (dto: CaptionsQuery) => requests.post<VideoCaptionElement[]>('video/getCaptions', dto)
+}
+
 const UserTermAgent = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
@@ -164,7 +168,8 @@ const agent = {
     Translate,
     CollectionAgent,
     PhraseAgent,
-    FeedAgent
+    FeedAgent,
+    CaptionAgent
 }
 
 export default agent;

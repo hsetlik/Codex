@@ -12,7 +12,7 @@ interface Props {
 export default observer (function TextElement({terms, style}: Props) {
     return (
         <>
-            {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag} term={term} key={term.indexInChunk + 1} style={style}/> ))}
+            {terms.abstractTerms.map(term => ( <AbstractTermComponent tag={terms.tag || 'span'} term={term} key={term.indexInChunk + 1} style={style}/> ))}
         </>
     );
 })
