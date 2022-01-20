@@ -2,9 +2,9 @@ import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { Container, Row } from "react-bootstrap";
-import ContentColumn from "./ContentColumn";
+import { Container } from "react-bootstrap";
 import '../styles/feed.css';
+import FeedRowComponent from "./FeedRowComponent";
 
 export default observer(function FeedRoute(){
     const {lang} = useParams();
@@ -33,15 +33,11 @@ export default observer(function FeedRoute(){
     }
     
     return (
-        <Container fluid className='feed-container'>
-            { currentFeed.rows.map(row => (
-                <Row className='feed-row'>
-                    {row.contents.map(con => (
-                        <ContentColumn content={con} />
-                    ))}
-                </Row>
-            ))
-            }
+        <Container fluid>
+                { currentFeed.rows.map(row => (
+                    <FeedRowComponent row={row} />
+                ))
+                }
         </Container>
     )
 })

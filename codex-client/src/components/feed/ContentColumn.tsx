@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Col } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ContentMetadata } from "../../app/models/content";
 import '../styles/feed.css';
@@ -19,29 +19,35 @@ export default observer(function ContentColumn({content}: Props) {
     const handleOpenClick = () => {
         navigate(contentPath);
     }
+    const handleTagClick = (tag: string) => {
+        navigate(`/tags/${tag}`);
+    }
 
     return (
-        <Col className='feed-item-container'>
-            <h1
-            onClick={handleOpenClick}
-            className="feed-h1"
-            >{name}</h1>
-                {(content.contentTags && content.contentTags.length > 0) && (
-                <div className="feed-subdiv">
-                    {(content.contentTags && content.contentTags.length > 0) && (<h3 className="feed-h3">Tags:</h3>)}
-                    {content.contentTags && content.contentTags.map(tag => (
-                        <button className="tag-button" onClick={() => navigate(`/tags/${tag}`)}>
-                            {tag}
-                        </button>
-                    ))}
-                </div>
+        <Container fluid className='feed-item-container'>
+            <Row>
+                <h3 className="title-text" onClick={handleOpenClick}>{name}</h3>
+            </Row>
+            <Row>
+                {content.contentTags && content.contentTags.length > 0 && (
+                    <Col className="tag-list">
+                        <h3 className="feed-h3">
+                            Tags:
+                        </h3>
+                       {content.contentTags.map(tag => (
+                           <div>
+                                <button 
+                                className="tag-button"
+                                onClick={() => handleTagClick(tag)}
+                                 >
+                                    {tag}
+                                </button>
+                           </div>
+                          
+                       ))}
+                    </Col>
                 )}
-                {content.description && (
-                <div className="feed-subdiv">
-                    <h3 className='feed-h3'>Description:</h3>
-                    <p className='description-p'>{content.description}</p>
-               </div>
-            )}
-        </Col>
+            </Row> 
+        </Container>
     )
 })
