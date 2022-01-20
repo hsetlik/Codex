@@ -2,7 +2,6 @@
   
   .codex-term-h1 {
     padding: 5px !important;
-    background: rgb(10, 171, 211);
     margin-top: 8px !important;
     font-style: italic !important;
   }
@@ -10,7 +9,6 @@
   .codex-term-h2 {
     padding: 0.25em !important;
     margin: 0.25em !important;
-    background: rgb(10, 171, 211);
     margin-top: 10px !important;
     font-style: italic !important;
     font-size: x-large !important;
@@ -18,7 +16,6 @@
 
   .codex-term-h3 {
     padding: 8px !important;
-    background: rgb(10, 171, 211);
     font-style: italic !important;
     font-size: larger !important;
   }
@@ -28,7 +25,6 @@
 
   .codex-term-h1-h {
     padding: 5px !important;
-    background: rgb(10, 171, 211);
     margin-top: 8px !important;
     font-style: italic !important;
     border-bottom-style: solid !important;
@@ -37,7 +33,6 @@
 
   .codex-term-h2-h {
     padding: 10px !important;
-    background: rgb(10, 171, 211);
     margin-top: 10px !important;
     font-style: italic !important;
     font-size: x-large !important;
@@ -47,7 +42,6 @@
 
   .codex-term-h3-h {
     padding: 8px !important;
-    background: rgb(10, 171, 211);
     font-style: italic !important;
     font-size: larger !important;
     border-bottom-style: solid !important;
@@ -110,9 +104,6 @@
     padding: 0.25em;
     font-size: small;
     font-style: italic;
-    
-    color: rgb(241, 240, 240) !important;
-    background-color: rgb(122, 121, 121) !important;
     cursor: pointer !important;
   }
 

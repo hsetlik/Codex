@@ -76,11 +76,13 @@ const SecondaryDark: React.CSSProperties = {
 }
 
 const Background: React.CSSProperties = {
-    'backgroundColor': cssString(CodexPallette.background)
+    'backgroundColor': cssString(CodexPallette.background),
+    'color': cssString(CodexPallette.darkText)
 }
 
 const Surface: React.CSSProperties = {
-    'backgroundColor': cssString(CodexPallette.surface)
+    'backgroundColor': cssString(CodexPallette.surface),
+    'color': cssString(CodexPallette.darkText)
 }
 
 export const CssPallette = {

@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { CssPallette } from "../../../app/common/uiColors";
 import { AbstractTerm, AbstractToUserTermDetails } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 import '../../styles/details.css';
@@ -19,7 +20,7 @@ export default observer (function RatingButton({ratingValue, term}: Props) {
         console.log(`New Rating: ${ratingValue}`);
     }
     return (
-        <button onClick={rateTerm} className='rating-button'>
+        <button onClick={rateTerm} className='rating-button' style={CssPallette.Primary}>
             {ratingValue}
         </button>
     )

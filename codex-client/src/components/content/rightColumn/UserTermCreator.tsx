@@ -2,6 +2,7 @@ import { Formik, Form, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { Button, Label } from "semantic-ui-react";
+import { CssPallette } from "../../../app/common/uiColors";
 import { UserTermCreateDto } from "../../../app/models/dtos";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
@@ -40,7 +41,7 @@ export default observer(function UserTermCreator({term}: Props) {
                         <ErrorMessage name='error' render={() => (
                             <Label style={{marginBottom: 10}}  basic color='red' content={errors.error}/> )}
                         />
-                        <Button loading={isSubmitting} positive content='Add Term' type='submit' fluid />
+                        <Button loading={isSubmitting} content='Add Term' type='submit' fluid style={CssPallette.PrimaryLight} />
                     </Form>
                 )}
             </Formik>  

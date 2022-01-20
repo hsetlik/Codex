@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import '../styles/styles.css';
 import LanguageSelector from '../account/ProfileSelector';
 import FlagLabel from './FlagLabel';
+import { CssPallette } from '../../app/common/uiColors';
 
 export default observer(function NavBar()
 {
@@ -21,7 +22,7 @@ export default observer(function NavBar()
         )
     }
     return (
-        <Menu inverted fixed='top' className='codex-nav-bar'>
+        <Menu inverted fixed='top' className='codex-nav-bar' style={CssPallette.PrimaryDark}>
             <Container >
                 <Menu.Item as={Link} to={`feed/${lang}`}>
                     <Icon name='home' />
@@ -30,7 +31,7 @@ export default observer(function NavBar()
                 <Menu.Item>
                     <LanguageSelector />
                 </Menu.Item>
-                <Menu.Item as={Link} to={`/collections/${lang}`}>
+                <Menu.Item as={Link} to={`/collections/${lang}`} >
                     Browse
                 </Menu.Item>
                 {accountComponent}

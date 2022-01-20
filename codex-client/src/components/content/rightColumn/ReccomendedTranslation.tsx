@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { useEffect } from "react";
 import { Button } from "semantic-ui-react";
+import { CssPallette } from "../../../app/common/uiColors";
 import { TermDto, TranslationResultDto, TranslatorQuery } from "../../../app/models/dtos";
 import { useStore } from "../../../app/stores/store";
 import '../../styles/details.css';
@@ -42,6 +43,7 @@ export default observer(function RecommendedTranslation({term}: Props) {
     return (
             <Button as='h4'
             className="suggestion-button" 
+            style={CssPallette.Secondary}
             content={reccomendedTranslation.value} 
             key={reccomendedTranslation.value} 
             onClick={() => createWithTranslation(reccomendedTranslation)}

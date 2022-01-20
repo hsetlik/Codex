@@ -16,11 +16,9 @@ export default observer(function TagsList({content}: Props) {
             <div></div>
         )
     }
-    for(let t of content.contentTags) {
-        console.log(`tag is: ${t}`);
-    }
+    
     return(
-        <div className="hfex-basic" style={{marginLeft: 10}}  >
+        <div className="hfex-basic"   >
             {content.contentTags.map(tag => (
                 <Label content={tag} className="tag-button" key={tag} as={Link} to={`../tags/${tag}`} />
             ))}

@@ -2,6 +2,7 @@ import { Formik, Form, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Button, Label } from "semantic-ui-react";
+import { CssPallette } from "../../../app/common/uiColors";
 import { AddTranslationDto } from "../../../app/models/dtos";
 import { AbstractTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
@@ -33,7 +34,7 @@ export default observer(function AddTranslationForm({term}: Props) {
                         <ErrorMessage name='error' render={() => (
                             <Label style={{marginBottom: 10}}  basic color='red' content={errors.error}/> )}
                         />
-                        <Button loading={isSubmitting} positive content='Add Translation' type='submit' fluid />
+                        <Button loading={isSubmitting} style={CssPallette.PrimaryLight} content='Add Translation' type='submit' fluid />
                     </Form>
                 )}
             </Formik>  

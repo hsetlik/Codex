@@ -1,40 +1,35 @@
 .feed-h1 {
     font-size: large;
-    color: white;
     cursor: pointer;
 }
 
+.feed-h2 {
+    font-size: medium;
+    padding: 1em;
+}
+
 .feed-h3 {
-    font-size: smaller;
-    color: white;
+    font-size: small;
     margin: 0.25em;
     padding: 0.125em;
 }
 
 .title-text {
-    color: white;
     font-size: medium;
     cursor: pointer;
 }
 
-.title-row {
-    background-color: rgb(58, 58, 58);
-}
-
 .tag-button {
-    color: white;
-    background-color: rgb(58, 58, 58);
     padding: 0.25em;
     margin: 0.25em;
     border-style: none;
     border-radius: 0.25em;
-    font-size: small;
+    font-size: smaller;
     cursor: pointer;
     font-weight: bold;
 }
 
 .feed-subdiv {
-    background-color: rgb(95, 95, 95);
     display: flex;
     flex-direction: column;
     align-content: flex-start;
@@ -49,22 +44,18 @@
 
 .tag-list {
     margin: 0.5em;
-    background-color: rgb(63, 92, 119);
 }
 
 .description-p {
-    color: white;
     font-size: x-small;
-    padding: 0.5em;
+    padding: 0.25;
     margin: 0.25em;
+    margin-left: 0.5em;
 }
 
 .feed-item-container {
-    /* h-offset, v-offset, blur, spread, color */
-    box-shadow: 5px 5px 15px 5px #888888;
-    margin: 1.5em;
-    padding: 1em;
-    background-color: rgb(95, 95, 95);
+    padding: 0em;
+    margin: 1em;
 }
 
 .feed-container {
@@ -74,8 +65,18 @@
     justify-content: space-evenly;
 }
 
+.feed-header-div {
+    display: flex;
+    flex-direction: column;
+}
+
 .feed-row {
     display: flex;
     flex-direction: row;
 
+}
+
+
+.header-row {
+    padding: 0.5em;
 }

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import '../styles/feed.css';
 import FeedRowComponent from "./FeedRowComponent";
+import { FeedTypeNames } from "../../app/models/feed";
 
 export default observer(function FeedRoute(){
     const {lang} = useParams();
@@ -31,11 +32,13 @@ export default observer(function FeedRoute(){
             </Container>
         )
     }
-    
     return (
         <Container fluid>
                 { currentFeed.rows.map(row => (
-                    <FeedRowComponent row={row} />
+                    <div>
+                        <h2>{FeedTypeNames.find(n => n.value === row.feedType)?.display}</h2>
+                        <FeedRowComponent row={row} />
+                    </div>
                 ))
                 }
         </Container>

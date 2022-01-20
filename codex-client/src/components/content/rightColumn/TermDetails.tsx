@@ -6,6 +6,7 @@ import UserTermDetails from "./UserTermDetails";
 import StarButton from "./StarButton";
 import ReccomendedTranslation from "./ReccomendedTranslation";
 import '../../styles/details.css';
+import { CssPallette } from "../../../app/common/uiColors";
 
 interface Props {
     term: AbstractTerm
@@ -17,11 +18,11 @@ export default observer(function AbstractTermDetails({term}: Props) {
             {term.hasUserTerm ? (
                 <div>
                     <StarButton />
-                    <Header as='h2' content={term.termValue} className="details-h2"  />
+                    <Header as='h2' content={term.termValue} className="details-h2" />
                     <UserTermDetails />
                 </div>
             ) : (
-                <div >
+                <div style={CssPallette.Surface} >
                     <Header as='h2' content={term.termValue} className="details-h2"/>
                     <Header as='h3' sub content='Create new term:' className="details-h2" />
                     <ReccomendedTranslation term={{value: term.termValue, language: term.language}} />

@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import './App.css';
 import { useStore } from './app/stores/store'
 import { Route, Routes } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
+import { Container } from 'react-bootstrap';
 import NavBar from './components/common/NavBar';
 import FeedRoute from './components/feed/FeedRoute';
 import LoginForm from './components/account/LoginForm';
