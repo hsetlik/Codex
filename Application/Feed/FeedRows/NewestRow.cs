@@ -28,7 +28,7 @@ namespace Application.FeedObjects.FeedRows
                 .ToListAsync();
             if (contents == null)
                 return Result<List<ContentMetadataDto>>.Failure($"No contents with language {profile.Language} after time {rangeBeginning}");
-            contents = contents.OrderBy(c => c.CreatedAt).Take(max).ToList();
+            contents = contents.OrderByDescending(c => c.CreatedAt).Take(max).ToList();
             return Result<List<ContentMetadataDto>>.Success(contents.Select(c => mapper.Map<ContentMetadataDto>(c)).ToList());
         }
     }

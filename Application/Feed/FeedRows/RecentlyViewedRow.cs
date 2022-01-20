@@ -24,8 +24,12 @@ namespace Application.FeedObjects.FeedRows
                 .FirstOrDefaultAsync(t => t.LanguageProfileId == languageProfileId);
             if (profile == null)
                 return Result<List<ContentMetadataDto>>.Failure($"No profile with ID {languageProfileId}");
+            var historyIds = profile.ContentHistories.Select(h => h.ContentHistoryId).ToList();
             var rangeBeginning = DateTime.Now.AddDays(-30.0);
-            var recordsInRange = await context.ContentViewRecords.Where(r => r.AccessedOn >= rangeBeginning).ToListAsync();
+            var recordsInRange = await context.ContentViewRecords
+                .Where(r => r.AccessedOn >= rangeBeginning && 
+                historyIds.Any(id => id == r.ContentHistoryId))
+                .ToListAsync();
             if (recordsInRange == null)
                 return Result<List<ContentMetadataDto>>.Failure($"No valid records in after time: {rangeBeginning}");
             recordsInRange = recordsInRange.OrderByDescending(r => r.AccessedOn).Take(max).ToList();
