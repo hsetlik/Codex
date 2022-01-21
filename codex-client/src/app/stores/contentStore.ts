@@ -105,6 +105,18 @@ export default class ContentStore
         return this.currentSection?.textElements[0]!;
     }
 
+    selectContentWithId = async (contentId: string) => {
+        try {
+           const content = await agent.Content.getContentWithId({contentId: contentId});
+           runInAction(() => {
+               this.selectedContentMetadata = content;
+               this.selectedContentUrl = content.contentUrl;
+           })
+        } catch (error) {
+           console.log(error); 
+        }
+    }
+
     //NOTE: this is only for updating metadata. Actual sections will not be loaded until loadSection runs
     setSelectedContent = async (url: string) => {
         console.log(`Selecting Content: ${url}`);

@@ -1,9 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { createRef, useState } from "react";
 import ReactPlayer from "react-player/youtube";
-import { Container } from "semantic-ui-react";
 import { ElementAbstractTerms, VideoCaptionElement } from "../../../../app/models/content";
-import { sectionMsRange } from "../../../../app/stores/contentStore";
 import { useStore } from "../../../../app/stores/store";
 
 export default observer(function YoutubePlayerDiv() {
@@ -48,11 +46,9 @@ export default observer(function YoutubePlayerDiv() {
            playing={isPlaying}
            light
            />
-           <Container>
-            <div>
-               
-            </div>
-           </Container>
+           <div>
+
+           </div>
         </div>
     )
 })

@@ -13,6 +13,7 @@ import ProfilesRoute from './components/profile/ProfilesRoute';
 import CollectionsRoute from './components/collection/CollectionsRoute';
 import TagRoute from './components/feed/TagRoute';
 import ArticleRoute from './components/contentFrame/ArticleRoute';
+import VideoRoute from './components/content/leftColumn/youtubePlayer/VideoRoute';
 
 function App() {
 //const location = useLocation();
@@ -43,6 +44,7 @@ function App() {
           <Route path='/collections/:lang' element={<CollectionsRoute />} />
           <Route path='tags/:tag' element={<TagRoute />} />
           <Route path='viewer/:contentId' element={<ArticleRoute />} />
+          <Route path='video/:contentId' element={<VideoRoute />} />
         </Routes>
       </Container>
    </div>

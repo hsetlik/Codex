@@ -1,5 +1,4 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Embed } from "semantic-ui-react";
 import agent from "../api/agent";
 import { ElementAbstractTerms, VideoCaptionElement } from "../models/content";
 import { store } from "./store";
@@ -28,8 +27,9 @@ export default class VideoStore {
     }
 
     loadForMs = async (ms: number) => {
-        this.highlightedCaption = this.currentCaptions.find(c => c.startMs < ms && ms <= c.endMs) || null;
-        if (msInRangeGroup(ms, this.currentCaptions[0], this.currentCaptions[this.currentCaptions.length - 1])) {
+        if (this.currentCaptions.length > 0)
+            this.highlightedCaption = this.currentCaptions.find(c => c.startMs < ms && ms <= c.endMs) || null;
+        if (this.currentCaptions.length > 0 && msInRangeGroup(ms, this.currentCaptions[0], this.currentCaptions[this.currentCaptions.length - 1])) {
             // nothing to do if ms is still in range of the current caption group
             return;
         } else if (this.bufferCaptionsLoaded && msInRangeGroup(ms, this.bufferCaptions[0], this.bufferCaptions[this.bufferCaptions.length - 1])) {
@@ -55,7 +55,7 @@ export default class VideoStore {
                const current = await agent.CaptionAgent.getCaptions({
                    videoId: store.contentStore.selectedContentMetadata?.videoId || 'null',
                    language: store.contentStore.selectedContentMetadata?.language || 'null',
-                   fromMs: ms,
+                   fromMs: Math.round(ms),
                    numCaptions: 10
                })
                runInAction(() => this.currentCaptions = current);
@@ -74,7 +74,7 @@ export default class VideoStore {
                     numCaptions: 10
                 });
                 runInAction(() => this.bufferCaptions = buffer);
-                this.loadBufferTermsAsync(); 
+                await this.loadBufferTermsAsync(); 
             } catch (error) {
                console.log(error); 
             }

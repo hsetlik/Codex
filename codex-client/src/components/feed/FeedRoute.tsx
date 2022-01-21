@@ -35,7 +35,7 @@ export default observer(function FeedRoute(){
     return (
         <Container fluid>
                 { currentFeed.rows.map(row => (
-                    <div>
+                    <div key={currentFeed.rows.indexOf(row) || 0}>
                         <h2>{FeedTypeNames.find(n => n.value === row.feedType)?.display}</h2>
                         <FeedRowComponent row={row} />
                     </div>

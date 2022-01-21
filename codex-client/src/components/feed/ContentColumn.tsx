@@ -16,8 +16,8 @@ export default observer(function ContentColumn({content}: Props) {
     const name = (content.contentName.length > maxNameLength) ? 
     content.contentName.substring(0, maxNameLength - 3) + '...' : 
     content.contentName;
-    const isVideo = content.contentUrl.startsWith('https://youtube');
-    const contentPath = (isVideo) ? `/content/${content.contentId}/0` : `/viewer/${content.contentId}`;
+    const isVideo = content.contentType === 'Youtube';
+    const contentPath = (isVideo) ? `/video/${content.contentId}` : `/viewer/${content.contentId}`;
     const handleOpenClick = () => {
         navigate(contentPath);
     }
@@ -44,8 +44,9 @@ export default observer(function ContentColumn({content}: Props) {
                                 Tags:
                             </h3>
                        {content.contentTags.map(tag => (
-                           <div>
+                           <div key={tag}>
                                 <button 
+                                key={tag}
                                 className="tag-button"
                                 onClick={() => handleTagClick(tag)}
                                 style={CssPallette.Secondary}
