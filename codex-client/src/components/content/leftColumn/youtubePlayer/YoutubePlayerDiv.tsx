@@ -3,6 +3,7 @@ import { createRef, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 import { ElementAbstractTerms, VideoCaptionElement } from "../../../../app/models/content";
 import { useStore } from "../../../../app/stores/store";
+import CaptionDiv from "./CaptionDiv";
 
 export default observer(function YoutubePlayerDiv() {
     const {videoStore, contentStore: {selectedContentUrl}} = useStore();
@@ -25,9 +26,7 @@ export default observer(function YoutubePlayerDiv() {
     const handleCaptionJump = (caption: VideoCaptionElement) =>
     {
         playerRef.current?.seekTo((caption.startMs || 0 / 1000), "seconds");
-        if(!isPlaying) {
-            setIsPlaying(true);
-        }
+        setIsPlaying(true);
     }
 
     const handlePlay = () => setIsPlaying(true);
@@ -46,9 +45,7 @@ export default observer(function YoutubePlayerDiv() {
            playing={isPlaying}
            light
            />
-           <div>
-
-           </div>
+        <CaptionDiv handleJump={handleCaptionJump} />
         </div>
     )
 })

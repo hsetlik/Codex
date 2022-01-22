@@ -116,6 +116,7 @@ export default class UserStore{
 
     updateUserTerm = async (userTerm: UserTermDetails) => {
         store.articleStore.refreshTerm(userTerm);
+        store.videoStore.refreshTerm(userTerm);
         try {
             await agent.UserTermEndpoints.updateUserTerm(userTerm);
             await this.refreshByValue(userTerm.termValue);
@@ -135,6 +136,7 @@ export default class UserStore{
                 store.contentStore.selectTerm(updatedTermValue);
             }
             store.articleStore.refreshTerm({...updatedTermValue});
+            store.videoStore.refreshTerm({...updatedTermValue});
             for(var i = 0; i < store.contentStore.currentSectionTerms.elementGroups.length; ++i)
             {
                 for (var n = 0; n < store.contentStore.currentSectionTerms.elementGroups[i].abstractTerms.length; ++n)

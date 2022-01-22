@@ -10,9 +10,10 @@ import AbstractTermComponent from "../commonReader/term/AbstractTermComponent";
 
 interface Props {
     caption: VideoCaptionElement,
+    onJump: (cap: VideoCaptionElement) => void
 }
 
-export default observer(function CaptionRow({caption}: Props){
+export default observer(function CaptionRow({caption, onJump}: Props){
     const {videoStore} = useStore();
     const {currentTerms, highlightedCaption} = videoStore;
     const isHighlighted = caption === highlightedCaption;
@@ -20,17 +21,16 @@ export default observer(function CaptionRow({caption}: Props){
     if (!terms) {
         return <div></div>
     }
-    const rowColor = (isHighlighted) ? CssPallette.PrimaryLight : CssPallette.Primary;
+    const rowStyle = (isHighlighted) ? CssPallette.SecondaryLight : CssPallette.Surface;
     return (
-        <Row style={rowColor}>
+        <Row style={rowStyle}>
             <Col>
-                <Icon name='play circle' link />
+                <Icon name='play circle' link onClick={() => onJump(caption)} />
+                {terms.abstractTerms.map(trm => (
+                        <AbstractTermComponent term={trm} tag='p' key={trm.indexInChunk} />
+                    
+                ))}
             </Col>
-            {terms.abstractTerms.map(trm => (
-                <Col>
-                    <AbstractTermComponent term={trm} tag='p' />
-                </Col>
-            ))}
         </Row>
     )
 })

@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useStore } from "../../../../app/stores/store";
-import CaptionDiv from "./CaptionDiv";
+import SelectionDetails from "../../rightColumn/SelectionDetails";
 import YoutubePlayerDiv from "./YoutubePlayerDiv";
 
 export default observer(function VideoRoute() {
@@ -17,12 +17,19 @@ export default observer(function VideoRoute() {
     }, [selectedContentMetadata, selectContentWithId, contentId]);
     return (
         <Container>
-            {(selectedContentMetadata !== null) && (
-                <>
+            <Row>
+                <Col xs={9}>
+                {(selectedContentMetadata !== null) && (
                     <YoutubePlayerDiv />
-                    <CaptionDiv />
-                </>
-            )}
+                )}
+                </Col>
+                <Col xs={3}>
+                    <span style={{position: "fixed"}}>
+                        <SelectionDetails  />
+                    </span>
+                </Col>
+            </Row>
+           
         </Container>
     )
 })
