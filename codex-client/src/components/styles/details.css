@@ -8,9 +8,9 @@
 }
 .rating-button {
     padding: 0.5em;
-    flex-grow: 1; 
     border-style: none;
     margin: 0.25em;
+    border-radius: 0.25em;
 }
 .suggestion-button {
     border-radius: 0.5em !important;

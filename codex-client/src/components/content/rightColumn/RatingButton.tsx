@@ -19,8 +19,9 @@ export default observer (function RatingButton({ratingValue, term}: Props) {
         updateUserTerm(userTerm);
         console.log(`New Rating: ${ratingValue}`);
     }
+    const buttonStyle = (term.rating === ratingValue) ? CssPallette.SecondaryLight : CssPallette.Secondary;
     return (
-        <button onClick={rateTerm} className='rating-button' style={CssPallette.Primary}>
+        <button onClick={rateTerm} className='rating-button' style={buttonStyle}>
             {ratingValue}
         </button>
     )
