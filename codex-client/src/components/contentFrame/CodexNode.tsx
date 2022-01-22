@@ -29,18 +29,18 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     const {ref, inView} = useInView({threshold: 0.1});
     // return an empty div if this isn't a valid element
     let text = fullInnerText(sourceNode as Element);
-    const {articleStore: {currentElementsMap, loadElementTerms, currentPageContent}} = useStore();
+    const {termStore: {elements, loadElementAsync}} = useStore();
     useEffect(() => {
-        if (!currentElementsMap.has(text) && sourceNode instanceof Element && text.length > 1 && inView) {
-            loadElementTerms({elementText: text, tag: sourceNode.tagName, contentUrl: currentPageContent?.contentUrl || 'null'})
+        if (!elements.has(text) && sourceNode instanceof Element && text.length > 1 && inView) {
+            loadElementAsync(text, sourceNode.tagName);
         } 
-    }, [ currentElementsMap, loadElementTerms, text, currentPageContent, sourceNode, inView])
+    }, [ loadElementAsync, text, elements, sourceNode, inView])
     if (!(sourceNode instanceof Element)) {
         return (<></>);
     }
     const mergedAttributes = {...sourceNode.attribs, ...sourceNode.attributes};
-   const contentNode = (sourceNode instanceof Element && currentElementsMap.has(text)) ? 
-    (<TextElement terms={currentElementsMap.get(text)!} />) : 
+   const contentNode = (sourceNode instanceof Element && elements.has(text)) ? 
+    (<TextElement terms={elements.get(text)!} />) : 
     (<>{text}</>); 
     
     switch (sourceNode.tagName) {

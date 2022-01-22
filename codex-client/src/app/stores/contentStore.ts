@@ -23,11 +23,6 @@ export const sectionMsRange = (section: ContentSection | null): MillisecondsRang
 
 export default class ContentStore
 {
-    //content headers
-    headersLoaded = false;
-    loadedContents: ContentMetadata[] = [];
-    knownWordsLoaded = false;
-    contentKnownWords: Map<string, KnownWordsDto> = new Map();
     selectedTerm: AbstractTerm | null = null;
     termTranslationsLoaded = false;
 
@@ -50,7 +45,6 @@ export default class ContentStore
     currentAbstractPhrase: AbstractPhrase | null = null;
     
     //highlightedElement
-    highlightedElement: TextElement | null = null; // for captions
 
     // buffer section
     bufferSection: ContentSection | null = null;
@@ -74,17 +68,6 @@ export default class ContentStore
         this.termTranslationsLoaded = false;
         if (shiftDown) {
             console.log('shift is down!');
-        }
-        if (shiftDown && this.selectedTerm !== null) {
-            let elem = this.getParentElement(this.selectedTerm);
-            if (elem === this.getParentElement(term)) {
-                console.log('entered phrase mode');
-                let startIndex = Math.min(this.selectedTerm.indexInChunk, term.indexInChunk);
-                let endIndex = Math.max(this.selectedTerm.indexInChunk, term.indexInChunk) + 1;
-                this.phraseMode = true;
-                this.phraseTerms = elem.abstractTerms.slice(startIndex, endIndex);
-                this.updateAbstractPhrase();
-            }
         } else {
             if (this.phraseMode) { console.log('exiting phrase mode')}
             this.phraseMode = false;
@@ -93,59 +76,6 @@ export default class ContentStore
         this.selectedTerm = term;
     }
 
-    setHighlightedElement = (element: TextElement) => {
-        this.highlightedElement = element;
-    }
-
-    elementAtMs = (ms: number): TextElement => {
-        for(let element of this.currentSection?.textElements!) {
-            if ((element.startMs || 0) <= ms && (element.endMs || 0) > ms)
-                return element;
-        }
-        return this.currentSection?.textElements[0]!;
-    }
-
-    selectContentWithId = async (contentId: string) => {
-        try {
-           const content = await agent.Content.getContentWithId({contentId: contentId});
-           runInAction(() => {
-               this.selectedContentMetadata = content;
-               this.selectedContentUrl = content.contentUrl;
-           })
-        } catch (error) {
-           console.log(error); 
-        }
-    }
-
-    //NOTE: this is only for updating metadata. Actual sections will not be loaded until loadSection runs
-    setSelectedContent = async (url: string) => {
-        console.log(`Selecting Content: ${url}`);
-        try {
-           runInAction(() => {
-               this.selectedTerm = null;
-               this.currentSection = null;
-               this.phraseTerms = [];
-               this.phraseMode = false;
-               this.selectedContentUrl = url;
-               this.selectedSectionIndex = 0;
-               let newMetadata = this.loadedContents.find(v => v.contentUrl === url);
-               if (newMetadata !== undefined)
-               {
-                this.selectedContentMetadata = newMetadata;
-                this.selectedSectionIndex = this.selectedContentMetadata.bookmark;
-               }
-               console.log("First section loaded");
-               store.userStore.setSelectedLanguage(this.selectedContentMetadata?.language!);
-           }) 
-        } catch (error) {
-           console.log(error); 
-           console.log(`loading content at: ${url} failed`);
-           runInAction(() => {
-               this.selectedContentUrl = url;
-               this.selectedSectionIndex = 0;
-           }) 
-        }
-    }
 
     contentIsSaved = (contentUrl: string): boolean => {
         return this.savedContents.some(c => c.contentUrl === contentUrl);
@@ -200,23 +130,7 @@ export default class ContentStore
 
      }
 
-    loadMetadata = async (lang: string) => {
-        this.headersLoaded = false;
-        this.loadedContents = [];
-        console.log(`Loading Headers for: ${lang}`);
-        try {
-            const headers = await agent.Content.getLanguageContents({language: lang});
-            runInAction(() => {
-                this.loadedContents = headers;
-                this.headersLoaded = true;
-            }); 
-        } catch (error) {
-          console.log(error);  
-          runInAction(() => this.headersLoaded = true);
-        }
-        console.log(`Headers loaded for: ${lang}`);
-    }
-
+    
     loadSavedContents = async (languageProfileId: string) => {
         console.log(`Loading saved contents for profile: ${languageProfileId}`);
         this.savedContentsLoaded = false;
@@ -339,71 +253,6 @@ export default class ContentStore
            runInAction(() => this.bufferLoaded = true); 
         }
     }
-
-    loadSectionForMs = async (ms: number, contentUrl: string, useBuffer: boolean = true) => {
-        this.sectionLoaded = false;
-        this.bufferLoaded = false;
-        //Before making any new API calls, check if the buffer matches the needed timestamp
-        const bufferRange = sectionMsRange(this.bufferSection!);
-        if (ms >= bufferRange.start && ms < bufferRange.end) {
-            runInAction(() => {
-                this.currentSection = this.bufferSection;
-                this.currentSectionTerms = this.bufferSectionTerms;
-                this.sectionLoaded = true;
-            })
-        } else {
-            console.log(`Loading section at ${ms / 1000} seconds`);
-            try {
-                // load the load the metadata & elements
-               const newSection = await agent.Content.getSectionAtMs({ms: Math.round(ms), contentUrl: contentUrl});
-               runInAction(() => {
-                  
-                   this.currentSection = newSection;
-                   this.currentSectionTerms = {
-                       contentUrl: contentUrl,
-                       index: newSection.index,
-                       sectionHeader: newSection.sectionHeader,
-                       elementGroups: []
-                   };
-                   this.sectionLoaded = true;
-              })
-               // load the element abstract terms asynchronously
-              for(let element of this.currentSection?.textElements!) {
-                  const group = await agent.Content.abstractTermsForElement({
-                        elementText: element.elementText,
-                        contentUrl: element.contentUrl,
-                        tag: element.tag,
-                        language: this.selectedContentMetadata!.language
-                    });
-                  runInAction(() => this.currentSectionTerms.elementGroups.push(group));
-              }
-           } catch (error) {
-               console.log(error)
-           }
-        }
-        // load the buffer
-        if (useBuffer) {
-            try {
-                let contentId = this.selectedContentMetadata!.contentId;
-                let currentIndex = this.currentSection!.index;
-                if (currentIndex < this.selectedContentMetadata!.numSections + 1) {
-                    await this.loadBufferSectionById(contentId, currentIndex + 1);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-       }
-    }
-
-    setTermInSection(elementIndex: number, termIndex: number, term: AbstractTerm) {
-        term.indexInChunk = termIndex;
-        this.currentSectionTerms.elementGroups[elementIndex].abstractTerms[termIndex] = term;
-    }
-
-    getParentElement = (term: AbstractTerm): ElementAbstractTerms=> {
-        return this.currentSectionTerms.elementGroups.find(g => g.abstractTerms.some(t => t === term))!;
-    }
-
     loadSelectedTermTranslations = async () => {
         this.termTranslationsLoaded = false;
         this.selectedTerm!.translations = [];
@@ -459,7 +308,7 @@ export default class ContentStore
         try {
            await agent.Content.addContentTag(tag);
            runInAction(() => {
-               let existing = this.loadedContents.find(c => c.contentId === tag.contentId);
+               let existing = store.feedStore.allContents.find(c => c.contentId === tag.contentId);
                if (existing) {
                    if (!existing.contentTags){
                     existing.contentTags = [];

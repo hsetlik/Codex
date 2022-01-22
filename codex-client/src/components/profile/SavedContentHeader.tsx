@@ -8,8 +8,8 @@ interface Props {
     dto: SavedContentDto
 }
 export default observer(function SavedContentHeader({dto}: Props) {
-    const {contentStore: {loadedContents}} = useStore();
-    const metadata = loadedContents.find(c => c.contentUrl === dto.contentUrl);
+    const {feedStore: {allContents}} = useStore();
+    const metadata = allContents.find(c => c.contentUrl === dto.contentUrl);
     if (!metadata) {
         return (
             <div>

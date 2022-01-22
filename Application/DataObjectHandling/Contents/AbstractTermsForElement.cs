@@ -17,6 +17,7 @@ using Persistence;
 
 namespace Application.DataObjectHandling.Contents
 {
+    using TaskMap =  Dictionary<int, Task<Result<AbstractTermDto>>>;
     public class AbstractTermsForElement
     {
         public class Query : IRequest<Result<ElementAbstractTerms>>
@@ -35,12 +36,6 @@ namespace Application.DataObjectHandling.Contents
             this._userAccessor = userAccessor;
             this._factory = factory;
             }
-
-            private class TaskMap
-            {
-                public Dictionary<int, Task<Result<AbstractTermDto>>> TermTasks { get; set; } = new Dictionary<int, Task<Result<AbstractTermDto>>>();
-            }
-
             public async Task<Result<ElementAbstractTerms>> Handle(Query request, CancellationToken cancellationToken)
             {
 
@@ -57,9 +52,9 @@ namespace Application.DataObjectHandling.Contents
 
                 Parallel.ForEach(wordDict, word => 
                 {
-                    taskMap.TermTasks[word.Key] = _factory.GetAbstractTerm(new TermDto{Value = word.Value, Language = request.Dto.Language}, _userAccessor.GetUsername());
+                    taskMap[word.Key] = _factory.GetAbstractTerm(new TermDto{Value = word.Value, Language = request.Dto.Language}, _userAccessor.GetUsername());
                 });
-                foreach(var t in taskMap.TermTasks)
+                foreach(var t in taskMap)
                 {
                     var term = await t.Value;
                     if (term.IsSuccess)
@@ -75,9 +70,7 @@ namespace Application.DataObjectHandling.Contents
                     Tag = request.Dto.Tag,
                     AbstractTerms = terms
                     };
-                     return Result<ElementAbstractTerms>.Success(output);
-              
-               
+                     return Result<ElementAbstractTerms>.Success(output);     
             }
         }
     }

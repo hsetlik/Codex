@@ -14,12 +14,12 @@ interface Props {
 }
 
 export default observer(function ContentFrame({contentId}: Props) {
-    const {articleStore: {loadPage, currentPageHtml, htmlLoaded, currentPageContent}} = useStore();
+    const {articleStore: {loadPage, currentPageHtml, htmlLoaded}, termStore: {selectedContent}} = useStore();
     useEffect(() => {
-        if (!htmlLoaded || currentPageContent === null || currentPageContent.contentId !== contentId) {
-            loadPage(contentId!);
+        if (!htmlLoaded || selectedContent.contentName === 'null' || selectedContent.contentId !== contentId) {
+            loadPage(contentId);
         }
-    }, [ loadPage, htmlLoaded, contentId, currentPageContent]);
+    }, [ loadPage, htmlLoaded, contentId, selectedContent]);
     var nodeIdx = 1;
     const parser = (input: string) => {
         return parse(input, {

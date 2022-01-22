@@ -41,16 +41,9 @@ export interface AbstractTerm {
     starred: boolean
 }
 
-export function AbstractToUserTermDetails(abstract: AbstractTerm) {
-    const userTerm: UserTermDetails = {
-        termValue: abstract.termValue,
-        language: abstract.language,
-        timesSeen: abstract.timesSeen,
-        rating: abstract.rating,
-        easeFactor: abstract.easeFactor,
-        userTermId: abstract.userTermId,
-        starred: abstract.starred
-    }
-    return userTerm;
+export interface TermKey {
+    parentElementText: string,
+    indexInParent: number
 }
+
 

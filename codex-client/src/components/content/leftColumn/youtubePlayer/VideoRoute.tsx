@@ -8,18 +8,16 @@ import YoutubePlayerDiv from "./YoutubePlayerDiv";
 
 export default observer(function VideoRoute() {
     const {contentId} = useParams();
-    const {contentStore} = useStore();
-    const {selectedContentMetadata, selectContentWithId} = contentStore;
+    const {termStore: {metadataLoaded, selectedContent, selectContentByIdAsync}} = useStore();
     useEffect(() => {
-        if (selectedContentMetadata?.contentId !== contentId) {
-            selectContentWithId(contentId!);
-        }
-    }, [selectedContentMetadata, selectContentWithId, contentId]);
+
+    }, [contentId, selectedContent, selectContentByIdAsync, metadataLoaded])
+    
     return (
         <Container>
             <Row>
                 <Col xs={9}>
-                {(selectedContentMetadata !== null) && (
+                {(metadataLoaded) && (
                     <YoutubePlayerDiv />
                 )}
                 </Col>

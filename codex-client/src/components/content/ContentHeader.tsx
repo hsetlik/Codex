@@ -14,7 +14,7 @@ interface Props{
 
 export default observer(function ContentHeader({dto}: Props)
 {
-    const {contentStore} = useStore();
+    const {termStore} = useStore();
     console.log("Content ID is: " + dto.contentUrl);
     return (
             <Segment>
@@ -30,7 +30,7 @@ export default observer(function ContentHeader({dto}: Props)
                     <Button as={Link}
                     color='twitter' 
                     to={`../viewer/${dto.contentId}/`} 
-                    onClick={() => contentStore.setSelectedContent(dto.contentUrl)}>
+                    onClick={() => termStore.selectContentByIdAsync(dto.contentId)}>
                         View
                     </Button>
                     <AddToCollection content={dto} />

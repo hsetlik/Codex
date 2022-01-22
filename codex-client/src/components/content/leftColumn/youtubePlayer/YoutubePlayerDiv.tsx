@@ -6,7 +6,7 @@ import { useStore } from "../../../../app/stores/store";
 import CaptionDiv from "./CaptionDiv";
 
 export default observer(function YoutubePlayerDiv() {
-    const {videoStore, contentStore: {selectedContentUrl}} = useStore();
+    const {videoStore, termStore} = useStore();
     const {loadForMs} = videoStore;
     const handleSeek = (seconds: number) => {
         const ms = (seconds * 1000);
@@ -34,7 +34,7 @@ export default observer(function YoutubePlayerDiv() {
     return (
         <div>
            <ReactPlayer 
-           url={selectedContentUrl} 
+           url={termStore.selectedContent.contentUrl} 
            controls={true}
            onSeek={handleSeek}
            onProgress={handleProgress}

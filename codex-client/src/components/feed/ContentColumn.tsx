@@ -3,6 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { CssPallette } from "../../app/common/uiColors";
 import { ContentMetadata } from "../../app/models/content";
+import { useStore } from "../../app/stores/store";
 import AddTagPopup from "../content/AddTagPopup";
 import '../styles/feed.css';
 import '../styles/flex.css';
@@ -12,6 +13,7 @@ interface Props {
 }
 export default observer(function ContentColumn({content}: Props) {
     const navigate = useNavigate();
+    const {termStore: {selectContentByIdAsync}} = useStore();
     const maxNameLength = 60;
     const name = (content.contentName.length > maxNameLength) ? 
     content.contentName.substring(0, maxNameLength - 3) + '...' : 
@@ -19,6 +21,7 @@ export default observer(function ContentColumn({content}: Props) {
     const isVideo = content.contentType === 'Youtube';
     const contentPath = (isVideo) ? `/video/${content.contentId}` : `/viewer/${content.contentId}`;
     const handleOpenClick = () => {
+        selectContentByIdAsync(content.contentId);
         navigate(contentPath);
     }
     const handleTagClick = (tag: string) => {

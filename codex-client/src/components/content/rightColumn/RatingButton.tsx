@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { CssPallette } from "../../../app/common/uiColors";
-import { AbstractTerm, AbstractToUserTermDetails } from "../../../app/models/userTerm";
+import { AbstractTerm, UserTermDetails } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 import '../../styles/details.css';
 
@@ -13,7 +13,7 @@ interface Props {
 export default observer (function RatingButton({ratingValue, term}: Props) {
     const {userStore: {updateUserTerm}} = useStore();
     const rateTerm = () => {
-        var userTerm = AbstractToUserTermDetails(term);
+        const userTerm: UserTermDetails = {...term};
         userTerm.rating = ratingValue;
         console.log(userTerm);
         updateUserTerm(userTerm);

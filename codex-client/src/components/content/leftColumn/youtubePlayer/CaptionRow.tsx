@@ -14,10 +14,11 @@ interface Props {
 }
 
 export default observer(function CaptionRow({caption, onJump}: Props){
-    const {videoStore} = useStore();
-    const {currentTerms, highlightedCaption} = videoStore;
+    const {videoStore, termStore} = useStore();
+    const {elements} = termStore;
+    const {highlightedCaption} = videoStore;
     const isHighlighted = caption === highlightedCaption;
-    const terms = currentTerms.get(caption.captionText);
+    const terms = elements.get(caption.captionText);
     if (!terms) {
         return <div></div>
     }

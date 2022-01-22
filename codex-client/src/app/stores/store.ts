@@ -13,6 +13,7 @@ import TagStore from "./tagStore";
 import ArticleStore from "./articleStore";
 import FeedStore from "./feedStore";
 import VideoStore from "./videoStore";
+import TermStore from "./termStore";
 
 interface Store {
   commonStore: CommonStore,
@@ -28,8 +29,10 @@ interface Store {
   tagStore: TagStore,
   articleStore: ArticleStore,
   feedStore: FeedStore,
-  videoStore: VideoStore
+  videoStore: VideoStore,
+  termStore: TermStore
 }
+
 export const store: Store = {
     commonStore: new CommonStore(),
     userStore: new UserStore(),
@@ -44,7 +47,8 @@ export const store: Store = {
     tagStore: new TagStore(),
     articleStore: new ArticleStore(),
     feedStore: new FeedStore(),
-    videoStore: new VideoStore()
+    videoStore: new VideoStore(),
+    termStore: new TermStore()
 }
 
 export const storeContext = createContext(store);
