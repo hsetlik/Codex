@@ -16,6 +16,10 @@ namespace Application.Parsing
             {
                 return new WikipediaContentScraper(url);
             }
+            else if (profile.Value == ScraperProfile.Youtube.Value)
+            {
+                return new YoutubeContentScraper(url);
+            }
             else
             {
                 return new NewsArticleContentScraper(url);
