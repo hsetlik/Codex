@@ -14,6 +14,7 @@ import CollectionsRoute from './components/collection/CollectionsRoute';
 import TagRoute from './components/feed/TagRoute';
 import ArticleRoute from './components/contentFrame/ArticleRoute';
 import VideoRoute from './components/content/leftColumn/youtubePlayer/VideoRoute';
+import ModalContainer from './app/common/modals/ModalContainer';
 
 function App() {
 //const location = useLocation();
@@ -32,6 +33,7 @@ function App() {
 
   return (
     <div>
+      <ModalContainer />
       <NavBar />
       <Container style={{margin: '7em'}}>
         <Routes >

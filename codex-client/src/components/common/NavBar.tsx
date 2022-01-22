@@ -6,10 +6,11 @@ import '../styles/styles.css';
 import LanguageSelector from '../account/ProfileSelector';
 import FlagLabel from './FlagLabel';
 import { CssPallette } from '../../app/common/uiColors';
+import ImportModal from './ImportModal';
 
 export default observer(function NavBar()
 {
-    const {userStore: {user, logout, isLoggedIn, selectedProfile}} = useStore();
+    const {userStore: {user, logout, isLoggedIn, selectedProfile}, modalStore} = useStore();
     const lang = selectedProfile?.language!; 
     let accountComponent;
     if (isLoggedIn) {
@@ -34,7 +35,12 @@ export default observer(function NavBar()
                 <Menu.Item as={Link} to={`/collections/${lang}`} >
                     Browse
                 </Menu.Item>
-                {accountComponent}
+                <Menu.Item onClick={() => modalStore.openModal(<ImportModal />)}>
+                    Import
+                </Menu.Item>
+                <Menu.Item position='right'>
+                    {accountComponent}
+                </Menu.Item>
                 <Menu.Item name="Logout" onClick={logout} />
             </Container>
         </Menu>
