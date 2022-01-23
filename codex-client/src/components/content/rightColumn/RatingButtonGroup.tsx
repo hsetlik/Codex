@@ -6,8 +6,8 @@ import '../../styles/flex.css';
 
 
 export default observer(function RatingButtonGroup() {
-    const {contentStore} = useStore();
-    const {selectedTerm} = contentStore;
+    const {termStore} = useStore();
+    const {selectedTerm} = termStore;
     return(
         <div className="hflex-basic">
            <RatingButton term={selectedTerm!} ratingValue={1} key={1} />

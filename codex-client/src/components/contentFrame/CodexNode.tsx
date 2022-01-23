@@ -29,7 +29,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     const {ref, inView} = useInView({threshold: 0.1});
     // return an empty div if this isn't a valid element
     let text = fullInnerText(sourceNode as Element);
-    const {termStore: {elements, loadElementAsync}} = useStore();
+    const {termStore: {elementTermMap: elements, loadElementAsync}} = useStore();
     useEffect(() => {
         if (!elements.has(text) && sourceNode instanceof Element && text.length > 1 && inView) {
             loadElementAsync(text, sourceNode.tagName);
@@ -106,7 +106,7 @@ export default observer(function CodexNode({sourceNode, className}: NodeProps) {
                 </th>
             )
         default:
-            console.log(`Node with tag ${sourceNode.tagName} not rendered!`);
+            //console.log(`Node with tag ${sourceNode.tagName} not rendered!`);
             return (
                 <div className={className || 'codex-element-div'}ref={ref}>
                     {contentNode}

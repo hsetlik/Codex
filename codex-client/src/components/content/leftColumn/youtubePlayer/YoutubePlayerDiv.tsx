@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { createRef, useState } from "react";
 import ReactPlayer from "react-player/youtube";
-import { ElementAbstractTerms, VideoCaptionElement } from "../../../../app/models/content";
+import { VideoCaptionElement } from "../../../../app/models/content";
 import { useStore } from "../../../../app/stores/store";
 import CaptionDiv from "./CaptionDiv";
 

@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ElementAbstractTerms, VideoCaptionElement } from "../models/content";
-import { UserTermDetails } from "../models/userTerm";
+import { VideoCaptionElement } from "../models/content";
 import { store } from "./store";
 
 

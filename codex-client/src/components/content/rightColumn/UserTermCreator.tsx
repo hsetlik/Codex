@@ -13,13 +13,13 @@ interface Props {
 
 
 export default observer(function UserTermCreator({term}: Props) {
-    const {userStore, contentStore} = useStore();
-    const {selectedTerm, selectTerm: setSelectedTerm} = contentStore;
+    const {userStore, termStore} = useStore();
+    const {selectedTerm, selectTerm} = termStore;
     useEffect(() => {
         if (selectedTerm?.termValue !== term.termValue) {
-            setSelectedTerm(term);
+            selectTerm(term);
         }
-    }, [selectedTerm, setSelectedTerm, term]);
+    }, [selectedTerm, selectTerm, term]);
     const {createTerm} = userStore;
     const handleFormSubmit = async (dto: UserTermCreateDto) => {
         if (dto.termValue !== selectedTerm?.termValue) {

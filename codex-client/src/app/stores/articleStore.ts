@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ContentPageHtml, ElementAbstractTerms, TextElement } from "../models/content";
-import { UserTermDetails } from "../models/userTerm";
+import { ContentPageHtml } from "../models/content";
 import { store } from "./store";
 
 export default class ArticleStore {
@@ -18,7 +17,6 @@ export default class ArticleStore {
             await store.termStore.selectContentByIdAsync(contentId);
             const content = store.termStore.selectedContent;
             const contentPage = await agent.Parse.getHtml(contentId);
-            await agent.Content.viewContent({contentUrl: content.contentUrl, index: 0});
             runInAction(() => {
                 this.currentPageHtml = contentPage;
                 this.htmlLoaded = true;
@@ -26,6 +24,7 @@ export default class ArticleStore {
                     store.userStore.setSelectedLanguage(content.language);
                 }
             })
+            await agent.Content.viewContent({contentUrl: content.contentUrl, index: 0});
         } catch (error) {
            runInAction(() => this.htmlLoaded = true);
            console.log(error); 

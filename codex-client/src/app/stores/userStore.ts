@@ -119,6 +119,7 @@ export default class UserStore{
         try {
             await agent.UserTermEndpoints.updateUserTerm(userTerm);
             await this.refreshByValue(userTerm.termValue);
+            store.termStore.refreshTerm(userTerm);
             console.log(`Term seen ${userTerm.timesSeen} times`);
         } catch (error) {
            console.log(error); 

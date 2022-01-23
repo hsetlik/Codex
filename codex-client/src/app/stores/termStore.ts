@@ -1,9 +1,18 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { ContentMetadata, ElementAbstractTerms } from "../models/content";
+import { AddTranslationDto } from "../models/dtos";
 import { AbstractTerm, UserTermDetails } from "../models/userTerm";
 
 export default class TermStore {
+
+    phraseMode = false;
+    phraseTerms: AbstractTerm[] = [];
+
+    selectedTerm: AbstractTerm | null = null;
+
+
+
     metadataLoaded = false;
     selectedContent: ContentMetadata = {
         contentId: 'null',
@@ -18,7 +27,7 @@ export default class TermStore {
         numSections: 0
     }
 
-    elements: Map<string, ElementAbstractTerms> = new Map();
+    elementTermMap: Map<string, ElementAbstractTerms> = new Map();
     
     constructor() {
         makeAutoObservable(this);
@@ -26,17 +35,37 @@ export default class TermStore {
 
     get allTerms() {
         let terms: AbstractTerm[] = [];
-        for(let element of this.elements) {
+        for(let element of this.elementTermMap) {
             terms.concat(element[1].abstractTerms);
         }
         return terms;
     }
 
+    get allElements() {
+        const elements: ElementAbstractTerms[] = [...this.elementTermMap.values()];
+        return elements;
+    }
+
+    addTranslation = async (dto: AddTranslationDto) => {
+        try {
+           await agent.UserTermEndpoints.addTranslation(dto);
+           runInAction(() => {
+               this.selectedTerm?.translations.push(dto.newTranslation);
+           }) 
+        } catch (error) {
+            
+        }
+    }
+
+
     refreshTerm = (details: UserTermDetails) => {
+        console.log(`Refreshing term: ${details.termValue}`);
         for(let term of this.allTerms) {
             if (term.termValue.toUpperCase() === details.termValue.toUpperCase()) {
                 const caseSensitiveValue = term.termValue;
                 term = {...term, ...details};
+                console.log('Term updated');
+                console.log(term);
                 term.termValue = caseSensitiveValue;
             }
         }
@@ -57,13 +86,13 @@ export default class TermStore {
            runInAction(() => {
                this.selectedContent = newContent;
                this.metadataLoaded = true;
-               this.elements.clear();
+               this.elementTermMap.clear();
            }) 
         } catch (error) {
            console.log(error);
            runInAction(() => { 
                this.metadataLoaded = true;
-               this.elements.clear();
+               this.elementTermMap.clear();
             });
         }
     } 
@@ -77,10 +106,36 @@ export default class TermStore {
                language: this.selectedContent.language
            });
            runInAction(() => {
-               this.elements.set(elementText, newElementTerms);
+               this.elementTermMap.set(elementText, newElementTerms);
            });
         } catch (error) {
            console.log(error); 
+        }
+    }
+
+    parentElementOf = (term: AbstractTerm) => {
+        for(let el of this.allElements) {
+            if (el.abstractTerms.some(at => at === term))
+                return el;
+        }
+        return null;
+    }
+
+    selectTerm = (term: AbstractTerm, shiftDown?: boolean) => {
+        if (shiftDown && this.selectedTerm !== null) {
+            const el = this.parentElementOf(term)
+            if (el === this.parentElementOf(this.selectedTerm)) {
+                const aIdx = this.selectedTerm.indexInChunk;
+                const bIdx = term.indexInChunk;
+                const start = (aIdx > bIdx) ? bIdx : aIdx;
+                const end = (aIdx <= bIdx) ? bIdx : aIdx;
+                this.phraseTerms = el!.abstractTerms.slice(start, end + 1);
+                this.phraseMode = true;
+            }
+        } else {
+            this.selectedTerm = term;
+            this.phraseMode = false;
+            this.phraseTerms = [];
         }
     }
     

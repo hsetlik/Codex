@@ -8,7 +8,6 @@ import FeedRoute from './components/feed/FeedRoute';
 import LoginForm from './components/account/LoginForm';
 import HomeRoute from './components/common/HomeRoute';
 import RegisterForm from './components/account/RegisterForm';
-import ContentRoute from './components/content/ContentRoute';
 import ProfilesRoute from './components/profile/ProfilesRoute';
 import CollectionsRoute from './components/collection/CollectionsRoute';
 import TagRoute from './components/feed/TagRoute';
@@ -39,7 +38,6 @@ function App() {
         <Routes >
           <Route path='/feed/:lang' element={<FeedRoute />}/>
           <Route path='/' element={<HomeRoute />} />
-          <Route path='/content/:contentId/:index'element={<ContentRoute />}/>
           <Route path='/profiles/:username/:lang' element={<ProfilesRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 
           <Route path='account/register' element={<RegisterForm />} /> 

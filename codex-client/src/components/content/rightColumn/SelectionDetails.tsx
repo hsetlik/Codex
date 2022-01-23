@@ -8,8 +8,8 @@ import '../../styles/details.css';
 
 
 export default observer(function SelectionDetails() {
-    const {contentStore} = useStore();
-    const {selectedTerm, phraseMode} = contentStore; 
+    const {termStore} = useStore();
+    const {selectedTerm, phraseMode} = termStore; 
     return (
         <div className="details-container">
             {(selectedTerm === null) ? (

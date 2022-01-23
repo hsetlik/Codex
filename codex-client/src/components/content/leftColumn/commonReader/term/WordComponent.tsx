@@ -13,8 +13,8 @@ interface Props {
 
 
 export default observer(function WordComponent({term, style}: Props) {
-    const {contentStore} = useStore();
-    const {selectTerm, selectedTerm, phraseTerms} = contentStore;
+    const {termStore} = useStore();
+    const {selectTerm, selectedTerm, phraseTerms} = termStore;
     const termColor = getColorForTerm(term);
     const selected = (selectedTerm === term || phraseTerms.some(t => t === term));
     const shiftDown = useKeyPressed((e) => {

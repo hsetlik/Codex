@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ContentSection, ContentTag, ElementAbstractTerms, SectionAbstractTerms, TextElement } from "../models/content";
-import { AddTranslationDto, KnownWordsDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
+import { ContentMetadata, ContentSection, ContentTag, SectionAbstractTerms } from "../models/content";
+import { AddTranslationDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
 import { AbstractPhrase, PhraseCreateQuery } from "../models/phrase";
 import { AbstractTerm } from "../models/userTerm";
 import { store } from "./store";
@@ -80,33 +80,6 @@ export default class ContentStore
     contentIsSaved = (contentUrl: string): boolean => {
         return this.savedContents.some(c => c.contentUrl === contentUrl);
     }
-
-    prevSection = async () => {
-        try {
-           if (this.selectedSectionIndex  > 0) {
-                let newIndex = this.selectedSectionIndex - 1;
-                await this.loadSectionById(this.selectedContentMetadata?.contentId!, newIndex);
-                runInAction(() => this.selectedSectionIndex = newIndex)
-           } 
-        } catch (error) {
-           console.log(error); 
-        }
-    }
-    
-    nextSection = async () => {
-        try {
-           if (this.selectedSectionIndex + 1 < this.selectedContentMetadata?.numSections!) {
-                console.log(`Loading section number ${this.selectedSectionIndex + 1} from URL ${this.selectedContentUrl}`);
-                let newIndex = this.selectedSectionIndex + 1;
-                await this.loadSectionById(this.selectedContentMetadata?.contentId!, newIndex);
-                runInAction(() => this.selectedSectionIndex = newIndex)
-           } 
-        } catch (error) {
-           console.log(error); 
-        }
-
-    }
-
      toggleContentSaved = async (contentUrl: string) => {
          if (this.contentIsSaved(contentUrl)) {
             try {
@@ -160,67 +133,6 @@ export default class ContentStore
             runInAction(() => this.termTranslationsLoaded = true);
          }
     }
-
-    loadSectionById = async (id: string, pIndex: number, useBuffer: boolean = true) => {
-        this.sectionLoaded = false;
-        //if the section we need is already in the buffer, just switch it over
-        if (this.bufferLoaded && this.bufferSection?.index === pIndex) {
-            //load buffer to current
-            this.currentSection = this.bufferSection;
-            this.currentSectionTerms = this.bufferSectionTerms;
-            // empty buffer
-            this.sectionLoaded = true;
-            this.bufferLoaded = false;
-            this.bufferSection = null;
-            this.bufferSectionTerms = {
-                contentUrl: 'none',
-                index: 0,
-                sectionHeader: 'none',
-                elementGroups: []
-            }; 
-        } else { // if we can't take from the buffer, call API for section at pIndex first
-            this.bufferLoaded = false;
-            try {
-                let content = await agent.Content.getContentWithId({contentId: id}); 
-                
-                let section = await agent.Parse.getSection({contentUrl: content.contentUrl, index: pIndex});
-                runInAction(() => {
-                    this.selectedContentMetadata = content;
-                    this.currentSection = section;
-                    this.currentSectionTerms = {
-                        contentUrl: content.contentUrl,
-                        index: pIndex,
-                        sectionHeader: section.sectionHeader,
-                        elementGroups: []
-                    };
-                    this.sectionLoaded = true;
-                    if (store.userStore.selectedProfile?.language !== content.language) {
-                        store.userStore.setSelectedLanguage(content.language);
-                    }
-                })
-                for(var element of this.currentSection?.textElements!) {
-                    const elementTerms = await agent.Content.abstractTermsForElement({
-                        elementText: element.elementText,
-                        contentUrl: element.contentUrl,
-                        tag: element.tag,
-                        language: this.selectedContentMetadata!.language
-                    });
-                    runInAction(() => {
-                        this.currentSectionTerms.elementGroups.push(elementTerms);
-                    })
-                }
-                await agent.Content.viewContent({contentUrl: content.contentUrl, index: pIndex});
-                // and load the buffer as applicable
-                if (useBuffer && pIndex + 1 < content.numSections) {
-                    await this.loadBufferSectionById(id, pIndex + 1);
-                }
-             } catch (error) {
-                console.log(error); 
-                runInAction(() => this.sectionLoaded = true); 
-             }
-        }
-    }
-
     loadBufferSectionById = async (id: string, pIndex: number) => {
         console.log(`Loading buffer section ${pIndex} for content ${id}`);
         this.bufferLoaded = false;

@@ -1,9 +1,8 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { Icon } from "semantic-ui-react";
 import { CssPallette } from "../../../../app/common/uiColors";
-import { ElementAbstractTerms, VideoCaptionElement } from "../../../../app/models/content";
+import { VideoCaptionElement } from "../../../../app/models/content";
 import { useStore } from "../../../../app/stores/store";
 import AbstractTermComponent from "../commonReader/term/AbstractTermComponent";
 
@@ -15,7 +14,7 @@ interface Props {
 
 export default observer(function CaptionRow({caption, onJump}: Props){
     const {videoStore, termStore} = useStore();
-    const {elements} = termStore;
+    const {elementTermMap: elements} = termStore;
     const {highlightedCaption} = videoStore;
     const isHighlighted = caption === highlightedCaption;
     const terms = elements.get(caption.captionText);
