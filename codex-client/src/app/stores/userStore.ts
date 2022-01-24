@@ -119,7 +119,6 @@ export default class UserStore{
         try {
             await agent.UserTermEndpoints.updateUserTerm(userTerm);
             await this.refreshByValue(userTerm.termValue);
-            store.termStore.refreshTerm(userTerm);
             console.log(`Term seen ${userTerm.timesSeen} times`);
         } catch (error) {
            console.log(error); 
@@ -133,9 +132,8 @@ export default class UserStore{
                 console.log(`Updating selected term with value ${termValue}`);
                 let oldValue = store.contentStore.selectedTerm.termValue;
                 updatedTermValue.termValue = oldValue;
-                store.contentStore.selectTerm(updatedTermValue);
             }
-            store.termStore.refreshAbstractTerm(updatedTermValue);
+            runInAction(() => store.termStore.refreshAbstractTerm(updatedTermValue));
         } catch (error) {
            console.log(error); 
         }
@@ -144,7 +142,6 @@ export default class UserStore{
     deleteTranslation = async (translation: IChildTranslation) => {
         try {
             await agent.UserTermEndpoints.deleteTranslation(translation);
-            await store.contentStore.loadSelectedTermTranslations();
         } catch (error) {
            console.log(error); 
         }

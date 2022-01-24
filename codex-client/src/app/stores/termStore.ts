@@ -36,7 +36,7 @@ export default class TermStore {
     get allTerms() {
         let terms: AbstractTerm[] = [];
         for(let element of this.elementTermMap) {
-            terms.concat(element[1].abstractTerms);
+            terms = terms.concat([...element[1].abstractTerms]);
         }
         return terms;
     }
@@ -60,13 +60,26 @@ export default class TermStore {
 
     refreshTerm = (details: UserTermDetails) => {
         console.log(`Refreshing term: ${details.termValue}`);
-        for(let term of this.allTerms) {
-            if (term.termValue.toUpperCase() === details.termValue.toUpperCase()) {
-                const caseSensitiveValue = term.termValue;
-                term = {...term, ...details};
-                console.log('Term updated');
-                console.log(term);
-                term.termValue = caseSensitiveValue;
+    
+        if (this.selectedTerm?.termValue.toUpperCase() === details.termValue.toUpperCase()) {
+            const value = this.selectedTerm.termValue;
+            this.selectedTerm = {...this.selectedTerm, ...details};
+            this.selectedTerm.termValue = value;
+            console.log('value refreshed');
+           
+        }
+    
+        for(let element of this.elementTermMap) {
+            for (let term of element[1].abstractTerms) {
+                if (term.termValue.toUpperCase() === details.termValue.toUpperCase()) {
+                    const idx = term.indexInChunk;
+                    const value = term.termValue;
+                    term = {...term, ...details};
+                    term.termValue = value;
+                    term.indexInChunk = idx;
+                    console.log('value refreshed');
+                    element[1].abstractTerms[idx] = term;
+                }
             }
         }
     }
@@ -76,6 +89,8 @@ export default class TermStore {
             console.log('no refresh needed');
         }
         const details: UserTermDetails = {...term};
+        console.log(`Updating details for ${term.termValue}`);
+        console.log(details);
         this.refreshTerm(details)
     }
 

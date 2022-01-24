@@ -126,63 +126,16 @@ export default class ContentStore
          this.termTranslationsLoaded = false;
          try {
             await agent.UserTermEndpoints.addTranslation(dto);
-            await this.loadSelectedTermTranslations();
-            runInAction(() => this.termTranslationsLoaded = true);
+            runInAction(() => {
+                
+                this.termTranslationsLoaded = true;
+            });
          } catch (error) {
             console.log("error");
             runInAction(() => this.termTranslationsLoaded = true);
          }
     }
-    loadBufferSectionById = async (id: string, pIndex: number) => {
-        console.log(`Loading buffer section ${pIndex} for content ${id}`);
-        this.bufferLoaded = false;
-        try {
-           let content = await agent.Content.getContentWithId({contentId: id}); 
-           let section = await agent.Parse.getSection({contentUrl: content.contentUrl, index: pIndex});
-           runInAction(() => {
-               this.bufferSection = section;
-               this.bufferSectionTerms = {
-                   contentUrl: content.contentUrl,
-                   index: pIndex,
-                   sectionHeader: section.sectionHeader,
-                   elementGroups: []
-               };
-               this.bufferLoaded = true;
-           })
-           for(var element of this.bufferSection?.textElements!) {
-               const elementTerms = await agent.Content.abstractTermsForElement({
-                        elementText: element.elementText,
-                        contentUrl: element.contentUrl,
-                        tag: element.tag,
-                        language: this.selectedContentMetadata!.language
-                    });
-               runInAction(() => {
-                   this.bufferSectionTerms.elementGroups.push(elementTerms);
-               })
-           }
-        } catch (error) {
-           console.log(error); 
-           runInAction(() => this.bufferLoaded = true); 
-        }
-    }
-    loadSelectedTermTranslations = async () => {
-        this.termTranslationsLoaded = false;
-        this.selectedTerm!.translations = [];
-        try {
-           const translations =  await agent.UserTermEndpoints.getTranslations({userTermId: this.selectedTerm?.userTermId!});
-           runInAction(() => {
-            for(const t of translations) {
-                this.selectedTerm?.translations.push(t.userValue);
-            }
-            this.termTranslationsLoaded = true;
-           });
-        } catch (error) {
-           console.log(error);
-        }
-        console.log(`Translations loaded for: ${this.selectedTerm?.termValue}`);
-    }
-
-    // Phrase related stuff
+       // Phrase related stuff
 
     createPhrase = async (query: PhraseCreateQuery) => {
         try {
