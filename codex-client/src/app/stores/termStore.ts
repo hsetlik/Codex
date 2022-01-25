@@ -2,12 +2,14 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { ContentMetadata, ElementAbstractTerms } from "../models/content";
 import { AddTranslationDto } from "../models/dtos";
+import { AbstractPhrase } from "../models/phrase";
 import { AbstractTerm, UserTermDetails } from "../models/userTerm";
 
 export default class TermStore {
 
     phraseMode = false;
     phraseTerms: AbstractTerm[] = [];
+    selectedAbstractPhrase: AbstractPhrase | null = null;
 
     selectedTerm: AbstractTerm | null = null;
 
@@ -65,10 +67,14 @@ export default class TermStore {
             for (let term of element[1].abstractTerms) {
                 if (term.termValue.toUpperCase() === details.termValue.toUpperCase()) {
                     const idx = term.indexInChunk;
+                    const leading = term.leadingCharacters;
+                    const trailing = term.trailingCharacters;
                     const value = term.termValue;
                     term = {...term, ...details};
                     term.termValue = value;
                     term.indexInChunk = idx;
+                    term.trailingCharacters = trailing;
+                    term.leadingCharacters = leading;
                     console.log('value refreshed');
                     element[1].abstractTerms[idx] = term;
                 }
@@ -153,5 +159,29 @@ export default class TermStore {
             this.phraseTerms = [];
         }
     }
+
+    updatePhraseAsync = async () => {
+        try {
+           let phraseValue = '';
+           const lastTerm = this.phraseTerms[this.phraseTerms.length - 1];
+           for(let term of this.phraseTerms) {
+               if (term.leadingCharacters !== 'none')
+                phraseValue += term.leadingCharacters;
+               phraseValue += term.termValue;
+               if (term.trailingCharacters !== 'none')
+                phraseValue += term.trailingCharacters;
+               if (term !== lastTerm)
+                phraseValue += ' ';
+           }
+           const newAbstractPhrase = await agent.PhraseAgent.getAbstractPhrase({value: phraseValue, language: this.selectedContent.language});
+           runInAction(() => {
+               this.selectedAbstractPhrase = newAbstractPhrase;
+           })
+        } catch (error) {
+            
+        }
+    }
+
+
     
 }

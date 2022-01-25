@@ -173,12 +173,12 @@ export default class ContentStore
         try {
            await agent.Content.addContentTag(tag);
            runInAction(() => {
-               let existing = store.feedStore.allContents.find(c => c.contentId === tag.contentId);
-               if (existing) {
-                   if (!existing.contentTags){
-                    existing.contentTags = [];
+               for(let content of store.feedStore.allContents) {
+                   if (content.contentId === tag.contentId) {
+                       if (!content.contentTags)
+                        content.contentTags = [];
+                    content.contentTags.push(tag.tagValue);
                    }
-                existing.contentTags.push(tag.tagValue);
                }
            })
         } catch (error) {

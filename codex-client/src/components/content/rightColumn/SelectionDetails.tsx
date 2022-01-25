@@ -5,6 +5,7 @@ import AbstractPhraseDetails from "./AbstractPhraseDetails";
 import TermDetails from "./TermDetails";
 import '../../styles/content-frame.css';
 import '../../styles/details.css';
+import { CssPallette } from "../../../app/common/uiColors";
 
 
 export default observer(function SelectionDetails() {
@@ -16,9 +17,13 @@ export default observer(function SelectionDetails() {
                 <Header content="No term selected" className="details-h2" />
                 ) : (
                     (phraseMode) ? (
-                        <AbstractPhraseDetails />
+                        <div className='deatils-div'style={CssPallette.Surface} >
+                            <AbstractPhraseDetails />
+                        </div>
                     ) : (
-                        <TermDetails term={selectedTerm} />
+                        <div className='details-div' style={CssPallette.Surface} >
+                            <TermDetails term={selectedTerm} />
+                        </div>
                     )
                 )}
         </div>

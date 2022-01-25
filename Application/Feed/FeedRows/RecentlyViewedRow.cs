@@ -32,14 +32,18 @@ namespace Application.FeedObjects.FeedRows
                 .ToListAsync();
             if (recordsInRange == null)
                 return Result<List<ContentMetadataDto>>.Failure($"No valid records in after time: {rangeBeginning}");
-            recordsInRange = recordsInRange.OrderByDescending(r => r.AccessedOn).Take(max).ToList();
+            Console.WriteLine($"{recordsInRange.Count} records found in last 30 days");
+            recordsInRange = recordsInRange.OrderByDescending(r => r.AccessedOn).ToList();
             var uniqueRecords = new List<ContentViewRecord>();
             foreach(var rec in recordsInRange)
             {
-                if (!uniqueRecords.Any(r => r.ContentUrl == rec.ContentUrl))
+                if (!(uniqueRecords.Any(r => r.ContentUrl == rec.ContentUrl)))
+                {
                     uniqueRecords.Add(rec);
+                }
             }
             recordsInRange = uniqueRecords.Take(max).ToList();
+            Console.WriteLine($"{recordsInRange.Count} uniquerecords found in last 30 days");
             var output = new List<ContentMetadataDto>();
 
             foreach(var record in recordsInRange)

@@ -41,7 +41,7 @@ export default observer(function ContentColumn({content}: Props) {
                 )}
             </Row>
             <Row>
-                {content.contentTags && content.contentTags.length > 0 && (
+                {content.contentTags &&  (
                     <Col className="tag-list">
                             <h3 className="feed-h3">
                                 Tags:

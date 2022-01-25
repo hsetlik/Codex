@@ -6,20 +6,20 @@ import { PhraseCreateQuery } from "../../../app/models/phrase";
 import { useStore } from "../../../app/stores/store";
 
 export default observer(function PhraseCreateButton() {
-    const {contentStore} = useStore();
-    const {currentAbstractPhrase, createPhrase} = contentStore;
+    const {termStore, contentStore} = useStore();
+    const {selectedAbstractPhrase } = termStore;
     const currentQuery: PhraseCreateQuery = {
-        language: currentAbstractPhrase?.language || 'en',
-        value: currentAbstractPhrase?.value || 'null',
-        firstTranslation: currentAbstractPhrase?.reccomendedTranslation || 'null'
+        language: selectedAbstractPhrase?.language || 'en',
+        value: selectedAbstractPhrase?.value || 'null',
+        firstTranslation: selectedAbstractPhrase?.reccomendedTranslation || 'null'
     }
-    const handleClick = () => {createPhrase(currentQuery)}
+    const handleClick = () => {contentStore.createPhrase(currentQuery)}
     return (
-        (currentAbstractPhrase === null) ? (
+        (selectedAbstractPhrase === null) ? (
             <Loader active={true} />
         ) : (
             <Button onClick={handleClick}>
-                {currentAbstractPhrase.reccomendedTranslation}
+                {selectedAbstractPhrase.reccomendedTranslation}
             </Button>
         )
     )

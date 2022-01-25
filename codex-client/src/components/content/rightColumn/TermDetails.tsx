@@ -16,7 +16,7 @@ export default observer(function AbstractTermDetails({term}: Props) {
     return (
         <div  >
             {term.hasUserTerm ? (
-                <div>
+                <div style={CssPallette.Surface}>
                     <StarButton />
                     <Header as='h2' content={term.termValue} className="details-h2" />
                     <UserTermDetails />

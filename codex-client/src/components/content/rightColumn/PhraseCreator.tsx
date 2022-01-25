@@ -7,12 +7,13 @@ import PhraseCreateForm from "./PhraseCreateForm";
 
 
 export default observer(function PhraseCreator() {
-    const {contentStore: {currentAbstractPhrase}} = useStore();
-    return ( (currentAbstractPhrase === null) ? (
+    const {termStore} = useStore()
+    const {selectedAbstractPhrase} = termStore;
+    return ( (selectedAbstractPhrase === null) ? (
             <Loader active={true} />
         ) : (
            <div>
-               <Header as='h2' content={currentAbstractPhrase.value} />
+               <Header as='h2' content={selectedAbstractPhrase.value} />
                <PhraseCreateButton />
                <PhraseCreateForm />
            </div> 

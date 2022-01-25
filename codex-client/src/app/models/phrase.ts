@@ -29,6 +29,6 @@ export interface AbstractPhrase {
     value: string,
     language: string,
     reccomendedTranslation: string,
-    phrase: Phrase
+    phrase?: Phrase
 }
 
