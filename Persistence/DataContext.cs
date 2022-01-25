@@ -42,6 +42,7 @@ namespace Persistence
 
         public DbSet<CollectionContent> CollectionContents { get; set; }
         public DbSet<SavedCollection> SavedCollections { get; set; }
+        public DbSet<ContentDifficulty> ContentDifficulties { get; set; }
 
          protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -112,6 +113,9 @@ namespace Persistence
 
             builder.Entity<SavedCollection>()
             .HasKey(sc => new {sc.CollectionId, sc.LanguageProfileId});
+
+            builder.Entity<ContentDifficulty>()
+            .HasKey(k => new {k.LanguageProfileId, k.ContentId});
         }
     }
 }

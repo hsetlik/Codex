@@ -114,6 +114,7 @@ namespace Application.Parsing.ProfileScrapers
                         ElementText = bodyString,
                         ContentUrl = this.Url
                     };
+                    storage.ArticleBodyText += bodyString;
                     this.textElements.Add(element);
                     node.SetAttributeValue("codex_replacable", "true");
                 }
@@ -131,6 +132,11 @@ namespace Application.Parsing.ProfileScrapers
         public override ContentPageHtml GetPageHtml()
         {
             return storage.ContentPageHtml;
+        }
+
+        public override string GetPageText()
+        {
+            return storage.ArticleBodyText;
         }
     }
 }

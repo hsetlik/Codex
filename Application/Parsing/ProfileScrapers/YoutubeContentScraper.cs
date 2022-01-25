@@ -9,6 +9,7 @@ using Application.DomainDTOs.Content.Responses;
 using Application.Parsing.ContentStorage;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
 using YoutubeExplode;
 
 namespace Application.Parsing.ProfileScrapers
@@ -85,6 +86,31 @@ namespace Application.Parsing.ProfileScrapers
         public override ContentPageHtml GetPageHtml()
         {
             throw new NotImplementedException();
+        }
+
+        public override string GetPageText()
+        {
+            string output = "";
+            var ytService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = "AIzaSyD0oGjw3IM-1f8Sf9N5OO8aLiChFAbL-Y4",
+            });
+            var videoId = YoutubeVideoId(Url);
+            var searchRequest = ytService.Videos.List("snippet");
+            searchRequest.Id = videoId;
+            var searchResponse = Task.Run<VideoListResponse>(async () => await searchRequest.ExecuteAsync());
+            var videoSnippet = searchResponse.Result.Items.FirstOrDefault();
+            var ytClient = new YoutubeClient();
+            var video = Task.Run(async () => await ytClient.Videos.GetAsync(Url));
+            var language = videoSnippet.Snippet.DefaultAudioLanguage.Substring(0, 2);
+            var tracks = Task.Run(async () => await ytClient.Videos.ClosedCaptions.GetManifestAsync(videoId));
+            var trackInfo = tracks.Result.GetByLanguage(videoSnippet.Snippet.DefaultAudioLanguage);
+            var track = Task.Run(async () => await ytClient.Videos.ClosedCaptions.GetAsync(trackInfo));
+            foreach(var caption in track.Result.Captions)
+            {
+                output += caption.Text;
+            } 
+            return output;
         }
     }
 }

@@ -24,5 +24,6 @@ namespace Domain.DataObjects
         public List<ContentTag> ContentTags { get; set; } = new List<ContentTag>();
         public int NumSections { get; set; }
         public ICollection<CollectionContent> CollectionContents { get; set; } = new List<CollectionContent>();
+        public ICollection<ContentDifficulty> ContentDifficulties { get; set; } = new List<ContentDifficulty>();
     }
 }

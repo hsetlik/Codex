@@ -59,5 +59,11 @@ namespace Application.Parsing
             await EnsureLoaded(url);
             return scraper.GetPageHtml();
         }
+
+        public async Task<string> GetHtmlPageBody(string url)
+        {
+            await EnsureLoaded(url);
+            return scraper.GetPageText();
+        }
     }
 }

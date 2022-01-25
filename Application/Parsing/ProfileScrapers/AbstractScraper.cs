@@ -37,6 +37,7 @@ namespace Application.Parsing
         public abstract ContentSection GetSection(int index);
         public abstract List<ContentSection> GetAllSections();
         public abstract ContentPageHtml GetPageHtml();
+        public abstract string GetPageText();
 
         public List<List<string>> GetWordLists(int size = 50, int maximum = 1000)
         {

@@ -9,6 +9,7 @@ using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.DomainDTOs.Content;
 using Application.DomainDTOs.UserLanguageProfile;
+using Application.DomainDTOs.UserTerm.Queries;
 using Application.Interfaces;
 using Application.Parsing;
 using Application.Utilities;
@@ -20,6 +21,7 @@ using Persistence;
 
 namespace Application.Extensions
 {
+    using TaskMap =  Dictionary<int, Task<Result<AbstractTermDto>>>;
     public static class AbstractTermExtensions
     {
         
@@ -97,6 +99,41 @@ namespace Application.Extensions
                 } 
             }
             return Result<Unit>.Success(Unit.Value);
+        }
+        public static async Task<Result<ElementAbstractTerms>> GetAbstractTermsForElement(this DataContext context, IUserAccessor userAccessor, IDataRepository factory, ElementAbstractTermsQuery query)
+        {
+            var terms = new List<AbstractTermDto>();
+            string text = query.ElementText.WithoutSquareBrackets();
+            var words = text.Split(null).ToList();
+            words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).ToList();
+            var wordDict = new Dictionary<int, string>();
+            for(int i = 0; i < words.Count; ++i)
+            {
+                wordDict[i] = words[i];
+            }
+            var taskMap = new TaskMap();
+
+            Parallel.ForEach(wordDict, word => 
+            {
+                taskMap[word.Key] = factory.GetAbstractTerm(new TermDto{Value = word.Value, Language = query.Language}, userAccessor.GetUsername());
+            });
+            foreach(var t in taskMap)
+            {
+                var term = await t.Value;
+                if (term.IsSuccess)
+                {
+                    term.Value.IndexInChunk = t.Key;
+                    terms.Add(term.Value);
+                }
+            }
+            terms = terms.OrderBy(t => t.IndexInChunk).ToList();
+            var output = new ElementAbstractTerms
+                {
+                ElementText = query.ElementText,
+                Tag = query.Tag,
+                AbstractTerms = terms
+                };
+            return Result<ElementAbstractTerms>.Success(output);
         }
     }
 }

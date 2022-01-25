@@ -7,6 +7,7 @@ namespace Application.Parsing.ContentStorage
 {
     public class WikiContentStorage : BaseContentStorage
     {
+        public string ArticleBodyText { get; set; } = "";
 
     }
 }

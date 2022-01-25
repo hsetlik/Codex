@@ -16,6 +16,7 @@ namespace Application.Interfaces
         Task<List<ContentSection>> GetAllSections(string contentUrl);
         Task<AbstractScraper> GetScraper(string url);
         Task<ContentPageHtml> GetHtml(string url);
+        Task<string> GetHtmlPageBody(string url);
 
     }
 }

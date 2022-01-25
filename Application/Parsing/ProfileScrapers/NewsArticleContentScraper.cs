@@ -47,6 +47,11 @@ namespace Application.Parsing.ProfileScrapers
             return storage.ContentPageHtml;
         }
 
+        public override string GetPageText()
+        {
+            return storage.ArticleBodyText;
+        }
+
         public override ContentSection GetSection(int index)
         {
             return storage.Sections[index];
@@ -103,6 +108,7 @@ namespace Application.Parsing.ProfileScrapers
             foreach(var n in uNodes)
             {
                 n.SetAttributeValue("codex_replacable", "true");
+                storage.ArticleBodyText += n.InnerText;
             }
             storage.Metadata = new ContentMetadataDto
             {

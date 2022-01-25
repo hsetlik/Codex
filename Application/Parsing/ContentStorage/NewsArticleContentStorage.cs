@@ -7,7 +7,7 @@ namespace Application.Parsing.ContentStorage
 {
     public class NewsArticleContentStorage : BaseContentStorage
     {
-        public List<VideoCaptionElement> Elements { get; set; }
+        public string ArticleBodyText { get; set; } = "";
         
     }
 }
