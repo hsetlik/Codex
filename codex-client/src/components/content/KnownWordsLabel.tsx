@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Label } from "semantic-ui-react";
+import { CodexPallette, cssString, LerpColor } from "../../app/common/uiColors";
 import { useStore } from "../../app/stores/store";
 
 interface Props {
@@ -19,7 +20,8 @@ export default observer(function KnownWordsLabel({contentId}: Props) {
         let ratio = (knownWordsData?.knownWords! / knownWordsData?.totalWords!);
         return Math.round(ratio * 100);
     }
+    const color = LerpColor(CodexPallette.gradRed, CodexPallette.gradGreen, (knownPercentage() / 100));
     return (
-        <Label content={(knownWords.has(contentId)) ? `${knownPercentage()}% of words known` : 'Loading...'} />
+        <Label style={{'background-color': cssString(color)}} content={(knownWords.has(contentId)) ? `${knownPercentage()}% of words known` : 'Loading...'} />
     )
 })

@@ -25,7 +25,10 @@ interface Pallette {
     error: RgbColor,
 
     lightText: RgbColor,
-    darkText: RgbColor
+    darkText: RgbColor,
+    
+    gradGreen: RgbColor,
+    gradRed: RgbColor
 }
 
 export const CodexPallette: Pallette = {
@@ -42,7 +45,17 @@ export const CodexPallette: Pallette = {
     error: {r: 0, g: 0, b: 0},
 
     lightText: {r: 255, g: 255, b: 255},
-    darkText: {r: 0, g: 0, b: 0}
+    darkText: {r: 0, g: 0, b: 0},
+
+    gradGreen: {r: 119, g: 233, b: 136},
+    gradRed: {r: 248, g: 97, b: 106},
+}
+
+export const LerpColor = (a: RgbColor, b: RgbColor, t: number): RgbColor => {
+    const oR = a.r + ((b.r - a.r) * t);
+    const oG = a.g + ((b.g - a.g) * t);
+    const oB = a.b + ((b.b - a.b) * t);
+    return {r: oR, b: oB, g: oG};
 }
 
 const Primary: React.CSSProperties = {
@@ -84,6 +97,8 @@ const Surface: React.CSSProperties = {
     'backgroundColor': cssString(CodexPallette.surface),
     'color': cssString(CodexPallette.darkText)
 }
+
+
 
 export const CssPallette = {
     Primary,
