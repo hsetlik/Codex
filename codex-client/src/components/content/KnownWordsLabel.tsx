@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default observer(function KnownWordsLabel({contentId}: Props) {
-    const {knownWordsStore: {knownWords, loadKnownWordsFor}} = useStore();
+    const {knownWordsStore: {difficulties: knownWords, loadKnownWordsFor}} = useStore();
     useEffect(() => {
         if (!knownWords.has(contentId)) {
             loadKnownWordsFor(contentId);

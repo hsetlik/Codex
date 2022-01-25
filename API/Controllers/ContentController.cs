@@ -142,6 +142,12 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new GetSavedContents.Query{Dto = dto}));
         }
 
+        [Authorize]
+        [HttpPost("getContentDifficulty")]
+        public async Task<IActionResult> GetContentDifficulty(ContentDifficultyQuery dto)
+        {
+            return HandleResult(await Mediator.Send(new GetContentDifficulty.Query{Dto = dto}));
+        }
 
     }
 }

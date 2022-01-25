@@ -65,7 +65,7 @@ export default class UserStore{
     setSelectedLanguage = (iso: string) => {
         console.log("Setting selected language: " + iso);
         this.selectedProfile = this.languageProfiles.find(p => p.language === iso)!;
-        if (store.knownWordsStore.knownWords.size > 0)
+        if (store.knownWordsStore.difficulties.size > 0)
             store.knownWordsStore.clearKnownWords();
     }
 

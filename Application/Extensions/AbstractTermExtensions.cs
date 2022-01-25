@@ -104,6 +104,7 @@ namespace Application.Extensions
         {
             var terms = new List<AbstractTermDto>();
             string text = query.ElementText.WithoutSquareBrackets();
+            //Console.WriteLine($"TEXT IS: {text}");
             var words = text.Split(null).ToList();
             words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).ToList();
             var wordDict = new Dictionary<int, string>();

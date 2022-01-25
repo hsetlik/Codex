@@ -5,6 +5,7 @@ import { CssPallette } from "../../app/common/uiColors";
 import { ContentMetadata } from "../../app/models/content";
 import { useStore } from "../../app/stores/store";
 import AddTagPopup from "../content/AddTagPopup";
+import KnownWordsLabel from "../content/KnownWordsLabel";
 import '../styles/feed.css';
 import '../styles/flex.css';
 
@@ -31,14 +32,19 @@ export default observer(function ContentColumn({content}: Props) {
     return (
         <Container fluid className='feed-item-container' style={CssPallette.Surface}>
             <Row  className='header-row'>
-                <h3 style={CssPallette.Primary} className="title-text" onClick={handleOpenClick}>{name}</h3>
-                <label>{content.contentType}</label>
-                {content.creatorUsername && (
-                    <label>{`Uploaded by: ${content.creatorUsername}`}</label>
-                )}
-                {content.description && (
-                    <p className="description-p">{content.description}</p>
-                )}
+                <Col>
+                    <h3 style={CssPallette.Primary} className="title-text" onClick={handleOpenClick}>{name}</h3>
+                    <label>{content.contentType}</label>
+                    <div>
+                        {content.creatorUsername && (
+                            <label>{`Uploaded by: ${content.creatorUsername}`}</label>
+                        )}
+                    </div>
+                    {content.description && (
+                        <p className="description-p">{content.description}</p>
+                    )}
+                    <KnownWordsLabel contentId={content.contentId} />
+                </Col>
             </Row>
             <Row>
                 {content.contentTags &&  (

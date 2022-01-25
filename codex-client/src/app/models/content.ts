@@ -108,6 +108,21 @@ export const getContentType = (url: string): ContentType => {
         return ContentType.Article;
 }
 
+export interface ContentDifficulty {
+    languageProfileId: string,
+    contentId: string,
+    updatedAt: string,
+    totalWords: number,
+    knownWords: number
+}
+
+export interface ContentDifficultyQuery {
+    languageProfileId: string,
+    contentId: string
+}
+
+
+
 
 
 

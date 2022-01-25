@@ -17,7 +17,7 @@ import { UserTermCreateDto, AddTranslationDto,
          SaveContentQuery,
          SavedContentDto,
          ICollectionId} from "../models/dtos";
-import { ContentMetadata, ElementAbstractTerms, ContentSection, ContentTag, TagQuery, ContentPageHtml, ElementAbstractTermsQuery, CaptionsQuery, VideoCaptionElement } from "../models/content";
+import { ContentMetadata, ElementAbstractTerms, ContentSection, ContentTag, TagQuery, ContentPageHtml, ElementAbstractTermsQuery, CaptionsQuery, VideoCaptionElement, ContentDifficultyQuery, ContentDifficulty } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
 import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
@@ -127,7 +127,8 @@ const Content = {
     getSavedContents: (id: IProfileId) => requests.post<SavedContentDto[]>('content/getSavedContents', id),
     addContentTag: (dto: ContentTag) => requests.post('content/addContentTag', dto),
     getContentsWithTag: (dto: TagQuery) => requests.post<ContentMetadata[]>('content/getContentsWithTag', dto),
-    getContentPageHtml: (contentUrl: string) => requests.get<string>(contentUrl)
+    getContentPageHtml: (contentUrl: string) => requests.get<string>(contentUrl),
+    getContentDifficulty: (dto: ContentDifficultyQuery) => requests.post<ContentDifficulty>('content/getContentDifficulty', dto)
 }
 
 const CollectionAgent = {
