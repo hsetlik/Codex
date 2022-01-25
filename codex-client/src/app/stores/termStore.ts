@@ -57,18 +57,10 @@ export default class TermStore {
         }
     }
 
-
     refreshTerm = (details: UserTermDetails) => {
         console.log(`Refreshing term: ${details.termValue}`);
     
-        if (this.selectedTerm?.termValue.toUpperCase() === details.termValue.toUpperCase()) {
-            const value = this.selectedTerm.termValue;
-            this.selectedTerm = {...this.selectedTerm, ...details};
-            this.selectedTerm.termValue = value;
-            console.log('value refreshed');
            
-        }
-    
         for(let element of this.elementTermMap) {
             for (let term of element[1].abstractTerms) {
                 if (term.termValue.toUpperCase() === details.termValue.toUpperCase()) {
@@ -82,6 +74,14 @@ export default class TermStore {
                 }
             }
         }
+
+        if (this.selectedTerm?.termValue.toUpperCase() === details.termValue.toUpperCase()) {
+            const value = this.selectedTerm.termValue;
+            this.selectedTerm = {...this.selectedTerm, ...details};
+            this.selectedTerm.termValue = value;
+            console.log('value refreshed');
+        }
+ 
     }
 
     refreshAbstractTerm = (term: AbstractTerm) => {

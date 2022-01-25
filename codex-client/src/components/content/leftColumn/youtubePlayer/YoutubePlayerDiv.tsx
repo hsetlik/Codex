@@ -19,16 +19,14 @@ export default observer(function YoutubePlayerDiv() {
         loaded: number;
         loadedSeconds: number; 
     }) => {
-        const playedMs = state.playedSeconds * 1000;
-        loadForMs(playedMs);
+        handleSeek(state.playedSeconds);
     }
     const [isPlaying, setIsPlaying] = useState(false);
     const handleCaptionJump = (caption: VideoCaptionElement) =>
     {
         playerRef.current?.seekTo((caption.startMs || 0 / 1000), "seconds");
-        setIsPlaying(true);
+        //setIsPlaying(true);
     }
-
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
     return (

@@ -25,13 +25,15 @@ export default class VideoStore {
     }
 
     loadForMs = async (ms: number) => {
-        if (this.currentCaptions.length > 0)
+        if (this.currentCaptions.length > 0) {
             this.highlightedCaption = this.currentCaptions.find(c => c.startMs < ms && ms <= c.endMs) || null;
+            console.log(`Highlighted: ${this.highlightedCaption?.captionText}`);
+        }
         if (this.currentCaptions.length > 0 && msInRangeGroup(ms, this.currentCaptions[0], this.currentCaptions[this.currentCaptions.length - 1])) {
             // nothing to do if ms is still in range of the current caption group
             console.log(`No update needed at ${ms} ms`);
             return;
-        } else if (this.bufferCaptionsLoaded && msInRangeGroup(ms, this.bufferCaptions[0], this.bufferCaptions[this.bufferCaptions.length - 1])) {
+        } else if (this.bufferCaptionsLoaded && msInRangeGroup(ms, this.currentCaptions[this.currentCaptions.length - 1], this.bufferCaptions[this.bufferCaptions.length - 1])) {
             console.log(`Used buffer at ${ms} ms`);
             this.currentCaptions = this.bufferCaptions;
             this.currentCaptionsLoaded = true;
@@ -56,32 +58,31 @@ export default class VideoStore {
                })
                runInAction(() => {
                     this.currentCaptions = current;
+                    console.log(`current loaded range from ${this.currentCaptions[0].startMs} ms to ${this.currentCaptions[this.currentCaptions.length - 1].endMs}`);
                     this.currentCaptionsLoaded = true;
                 });
             } catch (error) {
                 console.log(error);
             }
-
-            //load the buffer
-           if (!this.bufferCaptionsLoaded && this.currentCaptionsLoaded) {
-                try {
-                const bufferStart = this.currentCaptions[this.currentCaptions.length - 1].endMs;
-                const buffer = await agent.CaptionAgent.getCaptions({
-                    videoId: store.termStore.selectedContent.videoId,
-                    language: store.termStore.selectedContent.language,
-                    fromMs: bufferStart,
-                    numCaptions: 10
-                });
-                runInAction(() => { 
-                    this.bufferCaptions = buffer;
-                    this.bufferCaptionsLoaded = true;
-                    console.log(`Buffer captions loaded for range ${buffer[0].startMs} to ${buffer[buffer.length - 1].endMs} ms`);
-                });
-                } catch (error) {
-                    console.log(error); 
-                }
-           }
         }
+        if (!this.bufferCaptionsLoaded && this.currentCaptionsLoaded) {
+            try {
+            const bufferStart = this.currentCaptions[this.currentCaptions.length - 1].endMs;
+            const buffer = await agent.CaptionAgent.getCaptions({
+                videoId: store.termStore.selectedContent.videoId,
+                language: store.termStore.selectedContent.language,
+                fromMs: bufferStart,
+                numCaptions: 10
+            });
+            runInAction(() => { 
+                this.bufferCaptions = buffer;
+                this.bufferCaptionsLoaded = true;
+                console.log(`Buffer captions loaded for range ${buffer[0].startMs} to ${buffer[buffer.length - 1].endMs} ms`);
+            });
+            } catch (error) {
+                console.log(error); 
+            }
+       }
     }
 
 }

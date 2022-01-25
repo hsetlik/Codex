@@ -16,6 +16,7 @@ export default observer(function CaptionDiv({handleJump}: Props){
     if (!currentCaptionsLoaded) {
         return <div></div>
     }
+    console.log(`${currentCaptions.length} captions currently loaded`);
     return (
         <Container>
             {currentCaptions.map(cpt => (
