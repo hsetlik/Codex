@@ -16,6 +16,7 @@ export default class ArticleStore {
         try {
             await store.termStore.selectContentByIdAsync(contentId);
             const content = store.termStore.selectedContent;
+            console.log(`parameter ID: ${contentId}, selected content ID: ${content.contentId}`);
             const contentPage = await agent.Parse.getHtml(contentId);
             runInAction(() => {
                 this.currentPageHtml = contentPage;
@@ -24,7 +25,6 @@ export default class ArticleStore {
                     store.userStore.setSelectedLanguage(content.language);
                 }
             })
-            await agent.Content.viewContent({contentUrl: content.contentUrl, index: 0});
         } catch (error) {
            runInAction(() => this.htmlLoaded = true);
            console.log(error); 

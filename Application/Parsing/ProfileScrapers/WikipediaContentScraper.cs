@@ -69,10 +69,6 @@ namespace Application.Parsing.ProfileScrapers
             var page = await sBrower.NavigateToPageAsync(new Uri(this.Url));
             //grab the HTML
             var root = page.Html;
-            //grab the head node
-            // get the style node?
-            var styleNodes = root.Descendants("style").ToList();
-            var head = root.CssSelect("head").FirstOrDefault();
             //get the stylesheets
             storage.StylesheetUrls = new List<string>();
             var stylesheets = root.Descendants().Where(d => d.Attributes.Any(a => a.Value == "stylesheet")).ToList();
