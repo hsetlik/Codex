@@ -59,17 +59,15 @@ namespace Application.Parsing.ProfileScrapers
                 ApiKey = "AIzaSyD0oGjw3IM-1f8Sf9N5OO8aLiChFAbL-Y4",
             });
             var videoId = YoutubeVideoId(Url);
+            Console.WriteLine($"Video has ID: {videoId}");
             var searchRequest = ytService.Videos.List("snippet");
             searchRequest.Id = videoId;
             var searchResponse = await searchRequest.ExecuteAsync();
             var videoSnippet = searchResponse.Items.FirstOrDefault();
-
             
             var ytClient = new YoutubeClient();
             var video = await ytClient.Videos.GetAsync(Url);
-
             var language = videoSnippet.Snippet.DefaultAudioLanguage.Substring(0, 2);
-            var tracks = await ytClient.Videos.ClosedCaptions.GetManifestAsync(videoId);
             
             storage.Metadata = new ContentMetadataDto
             {

@@ -27,8 +27,8 @@ interface Pallette {
     lightText: RgbColor,
     darkText: RgbColor,
     
-    gradGreen: RgbColor,
-    gradRed: RgbColor
+    knownColor: RgbColor,
+    unknownColor: RgbColor
 }
 
 export const CodexPallette: Pallette = {
@@ -47,8 +47,8 @@ export const CodexPallette: Pallette = {
     lightText: {r: 255, g: 255, b: 255},
     darkText: {r: 0, g: 0, b: 0},
 
-    gradGreen: {r: 119, g: 233, b: 136},
-    gradRed: {r: 248, g: 97, b: 106},
+    knownColor: {r: 119, g: 233, b: 136},
+    unknownColor: {r: 10, g: 170, b: 211},
 }
 
 export const LerpColor = (a: RgbColor, b: RgbColor, t: number): RgbColor => {

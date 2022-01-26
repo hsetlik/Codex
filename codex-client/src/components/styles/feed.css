@@ -17,6 +17,7 @@
 .title-text {
     font-size: medium;
     cursor: pointer;
+    padding: 0.25em;
 }
 
 .tag-button {

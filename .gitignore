@@ -5,6 +5,7 @@
 Persistence/Migrations
 API/codex.db-shm
 API/codex.db-wal
+CssScraper/*
 
 
 # User-specific files
