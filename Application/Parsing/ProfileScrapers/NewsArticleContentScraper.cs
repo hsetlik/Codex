@@ -8,6 +8,7 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.Content.Responses;
 using Application.Parsing.ContentStorage;
 using Application.Parsing.ParsingExtensions;
+using CssScraper.Style;
 using HtmlAgilityPack;
 using MediatR;
 using ScrapySharp.Extensions;
@@ -83,8 +84,12 @@ namespace Application.Parsing.ProfileScrapers
             {
                 var rel = sheet.GetAttributeValue("href", "no href");
                 rel = Regex.Replace(rel, @"amp;", "");
-                Console.WriteLine($"Stylesheet URL: {urlRoot+ rel}");
+                Console.WriteLine($"\n\nStylesheet URL: {urlRoot+ rel}");
                 storage.StylesheetUrls.Add(urlRoot + rel);
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                var stylesheet = new Stylesheet(new Uri(urlRoot + rel));
+                Console.WriteLine($"Loading stylesheet took {watch.ElapsedMilliseconds} ms");
+                //Console.WriteLine(stylesheet.CssString);
             }
             var headlineNode = root.CssSelect("h1").FirstOrDefault();
             string headline = (headlineNode == null) ? "headline not found" : headlineNode.InnerText;
@@ -125,5 +130,4 @@ namespace Application.Parsing.ProfileScrapers
             contentsLoaded = true;
         }
     }
-
 }
