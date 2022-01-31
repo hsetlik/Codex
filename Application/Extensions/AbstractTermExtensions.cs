@@ -103,10 +103,7 @@ namespace Application.Extensions
         public static async Task<Result<ElementAbstractTerms>> GetAbstractTermsForElement(this DataContext context, IUserAccessor userAccessor, IDataRepository factory, ElementAbstractTermsQuery query)
         {
             var terms = new List<AbstractTermDto>();
-            string text = query.ElementText.WithoutSquareBrackets();
-            //Console.WriteLine($"TEXT IS: {text}");
-            var words = text.Split(null).ToList();
-            words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).ToList();
+            var words = query.ElementText.SplitToTermValues(false);
             var wordDict = new Dictionary<int, string>();
             for(int i = 0; i < words.Count; ++i)
             {
