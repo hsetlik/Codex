@@ -8,6 +8,7 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.Content.Responses;
 using Application.Parsing.ContentStorage;
 using Application.Parsing.ParsingExtensions;
+using CssScraper.Style;
 using HtmlAgilityPack;
 using MediatR;
 using ScrapySharp.Extensions;
@@ -85,6 +86,7 @@ namespace Application.Parsing.ProfileScrapers
                 rel = Regex.Replace(rel, @"amp;", "");
                 Console.WriteLine($"Stylesheet URL: {urlRoot+ rel}");
                 storage.StylesheetUrls.Add(urlRoot + rel);
+                var scrapedSheet = new Stylesheet(new Uri(urlRoot + rel));
             }
             var headlineNode = root.CssSelect("h1").FirstOrDefault();
             string headline = (headlineNode == null) ? "headline not found" : headlineNode.InnerText;
