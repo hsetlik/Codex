@@ -84,7 +84,7 @@ namespace Application.Parsing.ProfileScrapers
             {
                 var rel = sheet.GetAttributeValue("href", "no href");
                 rel = Regex.Replace(rel, @"amp;", "");
-                Console.WriteLine($"Stylesheet URL: {urlRoot+ rel}");
+                Console.WriteLine($"\n\nStylesheet URL: {urlRoot+ rel}");
                 storage.StylesheetUrls.Add(urlRoot + rel);
                 var scrapedSheet = new Stylesheet(new Uri(urlRoot + rel));
             }
@@ -127,5 +127,4 @@ namespace Application.Parsing.ProfileScrapers
             contentsLoaded = true;
         }
     }
-
 }
