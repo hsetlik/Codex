@@ -20,6 +20,7 @@ export default observer(function ContentColumn({content}: Props) {
     content.contentName;
     const isVideo = content.contentType === 'Youtube';
     const contentPath = (isVideo) ? `/video/${content.contentId}` : `/viewer/${content.contentId}`;
+    const {termStore} = useStore();
     const handleOpenClick = () => {
         navigate(contentPath);
     }

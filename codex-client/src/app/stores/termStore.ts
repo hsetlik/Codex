@@ -107,6 +107,7 @@ export default class TermStore {
            const newContent = await agent.Content.getContentWithId({contentId: id});
            runInAction(() => {
                this.selectedContent = newContent;
+               console.log(`New selected content has name: ${newContent.contentName}`);
                this.metadataLoaded = true;
                this.elementTermMap.clear();
                // also clear the elements in videoStore and/or articleStore

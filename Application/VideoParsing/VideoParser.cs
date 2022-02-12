@@ -35,12 +35,12 @@ namespace Application.VideoParsing
             var watch = System.Diagnostics.Stopwatch.StartNew();
             var manifest = await youtube.Videos.ClosedCaptions.GetManifestAsync(videoId);
             watch.Stop();
-            Console.WriteLine($"Getting track manifest took {watch.ElapsedMilliseconds} ms");
+            // Console.WriteLine($"Getting track manifest took {watch.ElapsedMilliseconds} ms");
             var trackInfo = manifest.GetByLanguage(language);
             watch.Restart();
             var track = await youtube.Videos.ClosedCaptions.GetAsync(trackInfo);
             watch.Stop();
-            Console.WriteLine($"Getting track manifest took {watch.ElapsedMilliseconds} ms");
+            // Console.WriteLine($"Getting track manifest took {watch.ElapsedMilliseconds} ms");
             var firstCaption = track.CaptionAfter((double)fromMs);
             var startIndex = track.Captions.ToList().IndexOf(firstCaption);
             var count = (startIndex + numCaptions < track.Captions.Count) ? numCaptions : track.Captions.Count - startIndex;
