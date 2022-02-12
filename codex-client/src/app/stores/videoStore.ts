@@ -1,15 +1,22 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { VideoCaptionElement } from "../models/content";
+import { CaptionsQuery, VideoCaptionElement } from "../models/content";
 import { store } from "./store";
 
 
 
-const msInRangeGroup = (ms: number, start: VideoCaptionElement, end: VideoCaptionElement): boolean => {
+const msInRangeGroup = (ms: number, captions: VideoCaptionElement[]): boolean => {
+    let start = captions[0];
+    let end = captions[captions.length - 1];
    return (ms > start.startMs && ms <= end.endMs);
 }
 
+const isBetween = (ms: number, first: VideoCaptionElement, second: VideoCaptionElement): boolean => {
+    return (ms >= first.endMs && ms < second.endMs);
+}
+
 export default class VideoStore {
+
 
     currentCaptionsLoaded = false;
     currentCaptions: VideoCaptionElement[] = [];
@@ -24,65 +31,83 @@ export default class VideoStore {
         makeAutoObservable(this);
     }
 
+    reset = () => {
+        this.currentCaptions = [];
+        this.currentCaptionsLoaded = false;
+        this.bufferCaptions = [];
+        this.bufferCaptionsLoaded = false;
+    }
     loadForMs = async (ms: number) => {
-        if (this.currentCaptions.length > 0) {
-            this.highlightedCaption = this.currentCaptions.find(c => c.startMs < ms && ms <= c.endMs) || null;
-            console.log(`Highlighted: ${this.highlightedCaption?.captionText}`);
-        }
-        if (this.currentCaptions.length > 0 && msInRangeGroup(ms, this.currentCaptions[0], this.currentCaptions[this.currentCaptions.length - 1])) {
-            // nothing to do if ms is still in range of the current caption group
-            console.log(`No update needed at ${ms} ms`);
-            return;
-        } else if (this.bufferCaptionsLoaded && msInRangeGroup(ms, this.currentCaptions[this.currentCaptions.length - 1], this.bufferCaptions[this.bufferCaptions.length - 1])) {
-            console.log(`Used buffer at ${ms} ms`);
-            this.currentCaptions = this.bufferCaptions;
-            this.currentCaptionsLoaded = true;
+        // check to see if we need to switch yet
+        var inRange = false;
+        try {
+            /*
+            runInAction(() => {
+                if (this.currentCaptions.length > 0) {
+                    this.highlightedCaption = this.currentCaptions.find(c => c.startMs < ms && ms <= c.endMs) || null;
+                    console.log(`highlighted caption is: ${this.highlightedCaption?.captionText}`);
+                    let sectionStart = this.currentCaptions[0].startMs;
+                    let sectionEnd = this.currentCaptions[this.currentCaptions.length - 1].endMs;
+                    inRange = (this.currentCaptionsLoaded && ms >= sectionStart && ms < sectionEnd);
+                    if(inRange) {
+                        console.log(`In range for section ${sectionStart}-${sectionEnd}`);
+                        return;
+                    }
+                }
+            })
+            */
+            console.log(`Caption at ${ms} ms is out of range`);
+                
+            //Before any asynchronous API calls, try to
+            runInAction(() => {
+                // 1. make sure the correct caption is highlighted 
+                
+                //2. Check if we need to switch to buffer or load next section
 
-            this.bufferCaptions = [];
-            this.bufferCaptionsLoaded = false;
-        } else {
-            // if neither the current nor the buffer are in range, we need to retreive both
-            this.bufferCaptions = [];
-            this.bufferCaptionsLoaded = false;
-
-            this.currentCaptions = [];
-            this.currentCaptionsLoaded = false;
-            
-            //load the current
-            try {
-               const current = await agent.CaptionAgent.getCaptions({
-                    videoId: store.termStore.selectedContent.videoId,
-                    language: store.termStore.selectedContent.language,
-                    fromMs: Math.round(ms),
-                    numCaptions: 10
-               })
-               runInAction(() => {
-                    this.currentCaptions = current;
-                    console.log(`current loaded range from ${this.currentCaptions[0].startMs} ms to ${this.currentCaptions[this.currentCaptions.length - 1].endMs}`);
+                // 3. if the buffer is loaded and the playhead is in its range, we can use it and load the next buffer asynchronously
+                if (this.bufferCaptionsLoaded && 
+                    isBetween(ms, this.currentCaptions[this.currentCaptions.length - 1], this.bufferCaptions[0])) {
+                    this.currentCaptions = this.bufferCaptions;
                     this.currentCaptionsLoaded = true;
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        if (!this.bufferCaptionsLoaded && this.currentCaptionsLoaded) {
-            try {
-            const bufferStart = this.currentCaptions[this.currentCaptions.length - 1].endMs;
-            const buffer = await agent.CaptionAgent.getCaptions({
+                    this.bufferCaptions = [];
+                    this.bufferCaptionsLoaded = false;
+                    // since we switched to the buffer, we need to recalculate inRange
+                    inRange = (this.currentCaptionsLoaded && msInRangeGroup(ms, this.currentCaptions));
+                }
+            });
+        //only load the buffer
+        if (!this.bufferCaptionsLoaded && this.currentCaptionsLoaded && inRange) {
+            const query: CaptionsQuery = {
                 videoId: store.termStore.selectedContent.videoId,
-                language: store.termStore.selectedContent.language,
-                fromMs: bufferStart,
+                language: store.userStore.selectedProfile?.language || 'null',
+                fromMs: this.currentCaptions[this.currentCaptions.length - 1].endMs,
                 numCaptions: 10
-            });
-            runInAction(() => { 
-                this.bufferCaptions = buffer;
-                this.bufferCaptionsLoaded = true;
-                console.log(`Buffer captions loaded for range ${buffer[0].startMs} to ${buffer[buffer.length - 1].endMs} ms`);
-            });
-            } catch (error) {
-                console.log(error); 
             }
-       }
+            const newBufferElements = await agent.CaptionAgent.getCaptions(query);
+            runInAction(() => {
+                this.bufferCaptions = newBufferElements;
+                this.bufferCaptionsLoaded = true;
+            })
+        }
+        //if we don't have either buffer captions of current captions we load both
+        else if (!this.bufferCaptionsLoaded && !this.currentCaptionsLoaded) {
+            const query: CaptionsQuery = {
+                videoId: store.termStore.selectedContent?.videoId || 'null',
+                language: store.userStore.selectedProfile?.language || 'null',
+                fromMs: ms,
+                numCaptions: 20 // take 20 captions at once when loading both so we don't need two calls
+            }
+            const newCaptions = await agent.CaptionAgent.getCaptions(query);
+            runInAction(() => {
+                this.currentCaptions = newCaptions.slice(0, 9);
+                this.bufferCaptions = newCaptions.slice(10, newCaptions.length - 1);
+                this.currentCaptionsLoaded = true;
+                this.bufferCaptionsLoaded = true;
+            }) 
+        }
+    } catch (error) {
+        console.log(error);
+    }
     }
 
 }

@@ -86,7 +86,6 @@ namespace Application.Parsing.ProfileScrapers
                 rel = Regex.Replace(rel, @"amp;", "");
                 Console.WriteLine($"\n\nStylesheet URL: {urlRoot+ rel}");
                 storage.StylesheetUrls.Add(urlRoot + rel);
-                var scrapedSheet = new Stylesheet(new Uri(urlRoot + rel));
             }
             var headlineNode = root.CssSelect("h1").FirstOrDefault();
             string headline = (headlineNode == null) ? "headline not found" : headlineNode.InnerText;

@@ -4,6 +4,7 @@ import { ContentMetadata, ElementAbstractTerms } from "../models/content";
 import { AddTranslationDto } from "../models/dtos";
 import { AbstractPhrase } from "../models/phrase";
 import { AbstractTerm, UserTermDetails } from "../models/userTerm";
+import { store } from "./store";
 
 export default class TermStore {
 
@@ -108,6 +109,8 @@ export default class TermStore {
                this.selectedContent = newContent;
                this.metadataLoaded = true;
                this.elementTermMap.clear();
+               // also clear the elements in videoStore and/or articleStore
+               store.videoStore.reset();
            }) 
         } catch (error) {
            console.log(error);

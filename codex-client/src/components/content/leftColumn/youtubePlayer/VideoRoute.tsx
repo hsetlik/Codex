@@ -10,8 +10,10 @@ export default observer(function VideoRoute() {
     const {contentId} = useParams();
     const {termStore: {metadataLoaded, selectedContent, selectContentByIdAsync}} = useStore();
     useEffect(() => {
-
-    }, [contentId, selectedContent, selectContentByIdAsync, metadataLoaded])
+        if (selectedContent.contentId !== contentId) {
+            selectContentByIdAsync(contentId!);
+        }
+    }, [contentId, selectedContent, selectContentByIdAsync])
     
     return (
         <Container>

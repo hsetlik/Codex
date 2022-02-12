@@ -14,7 +14,6 @@ interface Props {
 }
 export default observer(function ContentColumn({content}: Props) {
     const navigate = useNavigate();
-    const {termStore: {selectContentByIdAsync}} = useStore();
     const maxNameLength = 60;
     const name = (content.contentName.length > maxNameLength) ? 
     content.contentName.substring(0, maxNameLength - 3) + '...' : 
@@ -22,7 +21,6 @@ export default observer(function ContentColumn({content}: Props) {
     const isVideo = content.contentType === 'Youtube';
     const contentPath = (isVideo) ? `/video/${content.contentId}` : `/viewer/${content.contentId}`;
     const handleOpenClick = () => {
-        selectContentByIdAsync(content.contentId);
         navigate(contentPath);
     }
     const handleTagClick = (tag: string) => {
