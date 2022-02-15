@@ -24,7 +24,9 @@ export default observer(function LoginForm() {
                     <ErrorMessage name='error' render={() => (
                         <Label style={{marginBottom: 10}}  basic color='red' content={errors.error}/> )}
                     />
-                    <Button loading={isSubmitting} positive content='Login' type='submit' fluid />
+                    <Button loading={isSubmitting} positive content='Login' type='submit' fluid onClick={() => {
+                        let lang = userStore.selectedProfile?.language;
+                    }} />
                 </Form>
             )}
         </Formik>

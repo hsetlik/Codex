@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import './App.css';
 import { useStore } from './app/stores/store'
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import NavBar from './components/common/NavBar';
 import FeedRoute from './components/feed/FeedRoute';
@@ -14,9 +14,11 @@ import TagRoute from './components/feed/TagRoute';
 import ArticleRoute from './components/contentFrame/ArticleRoute';
 import VideoRoute from './components/content/leftColumn/youtubePlayer/VideoRoute';
 import ModalContainer from './app/common/modals/ModalContainer';
+import FeedRedirectRoute from './components/feed/FeedRedirectRoute';
 
 function App() {
-//const location = useLocation();
+  const location = useLocation();
+  const entered = location.pathname !== "/";
   const {commonStore, userStore} = useStore();
 
   useEffect(() => {
@@ -33,10 +35,11 @@ function App() {
   return (
     <div>
       <ModalContainer />
-      <NavBar />
+      {entered && <NavBar />}
       <Container style={{margin: '7em'}}>
         <Routes >
           <Route path='/feed/:lang' element={<FeedRoute />}/>
+          <Route path='/feed' element={<FeedRedirectRoute />}/>
           <Route path='/' element={<HomeRoute />} />
           <Route path='/profiles/:username/:lang' element={<ProfilesRoute />}/>
           <Route path='account/login' element={<LoginForm />} /> 

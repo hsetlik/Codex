@@ -1,6 +1,6 @@
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import '../styles/feed.css';
@@ -11,6 +11,8 @@ export default observer(function FeedRoute(){
     const {lang} = useParams();
     const language = lang || 'null';
     const {feedStore, userStore: {selectedProfile, setSelectedLanguage}} = useStore();
+    // if we don't have a lang param, we need to navigate to the correct language
+    const navigate = useNavigate();
     const {feedLoaded, currentFeed, loadFeed} = feedStore;
     useEffect(() => {
         if (selectedProfile?.language !== language) {

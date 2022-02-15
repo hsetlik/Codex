@@ -115,7 +115,7 @@ namespace Application.Parsing.ProfileScrapers
                     node.SetAttributeValue("codex_replacable", "true");
                 }
             }
-            var wikiBodyNode = root.CssSelect("div.mw-body").FirstOrDefault();
+            var wikiBodyNode = root.CssSelect("body").FirstOrDefault();
             storage.RawPageHtml = wikiBodyNode.InnerHtml;
             contentsLoaded = true;
         }
