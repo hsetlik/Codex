@@ -15,6 +15,19 @@ namespace Application.Utilities
             return split.Word.ToUpper();            
         }   
 
+        public static string WithoutNewlines(this string input, bool replaceWithAdditionalSpace=false)
+        {
+           if (replaceWithAdditionalSpace)
+           {
+               return input.Replace('\n', ' ');
+           }
+           else
+           {
+               return StrippedOfMatches(input, "\n");
+           }
+
+        }
+
         public static string GetTrailing(string input)
         {
            var match = Regex.Match(input, @"([^\{P}^\s]+)");

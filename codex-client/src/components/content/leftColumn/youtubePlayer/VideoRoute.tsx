@@ -1,35 +1,37 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useStore } from "../../../../app/stores/store";
 import SelectionDetails from "../../rightColumn/SelectionDetails";
 import YoutubePlayerDiv from "./YoutubePlayerDiv";
+import "../../../styles/video.css";
 
 export default observer(function VideoRoute() {
     const {contentId} = useParams();
-    const {termStore: {metadataLoaded, selectedContent, selectContentByIdAsync}} = useStore();
+    const {termStore: {metadataLoaded, selectedContent, selectContentByIdAsync}, userStore: {selectedProfile, setSelectedLanguage}} = useStore();
     useEffect(() => {
         if (selectedContent.contentId !== contentId) {
             selectContentByIdAsync(contentId!);
         }
-    }, [contentId, selectedContent, selectContentByIdAsync])
+        if (selectedProfile?.language !== selectedContent.language) {
+            setSelectedLanguage(selectedContent.language);
+        }
+    }, [contentId, selectedContent, selectContentByIdAsync, selectedProfile, setSelectedLanguage])
     
     return (
-        <Container>
-            <Row>
-                <Col xs={9}>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-9">
+                <h1>{selectedContent.contentName}</h1>
                 {(metadataLoaded) && (
                     <YoutubePlayerDiv />
                 )}
-                </Col>
-                <Col xs={3}>
-                    <span style={{position: "fixed"}}>
-                        <SelectionDetails  />
-                    </span>
-                </Col>
-            </Row>
+                </div>
+                <div className="col-3">
+                    <SelectionDetails  />
+                </div>
+            </div>
            
-        </Container>
+        </div>
     )
 })

@@ -12,19 +12,13 @@ const msInRangeGroup = (ms: number, captions: VideoCaptionElement[]): boolean =>
     let end = captions[captions.length - 1];
    return (ms > start.startMs && ms <= end.endMs);
 }
-
-const isBetween = (ms: number, first: VideoCaptionElement, second: VideoCaptionElement): boolean => {
-    return (ms >= first.endMs && ms < second.endMs);
-}
-
 export default class VideoStore {
 
 
     currentCaptionsLoaded = false;
     currentCaptions: VideoCaptionElement[] = [];
  
-    bufferCaptionsLoaded = false;
-    bufferCaptions: VideoCaptionElement[] = [];
+  
 
     highlightedCaption: VideoCaptionElement | null = null;
     
@@ -36,13 +30,15 @@ export default class VideoStore {
     reset = () => {
         this.currentCaptions = [];
         this.currentCaptionsLoaded = false;
-        this.bufferCaptions = [];
-        this.bufferCaptionsLoaded = false;
     }
+
+    /* 
+        ON LOADING VIDEO
+    */
 
     loadForMs = async (ms: number) => {
         if (this.currentCaptionsLoaded === true && msInRangeGroup(ms, this.currentCaptions)) {
-            console.log(`Caption at ${ms} ms is in range`)
+            this.highlightedCaption = this.currentCaptions.find(cap => cap.startMs <= ms && cap.endMs > ms) || null;
             return;
         }
         this.currentCaptionsLoaded = false;
@@ -61,5 +57,4 @@ export default class VideoStore {
            runInAction(() => this.currentCaptionsLoaded = true);
         }
     }
-
 }

@@ -8,9 +8,9 @@ import CaptionDiv from "./CaptionDiv";
 export default observer(function YoutubePlayerDiv() {
     const {videoStore, termStore} = useStore();
     const {loadForMs} = videoStore;
-    const handleSeek = (seconds: number) => {
+    const handleSeek = async (seconds: number) => {
         const ms = (seconds * 1000);
-        loadForMs(ms);
+        await loadForMs(ms);
     }
     const playerRef = createRef<ReactPlayer>();
     const handleProgress = (state: {
@@ -25,7 +25,7 @@ export default observer(function YoutubePlayerDiv() {
     const handleCaptionJump = (caption: VideoCaptionElement) =>
     {
         playerRef.current?.seekTo((caption.startMs || 0 / 1000), "seconds");
-        //setIsPlaying(true);
+        setIsPlaying(true);
     }
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
@@ -38,7 +38,7 @@ export default observer(function YoutubePlayerDiv() {
            onProgress={handleProgress}
            onPlay={handlePlay}
            onPause={handlePause}
-           progressInterval={400}
+           progressInterval={300}
            ref={playerRef}
            playing={isPlaying}
            light

@@ -3,7 +3,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { CssPallette } from "../../app/common/uiColors";
 import { ContentMetadata } from "../../app/models/content";
-import { useStore } from "../../app/stores/store";
 import AddTagPopup from "../content/AddTagPopup";
 import KnownWordsLabel from "../content/KnownWordsLabel";
 import '../styles/feed.css';
@@ -20,7 +19,6 @@ export default observer(function ContentColumn({content}: Props) {
     content.contentName;
     const isVideo = content.contentType === 'Youtube';
     const contentPath = (isVideo) ? `/video/${content.contentId}` : `/viewer/${content.contentId}`;
-    const {termStore} = useStore();
     const handleOpenClick = () => {
         navigate(contentPath);
     }
