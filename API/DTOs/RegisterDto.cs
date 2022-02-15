@@ -24,5 +24,8 @@ namespace API.DTOs
 
         [Required]
         public string NativeLanguage { get; set; }
+
+        [Required]
+        public string StudyLanguage { get; set; }
     }
 }

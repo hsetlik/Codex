@@ -1,13 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Container, Header } from "semantic-ui-react";
+import "../styles/home.css";
 
 export default function HomeRoute(){
-    //just a placeholder to pass something in in App.tsx
     return (
-        <Container>
-                <Header as={Link} to="../account/login" content="Login" className="label" />
-                <Header as={Link} to="../account/register" content="Register" className="label" />
-        </Container>
+        <div className="container">
+            <div className="conatiner row">
+                <h1 className="display-1">Welcome to Codex</h1>
+                <h3>Language learning for the real world</h3>
+            </div>
+            <div className="container row">
+                <a className="btn btn-primary landing-button" href="/account/login" >Login</a>
+            </div>
+             <div className="container row">
+                <a className="btn btn-primary landing-button" href="/account/register">Register</a>
+            </div>
+    
+        </div>
     )
 }

@@ -60,6 +60,16 @@ namespace API.Controllers
                 LastStudiedLanguage = "none"
             };
 
+            var profile =  new UserLanguageProfile
+            {
+                Language = registerDto.StudyLanguage,
+                User = user,
+                KnownWords = 0,
+                UserLanguage = user.NativeLanguage 
+            };
+
+            user.UserLanguageProfiles.Add(profile);
+
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (result.Succeeded)
             {

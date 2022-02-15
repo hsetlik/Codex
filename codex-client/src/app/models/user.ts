@@ -10,4 +10,6 @@ export interface UserFormValues {
     email: string;
     password: string;
     username?: string;
+    nativeLanguage?: string;
+    studyLanguage?: string
 }

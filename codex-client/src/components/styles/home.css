@@ -1,0 +1,18 @@
+.container {
+   padding: 1em;
+   align-items: center !important;
+   text-align: center !important;
+}
+
+.landing-button {
+    display: block !important;
+    font-family: "Josefin Sans" !important;
+    font-size: xx-large;
+    margin: 0.3em;
+    align-self: center !important;
+}
+
+h1 {
+    font-family: "Josefin Sans" !important;
+    align-self: center !important;
+}

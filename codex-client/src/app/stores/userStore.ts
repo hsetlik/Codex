@@ -42,6 +42,7 @@ export default class UserStore{
                 const defaultProfile = this.languageProfiles.find(p => p.language === user.lastStudiedLanguage);
                 const currentProfile = (defaultProfile !== undefined) ? defaultProfile : this.languageProfiles[0];
                 this.selectedProfile = currentProfile;
+                store.feedStore.loadFeed(currentProfile.languageProfileId);
                 console.log(`Selected profile has id ${this.selectedProfile.languageProfileId} and language ${this.selectedProfile.language}}`);
             })
             console.log(profiles);

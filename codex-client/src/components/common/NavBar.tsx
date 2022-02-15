@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Icon, Menu} from 'semantic-ui-react';
 import { useStore } from '../../app/stores/store';
 import { observer } from 'mobx-react-lite';
@@ -11,6 +11,11 @@ import ImportModal from './ImportModal';
 export default observer(function NavBar()
 {
     const {userStore: {user, logout, isLoggedIn, selectedProfile}, modalStore} = useStore();
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        navigate("/");
+        logout();
+    }
     const lang = selectedProfile?.language!; 
     let accountComponent;
     if (isLoggedIn) {
@@ -25,23 +30,27 @@ export default observer(function NavBar()
     return (
         <Menu inverted fixed='top' className='codex-nav-bar' style={CssPallette.PrimaryDark}>
             <Container >
-                <Menu.Item as={Link} to={`feed/${lang}`}>
-                    <Icon name='home' />
-                </Menu.Item>
-                <FlagLabel />
-                <Menu.Item>
-                    <LanguageSelector />
-                </Menu.Item>
-                <Menu.Item as={Link} to={`/collections/${lang}`} >
-                    Browse
-                </Menu.Item>
-                <Menu.Item onClick={() => modalStore.openModal(<ImportModal />)}>
-                    Import
-                </Menu.Item>
+                {isLoggedIn && (
+                    <>
+                        <Menu.Item as={Link} to={`feed/${lang}`}>
+                            <Icon name='home' />
+                        </Menu.Item>
+                        <FlagLabel />
+                        <Menu.Item>
+                            <LanguageSelector />
+                        </Menu.Item>
+                        <Menu.Item as={Link} to={`/collections/${lang}`} >
+                            Browse
+                        </Menu.Item>
+                        <Menu.Item onClick={() => modalStore.openModal(<ImportModal />)}>
+                            Import
+                        </Menu.Item>
+                    </>
+                )}
                 <Menu.Item position='right'>
                     {accountComponent}
                 </Menu.Item>
-                <Menu.Item name="Logout" onClick={logout} />
+                <Menu.Item name="Logout" onClick={handleLogout} />
             </Container>
         </Menu>
     )
