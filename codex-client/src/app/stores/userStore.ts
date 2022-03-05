@@ -22,7 +22,7 @@ export default class UserStore{
 
     login = async (creds: UserFormValues) => {
         try {
-            console.log("Starting login");
+            console.log(`Starting login for user ${creds.email}, ${creds.password}`);
             const user = await agent.Account.login(creds);
             console.log("User found: " + user.username);
            

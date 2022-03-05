@@ -36,7 +36,7 @@ function App() {
     <div>
       <ModalContainer />
       {entered && <NavBar />}
-      <Container style={{margin: '7em'}}>
+      <Container style={{margin: (entered) ? '7em' : '0em'}}>
         <Routes >
           <Route path='/feed/:lang' element={<FeedRoute />}/>
           <Route path='/feed' element={<FeedRedirectRoute />}/>

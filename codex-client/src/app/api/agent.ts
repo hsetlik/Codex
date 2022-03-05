@@ -62,7 +62,8 @@ switch (status)
 axios.interceptors.request.use(config => {
     let token = window.localStorage.getItem('jwt');
     config.headers = Object.assign({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      "Sec-Fetch-Site": "cross-site"
     }, config.headers);
     return config;
   }

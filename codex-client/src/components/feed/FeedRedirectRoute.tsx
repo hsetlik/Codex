@@ -15,8 +15,6 @@ export default observer(function FeedRedirectRoute() {
         }
 
     }, [isLoggedIn, selectedProfile, navigate])
-
-
     return (
         <div>
 

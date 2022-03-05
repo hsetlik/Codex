@@ -83,6 +83,7 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto login)
         {
+            Console.WriteLine($"Logging in: {login.Email}, {login.Password}");
             CodexUser user = await _userManager.FindByEmailAsync(login.Email);
             if (user == null)
             {
@@ -93,6 +94,7 @@ namespace API.Controllers
 
             if(result.Succeeded)
             {
+                Console.WriteLine($"Login succeded");
                 return CreateUserObject(user);
             }
             return Unauthorized();
