@@ -25,13 +25,11 @@ namespace Application.FeedObjects.FeedRows
             if (profile == null)
                 return Result<List<ContentMetadataDto>>.Failure($"No profile with ID {languageProfileId}");
             var historyIds = profile.ContentHistories.Select(h => h.ContentHistoryId).ToList();
-            var rangeBeginning = DateTime.Now.AddDays(-30.0);
             var recordsInRange = await context.ContentViewRecords
-                .Where(r => r.AccessedOn >= rangeBeginning && 
-                historyIds.Any(id => id == r.ContentHistoryId))
+                .Where(r => historyIds.Any(id => id == r.ContentHistoryId))
                 .ToListAsync();
             if (recordsInRange == null)
-                return Result<List<ContentMetadataDto>>.Failure($"No valid records in after time: {rangeBeginning}");
+                return Result<List<ContentMetadataDto>>.Failure($"No valid records");
             Console.WriteLine($"{recordsInRange.Count} records found in last 30 days");
             recordsInRange = recordsInRange.OrderByDescending(r => r.AccessedOn).ToList();
             var uniqueRecords = new List<ContentViewRecord>();

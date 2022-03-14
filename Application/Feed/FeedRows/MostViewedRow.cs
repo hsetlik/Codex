@@ -19,10 +19,10 @@ namespace Application.FeedObjects.FeedRows
         public override async Task<Result<List<ContentMetadataDto>>> GetContentList(DataContext context, int max, IMapper mapper)
         {
             var profile = await context.UserLanguageProfiles.FirstOrDefaultAsync(p => p.LanguageProfileId == languageProfileId);
-            if (profile == null)
+            if (profile is null)
                 return Result<List<ContentMetadataDto>>.Failure($"No profile with ID {languageProfileId}");
             var urls = await context.ContentViewRecords.Select(r => r.ContentUrl).ToListAsync();
-            if (urls == null)
+            if (urls is null)
                 return Result<List<ContentMetadataDto>>.Failure($"No valid contents found");
             var urlFrequencyTable = new Dictionary<string, int>();
             foreach(var url in urls)
@@ -39,9 +39,10 @@ namespace Application.FeedObjects.FeedRows
             foreach(var url in mostViewedUrls)
             {
                 var content = await context.Contents.Include(c => c.ContentTags).FirstOrDefaultAsync(c => c.ContentUrl == url);
-                if (content == null)
+                if (content is null)
                     return Result<List<ContentMetadataDto>>.Failure($"Could not load content with URL: {url}");
-                output.Add(mapper.Map<ContentMetadataDto>(content));
+                if (content.Language == profile.Language)
+                    output.Add(mapper.Map<ContentMetadataDto>(content));
             }
             return Result<List<ContentMetadataDto>>.Success(output);
         }

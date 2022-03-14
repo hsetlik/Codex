@@ -21,13 +21,12 @@ namespace Application.FeedObjects.FeedRows
             var profile = await context.UserLanguageProfiles.FirstOrDefaultAsync(c => c.LanguageProfileId == languageProfileId);
             if (profile == null)
                 return Result<List<ContentMetadataDto>>.Failure($"No profile with ID {languageProfileId}");
-            var rangeBeginning = DateTime.Now.AddDays(-30.0);
             var contents = await context.Contents
                 .Include(c => c.ContentTags)
-                .Where(c => c.Language == profile.Language && c.CreatedAt > rangeBeginning)
+                .Where(c => c.Language == profile.Language)
                 .ToListAsync();
             if (contents == null)
-                return Result<List<ContentMetadataDto>>.Failure($"No contents with language {profile.Language} after time {rangeBeginning}");
+                return Result<List<ContentMetadataDto>>.Failure($"No contents with language {profile.Language} after");
             contents = contents.OrderByDescending(c => c.CreatedAt).Take(max).ToList();
             return Result<List<ContentMetadataDto>>.Success(contents.Select(c => mapper.Map<ContentMetadataDto>(c)).ToList());
         }
