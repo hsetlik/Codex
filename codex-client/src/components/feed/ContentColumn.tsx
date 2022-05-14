@@ -40,7 +40,6 @@ export default observer(function ContentColumn({content}: Props) {
                     {content.description && (
                         <p className="description-p">{content.description}</p>
                     )}
-                    <KnownWordsLabel contentId={content.contentId} />
                 </Col>
             </Row>
             <Row>
