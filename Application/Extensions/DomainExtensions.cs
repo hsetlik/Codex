@@ -43,7 +43,7 @@ namespace Application.Extensions
             if (input.EaseFactor < minimumEase)
                 input.EaseFactor = minimumEase;
             //new due date
-            var nextDueDate = DateTime.Now.AddDays((double)input.SrsIntervalDays);
+            var nextDueDate = DateTime.Now.ToUniversalTime().AddDays((double)input.SrsIntervalDays);
             input.DateTimeDue = nextDueDate;
             return input;
         }

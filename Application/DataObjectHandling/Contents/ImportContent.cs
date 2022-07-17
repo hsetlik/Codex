@@ -55,7 +55,7 @@ namespace Application.DataObjectHandling.Contents
                     ContentType = metadata.ContentType,
                     VideoId = metadata.VideoId,
                     Language = metadata.Language,
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
                     NumSections = metadata.NumSections,
                     CreatorUsername = _user.GetUsername(),
                     UserLanguageProfile = profile,

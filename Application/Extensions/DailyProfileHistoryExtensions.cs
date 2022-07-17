@@ -100,7 +100,7 @@ namespace Application.Extensions
 
                 // check for an existing record from today
                 var existingRecord = await context.DailyProfileRecords
-                .FirstOrDefaultAsync(r => r.LanguageProfileId == dto.LanguageProfileId && r.CreatedAt.Date == DateTime.Now.Date);
+                .FirstOrDefaultAsync(r => r.LanguageProfileId == dto.LanguageProfileId && r.CreatedAt.Date == DateTime.Now.ToUniversalTime().Date);
                 // if we find one, remove it from the context
                 if(existingRecord != null)
                     context.DailyProfileRecords.Remove(existingRecord);
@@ -110,7 +110,7 @@ namespace Application.Extensions
                     DailyProfileHistory = profile.DailyProfileHistory,
                     LanguageProfileId = dto.LanguageProfileId,
                     UserLanguageProfile = profile,
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
                     KnownWords = profile.KnownWords
                 };
                 context.DailyProfileRecords.Add(record);

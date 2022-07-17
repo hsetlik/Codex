@@ -75,7 +75,7 @@ namespace Application.Extensions
                 DateTimeDue = DateTime.Today,
                 TimesSeen = dto.TimesSeen,
                 NormalizedTermValue = normValue,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
                 Translations = new List<Translation>(),
                 Starred = false
             };
@@ -110,7 +110,7 @@ namespace Application.Extensions
             .FirstOrDefaultAsync(u => u.Language == dto.Language && u.UserId == user.Id);
             if (profile == null)
                 return Result<List<UserTermDetailsDto>>.Failure("Profile not found!");
-            var currentTime = DateTime.Now;
+            var currentTime = DateTime.Now.ToUniversalTime();
             var mapper = MapperFactory.GetDefaultMapper();
             foreach(var term in profile.UserTerms)
             {
@@ -162,7 +162,7 @@ namespace Application.Extensions
             
             var r = new Random();
             var dateOffset = r.NextDouble() * dateRange;
-            var createTime = DateTime.Now.AddDays(dateOffset * -1.0f);
+            var createTime = DateTime.Now.ToUniversalTime().AddDays(dateOffset * -1.0f);
 
             int timesSeen = (int)(r.NextDouble() * 5);
             int rating = (int)(r.NextDouble() * 5);

@@ -20,7 +20,7 @@ namespace Application.Extensions
                 return Result<Unit>.Failure("Could not find profile!");
             var newSavedContent = new SavedContent
             {
-                SavedAt = DateTime.Now,
+                SavedAt = DateTime.Now.ToUniversalTime(),
                 ContentUrl = contentUrl,
                 LanguageProfileId = langProfileId,
                 UserLanguageProfile = profile

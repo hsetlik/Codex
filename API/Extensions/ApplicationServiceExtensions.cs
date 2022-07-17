@@ -19,6 +19,8 @@ using Application;
 using Application.TranslationService;
 using Application.ProfileHistoryEngine;
 using Application.VideoParsing;
+
+
 //using Application.Interfaces;
 
 //This is just here to move some ugly service configuration code out of Startup.cs
@@ -46,12 +48,12 @@ namespace API.Extensions
             //add the normal, single-instance DB context
             services.AddDbContext<DataContext>(opt => 
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
             // add the DB factory
             services.AddDbContextFactory<DataContext>(opt => 
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
             // add the repository to access the factory
             services.AddScoped<IDataRepository, DataRepository>();

@@ -33,7 +33,7 @@ namespace Application.DataObjectHandling.ContentRecords
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var newViewTime = DateTime.Now;
+                var newViewTime = DateTime.Now.ToUniversalTime();
                 var content = await _context.Contents
                 .FirstOrDefaultAsync(c => c.ContentUrl == request.Dto.ContentUrl);
                 if (content == null)

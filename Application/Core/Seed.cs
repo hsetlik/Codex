@@ -110,7 +110,7 @@ namespace Domain
                     ContentType = metadata.ContentType,
                     ContentName = metadata.ContentName,
                     Language = metadata.Language,
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
                     ContentTags = new List<ContentTag>(),
                     NumSections = metadata.NumSections,
                     Description = $"Dummy description number {i}",

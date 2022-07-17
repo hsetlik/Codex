@@ -36,9 +36,9 @@ namespace Application.Extensions
                 TimesSeen = 0,
                 EaseFactor = 2.5f,
                 Rating = 0,
-                DateTimeDue = DateTime.Now.ToString(),
+                DateTimeDue = DateTime.Now.ToUniversalTime().ToString(),
                 SrsIntervalDays = 0.125f,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now.ToUniversalTime()
             };
             phrase.Translations.Add(new PhraseTranslation
             {

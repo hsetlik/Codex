@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.4815fa0c.chunk.css",
+    "main.js": "/static/js/main.8dd4cab1.chunk.js",
+    "main.js.map": "/static/js/main.8dd4cab1.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.2565b5b8.js",
+    "runtime-main.js.map": "/static/js/runtime-main.2565b5b8.js.map",
+    "static/css/2.ca892a14.chunk.css": "/static/css/2.ca892a14.chunk.css",
+    "static/js/2.c5a9eee5.chunk.js": "/static/js/2.c5a9eee5.chunk.js",
+    "static/js/2.c5a9eee5.chunk.js.map": "/static/js/2.c5a9eee5.chunk.js.map",
+    "static/js/3.be2739db.chunk.js": "/static/js/3.be2739db.chunk.js",
+    "static/js/3.be2739db.chunk.js.map": "/static/js/3.be2739db.chunk.js.map",
+    "static/js/4.ebb45280.chunk.js": "/static/js/4.ebb45280.chunk.js",
+    "static/js/4.ebb45280.chunk.js.map": "/static/js/4.ebb45280.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.ca892a14.chunk.css.map": "/static/css/2.ca892a14.chunk.css.map",
+    "static/css/main.4815fa0c.chunk.css.map": "/static/css/main.4815fa0c.chunk.css.map",
+    "static/js/2.c5a9eee5.chunk.js.LICENSE.txt": "/static/js/2.c5a9eee5.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/static/media/JosefinSans-VariableFont_wght.762df0b3.ttf",
+    "static/media/semantic.min.css": "/static/media/outline-icons.ddae9b1b.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2565b5b8.js",
+    "static/css/2.ca892a14.chunk.css",
+    "static/js/2.c5a9eee5.chunk.js",
+    "static/css/main.4815fa0c.chunk.css",
+    "static/js/main.8dd4cab1.chunk.js"
+  ]
+}

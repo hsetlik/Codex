@@ -64,9 +64,9 @@ namespace Application.DataObjectHandling.UserTerms
                     TimesSeen = 0,
                     EaseFactor = 2.5f,
                     Rating = 0,
-                    DateTimeDue = DateTime.Now,
+                    DateTimeDue = DateTime.Now.ToUniversalTime(),
                     SrsIntervalDays = 0,
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 _context.UserTerms.Add(userTerm);
                 var result = await _context.SaveChangesAsync() > 0;

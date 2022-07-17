@@ -32,7 +32,7 @@ namespace Application.Extensions
                 CreatorLanguageProfileId = profile.LanguageProfileId,
                 CreatorUserName = query.CreatorUserName,
                 IsPrivate = query.IsPrivate,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
                 Language = profile.Language,
                 CollectionName = query.CollectionName,
                 Description = query.Description,
@@ -93,7 +93,7 @@ namespace Application.Extensions
                 LanguageProfileId = profile.LanguageProfileId,
                 UserLanguageProfile = profile,
                 IsOwner = isOwner,
-                SavedAt = DateTime.Now
+                SavedAt = DateTime.Now.ToUniversalTime()
             };
 
             context.SavedCollections.Add(savedCollection);

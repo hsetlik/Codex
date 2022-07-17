@@ -55,7 +55,7 @@ namespace Application.Extensions
             var existing = await context.ContentDifficulties.FirstOrDefaultAsync(cd => cd.ContentId == contentId && cd.LanguageProfileId == profileId);
             if (existing != null)
             {
-                var diff = DateTime.Now - existing.UpdatedAt;
+                var diff = DateTime.Now.ToUniversalTime() - existing.UpdatedAt;
                 if (diff.TotalHours <= 5)
                 {
                     var output = mapper.Map<ContentDifficultyDto>(existing);
@@ -82,7 +82,7 @@ namespace Application.Extensions
                 UserLanguageProfile = profile,
                 ContentId = content.ContentId,
                 Content = content,
-                UpdatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now.ToUniversalTime(),
                 TotalWords = knownWordsResult.Value.TotalWords,
                 KnownWords = knownWordsResult.Value.KnownWords
             };

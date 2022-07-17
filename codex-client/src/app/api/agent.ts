@@ -23,7 +23,7 @@ import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "
 import { AbstractPhrase, Phrase, PhraseCreateQuery, PhraseQuery } from "../models/phrase";
 import { Feed, FeedQuery } from "../models/feed";
 
-axios.defaults.baseURL = 'https://localhost:5001/api';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.response.use(response => {
     return response;

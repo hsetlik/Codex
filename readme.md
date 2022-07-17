@@ -1,6 +1,17 @@
 # Codex - Language learning for the real world
 
-Codex is a new language-learning tool created out of frustration with existing apps. In a landscape dominated by gamified web apps which rely on context-free snippets of text and audio, aspiring language learners find themselves progressing along the app's series of lessons without getting much closer to understanding and speaking a real, living language. Codex is based on real-world content from around the web; news articles, videos, blog posts, and more can be found in Codex's exiting content library or imported with the click of a button.  
+Codex is a new language-learning tool created out of frustration with existing apps. In a landscape dominated by gamified web apps which rely on context-free snippets of text and audio, aspiring language learners find themselves progressing along the app's series of lessons without getting much closer to understanding and speaking a real, living language. Codex is based on real-world content from around the web; news articles, videos, blog posts, and more can be found in Codex's existing content library or imported with the click of a button.  
+
+- [Codex - Language learning for the real world](#codex---language-learning-for-the-real-world)
+  - [How it works](#how-it-works)
+  - [User Interface](#user-interface)
+    - [Interactive text system](#interactive-text-system)
+    - [Word details panel](#word-details-panel)
+    - [Phrases](#phrases)
+    - [Home screen](#home-screen)
+    - [Reader](#reader)
+    - [Video Viewer](#video-viewer)
+  - [Supported Languages](#supported-languages)
 
 ## How it works
 
@@ -32,3 +43,21 @@ The Codex reader view is designed to resemble the content's original web page as
 
 The video viewer consists of a video player and a synchronized set of captions displayed as interactive text below the frame. Users can also click the arrow button next to a caption and the video player will jump to the beginning of the caption.
 
+## Supported Languages
+
+So far, Codex is has been tested with X languages:
+
+1. English
+2. Spanish
+3. French
+4. German
+5. Russian
+6. Turkish
+
+Next for testing:
+
+1. Hindi
+2. Portuguese
+3. Vietnamese
+4. Perisan (need script support)
+5. Indonesian (Bahasa Indonesia)
