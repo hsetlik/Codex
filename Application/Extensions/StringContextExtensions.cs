@@ -52,9 +52,16 @@ namespace Application.Extensions
 
         public static List<string> SplitToTermValues(this string text, bool allCaps=true)
         {
-            text = text.WithoutSquareBrackets();
+            text = text.Normalize().WithoutSquareBrackets();
             //Console.WriteLine($"TEXT IS: {text}");
             var words = text.Split(null).ToList();
+            //filter out empty words
+            var origLength = words.Count;
+            words = words.Where(w => !string.IsNullOrWhiteSpace(w)).ToList();
+            if (words.Count != origLength)
+            {
+                Console.WriteLine($"Removed {origLength - words.Count} empty words");
+            }
             if (allCaps)
                 words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).Select(w => w.ToUpper()).ToList();
             else

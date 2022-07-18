@@ -12,7 +12,7 @@ namespace Application.Utilities
         public static string AsTermValue(this string input)
         {
             var split = new SplitString(input);
-            return split.Word.ToUpper();            
+            return split.Word.Normalize().ToUpper();            
         }   
 
         public static string WithoutNewlines(this string input, bool replaceWithAdditionalSpace=false)

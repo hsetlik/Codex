@@ -8,6 +8,30 @@ namespace Application.Utilities
 {
     public class SplitString
         {
+            public static Match GetMatchWithExceptions(string input, string pattern)
+            {
+                Match output = null;
+                try
+                {
+                    output = Regex.Match(input, pattern);
+                }
+                catch (ArgumentNullException argNull)
+                {
+                    Console.WriteLine($"Argument null! Input {input} with pattern {pattern} not valid on param name: {argNull.ParamName}");
+                    throw argNull;
+                }
+                catch (ArgumentException argExc)
+                {
+                    Console.WriteLine($"Argument Exception! Input {input} with pattern {pattern} has bad argument with data: {argExc.ToString()}");
+                    throw argExc;
+                }
+                catch (RegexMatchTimeoutException timeoutExc)
+                {
+                    Console.WriteLine($"Matching input {input} to pattern {pattern} timed out: {timeoutExc.Message}");
+                    throw timeoutExc;
+                }
+                return output;
+            }
             public string Word;
             public string Trailing;
             public string Leading;
@@ -17,15 +41,14 @@ namespace Application.Utilities
                 Trailing = "none";
                 Leading = "none";
                 var temp = input;
-                Word = Regex.Match(input, @"([^\p{P}^\s]+)").Value;
-               
-                var leadingMatch = Regex.Match(input, @"^[\p{P}\s]+");
+                Word = GetMatchWithExceptions(input, @"([^\p{P}^\s]+)").Value;
+                var leadingMatch = GetMatchWithExceptions(input, @"^[\p{P}\s]+");
                 if (leadingMatch.Success)
                 {
                     Leading = leadingMatch.Value;
                     temp = temp.Substring(Leading.Length);
                 }
-                var trailingMatch = Regex.Match(input, @"[\p{P}\s]+$");
+                var trailingMatch = GetMatchWithExceptions(input, @"[\p{P}\s]+$");
                 if (trailingMatch.Success)
                 {
                     Trailing = trailingMatch.Value;

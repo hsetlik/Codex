@@ -21,31 +21,37 @@ using Persistence;
 
 namespace Application.Extensions
 {
-    using TaskMap =  Dictionary<int, Task<Result<AbstractTermDto>>>;
+    using TaskMap = Dictionary<int, Task<Result<AbstractTermDto>>>;
     public static class AbstractTermExtensions
     {
-        
+
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
             // 1. Get the term
-            var normValue = dto.Value.AsTermValue();
+            var normValue = dto.Value.Normalize().AsTermValue();
             // 2. Get the UserLanguageProfile
             var profile = await context.UserLanguageProfiles
             .Include(p => p.User)
             .FirstOrDefaultAsync(t => t.Language == dto.Language && t.User.UserName == username);
+            if (profile == null)
+            {
+                Console.WriteLine("No profile found!");
+                return Result<AbstractTermDto>.Failure("No valid profile found");
+                
+            }
             // 3. Check for a UserTerm
             var userTerm = await context.UserTerms
             .Include(t => t.Translations)
             .FirstOrDefaultAsync(u => u.NormalizedTermValue == normValue &&
              u.LanguageProfileId == profile.LanguageProfileId);
-             AbstractTermDto output;
-             var trailing = StringUtilityMethods.GetTrailing(dto.Value);
-             if (userTerm != null) 
-             {
-                 //HasUserTerm = true
-                 output = new AbstractTermDto
-                 {
+            
+            AbstractTermDto output;
+            var trailing = StringUtilityMethods.GetTrailing(dto.Value);
+            if (userTerm != null)
+            {
+                //HasUserTerm = true
+                output = new AbstractTermDto
+                {
                     Language = dto.Language,
                     HasUserTerm = true,
                     EaseFactor = userTerm.EaseFactor,
@@ -55,12 +61,12 @@ namespace Application.Extensions
                     UserTermId = userTerm.UserTermId,
                     TimesSeen = userTerm.TimesSeen,
                     Starred = userTerm.Starred
-                 };
-             }
-             else
-             {
-                 output = new AbstractTermDto
-                 {
+                };
+            }
+            else
+            {
+                output = new AbstractTermDto
+                {
                     Language = dto.Language,
                     HasUserTerm = false,
                     EaseFactor = 0.0f,
@@ -68,10 +74,10 @@ namespace Application.Extensions
                     Rating = 0,
                     Translations = new List<string>(),
                     TimesSeen = 0
-                 };
-             }
-             //! Don't forget to set the TermValue back to the case-sensitive original
-             output.TermValue = dto.Value;
+                };
+            }
+            //! Don't forget to set the TermValue back to the case-sensitive original
+            output.TermValue = dto.Value;
             return Result<AbstractTermDto>.Success(output);
         }
 
@@ -95,8 +101,8 @@ namespace Application.Extensions
                     userTermDto.UserTermId = exisitngUserTerm.UserTermId;
                     var result = await context.UpdateUserTerm(dto.AsUserTerm());
                     if (!result.IsSuccess)
-                        return Result<Unit>.Failure("UserTerm was not updated"); 
-                } 
+                        return Result<Unit>.Failure("UserTerm was not updated");
+                }
             }
             return Result<Unit>.Success(Unit.Value);
         }
@@ -105,32 +111,65 @@ namespace Application.Extensions
             var terms = new List<AbstractTermDto>();
             var words = query.ElementText.SplitToTermValues(false);
             var wordDict = new Dictionary<int, string>();
-            for(int i = 0; i < words.Count; ++i)
+            // Console.WriteLine("WORD LIST:");
+            for (int i = 0; i < words.Count; ++i)
             {
+                // Console.WriteLine(words[i]);
                 wordDict[i] = words[i];
             }
+            // Console.WriteLine("WORDS FINISHED");
             var taskMap = new TaskMap();
-
-            Parallel.ForEach(wordDict, word => 
+            int idx = 0;
+            Parallel.ForEach(wordDict, word =>
             {
-                taskMap[word.Key] = factory.GetAbstractTerm(new TermDto{Value = word.Value, Language = query.Language}, userAccessor.GetUsername());
+                if (!string.IsNullOrWhiteSpace(word.Value))
+                {
+                    taskMap[idx] = factory.GetAbstractTerm(new TermDto { Value = word.Value, Language = query.Language }, userAccessor.GetUsername());
+                    ++idx;
+                }
+                    
             });
-            foreach(var t in taskMap)
+            foreach (var t in taskMap)
             {
-                var term = await t.Value;
-                if (term.IsSuccess)
+                Result<AbstractTermDto> term;
+                try
+                {
+                    term = await t.Value;
+                }
+                catch (NullReferenceException exc)
+                {
+                    var str = wordDict[t.Key];
+                    Console.WriteLine($"NULL REFERENCE FOR WORD: {str} AT KEY: {t.Key}");
+                    Console.WriteLine($"MAP HAS {taskMap.Count} pairs, DICT HAS {wordDict.Count}");
+                    if (taskMap[t.Key] != null)
+                        Console.WriteLine("KEY CONTAINED IN TASK MAP");
+                    else
+                    {
+                        Console.WriteLine("KEY MISSING FROM TASK MAP");
+                        continue;
+                    }
+                       
+                    Console.WriteLine($"Message: {exc.Message}");
+                    continue;
+                }
+                if(term.IsSuccess)
                 {
                     term.Value.IndexInChunk = t.Key;
                     terms.Add(term.Value);
                 }
+                else
+                {
+                    var message = "Term not loaded. Error: " + term.Error;
+                    Console.WriteLine(message);
+                }
             }
             terms = terms.OrderBy(t => t.IndexInChunk).ToList();
             var output = new ElementAbstractTerms
-                {
+            {
                 ElementText = query.ElementText,
                 Tag = query.Tag,
                 AbstractTerms = terms
-                };
+            };
             return Result<ElementAbstractTerms>.Success(output);
         }
     }
