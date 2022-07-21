@@ -15,6 +15,13 @@ namespace Application.Utilities
             return split.Word.Normalize().ToUpper();            
         }   
 
+        public static string EnsureNormalized(this string input)
+        {
+            if (input.IsNormalized())
+                return input;
+            return input.Normalize();
+        }
+
         public static string WithoutNewlines(this string input, bool replaceWithAdditionalSpace=false)
         {
            if (replaceWithAdditionalSpace)

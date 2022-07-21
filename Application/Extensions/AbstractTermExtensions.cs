@@ -28,7 +28,7 @@ namespace Application.Extensions
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
         {
             // 1. Get the term
-            var normValue = dto.Value.Normalize().AsTermValue();
+            var normValue = dto.Value.AsTermValue();
             // 2. Get the UserLanguageProfile
             var profile = await context.UserLanguageProfiles
             .Include(p => p.User)
@@ -46,7 +46,6 @@ namespace Application.Extensions
              u.LanguageProfileId == profile.LanguageProfileId);
             
             AbstractTermDto output;
-            var trailing = StringUtilityMethods.GetTrailing(dto.Value);
             if (userTerm != null)
             {
                 //HasUserTerm = true
@@ -116,51 +115,14 @@ namespace Application.Extensions
             {
                 // Console.WriteLine(words[i]);
                 wordDict[i] = words[i];
-            }
-            // Console.WriteLine("WORDS FINISHED");
-            var taskMap = new TaskMap();
-            int idx = 0;
-            Parallel.ForEach(wordDict, word =>
-            {
-                if (!string.IsNullOrWhiteSpace(word.Value))
+                var termResult = await factory.GetAbstractTerm(new TermDto{Value= words[i],Language = query.Language}, userAccessor.GetUsername());
+                if (termResult.IsSuccess)
                 {
-                    taskMap[idx] = factory.GetAbstractTerm(new TermDto { Value = word.Value, Language = query.Language }, userAccessor.GetUsername());
-                    ++idx;
-                }
-                    
-            });
-            foreach (var t in taskMap)
-            {
-                Result<AbstractTermDto> term;
-                try
-                {
-                    term = await t.Value;
-                }
-                catch (NullReferenceException exc)
-                {
-                    var str = wordDict[t.Key];
-                    Console.WriteLine($"NULL REFERENCE FOR WORD: {str} AT KEY: {t.Key}");
-                    Console.WriteLine($"MAP HAS {taskMap.Count} pairs, DICT HAS {wordDict.Count}");
-                    if (taskMap[t.Key] != null)
-                        Console.WriteLine("KEY CONTAINED IN TASK MAP");
-                    else
-                    {
-                        Console.WriteLine("KEY MISSING FROM TASK MAP");
-                        continue;
-                    }
-                       
-                    Console.WriteLine($"Message: {exc.Message}");
-                    continue;
-                }
-                if(term.IsSuccess)
-                {
-                    term.Value.IndexInChunk = t.Key;
-                    terms.Add(term.Value);
+                    terms.Add(termResult.Value);
                 }
                 else
                 {
-                    var message = "Term not loaded. Error: " + term.Error;
-                    Console.WriteLine(message);
+                    Console.WriteLine($"Term result failed!: {termResult.Error}");
                 }
             }
             terms = terms.OrderBy(t => t.IndexInChunk).ToList();

@@ -52,7 +52,7 @@ namespace Application.Extensions
 
         public static List<string> SplitToTermValues(this string text, bool allCaps=true)
         {
-            text = text.Normalize().WithoutSquareBrackets();
+            text = text.WithoutSquareBrackets();
             //Console.WriteLine($"TEXT IS: {text}");
             var words = text.Split(null).ToList();
             //filter out empty words
