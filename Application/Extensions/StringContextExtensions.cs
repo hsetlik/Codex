@@ -58,14 +58,17 @@ namespace Application.Extensions
             //filter out empty words
             var origLength = words.Count;
             words = words.Where(w => !string.IsNullOrWhiteSpace(w)).ToList();
-            if (words.Count != origLength)
-            {
-                Console.WriteLine($"Removed {origLength - words.Count} empty words");
-            }
             if (allCaps)
                 words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).Select(w => w.ToUpper()).ToList();
             else
                 words = words.TakeWhile(w => Regex.IsMatch(w, @"[^\s+]")).ToList();
+            // Clean list
+            origLength = words.Count;
+            words = words.Where(word => !string.IsNullOrWhiteSpace(word)).ToList();
+            if (origLength > words.Count)
+            {
+                Console.WriteLine($"WARNING: {origLength - words.Count} words have been removed by RegEx!");
+            }
             return words;
         }
 
