@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Persistence.Migrations
 {
-    public partial class PGInit : Migration
+    public partial class postgresAzure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

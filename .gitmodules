@@ -1,0 +1,3 @@
+[submodule "CodexBackend/CssScraper"]
+	path = CodexBackend/CssScraper
+	url = https://github.com/hsetlik/CssScraper.git

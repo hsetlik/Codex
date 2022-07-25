@@ -12,8 +12,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220717151403_reInitForPostgres")]
-    partial class reInitForPostgres
+    [Migration("20220724222157_postgresAzure")]
+    partial class postgresAzure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

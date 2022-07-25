@@ -19,7 +19,8 @@ using Application;
 using Application.TranslationService;
 using Application.ProfileHistoryEngine;
 using Application.VideoParsing;
-
+using System;
+using API.PrivateData;
 
 //using Application.Interfaces;
 
@@ -29,38 +30,55 @@ namespace API.Extensions
 {
     public static class ApplicationServiceExtensions
     {
+        private static string Host = "codex-postgres.postgres.database.azure.com";
+        // keep credentials in ignored file
+        private static string User = PrivateData.PrivateData.AzureUsername;
+        private static string DBname = "codex-pgsql";
+        private static string Password = PrivateData.PrivateData.AzurePassword;
+        private static string Port = "5432";
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
-           services.AddControllers(opt => 
-            {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                opt.Filters.Add(item: new AuthorizeFilter(policy));
-            })
-                .AddFluentValidation(_config => 
-            {
-                _config.RegisterValidatorsFromAssemblyContaining<UserTermCreate>();
-            });
+            services.AddControllers(opt =>
+             {
+                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                 opt.Filters.Add(item: new AuthorizeFilter(policy));
+             })
+                 .AddFluentValidation(_config =>
+             {
+                 _config.RegisterValidatorsFromAssemblyContaining<UserTermCreate>();
+             });
+
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+
+            string connString = String.Format("Server={0};Username={1};Database={2};Port={3};Password={4};SSLMode=Prefer",
+                    Host,
+                    User,
+                    DBname,
+                    Port,
+                    Password);
+
+            Console.WriteLine($"Connection string: {connString}");
             //add the normal, single-instance DB context
-            services.AddDbContext<DataContext>(opt => 
+            services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(connString);
             });
             // add the DB factory
-            services.AddDbContextFactory<DataContext>(opt => 
+            services.AddDbContextFactory<DataContext>(opt =>
             {
-                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(connString);
             });
             // add the repository to access the factory
             services.AddScoped<IDataRepository, DataRepository>();
-            
-            services.AddCors(opt => 
+
+            services.AddCors(opt =>
             {
-                opt.AddPolicy("CorsPolicy", policy => {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
                     policy.AllowAnyMethod().AllowAnyHeader(); //TODO: call WithOrigin() with the actual client URL
                 });
             });
@@ -73,6 +91,6 @@ namespace API.Extensions
             services.AddScoped<IVideoParser, VideoParser>();
             return services;
         }
-        
+
     }
 }
