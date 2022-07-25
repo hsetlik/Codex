@@ -15,7 +15,7 @@ namespace Application.TranslationService
         private TranslationClient client;
         public Translator()
         {
-            var credential = GoogleCredential.FromFile("../ApiKeys/key.json");
+            var credential = GoogleCredential.FromFile("../ApiKeys/codextranslation-69b55f865606.json");
             client = TranslationClient.Create(credential);
         }
 
