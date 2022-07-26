@@ -11,8 +11,18 @@ namespace Persistence
 {
     public class DataContext : IdentityDbContext<CodexUser>
     {
-        public DataContext(DbContextOptions options) : base(options)
+        private static string Host = "codex-postgres.postgres.database.azure.com";
+
+        // keep credentials in ignored file
+        private static string User = Domain.PrivateData.PrivateData.AzureUsername;
+        private static string DBname = "codex-pgsql";
+        private static string Password = Domain.PrivateData.PrivateData.AzurePassword;
+        private static string Port = "5432";
+        private string connString = $"Host={Host};Database={DBname};Username={User};Password={Password}";
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseNpgsql(connString);
+            Console.WriteLine("Data context configured");
         }
         public DbSet<UserLanguageProfile> UserLanguageProfiles { get; set; }
 
@@ -27,7 +37,7 @@ namespace Persistence
         public DbSet<Content> Contents { get; set; }
 
         public DbSet<ContentViewRecord> ContentViewRecords { get; set; }
-        
+
         public DbSet<ContentHistory> ContentHistories { get; set; }
 
         public DbSet<ContentTag> ContentTags { get; set; }
@@ -44,7 +54,7 @@ namespace Persistence
         public DbSet<SavedCollection> SavedCollections { get; set; }
         public DbSet<ContentDifficulty> ContentDifficulties { get; set; }
 
-         protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
@@ -109,13 +119,13 @@ namespace Persistence
             .HasForeignKey(s => s.LanguageProfileId);
 
             builder.Entity<CollectionContent>()
-            .HasKey(cc => new {cc.CollectionId, cc.ContentId});           
+            .HasKey(cc => new { cc.CollectionId, cc.ContentId });
 
             builder.Entity<SavedCollection>()
-            .HasKey(sc => new {sc.CollectionId, sc.LanguageProfileId});
+            .HasKey(sc => new { sc.CollectionId, sc.LanguageProfileId });
 
             builder.Entity<ContentDifficulty>()
-            .HasKey(k => new {k.LanguageProfileId, k.ContentId});
+            .HasKey(k => new { k.LanguageProfileId, k.ContentId });
         }
     }
 }

@@ -6,8 +6,7 @@ Persistence/Migrations
 API/codex.db-shm
 API/codex.db-wal
 CodexBackend/CssScraper/*
-CodexBackend/API/PrivateData
-# CodexBackend/API/PrivateData
+CodexBackend/Domain/PrivateData
 pub
 
 

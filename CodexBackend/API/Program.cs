@@ -36,6 +36,24 @@ namespace API
             catch (Exception ex)
             { 
                 var logger = services.GetRequiredService<ILogger<Program>>();
+                Exception innerExc = null;
+                if (ex.InnerException != null)
+                {
+                    innerExc = ex.InnerException;
+                    Console.WriteLine($"Inner exception with message: {innerExc.Message}");
+                }
+                else
+                    Console.WriteLine("No inner exception");
+                if (ex.Data.Count > 0)
+                {
+                    int i = 0;
+                    foreach(var pair in ex.Data)
+                    {
+                        Console.WriteLine($"Data entry #{i} string: {pair.ToString()}");
+                    }
+                }
+                else
+                    Console.WriteLine("No exception data!");
                 logger.LogError(ex, "Migration Error!");
             }
             await host.RunAsync();
