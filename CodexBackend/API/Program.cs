@@ -33,6 +33,14 @@ namespace API
                 await context.Database.MigrateAsync(); //appends any pending migrations to the .db file, or creates it if none exists
                 await Seed.SeedData(context, userManager, parser, translator);
             }
+            catch (Npgsql.NpgsqlException exc)
+            {
+                Console.WriteLine("Hit Npgsql Exception!");
+                Console.WriteLine($"SqlState: {exc.SqlState}");
+                // Console.WriteLine($"Batch Command: {exc.BatchCommand.CommandText}");
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(exc, "Npgsql error!");
+            }
             catch (Exception ex)
             { 
                 var logger = services.GetRequiredService<ILogger<Program>>();
@@ -56,6 +64,7 @@ namespace API
                     Console.WriteLine("No exception data!");
                 logger.LogError(ex, "Migration Error!");
             }
+           
             await host.RunAsync();
         }
 

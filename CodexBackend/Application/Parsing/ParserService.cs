@@ -26,9 +26,7 @@ namespace Application.Parsing
             }
             if (!scraper.ContentsLoaded)
             {
-                var watch = System.Diagnostics.Stopwatch.StartNew();
                 await scraper.PrepareAsync();
-                watch.Stop();
             }
         }
             public async Task<ContentSection> GetSection(string contentUrl, int index)

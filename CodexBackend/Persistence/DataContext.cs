@@ -11,14 +11,14 @@ namespace Persistence
 {
     public class DataContext : IdentityDbContext<CodexUser>
     {
-        private static string Host = "codex-postgres.postgres.database.azure.com";
+        private static string Host = "codex-flex-db.postgres.database.azure.com";
 
         // keep credentials in ignored file
         private static string User = Domain.PrivateData.PrivateData.AzureUsername;
-        private static string DBname = "codex-pgsql";
+        private static string DBname = "postgres";
         private static string Password = Domain.PrivateData.PrivateData.AzurePassword;
         private static string Port = "5432";
-        private string connString = $"Host={Host};Database={DBname};Username={User};Password={Password}";
+        private string connString = $"Host={Host};Database={DBname};User Id={User};Password={Password}";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(connString);
