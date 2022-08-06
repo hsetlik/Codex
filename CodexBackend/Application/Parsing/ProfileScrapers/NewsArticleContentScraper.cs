@@ -123,6 +123,7 @@ namespace Application.Parsing.ProfileScrapers
                 NumSections = 1
             };
             storage.RawPageHtml = bodyNode.InnerHtml;
+            Console.WriteLine($"Raw HTML begins: {storage.RawPageHtml.Substring(0, 50)}");
             contentsLoaded = true;
         }
     }

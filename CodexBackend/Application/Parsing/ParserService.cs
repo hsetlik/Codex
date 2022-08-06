@@ -29,7 +29,7 @@ namespace Application.Parsing
                 await scraper.PrepareAsync();
             }
         }
-            public async Task<ContentSection> GetSection(string contentUrl, int index)
+        public async Task<ContentSection> GetSection(string contentUrl, int index)
         {
            await EnsureLoaded(contentUrl);
            return scraper.GetSection(index);

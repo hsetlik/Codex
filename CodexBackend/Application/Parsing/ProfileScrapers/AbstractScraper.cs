@@ -9,6 +9,7 @@ using Application.DomainDTOs;
 using Application.DomainDTOs.Content.Responses;
 using HtmlAgilityPack;
 using MediatR;
+using ScrapySharp.Extensions;
 
 namespace Application.Parsing
 {
@@ -25,12 +26,6 @@ namespace Application.Parsing
         {
             this.Url = url;
         }
-        protected async Task LoadHtml()
-        {
-            var web = new HtmlWeb();
-            loadedHtml =  await web.LoadFromWebAsync(Url);
-        }
-        
         //Abstract methods to correspond with the IParserService methods (and ultimately endpoints)
         public abstract ContentMetadataDto GetMetadata();
         public abstract int GetNumSections();
@@ -90,6 +85,24 @@ namespace Application.Parsing
                 return ScraperProfile.NewsArticle;
             }
         }   
+
+        public static HtmlNode GetFirstChild(HtmlNode parent, string label)
+        {
+            HtmlNode node = null;
+            try
+            {
+                node = parent.CssSelect(label).FirstOrDefault();
+                if (node != null)
+                    Console.WriteLine("Node found");
+                else
+                    throw new NullReferenceException($"No node with label {label}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Node nod found: {ex.Message}");
+            }
+            return node;
+        }
     }
     
 }

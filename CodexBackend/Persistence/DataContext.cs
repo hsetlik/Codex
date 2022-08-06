@@ -14,13 +14,14 @@ namespace Persistence
         private static string Host = "codex-flex-db.postgres.database.azure.com";
 
         // keep credentials in ignored file
-        private static string User = Domain.PrivateData.PrivateData.AzureUsername;
+        private static string User = "hsetlik";
         private static string DBname = "postgres";
-        private static string Password = Domain.PrivateData.PrivateData.AzurePassword;
+        private static string Password = "Plinkun21";
         private static string Port = "5432";
         private string connString = $"Host={Host};Database={DBname};User Id={User};Password={Password}";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            Console.WriteLine($"User: {User} Password: {Password}");
             optionsBuilder.UseNpgsql(connString);
             Console.WriteLine("Data context configured");
         }

@@ -99,7 +99,15 @@ namespace Domain
             {
                 string url = WikiUrls.Urls[i];
                 Console.WriteLine($"Seeding content with URL: {url}");
-                var metadata = await parser.GetContentMetadata(url);
+                var metadata = new ContentMetadataDto();
+                try
+                {
+                    metadata = await parser.GetContentMetadata(url);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Hit exception while getting content metadata: {ex.Message}");
+                }
                 var user = users.First(u => u.UserLanguageProfiles.Any(p => p.Language == metadata.Language));
                 var profile = user.UserLanguageProfiles.First(p => p.Language == metadata.Language);
                 context.Contents.Add(new Content
