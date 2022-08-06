@@ -44,31 +44,44 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Console.WriteLine("Configuring Codex");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                Console.WriteLine("Running in dev environment");
             }
 
             app.UseHttpsRedirection();
+            Console.WriteLine("Set up https redirection");
 
             app.UseRouting();
+            Console.WriteLine("Set up routing");
 
             app.UseDefaultFiles();
+            Console.WriteLine("Set up default files");
+
             app.UseStaticFiles();
+            Console.WriteLine("Set up static files");
 
             app.UseCors("CorsPolicy");
+            Console.WriteLine("Set up CORS policy");
 
             app.UseAuthentication();
+            Console.WriteLine("Set up authentication");
 
             app.UseAuthorization();
+            Console.WriteLine("Set up authorization");
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapFallbackToController("Index", "Fallback");
             });
+            Console.WriteLine("Set up endpoints");
+
+            Console.WriteLine("=========================STARTUP FINISHED======================================");
         }
     }
 }

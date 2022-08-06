@@ -21,9 +21,11 @@ namespace API
         public static async Task Main(string[] args)
         {
             Console.WriteLine("Initializing codex...");
+            Console.WriteLine("Preparing to create host. . .");
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
+            Console.WriteLine("Got service provider");
             try
             {
                 var context = services.GetRequiredService<DataContext>(); //grabs the DbContext added in ConfigureServices() in Startup.cs
@@ -32,6 +34,7 @@ namespace API
                 var translator = services.GetRequiredService<ITranslator>();
                 await context.Database.MigrateAsync(); //appends any pending migrations to the .db file, or creates it if none exists
                 await Seed.SeedData(context, userManager, parser, translator);
+                Console.WriteLine("Initialized successfully");
             }
             catch (Npgsql.NpgsqlException exc)
             {
