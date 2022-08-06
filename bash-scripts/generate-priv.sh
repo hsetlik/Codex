@@ -1,6 +1,15 @@
 #!/bin/bash
 echo "Generating private files. . ."
-# This script generates an ignored directory called "priv" which contains boilerplate text for needed private files
+#========================================================================================
+# IMPORTANT: FOLLOW INSTRUCTIONS BELOW WHEN CLONING THIS REPO
+# 
+# 1. Run this script to generate boilerplate files in a new directory at "../../priv"
+# 2. Edit the newly created text files to fill in the relevant strings with your credentials
+# 3. Run ./copy-priv.sh to copy the files in ../../priv to the appropriate ignored directories inside this repository
+# Note that git operations, like switching to a different branch or pulling from a remote, delete the ignored credentials
+# files inside the repo. Don't forget to run ./copy-priv.sh after such operations to copy your private credentials from ../../priv to
+# the appropriate ignored paths in this repo.
+#========================================================================================
 
 mkdir -p ../../priv
 chmod a+w ../../priv/*

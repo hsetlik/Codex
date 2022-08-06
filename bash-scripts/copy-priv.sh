@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This copies local credential files to git-ignored paths inside the project. Useful for some git operations.
+# This copies local credential files from the directory created by generate-priv.sh to git-ignored paths inside the project.
 KEY_SRC="../../priv/api-keys.json"
 KEY_DEST="../CodexBackend/ApiKeys"
 
