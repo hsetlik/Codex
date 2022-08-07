@@ -11,6 +11,10 @@ namespace Persistence
 {
     public class DataContext : IdentityDbContext<CodexUser>
     {
+        public DataContext() : base()
+        {
+            Console.WriteLine("Constructing data context. . .");
+        }
         private static string Host = "codex-flex-db.postgres.database.azure.com";
 
         // keep credentials in ignored file
