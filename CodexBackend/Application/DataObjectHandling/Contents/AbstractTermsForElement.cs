@@ -28,18 +28,16 @@ namespace Application.DataObjectHandling.Contents
 
         public class Handler : IRequestHandler<Query, Result<ElementAbstractTerms>>
         {
-        private readonly IDataRepository _factory;
         private readonly IUserAccessor _userAccessor;
         private readonly DataContext _context;
-            public Handler(IDataRepository factory, IUserAccessor userAccessor, DataContext context)
+            public Handler(IUserAccessor userAccessor, DataContext context)
             {
             this._context = context;
             this._userAccessor = userAccessor;
-            this._factory = factory;
             }
             public async Task<Result<ElementAbstractTerms>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.GetAbstractTermsForElement(_userAccessor, _factory, request.Dto);
+                return await _context.GetAbstractTermsForElement(_userAccessor, request.Dto);
             }
         }
     }

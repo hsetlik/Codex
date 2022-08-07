@@ -21,7 +21,7 @@ namespace Application.Extensions
     }
     public static class ContentDifficultyContextExtensions
     {
-        public static async Task<Result<KnownWordsInfo>> GetKnownWordsInString(this DataContext context, Guid profileId, string text, IUserAccessor userAccessor, IDataRepository factory)
+        public static async Task<Result<KnownWordsInfo>> GetKnownWordsInString(this DataContext context, Guid profileId, string text, IUserAccessor userAccessor)
         {
             var profile = await context.UserLanguageProfiles.FirstOrDefaultAsync(p => p.LanguageProfileId == profileId);
             if (profile == null)
@@ -33,7 +33,7 @@ namespace Application.Extensions
                 Tag = "raw_text",
                 Language = profile.Language
             };
-            var terms = await context.GetAbstractTermsForElement(userAccessor, factory, query);
+            var terms = await context.GetAbstractTermsForElement(userAccessor, query);
             if (!terms.IsSuccess)
                 return Result<KnownWordsInfo>.Failure($"Could not get abstract terms! Error message: {terms.Error}");
             var knownTerms = terms.Value.AbstractTerms.Where(at => at.Rating >= 3).ToList();
@@ -49,8 +49,7 @@ namespace Application.Extensions
             Guid contentId, 
             IMapper mapper, 
             IParserService parser, 
-            IUserAccessor userAccessor, 
-            IDataRepository factory)
+            IUserAccessor userAccessor)
         {
             var existing = await context.ContentDifficulties.FirstOrDefaultAsync(cd => cd.ContentId == contentId && cd.LanguageProfileId == profileId);
             if (existing != null)
@@ -72,7 +71,7 @@ namespace Application.Extensions
                 return Result<ContentDifficultyDto>.Failure($"No profile with ID {profileId}");
 
             var bodyText = await parser.GetHtmlPageBody(content.ContentUrl);
-            var knownWordsResult = await context.GetKnownWordsInString(profileId, bodyText, userAccessor, factory);
+            var knownWordsResult = await context.GetKnownWordsInString(profileId, bodyText, userAccessor);
             if (!knownWordsResult.IsSuccess)
                 return Result<ContentDifficultyDto>.Failure($"Could not get known words info! Error message: {knownWordsResult.Error}");
             // create the actual entity

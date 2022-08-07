@@ -24,22 +24,20 @@ namespace Application.DataObjectHandling.Contents
         public class Handler : IRequestHandler<Query, Result<ContentDifficultyDto>>
         {
         private readonly DataContext _context;
-        private readonly IDataRepository _factory;
         private readonly IMapper _mapper;
         private readonly IUserAccessor _userAccessor;
         private readonly IParserService _parser;
-            public Handler(DataContext context, IDataRepository factory, IMapper mapper, IUserAccessor userAccessor, IParserService parser)
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor, IParserService parser)
             {
             this._parser = parser;
             this._userAccessor = userAccessor;
             this._mapper = mapper;
-            this._factory = factory;
             this._context = context;
             }
 
             public async Task<Result<ContentDifficultyDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.GetContentDifficulty(request.Dto.LanguageProfileId, request.Dto.ContentId, _mapper, _parser, _userAccessor, _factory);
+                return await _context.GetContentDifficulty(request.Dto.LanguageProfileId, request.Dto.ContentId, _mapper, _parser, _userAccessor);
             }
         }
     }

@@ -76,7 +76,7 @@ namespace Application.Extensions
 
         // get the metadata without the bookmark (no username passed)
         //===
-        public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string url, IMapper mapper)
+        public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string url)
         {
 
             var content = await context.Contents.FirstOrDefaultAsync(c => c.ContentUrl == url);
@@ -89,9 +89,9 @@ namespace Application.Extensions
         }
         // get the metadata WITH the bookmark
         //=====
-        public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string username, string url, IMapper mapper)
+        public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string username, string url)
         {
-            var metadataResult = await context.GetMetadataFor(url, mapper);
+            var metadataResult = await context.GetMetadataFor(url);
             if (!metadataResult.IsSuccess)
                 return Result<ContentMetadataDto>.Failure($"Failed to get content metadata. Error Message: {metadataResult.Error}");
             var metadata = metadataResult.Value;
@@ -104,13 +104,13 @@ namespace Application.Extensions
         }
 
         //===
-        public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string username, Guid contentId, IMapper mapper)
+        public static async Task<Result<ContentMetadataDto>> GetMetadataFor(this DataContext context, string username, Guid contentId)
         {
             var content = await context.Contents.FindAsync(contentId);
             if (content == null)
                 return Result<ContentMetadataDto>.Failure($"Could not load content with ID: {contentId}");
             var url = content.ContentUrl;
-            var metadataResult = await context.GetMetadataFor(url, mapper);
+            var metadataResult = await context.GetMetadataFor(url);
             if (!metadataResult.IsSuccess)
                 return Result<ContentMetadataDto>.Failure($"Failed to get content metadata. Error Message: {metadataResult.Error}");
             var metadata = metadataResult.Value;
@@ -133,7 +133,7 @@ namespace Application.Extensions
             var output = new List<ContentMetadataDto>();
             foreach(var url in langUrls)
             {
-                var metadata = await context.GetMetadataFor(username, url.ContentUrl, mapper);
+                var metadata = await context.GetMetadataFor(username, url.ContentUrl);
                 if (!metadata.IsSuccess)
                     return Result<List<ContentMetadataDto>>.Failure($"Failed to load metadata! Error message: {metadata.Error}");
                 output.Add(metadata.Value);

@@ -14,7 +14,6 @@ using Application.Interfaces;
 using Application.Core;
 using Application.DataObjectHandling.UserTerms;
 using Application.Parsing;
-using EFCore.DbContextFactory.Extensions;
 using Application;
 using Application.TranslationService;
 using Application.ProfileHistoryEngine;
@@ -57,10 +56,7 @@ namespace API.Extensions
             //add the normal, single-instance DB context
             services.AddDbContext<DataContext>(opt => opt.UseNpgsql(connectionStr));
 
-            services.AddDbContextFactory<DataContext>(opt => opt.UseNpgsql(connectionStr));
-            // add the repository to access the factory
-            services.AddScoped<IDataRepository, DataRepository>();
-
+            //Stuff from old parallel context code
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>

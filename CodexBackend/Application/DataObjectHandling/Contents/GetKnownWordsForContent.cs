@@ -23,23 +23,24 @@ namespace Application.DataObjectHandling.Contents
         {
         private readonly IUserAccessor _userAccessor;
         private readonly IParserService _parser;
-        private readonly IDataRepository _factory;
-            public Handler(IDataRepository factory, IUserAccessor userAccessor, IParserService parser)
+
+        private readonly DataContext _context;
+            public Handler(DataContext context, IUserAccessor userAccessor, IParserService parser)
             {
-            this._factory = factory;
             this._parser = parser;
             this._userAccessor = userAccessor;
+            this._context = context;
             }
 
             public async Task<Result<KnownWordsDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var cResult = await _factory.GetMetadataFor(_userAccessor.GetUsername(), request.ContentId);
+                var cResult = await _context.GetMetadataFor(_userAccessor.GetUsername(), request.ContentId);
                 if (!cResult.IsSuccess)
                     return Result<KnownWordsDto>.Failure("Could not load content");
                 var scraper = await _parser.GetScraper(cResult.Value.ContentUrl);
                 if (scraper == null)
                     return Result<KnownWordsDto>.Failure("Could not get scraper!");
-                var profileResult = await _factory.ProfileFor(_userAccessor.GetUsername(), cResult.Value.Language);
+                var profileResult = await _context.GetProfileAsync(_userAccessor.GetUsername(), cResult.Value.Language);
                 if (!profileResult.IsSuccess)
                     return Result<KnownWordsDto>.Failure("could not load profile");
                 var profile = profileResult.Value;
@@ -48,7 +49,7 @@ namespace Application.DataObjectHandling.Contents
                 var listTasks = new List<Task<Result<KnownWordsDto>>>();
                 foreach(var list in lists)
                 {
-                    listTasks.Add(_factory.KnownWordsForList(list, profile.LanguageProfileId));
+                    listTasks.Add(_context.KnownWordsForListAsync(list, profile.LanguageProfileId));
                 }
                 int known = 0;
                 int total = 0;

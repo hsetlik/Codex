@@ -105,7 +105,8 @@ namespace Application.Extensions
             }
             return Result<Unit>.Success(Unit.Value);
         }
-        public static async Task<Result<ElementAbstractTerms>> GetAbstractTermsForElement(this DataContext context, IUserAccessor userAccessor, IDataRepository factory, ElementAbstractTermsQuery query)
+        
+        public static async Task<Result<ElementAbstractTerms>> GetAbstractTermsForElement(this DataContext context, IUserAccessor userAccessor, ElementAbstractTermsQuery query)
         {
             var terms = new List<AbstractTermDto>();
             var words = query.ElementText.SplitToTermValues(false);
@@ -115,7 +116,7 @@ namespace Application.Extensions
             {
                 // Console.WriteLine(words[i]);
                 wordDict[i] = words[i];
-                var termResult = await factory.GetAbstractTerm(new TermDto{Value= words[i],Language = query.Language}, userAccessor.GetUsername());
+                var termResult = await context.AbstractTermFor(new TermDto{Value= words[i],Language = query.Language}, userAccessor.GetUsername());
                 if (termResult.IsSuccess)
                 {
                     terms.Add(termResult.Value);

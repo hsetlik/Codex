@@ -36,7 +36,7 @@ namespace Application.DataObjectHandling.Contents
 
             public async Task<Result<ContentMetadataDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var contentResult = await _context.GetMetadataFor(_userAccessor.GetUsername(), request.Dto.ContentId, _mapper);
+                var contentResult = await _context.GetMetadataFor(_userAccessor.GetUsername(), request.Dto.ContentId);
                 if (!contentResult.IsSuccess)
                     return Result<ContentMetadataDto>.Failure($"Failed to get metadata! Error message{contentResult.Error}");
                 return Result<ContentMetadataDto>.Success(contentResult.Value);
