@@ -112,6 +112,8 @@ namespace Application.Extensions
             var words = query.ElementText.SplitToTermValues(false);
             var wordDict = new Dictionary<int, string>();
             // Console.WriteLine("WORD LIST:");
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
             for (int i = 0; i < words.Count; ++i)
             {
                 // Console.WriteLine(words[i]);
@@ -126,6 +128,8 @@ namespace Application.Extensions
                     Console.WriteLine($"Term result failed!: {termResult.Error}");
                 }
             }
+            watch.Stop();
+            Console.WriteLine($"Queried {words.Count} terms in {watch.ElapsedMilliseconds}ms");
             terms = terms.OrderBy(t => t.IndexInChunk).ToList();
             var output = new ElementAbstractTerms
             {

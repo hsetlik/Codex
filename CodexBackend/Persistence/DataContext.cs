@@ -11,24 +11,17 @@ namespace Persistence
 {
     public class DataContext : IdentityDbContext<CodexUser>
     {
-        public DataContext() : base()
+        private DbContextOptions options;
+        public DataContext(DbContextOptions<DataContext> opt) : base(opt)
         {
-            Console.WriteLine("Constructing data context. . .");
+            this.options = opt;
         }
-        private static string Host = "codex-flex-db.postgres.database.azure.com";
 
-        // keep credentials in ignored file
-        private static string User = "hsetlik";
-        private static string DBname = "postgres";
-        private static string Password = "Plinkun21";
-        private static string Port = "5432";
-        private string connString = $"Host={Host};Database={DBname};User Id={User};Password={Password}";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Console.WriteLine($"User: {User} Password: {Password}");
-            optionsBuilder.UseNpgsql(connString);
-            Console.WriteLine("Data context configured");
+            Console.WriteLine("Configuring DbContext. . .");
         }
+      
         public DbSet<UserLanguageProfile> UserLanguageProfiles { get; set; }
 
         public DbSet<UserTerm> UserTerms { get; set; }
@@ -108,6 +101,7 @@ namespace Persistence
             .HasOne(t => t.Phrase)
             .WithMany(p => p.Translations)
             .HasForeignKey(i => i.PhraseId);
+
 
             builder.Entity<DailyProfileRecord>()
             .HasOne(r => r.DailyProfileHistory)

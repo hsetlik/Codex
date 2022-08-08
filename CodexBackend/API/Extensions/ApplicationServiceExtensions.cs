@@ -29,6 +29,9 @@ namespace API.Extensions
 {
     public static class ApplicationServiceExtensions
     {
+        private static bool useConfigServer = false;
+        private static bool useVps = true;
+
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddControllers(opt =>
@@ -46,17 +49,31 @@ namespace API.Extensions
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
             Console.WriteLine("Preparing connection string. . .");
-            string hostName = "codex-flex-db.postgres.database.azure.com";
+            string hostname = "codex-flex-db.postgres.database.azure.com";
             string dbName = "postgres";
             string port = "5432";
             string userName = Domain.PrivateData.PrivateData.AzureUsername;
             string password = Domain.PrivateData.PrivateData.AzurePassword;
-            string connectionStr = $"Server={hostName};Database={dbName};Port={port};User Id={userName};Password={password};";
+            string connectionStr = $"Server={hostname};Database={dbName};Port={port};User Id={userName};Password={password};";
+
+            if (useConfigServer)
+                connectionStr = config.GetConnectionString("DefaultConnection");
+            else if (useVps)
+            {
+                Console.WriteLine("Connecting to droplet...");
+                string vpsHostname = Domain.PrivateData.PrivateData.DropletAddress;
+                string vpsDbName = "codexdb";
+                string vpsPort = "5432";
+                string vpsUserName = Domain.PrivateData.PrivateData.DropletUser;
+                string vpsPassword = Domain.PrivateData.PrivateData.DropletPassword;
+                connectionStr = $"Server={vpsHostname};Database={vpsDbName};Port={vpsPort};User Id={vpsUserName};Password={vpsPassword};";
+
+            }
+
             Console.WriteLine($"Connection string is: {connectionStr}");
             //add the normal, single-instance DB context
             services.AddDbContext<DataContext>(opt => opt.UseNpgsql(connectionStr));
 
-            //Stuff from old parallel context code
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
