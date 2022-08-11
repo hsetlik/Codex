@@ -83,10 +83,10 @@ export default class TermStore {
         }
 
         if (this.selectedTerm?.termValue.toUpperCase() === details.termValue.toUpperCase()) {
-            const value = this.selectedTerm.termValue;
-            this.selectedTerm = {...this.selectedTerm, ...details};
-            this.selectedTerm.termValue = value;
-            console.log('value refreshed');
+            //const value = this.selectedTerm.termValue;
+            //this.selectedTerm = {...this.selectedTerm, ...details};
+            //this.selectedTerm.termValue = value;
+            console.log('Just skipped old stuff. . .');
         }
  
     }

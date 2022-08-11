@@ -130,8 +130,10 @@ export default class UserStore{
             let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedProfile?.language!});
             if (store.contentStore.selectedTerm?.termValue.toUpperCase() === termValue.toUpperCase()) {
                 console.log(`Updating selected term with value ${termValue}`);
-                let oldValue = store.contentStore.selectedTerm.termValue;
+                const oldValue = store.contentStore.selectedTerm.termValue;
+                const oldIndex = store.contentStore.selectedTerm.indexInChunk;
                 updatedTermValue.termValue = oldValue;
+                updatedTermValue.indexInChunk = oldIndex;
             }
             runInAction(() => store.termStore.refreshAbstractTerm(updatedTermValue));
         } catch (error) {
