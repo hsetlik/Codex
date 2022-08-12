@@ -121,6 +121,11 @@ export interface ContentDifficultyQuery {
     contentId: string
 }
 
+export interface CreateContentQuery {
+    contentUrl: string,
+    description: string,
+    tags: string[]
+}
 
 
 

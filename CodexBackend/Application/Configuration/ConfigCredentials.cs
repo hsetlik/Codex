@@ -26,11 +26,6 @@ namespace Application.Configuration
         public string DropletAddress { get; set; }
         public string AzureUsername { get; set; }
         public string AzurePassword { get; set; }
-
-        public ConfigCredentials()
-        {
-
-        }
         public ConfigCredentials(IConfiguration config)
         {
             this.GoogleKey = config["googleKey"];

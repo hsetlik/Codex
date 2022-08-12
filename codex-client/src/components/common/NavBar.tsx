@@ -6,7 +6,7 @@ import '../styles/styles.css';
 import LanguageSelector from '../account/ProfileSelector';
 import FlagLabel from './FlagLabel';
 import { CssPallette } from '../../app/common/uiColors';
-import ImportModal from './ImportModal';
+import ImportModal from '../content/ImportModal';
 
 export default observer(function NavBar()
 {
