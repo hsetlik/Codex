@@ -88,7 +88,8 @@ namespace Application.Extensions
             this DataContext context, 
             PhraseQuery query, 
             ITranslator translator, 
-            IUserAccessor userAccessor)
+            IUserAccessor userAccessor,
+            string googleKey)
         {
             var existing = await context.GetPhraseDetails(query, userAccessor.GetUsername());
             if (existing.IsSuccess)
@@ -113,7 +114,7 @@ namespace Application.Extensions
                 QueryLanguage = query.Language,
                 QueryValue = query.Value
             };
-            var tResult = await translator.GetTranslation(tQuery);
+            var tResult = await translator.GetTranslation(tQuery, googleKey);
             if (!tResult.IsSuccess)
                 return Result<AbstractPhraseDto>.Failure($"Could not get translation! Error message: {tResult.Error}");
             return Result<AbstractPhraseDto>.Success( new AbstractPhraseDto

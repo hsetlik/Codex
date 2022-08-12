@@ -16,18 +16,16 @@ namespace Application.TranslationService
         private TranslationClient client;
         public Translator()
         {
-            string keysPath = "../ApiKeys/api-keys.json";
-            //===========================================
-            var reader = File.OpenText(keysPath);
-            string fileString = reader.ReadToEnd();
-            Console.WriteLine($"Credentials file: {fileString}");
-            //===========================================
-            var credential = GoogleCredential.FromFile(keysPath);
-            client = TranslationClient.Create(credential);
+            client = null;
         }
 
-        public async Task<Result<TranslatorResponse>> GetTranslation(TranslatorQuery query)
+        public async Task<Result<TranslatorResponse>> GetTranslation(TranslatorQuery query, string key)
         {
+            if (client == null)
+            {
+                var cred = GoogleCredential.FromJson(key);
+                client = TranslationClient.Create(cred);
+            }
             TranslationResult response = null;
             try
             {

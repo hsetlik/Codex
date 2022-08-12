@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Configuration;
 using Application.Core;
 using Application.DomainDTOs.Phrase;
 using Application.DomainDTOs.Phrase.Responses;
@@ -24,17 +25,19 @@ namespace Application.DataObjectHandling.Phrase
         {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly ITranslator _translator;
-            public Handler(DataContext context, ITranslator translator, IUserAccessor userAccessor)
+            private readonly ConfigCredentials creds;
+            private readonly ITranslator _translator;
+            public Handler(DataContext context, ITranslator translator, IUserAccessor userAccessor, ConfigCredentials creds)
             {
             this._translator = translator;
             this._userAccessor = userAccessor;
-            this._context = context;
+                this.creds = creds;
+                this._context = context;
             }
 
             public async Task<Result<AbstractPhraseDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.GetAbstractPhrase(request.Dto, _translator, _userAccessor);
+                return await _context.GetAbstractPhrase(request.Dto, _translator, _userAccessor, creds.GoogleKey);
             }
         }
     }

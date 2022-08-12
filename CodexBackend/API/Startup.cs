@@ -22,6 +22,7 @@ using FluentValidation.AspNetCore;
 using API.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Application.Configuration;
 
 namespace API
 {
@@ -39,6 +40,8 @@ namespace API
         {
             services.AddApplicationServices(_configuration);
             services.AddIdentityServices(_configuration);
+            var creds = new ConfigCredentials(_configuration);
+            services.AddSingleton<ConfigCredentials>(creds);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

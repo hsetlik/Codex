@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Configuration;
 using Application.DataObjectHandling.UserTerms;
 using Application.DomainDTOs;
 using Application.Extensions;
@@ -44,7 +45,8 @@ namespace Domain
         public static async Task SeedData(DataContext context,
             UserManager<CodexUser> userManager,
             IParserService parser,
-            ITranslator translator)
+            ITranslator translator,
+            ConfigCredentials creds)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
             if (!userManager.Users.Any() && !context.UserTerms.Any())
@@ -142,7 +144,7 @@ namespace Domain
                 {
                     section.TextElements = section.TextElements.Take(section.TextElements.Count - 1).ToList();
                 }
-                var creators = await section.CreatorsFor(translator, content.Language);
+                var creators = await section.CreatorsFor(translator, content.Language, creds.GoogleKey);
                 foreach (var creator in creators)
                 {
                     Console.WriteLine($"Creating term for: {creator.TermValue}");

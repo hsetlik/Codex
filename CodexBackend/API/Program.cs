@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Configuration;
 using Application.Interfaces;
 using Domain;
 using Domain.DataObjects;
@@ -14,10 +15,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistence;
 
+
+
+
 namespace API
 {
     public class Program
-    {
+    {   
         public static async Task Main(string[] args)
         {
             Console.WriteLine("Initializing codex...");
@@ -32,8 +36,9 @@ namespace API
                 var userManager = services.GetRequiredService<UserManager<CodexUser>>();
                 var parser = services.GetRequiredService<IParserService>();
                 var translator = services.GetRequiredService<ITranslator>();
+                var creds = services.GetRequiredService<ConfigCredentials>();
                 await context.Database.MigrateAsync(); //appends any pending migrations to the .db file, or creates it if none exists
-                await Seed.SeedData(context, userManager, parser, translator);
+                await Seed.SeedData(context, userManager, parser, translator, creds);
                 Console.WriteLine("Initialized successfully");
             }
             catch (Npgsql.NpgsqlException exc)
@@ -75,7 +80,15 @@ namespace API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    if (context.HostingEnvironment.IsProduction())
+                    {
+                        ConfigCredentials.ConfigureKeyVault(context, config);
+                    }
                 });
     }
 }

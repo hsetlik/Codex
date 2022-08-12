@@ -134,7 +134,7 @@ namespace Application.Extensions
             return input;
         }
 
-        public static async Task<List<UserTermCreateQuery>> CreatorsFor(this ContentSection section, ITranslator translator, string language)
+        public static async Task<List<UserTermCreateQuery>> CreatorsFor(this ContentSection section, ITranslator translator, string language, string googleKey)
         {
             var output = new List<UserTermCreateQuery>();
             var words = section.Body.Split(null).ToList();
@@ -145,7 +145,7 @@ namespace Application.Extensions
                     ResponseLanguage = (language == "en") ? "de" : "en",
                     QueryLanguage = language,
                     QueryValue = word
-                });
+                }, googleKey);
                 if (tResult.IsSuccess)
                 {
                     output.Add(new UserTermCreateQuery

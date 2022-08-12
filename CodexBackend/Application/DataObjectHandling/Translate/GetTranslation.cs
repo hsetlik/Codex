@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Configuration;
 using Application.Core;
 using Application.DomainDTOs.Translator;
 using Application.Extensions;
@@ -23,10 +24,13 @@ namespace Application.DataObjectHandling.Translate
         {
         private readonly ITranslator _translator;
         private readonly DataContext _context;
-            public Handler(ITranslator translator, DataContext context)
+        private readonly ConfigCredentials creds;
+
+            public Handler(ITranslator translator, DataContext context, ConfigCredentials creds)
             {
-            this._context = context;
-            this._translator = translator;
+                this._context = context;
+                this.creds = creds;
+                this._translator = translator;
             }
 
             public async Task<Result<TranslatorResponse>> Handle(Query request, CancellationToken cancellationToken)
@@ -34,7 +38,7 @@ namespace Application.DataObjectHandling.Translate
                 var existing = await _context.GetTopTranslation(request.Dto);
                 if (existing.IsSuccess)
                     return existing;
-                return await _translator.GetTranslation(request.Dto);
+                return await _translator.GetTranslation(request.Dto, creds.GoogleKey);
             }
         }
     }
