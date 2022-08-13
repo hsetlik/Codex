@@ -12,12 +12,14 @@ using Microsoft.EntityFrameworkCore;
 using API.DTOs;
 using Application.DataObjectHandling.UserLanguageProfiles;
 using Application.DomainDTOs;
+using Application.DTOs;
+using Application.DataObjectHandling.Account;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : CodexControllerBase
     {
         private readonly UserManager<CodexUser> _userManager;
         private readonly SignInManager<CodexUser> _signInManager;
@@ -98,6 +100,13 @@ namespace API.Controllers
                 return CreateUserObject(user);
             }
             return Unauthorized();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("getUsernameAvailable")]
+        public async Task<ActionResult<UsernameAvailableDto>> GetUsernameAvailable(UsernameDto dto)
+        {
+            return HandleResult(await Mediator.Send(new GetUsernameAvailable.Query{Dto = dto}));
         }
 
         //==================================================================
