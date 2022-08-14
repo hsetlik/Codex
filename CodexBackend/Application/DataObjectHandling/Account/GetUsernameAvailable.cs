@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
-using Application.DTOs;
+using Application.DomainDTOs;
+using Application.DomainDTOs.Account;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -13,32 +14,32 @@ namespace Application.DataObjectHandling.Account
 {
     public class GetUsernameAvailable
     {
-       public class Query : IRequest<Result<UsernameAvailableDto>>
-       {
-            public UsernameDto Dto { get; set; }
-       }
+        public class Query: IRequest<Result<UsernameAvailableDto>>
+        {
+            public string Username { get; set; }
+        }
 
         public class Handler : IRequestHandler<Query, Result<UsernameAvailableDto>>
         {
-        private readonly DataContext _context;
-            public Handler(DataContext context)
-            {
-                this._context = context;
+            private readonly DataContext context;
 
+            public Handler (DataContext context)
+            {
+                this.context = context;
             }
+
             public async Task<Result<UsernameAvailableDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var existing = await _context.Users.AnyAsync(u => u.UserName == request.Dto.Username);
-                    return Result<UsernameAvailableDto>.Success(new UsernameAvailableDto {Username = request.Dto.Username, IsAvailable = !existing});
+                    var usernameExists = await context.Users.AnyAsync(u => u.UserName == request.Username);
+                    return Result<UsernameAvailableDto>.Success(new UsernameAvailableDto{Username = request.Username, IsAvailable = !usernameExists});
                 }
-                catch (Exception ex)
+                catch (System.Exception ex)
                 {
-                    return Result<UsernameAvailableDto>.Failure($"Failed to check existing username {request.Dto.Username}! Exception: {ex.Message}");
+                    return Result<UsernameAvailableDto>.Failure($"Endpoint failed!: Exception: {ex.Message}");
                 }
             }
         }
-
     }
 }

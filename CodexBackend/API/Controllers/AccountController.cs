@@ -12,8 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using API.DTOs;
 using Application.DataObjectHandling.UserLanguageProfiles;
 using Application.DomainDTOs;
-using Application.DTOs;
+using Application.DomainDTOs.Account;
 using Application.DataObjectHandling.Account;
+using Application.DTOs;
 
 namespace API.Controllers
 {
@@ -81,8 +82,8 @@ namespace API.Controllers
         }
 
         //==================================================================
-        [AllowAnonymous]
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<UserDto>> Login(LoginDto login)
         {
             Console.WriteLine($"Logging in: {login.Email}, {login.Password}");
@@ -92,7 +93,7 @@ namespace API.Controllers
                 return Unauthorized();
             }
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, true);
 
             if(result.Succeeded)
             {
@@ -106,7 +107,7 @@ namespace API.Controllers
         [HttpPost("getUsernameAvailable")]
         public async Task<ActionResult<UsernameAvailableDto>> GetUsernameAvailable(UsernameDto dto)
         {
-            return HandleResult(await Mediator.Send(new GetUsernameAvailable.Query{Dto = dto}));
+            return HandleResult(await Mediator.Send(new GetUsernameAvailable.Query{Username = dto.Username}));
         }
 
         //==================================================================
@@ -134,6 +135,8 @@ namespace API.Controllers
                 return BadRequest("User manager could not update");
             return CreateUserObject(user);
         } 
+
+
         //==================================================================
         private UserDto CreateUserObject(CodexUser user)
         {

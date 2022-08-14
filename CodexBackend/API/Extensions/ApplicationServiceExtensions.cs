@@ -72,7 +72,7 @@ namespace API.Extensions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader(); //TODO: call WithOrigin() with the actual client URL
+                    policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin(); //TODO: refine this for secutiry
                 });
             });
             services.AddMediatR(typeof(UserTermCreate.Handler).Assembly);
