@@ -1,0 +1,28 @@
+
+
+
+form input, button {
+    width: fit-content;
+    margin: 0.25em;
+}
+
+div form {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+}
+
+.form-div {
+    max-width: 45%;
+
+}
+
+.btn {
+    font-size: medium;
+    border-radius: 0.25em;
+    border-width: 0.125em;
+    border-color: white;
+    padding: 0.25em;
+}
