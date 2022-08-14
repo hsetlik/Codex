@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { ContentMetadata, ContentSection, ContentTag, SectionAbstractTerms } from "../models/content";
+import { ContentMetadata, ContentSection, ContentTag, CreateContentQuery, SectionAbstractTerms } from "../models/content";
 import { AddTranslationDto, MillisecondsRange, SavedContentDto } from "../models/dtos";
 import { AbstractPhrase, PhraseCreateQuery } from "../models/phrase";
 import { AbstractTerm } from "../models/userTerm";
@@ -181,6 +181,14 @@ export default class ContentStore
                    }
                }
            })
+        } catch (error) {
+           console.log(error); 
+        }
+    }
+
+    importContent = async (dto: CreateContentQuery) => {
+        try {
+           await agent.Content.importContent(dto); 
         } catch (error) {
            console.log(error); 
         }
