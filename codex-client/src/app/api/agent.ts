@@ -82,6 +82,7 @@ const Account = {
     current: () => requests.get<User>('/Account'),
     login: (user: UserFormValues) => requests.post<User>('/Account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/Account/register', user),
+    setLastStudiedLanguage: (lang: ILanguageString) => requests.post<User>('/Account/setLastStudiedLanguage', lang)
 }
 
 const Profile = {
@@ -129,7 +130,8 @@ const Content = {
     getContentsWithTag: (dto: TagQuery) => requests.post<ContentMetadata[]>('content/getContentsWithTag', dto),
     getContentPageHtml: (contentUrl: string) => requests.get<string>(contentUrl),
     getContentDifficulty: (dto: ContentDifficultyQuery) => requests.post<ContentDifficulty>('content/getContentDifficulty', dto),
-    importContent: (dto: CreateContentQuery) => requests.post('content/importContent', dto)
+    importContent: (dto: CreateContentQuery) => requests.post('content/importContent', dto),
+    
 }
 
 const CollectionAgent = {

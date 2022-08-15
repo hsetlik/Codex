@@ -6,9 +6,11 @@ import { observer } from "mobx-react-lite";
 import * as Yup from 'yup';
 import ValidationErrors from "../errors/ValidationErrors";
 import FormLanguageSelect from "../formComponents/FormLanguageSelect";
+import { useNavigate } from "react-router-dom";
 
 export default observer(function RegisterForm() {
     const {userStore} = useStore();
+    const navigate = useNavigate();
     return (
         <Formik
             initialValues={{
@@ -22,7 +24,9 @@ export default observer(function RegisterForm() {
             }}
 
             onSubmit={(values, {setErrors}) => {
-                userStore.register(values).catch(error => {
+                userStore.register(values).then(() => {
+                    navigate(`/feed/${values.studyLanguage}`);
+                }).catch(error => {
                     setErrors({error});
                 });
             }} 

@@ -105,6 +105,7 @@ export default class TermStore {
         this.metadataLoaded = false;
         try {
            const newContent = await agent.Content.getContentWithId({contentId: id});
+           await agent.Account.setLastStudiedLanguage({language: newContent.language});
            runInAction(() => {
                this.selectedContent = newContent;
                console.log(`New selected content has name: ${newContent.contentName}`);

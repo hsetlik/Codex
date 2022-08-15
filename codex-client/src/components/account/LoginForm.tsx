@@ -2,6 +2,8 @@ import { useFormik, } from "formik";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import "../styles/forms.css";
+import { useNavigate } from "react-router-dom";
+
 
 interface LoginProps {
     email: string,
@@ -11,7 +13,7 @@ interface LoginProps {
 
 export default observer(function LoginForm() {
     const store = useStore();
-   
+    const navigate = useNavigate();
     const formik = useFormik<LoginProps>({
         initialValues: {
             email: '',
@@ -23,6 +25,7 @@ export default observer(function LoginForm() {
             }).then(() => {
                 //redirect to feed here
                 console.log("login finished");
+                navigate(`/feed/${store.userStore.user?.lastStudiedLanguage}`);
             })
         }
       

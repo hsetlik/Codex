@@ -38,7 +38,21 @@ namespace Application.DataObjectHandling.Contents
             {
                 var contentResult = await _context.GetMetadataFor(_userAccessor.GetUsername(), request.Dto.ContentId);
                 if (!contentResult.IsSuccess)
+                {
+                    // update the lastStudiedLanguage
+                    var user = await _context.Users.FirstOrDefaultAsync(user => user.UserName == _userAccessor.GetUsername());
+                    if (user != null)
+                    {
+                        user.LastStudiedLanguage = contentResult.Value.Language;
+                        var isSuccess = await _context.SaveChangesAsync() > 0;
+                        if(!isSuccess)
+                        {
+                            return Result<ContentMetadataDto>.Failure("Could not update user's last studied language!");
+                        }
+
+                    }
                     return Result<ContentMetadataDto>.Failure($"Failed to get metadata! Error message{contentResult.Error}");
+                }
                 return Result<ContentMetadataDto>.Success(contentResult.Value);
             }
         }
