@@ -108,7 +108,7 @@ export default class UserStore{
         console.log("Creating term for: " + term.termValue);
         try {
             await agent.UserTermEndpoints.create(term);
-            await this.refreshByValue(term.termValue);
+            //await this.refreshByValue(term.termValue);
         } catch (error) {
             console.log(error);
         }
@@ -118,28 +118,14 @@ export default class UserStore{
         store.termStore.refreshTerm(userTerm);
         try {
             await agent.UserTermEndpoints.updateUserTerm(userTerm);
-            await this.refreshByValue(userTerm.termValue);
+            //await this.refreshByValue(userTerm.termValue);
             console.log(`Term seen ${userTerm.timesSeen} times`);
         } catch (error) {
            console.log(error); 
         }
     }
 
-    refreshByValue = async (termValue: string) => {
-        try {
-            let updatedTermValue = await agent.TermEndpoints.getAbstractTerm({value: termValue, language: this.selectedProfile?.language!});
-            if (store.contentStore.selectedTerm?.termValue.toUpperCase() === termValue.toUpperCase()) {
-                console.log(`Updating selected term with value ${termValue}`);
-                const oldValue = store.contentStore.selectedTerm.termValue;
-                const oldIndex = store.contentStore.selectedTerm.indexInChunk;
-                updatedTermValue.termValue = oldValue;
-                updatedTermValue.indexInChunk = oldIndex;
-            }
-            runInAction(() => store.termStore.refreshAbstractTerm(updatedTermValue));
-        } catch (error) {
-           console.log(error); 
-        }
-    }
+
 
     deleteTranslation = async (translation: IChildTranslation) => {
         try {

@@ -61,34 +61,29 @@ export default class TermStore {
     }
 
     refreshTerm = (details: UserTermDetails) => {
-        console.log(`Refreshing term: ${details.termValue}`);
-    
-           
-        for(let element of this.elementTermMap) {
-            for (let term of element[1].abstractTerms) {
+        for(let element of this.elementTermMap)
+        {
+            const terms = element[1];
+            for (let term of terms.abstractTerms) {
                 if (term.termValue.toUpperCase() === details.termValue.toUpperCase()) {
-                    const idx = term.indexInChunk;
-                    const leading = term.leadingCharacters;
-                    const trailing = term.trailingCharacters;
-                    const value = term.termValue;
-                    term = {...term, ...details};
-                    term.termValue = value;
-                    term.indexInChunk = idx;
-                    term.trailingCharacters = trailing;
-                    term.leadingCharacters = leading;
-                    console.log('value refreshed');
-                    element[1].abstractTerms[idx] = term;
+                    const newTerm: AbstractTerm = {
+                        termValue: term.termValue,
+                        language: term.language,
+                        trailingCharacters: term.trailingCharacters,
+                        leadingCharacters: term.leadingCharacters,
+                        hasUserTerm: true,
+                        timesSeen: details.timesSeen,
+                        rating: details.rating,
+                        easeFactor: details.easeFactor,
+                        translations: [],
+                        indexInChunk: term.indexInChunk,
+                        userTermId: details.userTermId,
+                        starred: details.starred
+                    }
+                    term = newTerm;
                 }
             }
         }
-
-        if (this.selectedTerm?.termValue.toUpperCase() === details.termValue.toUpperCase()) {
-            //const value = this.selectedTerm.termValue;
-            //this.selectedTerm = {...this.selectedTerm, ...details};
-            //this.selectedTerm.termValue = value;
-            console.log('Just skipped old stuff. . .');
-        }
- 
     }
 
     refreshAbstractTerm = (term: AbstractTerm) => {
