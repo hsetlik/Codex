@@ -132,7 +132,7 @@ namespace Application.Extensions
 
         public static async Task<bool> TermKnown(this DataContext context, Guid languageProfileId, string term, int threshold = 3)
         {
-            var userTerm = await context.UserTerms.FirstOrDefaultAsync(u => u.LanguageProfileId == languageProfileId && u.NormalizedTermValue == term.ToUpper());
+            var userTerm = await context.UserTerms.FirstOrDefaultAsync(u => u.LanguageProfileId == languageProfileId && u.TermValue == term.ToUpper());
             if (userTerm != null && userTerm.Rating >= threshold)
                 return true;
             return false;

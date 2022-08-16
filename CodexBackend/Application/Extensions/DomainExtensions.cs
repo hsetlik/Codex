@@ -12,6 +12,7 @@ using Application.Parsing;
 using Application.Utilities;
 using Domain.DataObjects;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Extensions
 {
@@ -71,7 +72,7 @@ namespace Application.Extensions
         {
             return new UserTermDto
             {
-                Value = term.NormalizedTermValue,
+                Value = term.TermValue,
                 Language = term.Language,
                 EaseFactor = term.EaseFactor,
                 SrsIntervalDays = term.SrsIntervalDays,
@@ -158,6 +159,11 @@ namespace Application.Extensions
             }
             return output;
         }
+
+        // public static async UpdateWithOwner(this UserTerm term, DataContext context)
+        // {
+        //     // 1. check if we need to add a username 
+        // }
 
         public static DailyProfileHistory CreateHistory(this UserLanguageProfile profile)
         {

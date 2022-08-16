@@ -49,7 +49,7 @@ namespace Application.DataObjectHandling.UserLanguageProfiles
                 foreach(var t in userTerms)
                 {
                     var newTerm = t.GetDto();
-                    newTerm.Value = t.NormalizedTermValue;
+                    newTerm.Value = t.TermValue;
                     output.Add(newTerm);
                 }
                 return Result<List<UserTermDto>>.Success(output);

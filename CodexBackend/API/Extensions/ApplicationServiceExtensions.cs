@@ -29,8 +29,7 @@ namespace API.Extensions
 {
     public static class ApplicationServiceExtensions
     {
-        private static bool useConfigServer = false;
-        private static bool useVps = true;
+        private static bool useVps = false;
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
@@ -48,11 +47,9 @@ namespace API.Extensions
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
-            string connectionStr = "";
 
-            if (useConfigServer)
-                connectionStr = config.GetConnectionString("DefaultConnection");
-            else if (useVps)
+            string connectionStr = config.GetConnectionString("DefaultConnection");
+            if (useVps)
             {
                 Console.WriteLine("Connecting to droplet...");
                 string vpsHostname = config["DropletAddress"];

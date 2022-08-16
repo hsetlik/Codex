@@ -34,10 +34,9 @@ namespace Application.DataObjectHandling.UserTerms
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 //Check if the UserTerm with this value already exists
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
                 var exists = await _context.UserTerms.AnyAsync(
-                    u => u.NormalizedTermValue == request.termCreateDto.TermValue &&
-                    u.UserLanguageProfile.UserId == user.Id);
+                    u => u.TermValue == request.termCreateDto.TermValue &&
+                    u.OwnerUsername == _userAccessor.GetUsername());
                 if (exists) return Result<Unit>.Failure("Term already exists!");
                 // 1. Get the ULP by selecting based on UserName and Language
                 string normValue = request.termCreateDto.TermValue.AsTermValue();
@@ -50,7 +49,7 @@ namespace Application.DataObjectHandling.UserTerms
                 var userTerm = new UserTerm
                 {
                     UserLanguageProfile = profile,
-                    NormalizedTermValue = normValue,
+                    TermValue = normValue,
                     Translations = new List<Translation>
                     { 
                         new Translation
@@ -66,7 +65,9 @@ namespace Application.DataObjectHandling.UserTerms
                     Rating = 0,
                     DateTimeDue = DateTime.Now.ToUniversalTime(),
                     SrsIntervalDays = 0,
-                    CreatedAt = DateTime.Now.ToUniversalTime()
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
+                    Starred = false,
+                    OwnerUsername = _userAccessor.GetUsername()
                 };
                 _context.UserTerms.Add(userTerm);
                 var result = await _context.SaveChangesAsync() > 0;

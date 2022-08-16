@@ -44,7 +44,7 @@ namespace Application.Extensions
                 {
                     userTerm.Translations.Add(new Translation
                     {
-                        TermValue = userTerm.NormalizedTermValue,
+                        TermValue = userTerm.TermValue,
                         TermLanguage = userTerm.Language,
                         UserValue = tran,
                         UserLanguage = userTerm.UserLanguageProfile.UserLanguage,
@@ -74,7 +74,7 @@ namespace Application.Extensions
                 EaseFactor = dto.EaseFactor,
                 DateTimeDue = DateTime.Today,
                 TimesSeen = dto.TimesSeen,
-                NormalizedTermValue = normValue,
+                TermValue = normValue,
                 CreatedAt = DateTime.Now.ToUniversalTime(),
                 Translations = new List<Translation>(),
                 Starred = false
@@ -174,7 +174,7 @@ namespace Application.Extensions
                 LanguageProfileId = profile.LanguageProfileId,
                 UserLanguageProfile = profile,
                 Language = profile.Language,
-                NormalizedTermValue = normValue,
+                TermValue = normValue,
                 Translations = 
                 {
                     new Translation

@@ -41,7 +41,7 @@ namespace Application.DataObjectHandling.UserTerms
                 if (userTerm == null) return Result<Unit>.Failure("No corresponding UserTerm found");
                 var translation = new Translation
                 {
-                   TermValue = userTerm.NormalizedTermValue,
+                   TermValue = userTerm.TermValue,
                    TermLanguage = userTerm.Language,
                    UserValue = request.AddTranslationDto.NewTranslation,
                    UserLanguage =  userTerm.UserLanguageProfile.UserLanguage,
