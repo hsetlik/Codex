@@ -135,6 +135,30 @@ namespace Application.Extensions
             return input;
         }
 
+        public static async Task<List<UserTermCreateQuery>> CreatorsFor(this List<string> words, ITranslator translator, string lang, string googleKey)
+        {
+            List<UserTermCreateQuery> output = new();
+            foreach(var word in words)
+            {
+                var tResult = await translator.GetTranslation(new DomainDTOs.Translator.TranslatorQuery
+                {
+                    ResponseLanguage = (lang == "en") ? "de" : "en",
+                    QueryLanguage = lang,
+                    QueryValue = word
+                }, googleKey);
+                if (tResult.IsSuccess)
+                {
+                    output.Add(new UserTermCreateQuery
+                    {
+                        TermValue = word,
+                        Language = lang,
+                        FirstTranslation = tResult.Value.ResponseValue
+                    });
+                }
+            } 
+            return output;
+        }
+
         public static async Task<List<UserTermCreateQuery>> CreatorsFor(this ContentSection section, ITranslator translator, string language, string googleKey)
         {
             var output = new List<UserTermCreateQuery>();

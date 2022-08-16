@@ -95,7 +95,6 @@ namespace Application.Parsing.ProfileScrapers
             var lang = root.GetAttributeValue("lang", "language not found");
             if (lang == "language not found")
             {
-
                 if (htmlNode != null)
                 {
                     lang = htmlNode.GetAttributeValue("lang", "language not found");
