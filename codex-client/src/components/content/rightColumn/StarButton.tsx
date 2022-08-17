@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Button } from "semantic-ui-react";
-import { UserTermDetails } from "../../../app/models/userTerm";
+import { UserTerm } from "../../../app/models/userTerm";
 import { useStore } from "../../../app/stores/store";
 
 
@@ -9,7 +9,7 @@ export default observer(function StarButton() {
     const {contentStore: {selectedTerm}, userStore: {updateUserTerm}} = useStore();
 
     const handleClick = () => {
-    const details: UserTermDetails = {...selectedTerm!};
+    const details: UserTerm = {...selectedTerm!};
         console.log(details);
         details.starred = !details.starred;
         updateUserTerm(details);

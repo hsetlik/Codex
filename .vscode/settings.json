@@ -1,4 +1,16 @@
 {
     "appService.defaultWebAppToDeploy": "/subscriptions/482cf060-221f-4f9b-b7ec-ccb2086bb5e0/microsoft.web/sites/subscriptions/482cf060-221f-4f9b-b7ec-ccb2086bb5e0/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/codex-azure",
-    "appService.deploySubpath": "."
+    "appService.deploySubpath": ".",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "local",
+            "password": "scooter2",
+            "database": "codexPostgresDb",
+            "username": "admin"
+        }
+    ]
 }

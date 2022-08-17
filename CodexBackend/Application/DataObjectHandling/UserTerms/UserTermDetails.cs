@@ -41,7 +41,7 @@ namespace Application.DataObjectHandling.UserTerms
                     x.Language == request.TermDto.Language);
                 if (profile == null) return Result<UserTermDetailsDto>.Failure("No associated profile found");
                 var profileId = profile.LanguageProfileId;
-                var parsedTerm = request.TermDto.Value.AsTermValue(); 
+                var parsedTerm = request.TermDto.Value; 
                 var userTerm = await _context.UserTerms.FirstOrDefaultAsync(
                     x => x.LanguageProfileId == profileId &&
                     x.TermValue == parsedTerm);

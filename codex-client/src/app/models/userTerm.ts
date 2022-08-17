@@ -4,25 +4,15 @@ export interface Term {
 }
 
 export interface UserTerm {
-    value: string,
-    language: string,
-    timesSeen: number,
-    rating: number,
-    easeFactor: number,
-    translations: string[],
-    userTermId: string
-}
-
-export interface UserTermDetails {
     termValue: string,
     language: string,
     timesSeen: number,
     rating: number,
     easeFactor: number,
+    translations: string[],
     userTermId: string,
     starred: boolean
 }
-
 export interface AbstractTerm {
     //common term props
     termValue: string,

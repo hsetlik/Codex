@@ -30,20 +30,11 @@ namespace Application.Extensions
             // 1. Get the term
             var normValue = dto.Value.AsTermValue();
             // 2. Get the UserLanguageProfile
-            var profile = await context.UserLanguageProfiles
-            .Include(p => p.User)
-            .FirstOrDefaultAsync(t => t.Language == dto.Language && t.User.UserName == username);
-            if (profile == null)
-            {
-                Console.WriteLine("No profile found!");
-                return Result<AbstractTermDto>.Failure("No valid profile found");
-                
-            }
             // 3. Check for a UserTerm
             var userTerm = await context.UserTerms
             .Include(t => t.Translations)
             .FirstOrDefaultAsync(u => u.TermValue == normValue &&
-             u.LanguageProfileId == profile.LanguageProfileId);
+             u.OwnerUsername == username);
             
             AbstractTermDto output;
             if (userTerm != null)
@@ -105,29 +96,6 @@ namespace Application.Extensions
             }
             return Result<Unit>.Success(Unit.Value);
         }
-        private static async Task<Dictionary<string, AbstractTermDto>> GetTermsMap(this DataContext context, IUserAccessor user, List<string> terms)
-        {
-            Dictionary<string, AbstractTermDto> output = new();
-            try
-            {
-                System.Diagnostics.Stopwatch watch = new();
-                watch.Start();
-                var matchingTerms = await context.UserTerms
-                    .Include(ut => ut.Translations)
-                    .TakeWhile(term => terms.Any(t => t.ToUpper() == term.TermValue.ToUpper()))
-                    .ToListAsync();
-                watch.Stop();
-                Console.WriteLine($"Selected {matchingTerms.Count} terms in {watch.ElapsedMilliseconds} ms");
-                //loop thru and create the map
-
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine($"Exception!: {ex.Message}");
-            }
-            return output;
-        }
-
         public static async Task<Result<ElementAbstractTerms>> GetAbstractTermsForElement(this DataContext context, IUserAccessor userAccessor, ElementAbstractTermsQuery query)
         {
             var terms = new List<AbstractTermDto>();
@@ -143,7 +111,9 @@ namespace Application.Extensions
                 var termResult = await context.AbstractTermFor(new TermDto{Value= words[i],Language = query.Language}, userAccessor.GetUsername());
                 if (termResult.IsSuccess)
                 {
-                    terms.Add(termResult.Value);
+                    var temp = termResult.Value;
+                    temp.IndexInChunk = i;
+                    terms.Add(temp);
                 }
                 else
                 {

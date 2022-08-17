@@ -3,7 +3,7 @@ import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
 
 import { toast } from "react-toastify";
-import { AbstractTerm, Term, UserTerm, UserTermDetails } from "../models/userTerm";
+import { AbstractTerm, Term, UserTerm } from "../models/userTerm";
 import { UserTermCreateDto, AddTranslationDto,
          IUserTermId, TranslationDto, IChildTranslation, 
          TranslationResultDto, IContentId, 
@@ -104,7 +104,7 @@ const UserTermAgent = {
     create: (dto: UserTermCreateDto) => requests.post<UserTermCreateDto>('/userTerm/createUserTerm', dto),
     addTranslation: (dto: AddTranslationDto) => requests.post<AddTranslationDto>('/userTerm/addTranslation', dto),
     getUserTerm : (dto: Term) => requests.post<UserTerm>('/userTerm/getUserTerm', dto),
-    updateUserTerm: (dto: UserTermDetails) => requests.post('/userTerm/updateUserTerm', dto),
+    updateUserTerm: (dto: UserTerm) => requests.post('/userTerm/updateUserTerm', dto),
     getTranslations: (dto: IUserTermId) => requests.post<TranslationDto[]>('/userTerm/getTranslations', dto),
     deleteTranslation: (translation: IChildTranslation) => requests.post('/userTerm/deleteTranslation', translation)
 }

@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
 import { IChildTranslation, LanguageProfileDto, UserTermCreateDto } from '../models/dtos';
 import { User, UserFormValues } from '../models/user';
-import { UserTermDetails } from '../models/userTerm';
+import { UserTerm } from '../models/userTerm';
 import { store } from './store';
 
 export default class UserStore{
@@ -109,17 +109,20 @@ export default class UserStore{
         try {
             await agent.UserTermEndpoints.create(term);
             //await this.refreshByValue(term.termValue);
+            //runInAction(() => store.termStore.refreshAbstractTerm)
+            const newTerm = await agent.UserTermEndpoints.getUserTerm({termValue: term.termValue, language: term.language});
+            runInAction(() => {
+                store.termStore.refreshTerm(newTerm);
+            })
         } catch (error) {
             console.log(error);
         }
     }
 
-    updateUserTerm = async (userTerm: UserTermDetails) => {
+    updateUserTerm = async (userTerm: UserTerm) => {
         store.termStore.refreshTerm(userTerm);
         try {
-            await agent.UserTermEndpoints.updateUserTerm(userTerm);
-            //await this.refreshByValue(userTerm.termValue);
-            console.log(`Term seen ${userTerm.timesSeen} times`);
+            await agent.UserTermEndpoints.updateUserTerm(userTerm).then(() => store.termStore.refreshTerm(userTerm));
         } catch (error) {
            console.log(error); 
         }

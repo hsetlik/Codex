@@ -12,7 +12,7 @@ interface Props {
 export default observer (function VocabWord({term}: Props) {
     return (
         <Segment>
-            <Header as='h2'>{term.value}</Header>
+            <Header as='h2'>{term.termValue}</Header>
             <List>
                 <List.Item key='language'>
                     Language: {getLanguageName(term.language)}

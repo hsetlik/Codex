@@ -3,7 +3,7 @@ import agent from "../api/agent";
 import { ContentMetadata, ElementAbstractTerms } from "../models/content";
 import { AddTranslationDto } from "../models/dtos";
 import { AbstractPhrase } from "../models/phrase";
-import { AbstractTerm, UserTermDetails } from "../models/userTerm";
+import { AbstractTerm, UserTerm } from "../models/userTerm";
 import { store } from "./store";
 
 export default class TermStore {
@@ -60,7 +60,7 @@ export default class TermStore {
         }
     }
 
-    refreshTerm = (details: UserTermDetails) => {
+    refreshTerm = (details: UserTerm) => {
         for(let element of this.elementTermMap)
         {
             const terms = element[1];
@@ -90,7 +90,7 @@ export default class TermStore {
         if (!term.hasUserTerm) {
             console.log('no refresh needed');
         }
-        const details: UserTermDetails = {...term};
+        const details: UserTerm = {...term};
         console.log(`Updating details for ${term.termValue}`);
         console.log(details);
         this.refreshTerm(details)
