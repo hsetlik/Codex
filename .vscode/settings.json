@@ -11,6 +11,16 @@
             "password": "scooter2",
             "database": "codexPostgresDb",
             "username": "admin"
+        },
+        {
+            "previewLimit": 50,
+            "server": "144.126.219.84",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "droplet",
+            "database": "codexdb",
+            "username": "codexadmin",
+            "password": "Plinkun21"
         }
     ]
 }
