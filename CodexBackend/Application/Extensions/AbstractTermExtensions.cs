@@ -28,7 +28,7 @@ namespace Application.Extensions
         public static async Task<Result<AbstractTermDto>> AbstractTermFor(this DataContext context, TermDto dto, string username)
         {
             // 1. Get the term
-            var normValue = dto.Value.AsTermValue();
+            var normValue = dto.TermValue.AsTermValue();
             // 2. Get the UserLanguageProfile
             // 3. Check for a UserTerm
             var userTerm = await context.UserTerms
@@ -67,7 +67,7 @@ namespace Application.Extensions
                 };
             }
             //! Don't forget to set the TermValue back to the case-sensitive original
-            output.TermValue = dto.Value;
+            output.TermValue = dto.TermValue;
             return Result<AbstractTermDto>.Success(output);
         }
 
@@ -108,7 +108,7 @@ namespace Application.Extensions
             {
                 // Console.WriteLine(words[i]);
                 wordDict[i] = words[i];
-                var termResult = await context.AbstractTermFor(new TermDto{Value= words[i],Language = query.Language}, userAccessor.GetUsername());
+                var termResult = await context.AbstractTermFor(new TermDto{TermValue= words[i],Language = query.Language}, userAccessor.GetUsername());
                 if (termResult.IsSuccess)
                 {
                     var temp = termResult.Value;

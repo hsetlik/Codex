@@ -7,7 +7,7 @@ namespace Application.DataObjectHandling.Terms
 {
     public class TermDto
     {
-        public string Value { get; set; }
+        public string TermValue { get; set; }
         public string Language { get; set; }
     }
 
@@ -26,6 +26,4 @@ namespace Application.DataObjectHandling.Terms
         public int TimesSeen { get; set; }
         public bool Starred { get; set; }
     }
-
-    
 }

@@ -41,7 +41,7 @@ namespace Application.DataObjectHandling.Terms
         {
             var output = new AbstractTermDto
             {
-                TermValue = source.Value,
+                TermValue = source.TermValue,
                 Language = source.Language,
                 HasUserTerm = false,
                 SrsIntervalDays = 0,

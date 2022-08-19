@@ -40,6 +40,7 @@ namespace Application.DataObjectHandling.UserTerms
                 if (exists) return Result<Unit>.Failure("Term already exists!");
                 // 1. Get the ULP by selecting based on UserName and Language
                 string normValue = request.termCreateDto.TermValue.AsTermValue();
+                Console.WriteLine($"Raw string {request.termCreateDto.TermValue} has normalized value {normValue}");
                 var profile = await _context.UserLanguageProfiles
                 .FirstOrDefaultAsync(
                     x => x.User.UserName == _userAccessor.GetUsername() &&

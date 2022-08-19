@@ -16,15 +16,5 @@ namespace Application.DataObjectHandling.UserTerms
         public string FirstTranslation { get; set; }
       
     }
-    public static class TermConverter
-    {
-        public static TermDto TermDtoFor(UserTermCreateQuery userTermCreateDto)
-        {
-            return new TermDto
-            {
-                Value = userTermCreateDto.TermValue,
-                Language = userTermCreateDto.Language
-            };
-        }
-    }
+
 }

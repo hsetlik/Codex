@@ -86,16 +86,6 @@ export default class TermStore {
         }
     }
 
-    refreshAbstractTerm = (term: AbstractTerm) => {
-        if (!term.hasUserTerm) {
-            console.log('no refresh needed');
-        }
-        const details: UserTerm = {...term};
-        console.log(`Updating details for ${term.termValue}`);
-        console.log(details);
-        this.refreshTerm(details)
-    }
-
     selectContentByIdAsync = async (id: string) => {
         this.metadataLoaded = false;
         try {

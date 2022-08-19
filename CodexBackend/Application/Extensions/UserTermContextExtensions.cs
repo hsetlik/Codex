@@ -63,7 +63,7 @@ namespace Application.Extensions
             var userProfile = await context.UserLanguageProfiles
             .Include(u => u.User)
             .FirstOrDefaultAsync(u => u.Language == dto.Language && u.User.UserName == username);
-            string normValue = dto.Value.AsTermValue().ToUpper();
+            string normValue = dto.TermValue.AsTermValue().ToUpper();
 
             var uTerm = new UserTerm
             {

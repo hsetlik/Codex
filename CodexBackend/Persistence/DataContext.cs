@@ -17,11 +17,6 @@ namespace Persistence
             this.options = opt;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            Console.WriteLine("Configuring DbContext. . .");
-        }
-      
         public DbSet<UserLanguageProfile> UserLanguageProfiles { get; set; }
 
         public DbSet<UserTerm> UserTerms { get; set; }

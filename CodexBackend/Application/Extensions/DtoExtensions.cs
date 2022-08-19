@@ -18,7 +18,7 @@ namespace Application.Extensions
         {
             var uTerm = new UserTermDto
             {
-                Value = dto.TermValue,
+                TermValue = dto.TermValue,
                 Language = dto.Language,
                 EaseFactor = dto.EaseFactor,
                 SrsIntervalDays = dto.SrsIntervalDays,

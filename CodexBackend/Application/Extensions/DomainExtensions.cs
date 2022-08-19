@@ -72,7 +72,7 @@ namespace Application.Extensions
         {
             return new UserTermDto
             {
-                Value = term.TermValue,
+                TermValue = term.TermValue,
                 Language = term.Language,
                 EaseFactor = term.EaseFactor,
                 SrsIntervalDays = term.SrsIntervalDays,
@@ -91,7 +91,7 @@ namespace Application.Extensions
             {
                 output.Add(new TermDto
                 {
-                    Value = word.AsTermValue(),
+                    TermValue = word.AsTermValue(),
                     Language = phrase.UserLanguageProfile.Language
                 });
             }
