@@ -6,21 +6,21 @@ import { useStore } from "../../../app/stores/store";
 
 
 export default observer(function StarButton() {
-    const {contentStore: {selectedTerm}, userStore: {updateUserTerm}} = useStore();
+    const { contentStore: { selectedTerm }, userStore: { updateUserTerm } } = useStore();
 
     const handleClick = () => {
-    const details: UserTerm = {...selectedTerm!};
+        const details: UserTerm = { ...selectedTerm! };
         console.log(details);
         details.starred = !details.starred;
         updateUserTerm(details);
     }
 
     return (
-        <Button 
-        icon='star'
-        size='mini'
-        floated='right'
-        active={selectedTerm?.starred}
-        onClick={handleClick} />
+        <Button
+            icon='star'
+            size='mini'
+            floated='right'
+            active={selectedTerm?.starred}
+            onClick={handleClick} />
     )
 })

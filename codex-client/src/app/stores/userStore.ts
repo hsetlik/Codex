@@ -120,9 +120,9 @@ export default class UserStore{
     }
 
     updateUserTerm = async (userTerm: UserTerm) => {
-        store.termStore.refreshTerm(userTerm);
         try {
-            await agent.UserTermEndpoints.updateUserTerm(userTerm).then(() => store.termStore.refreshTerm(userTerm));
+            await agent.UserTermEndpoints.updateUserTerm(userTerm);
+            runInAction(()=> store.termStore.refreshTerm(userTerm));
         } catch (error) {
            console.log(error); 
         }

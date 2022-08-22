@@ -61,11 +61,14 @@ export default class TermStore {
     }
 
     refreshTerm = (details: UserTerm) => {
+        console.log(`Refreshing terms with value ${details.termValue}`);
         for(let element of this.elementTermMap)
         {
             const terms = element[1];
+            let newTerms: AbstractTerm[] = [] 
             for (let term of terms.abstractTerms) {
                 if (term.termValue.toUpperCase() === details.termValue.toUpperCase()) {
+                    console.log(`found match with value ${term.termValue} at index ${term.indexInChunk}`);
                     const newTerm: AbstractTerm = {
                         termValue: term.termValue,
                         language: term.language,
@@ -80,9 +83,15 @@ export default class TermStore {
                         userTermId: details.userTermId,
                         starred: details.starred
                     }
+                    if (this.selectedTerm === term) {
+                        runInAction(() => this.selectedTerm = newTerm);
+                    }
                     term = newTerm;
+                    console.log(term);
                 }
+                newTerms.push(term);
             }
+            runInAction(() => element[1].abstractTerms = newTerms);
         }
     }
 

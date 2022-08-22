@@ -7,7 +7,7 @@ namespace Application.DataObjectHandling.UserTerms
 {
     public class UserTermDetailsDto
     {
-        public string NormalizedTermValue { get; set; }
+        public string TermValue { get; set; }
         public int TimesSeen { get; set; }
         public float EaseFactor { get; set; }
         public int Rating { get; set; }

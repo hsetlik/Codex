@@ -59,7 +59,7 @@ namespace Application.DataObjectHandling.UserTerms
                 if (userTerm == null) return Result<UserTermDetailsDto>.Failure("No associated user term found");
                 var dto = new UserTermDetailsDto
                 {
-                    NormalizedTermValue = request.TermDto.TermValue,
+                    TermValue = request.TermDto.TermValue,
                     TimesSeen = userTerm.TimesSeen,
                     EaseFactor = userTerm.EaseFactor,
                     Rating = userTerm.Rating,
