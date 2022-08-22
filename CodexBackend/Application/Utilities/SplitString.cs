@@ -41,7 +41,6 @@ namespace Application.Utilities
                 Trailing = "none";
                 Leading = "none";
                 var temp = input;
-                Word = GetMatchWithExceptions(input, @"([^\p{P}^\s]+)").Value;
                 var leadingMatch = GetMatchWithExceptions(input, @"^[\p{P}\s]+");
                 if (leadingMatch.Success)
                 {
