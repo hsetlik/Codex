@@ -16,7 +16,8 @@ import { UserTermCreateDto, AddTranslationDto,
          TranslatorQuery,
          SaveContentQuery,
          SavedContentDto,
-         ICollectionId} from "../models/dtos";
+         ICollectionId,
+         TranslatorResponse} from "../models/dtos";
 import { ContentMetadata, ElementAbstractTerms, ContentSection, ContentTag, TagQuery, ContentPageHtml, ElementAbstractTermsQuery, CaptionsQuery, VideoCaptionElement, ContentDifficultyQuery, ContentDifficulty, CreateContentQuery } from "../models/content";
 import { MetricGraph, MetricGraphQuery } from "../models/dailyData";
 import { Collection, CollectionsForLanguageQuery, CreateCollectionQuery } from "../models/collection";
@@ -150,7 +151,7 @@ const Parse = {
 
 const Translate = {
     getTranslations: (dto: TermDto) => requests.post<TranslationResultDto[]>('translate/getTranslations', dto),
-    getTranslation: (query: TranslatorQuery) => requests.post<TranslationDto>('translate/getTranslation', query)
+    getTranslation: (query: TranslatorQuery) => requests.post<TranslatorResponse>('translate/getTranslation', query)
 }
 
 const PhraseAgent = {

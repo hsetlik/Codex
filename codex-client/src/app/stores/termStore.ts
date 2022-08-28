@@ -49,6 +49,27 @@ export default class TermStore {
         return elements;
     }
 
+    loadSelectedTranslations = async () => {
+        try {
+           if (this.selectedTerm && this.selectedTerm.translations.length < 1) {
+            const newTranslations = await agent.UserTermEndpoints.getTranslations({userTermId: this.selectedTerm.userTermId});
+            runInAction(() => {
+                if (this.selectedTerm)
+                    this.selectedTerm.translations = newTranslations.map(t => t.userValue);
+            });
+           } 
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    deleteTranslation = (value: string) => {
+        if (this.selectedTerm?.translations) {
+            this.selectedTerm.translations = this.selectedTerm.translations.filter(word => word !== value);
+        }
+    }
+
     addTranslation = async (dto: AddTranslationDto) => {
         try {
            await agent.UserTermEndpoints.addTranslation(dto);
@@ -85,6 +106,7 @@ export default class TermStore {
                     }
                     if (this.selectedTerm === term) {
                         runInAction(() => this.selectedTerm = newTerm);
+                        this.loadSelectedTranslations();
                     }
                     term = newTerm;
                     console.log(term);
@@ -157,6 +179,7 @@ export default class TermStore {
             this.phraseMode = false;
             this.phraseTerms = [];
         }
+        this.loadSelectedTranslations();
     }
 
     updatePhraseAsync = async () => {

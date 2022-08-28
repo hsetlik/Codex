@@ -44,7 +44,7 @@ export interface TranslationDto {
      responseLanguage: string
  }
 
- export interface TranslationDto {
+ export interface TranslatorResponse {
      query: TranslatorQuery,
      responseValue: string
  }

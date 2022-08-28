@@ -133,6 +133,9 @@ export default class UserStore{
     deleteTranslation = async (translation: IChildTranslation) => {
         try {
             await agent.UserTermEndpoints.deleteTranslation(translation);
+            runInAction(() => {
+                store.termStore.deleteTranslation(translation.value);
+            })
         } catch (error) {
            console.log(error); 
         }
