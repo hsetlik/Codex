@@ -29,10 +29,12 @@ export default observer(function ContentFrame({contentId}: Props) {
                     if(node.attribs.class === "mw-editsection")
                         return <div></div>
                     if (node.attribs.codex_replacable === 'true' ) {
+                        console.log(`Replacable node found at: ${nodeIdx}`);
                         return <CodexNode sourceNode={node} key={`elementNode${nodeIdx}`} />
                     }
                     
                 }
+
             }
     });
     }

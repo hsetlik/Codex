@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-
 import '../styles/styles.css';
 
 interface StickyProps {
-    child: React.ReactChild,
+    child: React.ReactNode,
     top: number,
 }
 
@@ -37,7 +36,7 @@ const  StickyRef: React.FunctionComponent<StickyProps> = (child, top) => {
   return (
       <div className={`sticky__wrapper ${isSticky && 'sticky'}`} ref={ref}>
         <div className="sticky--inner">
-            {child}
+            {child.child}
         </div>
       </div>
   );

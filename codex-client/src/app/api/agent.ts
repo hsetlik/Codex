@@ -29,7 +29,7 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.interceptors.response.use(response => {
     return response;
 }, (error: AxiosError) => {
-const {data, status, config} = error.response!;
+const {data, status, config} = error.response as AxiosResponse;
 switch (status)
 {
     case 400:

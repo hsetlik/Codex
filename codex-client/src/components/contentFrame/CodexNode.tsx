@@ -20,7 +20,7 @@ const fullInnerText = (node: DOMNode & Element): string => {
         if (child.type === ElementType.Text)
             text += (child as Text).data;
         else if(child instanceof Element) {
-            text += fullInnerText(child);
+            text += fullInnerText(child as (DOMNode & Element));
         }
     }
     return text;
@@ -28,7 +28,7 @@ const fullInnerText = (node: DOMNode & Element): string => {
 export default observer(function CodexNode({sourceNode, className}: NodeProps) {
     const {ref, inView} = useInView({threshold: 0.1});
     // return an empty div if this isn't a valid element
-    let text = fullInnerText(sourceNode as Element);
+    let text = fullInnerText(sourceNode as (DOMNode & Element));
     const {termStore: {elementTermMap: elements, loadElementAsync}} = useStore();
     useEffect(() => {
         if (!elements.has(text) && sourceNode instanceof Element && text.length > 1 && inView) {
